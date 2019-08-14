@@ -1,0 +1,938 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://jdr.bio/ontologies/comptox.owl"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://jdr.bio/ontologies/comptox.owl">
+    <Prefix name="" IRI="http://jdr.bio/ontologies/comptox.owl"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Annotation>
+        <AnnotationProperty IRI="#language"/>
+        <Literal xml:lang="en">English</Literal>
+    </Annotation>
+    <Annotation>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <Literal xml:lang="en">An ontology describing entities essential to computational toxicology and applications of translational bioinformatics to computational toxicology.</Literal>
+    </Annotation>
+    <Annotation>
+        <AnnotationProperty abbreviatedIRI="owl:versionInfo"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">0.1</Literal>
+    </Annotation>
+    <Declaration>
+        <Class IRI="#AOP"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#AOPConcept"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#AdverseOutcome"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#AnimalBiotoxin"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Biotoxin"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#CellType"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Chemical"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#CopyNumberVariant"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Database"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Disease"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#EnvironmentalRiskFactor"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ExposureEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Finding"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#FungalBiotoxin"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GainOfFunctionMutation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Gene"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GeneticDisease"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GeneticEntity"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GeneticPathway"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#GeneticRiskFactor"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Human"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HumanConcept"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HumanMolecule"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HumanProtein"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#KeyEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#LossOfFunctionMutation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MetabolicPathway"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MicrobialBiotoxin"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ModeOfAction"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MolecularInitiatingEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Mutation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Organ"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#OrganSystem"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Pathway"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#PharmaceuticalPreparation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Phenotype"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#PlantBiotoxin"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Publication"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ResearchEntity"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#RiskFactor"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SignalTransductionPathway"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SingleNucleotidePolymorphism"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Source"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Species"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#StructuralEntity"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Study"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SyntheticToxin"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Toxin"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ToxinAttribute"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ToxinClass"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Variant"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#VenomComponent"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#altersBiologicalState"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#containsCellType"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#containsOrgan"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#describedInPublication"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#expressedInCellType"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#expressesProtein"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#fromSpecies"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasAssociatedStudy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasEtiology"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasIngredient"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasProteinProduct"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#includesMetabolite"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#includesProtein"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#manifestationOfDisease"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#manifestedAsPhenotype"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#regulatesGene"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#riskGoverenedByExposure"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#riskGovernedByGene"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#stateAlteredBy"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#isXenobioticChemical"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#ChemIDplus"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#Comparative_Toxicogenomics_Database"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DrugBank"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#Hazardous_Substances_Data_Bank"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#OSHA_Occupational_Chemical_Database"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#PubChem"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#TOXLINE"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#TRI"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#ToxCast"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="#fundedBy"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="#includesConceptClasses"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="#language"/>
+    </Declaration>
+    <EquivalentClasses>
+        <Class IRI="#EnvironmentalRiskFactor"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#RiskFactor"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#riskGoverenedByExposure"/>
+                <Class IRI="#ExposureEvent"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#GeneticDisease"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Disease"/>
+            <ObjectAllValuesFrom>
+                <ObjectProperty IRI="#hasEtiology"/>
+                <ObjectUnionOf>
+                    <Class IRI="#GeneticRiskFactor"/>
+                    <Class IRI="#Mutation"/>
+                </ObjectUnionOf>
+            </ObjectAllValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#GeneticPathway"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Pathway"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#regulatesGene"/>
+                <Class IRI="#Gene"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#GeneticRiskFactor"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#RiskFactor"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#riskGovernedByGene"/>
+                <Class IRI="#Gene"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#MolecularInitiatingEvent"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#KeyEvent"/>
+            <ObjectAllValuesFrom>
+                <ObjectProperty IRI="#stateAlteredBy"/>
+                <Class IRI="#Chemical"/>
+            </ObjectAllValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <SubClassOf>
+        <Class IRI="#AOP"/>
+        <Class IRI="#AOPConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#AdverseOutcome"/>
+        <Class IRI="#AOPConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#AnimalBiotoxin"/>
+        <Class IRI="#Biotoxin"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Biotoxin"/>
+        <Class IRI="#Toxin"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#CellType"/>
+        <Class IRI="#StructuralEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#CellType"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#expressesProtein"/>
+            <Class IRI="#HumanProtein"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#CopyNumberVariant"/>
+        <Class IRI="#Variant"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Database"/>
+        <Class IRI="#ResearchEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Database"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#describedInPublication"/>
+            <Class IRI="#Publication"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Disease"/>
+        <Class IRI="#HumanConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Disease"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasEtiology"/>
+            <ObjectUnionOf>
+                <Class IRI="#ExposureEvent"/>
+                <Class IRI="#Mutation"/>
+                <Class IRI="#RiskFactor"/>
+            </ObjectUnionOf>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Disease"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#manifestedAsPhenotype"/>
+            <Class IRI="#Phenotype"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ExposureEvent"/>
+        <Class IRI="#HumanConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Finding"/>
+        <Class IRI="#ResearchEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#FungalBiotoxin"/>
+        <Class IRI="#Biotoxin"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GainOfFunctionMutation"/>
+        <Class IRI="#Mutation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Gene"/>
+        <Class IRI="#GeneticEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Gene"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasProteinProduct"/>
+            <Class IRI="#HumanProtein"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GeneticEntity"/>
+        <Class IRI="#HumanConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Human"/>
+        <Class IRI="#HumanConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HumanMolecule"/>
+        <Class IRI="#StructuralEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HumanProtein"/>
+        <Class IRI="#HumanMolecule"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#KeyEvent"/>
+        <Class IRI="#AOPConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#KeyEvent"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#altersBiologicalState"/>
+            <Class IRI="#HumanConcept"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#KeyEvent"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#stateAlteredBy"/>
+            <ObjectUnionOf>
+                <Class IRI="#Chemical"/>
+                <Class IRI="#HumanConcept"/>
+            </ObjectUnionOf>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#LossOfFunctionMutation"/>
+        <Class IRI="#Mutation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MetabolicPathway"/>
+        <Class IRI="#Pathway"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MicrobialBiotoxin"/>
+        <Class IRI="#Biotoxin"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ModeOfAction"/>
+        <Class IRI="#ToxinAttribute"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Mutation"/>
+        <Class IRI="#GeneticEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Organ"/>
+        <Class IRI="#StructuralEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Organ"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#containsCellType"/>
+            <Class IRI="#CellType"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OrganSystem"/>
+        <Class IRI="#StructuralEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#OrganSystem"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#containsOrgan"/>
+            <Class IRI="#Organ"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Pathway"/>
+        <Class IRI="#HumanConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#PharmaceuticalPreparation"/>
+        <ObjectMinCardinality cardinality="1">
+            <ObjectProperty IRI="#hasIngredient"/>
+            <Class IRI="#Chemical"/>
+        </ObjectMinCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Phenotype"/>
+        <Class IRI="#HumanConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Phenotype"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#manifestationOfDisease"/>
+            <Class IRI="#Disease"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#PlantBiotoxin"/>
+        <Class IRI="#Biotoxin"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Publication"/>
+        <Class IRI="#ResearchEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ResearchEntity"/>
+        <ObjectMinCardinality cardinality="0">
+            <ObjectProperty IRI="#hasAssociatedStudy"/>
+            <Class IRI="#Study"/>
+        </ObjectMinCardinality>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#RiskFactor"/>
+        <Class IRI="#HumanConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SignalTransductionPathway"/>
+        <Class IRI="#Pathway"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SingleNucleotidePolymorphism"/>
+        <Class IRI="#Variant"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Source"/>
+        <Class IRI="#ToxinAttribute"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Species"/>
+        <Class IRI="#Source"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#StructuralEntity"/>
+        <Class IRI="#HumanConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Study"/>
+        <Class IRI="#ResearchEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SyntheticToxin"/>
+        <Class IRI="#Toxin"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Toxin"/>
+        <Class IRI="#Chemical"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ToxinClass"/>
+        <Class IRI="#ToxinAttribute"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Variant"/>
+        <Class IRI="#GeneticEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#VenomComponent"/>
+        <Class IRI="#AnimalBiotoxin"/>
+    </SubClassOf>
+    <DisjointClasses>
+        <Class IRI="#AOP"/>
+        <Class IRI="#AdverseOutcome"/>
+        <Class IRI="#KeyEvent"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#AOPConcept"/>
+        <Class IRI="#Chemical"/>
+        <Class IRI="#HumanConcept"/>
+        <Class IRI="#PharmaceuticalPreparation"/>
+        <Class IRI="#ResearchEntity"/>
+        <Class IRI="#ToxinAttribute"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#AOPConcept"/>
+        <Class IRI="#HumanConcept"/>
+        <Class IRI="#PharmaceuticalPreparation"/>
+        <Class IRI="#ResearchEntity"/>
+        <Class IRI="#Toxin"/>
+        <Class IRI="#ToxinAttribute"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#AOPConcept"/>
+        <Class IRI="#HumanConcept"/>
+        <Class IRI="#ResearchEntity"/>
+        <Class IRI="#Toxin"/>
+        <Class IRI="#ToxinAttribute"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#AnimalBiotoxin"/>
+        <Class IRI="#FungalBiotoxin"/>
+        <Class IRI="#MicrobialBiotoxin"/>
+        <Class IRI="#PlantBiotoxin"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Biotoxin"/>
+        <Class IRI="#SyntheticToxin"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#CellType"/>
+        <Class IRI="#HumanMolecule"/>
+        <Class IRI="#Organ"/>
+        <Class IRI="#OrganSystem"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Database"/>
+        <Class IRI="#Finding"/>
+        <Class IRI="#Publication"/>
+        <Class IRI="#Study"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Disease"/>
+        <Class IRI="#ExposureEvent"/>
+        <Class IRI="#GeneticEntity"/>
+        <Class IRI="#Human"/>
+        <Class IRI="#Pathway"/>
+        <Class IRI="#RiskFactor"/>
+        <Class IRI="#StructuralEntity"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#EnvironmentalRiskFactor"/>
+        <Class IRI="#GeneticRiskFactor"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#GeneticPathway"/>
+        <Class IRI="#MetabolicPathway"/>
+        <Class IRI="#SignalTransductionPathway"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#ModeOfAction"/>
+        <Class IRI="#Source"/>
+        <Class IRI="#ToxinClass"/>
+    </DisjointClasses>
+    <ClassAssertion>
+        <Class IRI="#Database"/>
+        <NamedIndividual IRI="#ChemIDplus"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Database"/>
+        <NamedIndividual IRI="#Comparative_Toxicogenomics_Database"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Database"/>
+        <NamedIndividual IRI="#DrugBank"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Database"/>
+        <NamedIndividual IRI="#Hazardous_Substances_Data_Bank"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Database"/>
+        <NamedIndividual IRI="#OSHA_Occupational_Chemical_Database"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Database"/>
+        <NamedIndividual IRI="#PubChem"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Database"/>
+        <NamedIndividual IRI="#TOXLINE"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Database"/>
+        <NamedIndividual IRI="#TRI"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Database"/>
+        <NamedIndividual IRI="#ToxCast"/>
+    </ClassAssertion>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasIngredient"/>
+        <ObjectProperty abbreviatedIRI="owl:topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#expressedInCellType"/>
+        <ObjectProperty IRI="#expressesProtein"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#manifestationOfDisease"/>
+        <ObjectProperty IRI="#manifestedAsPhenotype"/>
+    </InverseObjectProperties>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#altersBiologicalState"/>
+        <Class IRI="#KeyEvent"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#containsCellType"/>
+        <Class IRI="#Organ"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#containsOrgan"/>
+        <Class IRI="#OrganSystem"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#describedInPublication"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#ResearchEntity"/>
+            <ObjectComplementOf>
+                <Class IRI="#Publication"/>
+            </ObjectComplementOf>
+        </ObjectIntersectionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#expressedInCellType"/>
+        <Class IRI="#HumanProtein"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#expressesProtein"/>
+        <Class IRI="#CellType"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#fromSpecies"/>
+        <Class IRI="#Biotoxin"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasAssociatedStudy"/>
+        <Class IRI="#ResearchEntity"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasEtiology"/>
+        <Class IRI="#Disease"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasIngredient"/>
+        <Class IRI="#PharmaceuticalPreparation"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasProteinProduct"/>
+        <Class IRI="#Gene"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#includesMetabolite"/>
+        <Class IRI="#Pathway"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#includesProtein"/>
+        <Class IRI="#Pathway"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#manifestationOfDisease"/>
+        <Class IRI="#Phenotype"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#manifestedAsPhenotype"/>
+        <Class IRI="#Disease"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#regulatesGene"/>
+        <Class IRI="#GeneticPathway"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#riskGoverenedByExposure"/>
+        <Class IRI="#EnvironmentalRiskFactor"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#riskGovernedByGene"/>
+        <Class IRI="#GeneticRiskFactor"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#stateAlteredBy"/>
+        <Class IRI="#KeyEvent"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#altersBiologicalState"/>
+        <Class IRI="#HumanConcept"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#containsCellType"/>
+        <Class IRI="#CellType"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#containsOrgan"/>
+        <Class IRI="#Organ"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#describedInPublication"/>
+        <Class IRI="#Publication"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#expressedInCellType"/>
+        <Class IRI="#CellType"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#expressesProtein"/>
+        <Class IRI="#HumanProtein"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#fromSpecies"/>
+        <Class IRI="#Species"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasAssociatedStudy"/>
+        <Class IRI="#Study"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasIngredient"/>
+        <Class IRI="#Chemical"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasProteinProduct"/>
+        <Class IRI="#HumanProtein"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#includesMetabolite"/>
+        <Class IRI="#Chemical"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#includesProtein"/>
+        <Class IRI="#HumanProtein"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#manifestationOfDisease"/>
+        <Class IRI="#Disease"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#manifestedAsPhenotype"/>
+        <Class IRI="#Phenotype"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#regulatesGene"/>
+        <Class IRI="#Gene"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#riskGoverenedByExposure"/>
+        <Class IRI="#ExposureEvent"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#riskGovernedByGene"/>
+        <Class IRI="#Gene"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#stateAlteredBy"/>
+        <Class IRI="#Chemical"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#stateAlteredBy"/>
+        <Class IRI="#HumanConcept"/>
+    </ObjectPropertyRange>
+    <DataPropertyDomain>
+        <DataProperty IRI="#isXenobioticChemical"/>
+        <Class IRI="#Chemical"/>
+    </DataPropertyDomain>
+    <DataPropertyRange>
+        <DataProperty IRI="#isXenobioticChemical"/>
+        <Datatype abbreviatedIRI="xsd:boolean"/>
+    </DataPropertyRange>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#includesConceptClasses"/>
+        <IRI>#Comparative_Toxicogenomics_Database</IRI>
+        <IRI>#Chemical</IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#includesConceptClasses"/>
+        <IRI>#Comparative_Toxicogenomics_Database</IRI>
+        <IRI>#Disease</IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#includesConceptClasses"/>
+        <IRI>#Comparative_Toxicogenomics_Database</IRI>
+        <IRI>#ExposureEvent</IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#includesConceptClasses"/>
+        <IRI>#Comparative_Toxicogenomics_Database</IRI>
+        <IRI>#Gene</IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty IRI="#includesConceptClasses"/>
+        <IRI>#Comparative_Toxicogenomics_Database</IRI>
+        <IRI>#Pathway</IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Database</IRI>
+        <Literal>Any database that is relevant to computational toxicology (not necessarily intended to be used primarily for toxicology - e.g., PubChem).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#altersBiologicalState</IRI>
+        <Literal>The entity that is being altered via the KE.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#stateAlteredBy</IRI>
+        <Literal>The (immediate) &apos;source&apos; entity that is responsible for the biological activity described by the KE.</Literal>
+    </AnnotationAssertion>
+    <AnnotationPropertyRange>
+        <AnnotationProperty IRI="#fundedBy"/>
+        <AbbreviatedIRI>xsd:string</AbbreviatedIRI>
+    </AnnotationPropertyRange>
+    <AnnotationPropertyRange>
+        <AnnotationProperty IRI="#includesConceptClasses"/>
+        <AbbreviatedIRI>owl:Thing</AbbreviatedIRI>
+    </AnnotationPropertyRange>
+    <AnnotationPropertyRange>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <AbbreviatedIRI>xsd:string</AbbreviatedIRI>
+    </AnnotationPropertyRange>
+    <AnnotationPropertyDomain>
+        <AnnotationProperty IRI="#fundedBy"/>
+        <IRI>#ResearchEntity</IRI>
+    </AnnotationPropertyDomain>
+    <AnnotationPropertyDomain>
+        <AnnotationProperty IRI="#includesConceptClasses"/>
+        <IRI>#Database</IRI>
+    </AnnotationPropertyDomain>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+

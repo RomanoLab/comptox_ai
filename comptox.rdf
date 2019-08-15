@@ -8,9 +8,10 @@
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:comptox="http://jdr.bio/ontologies/comptox.owl#">
     <owl:Ontology rdf:about="http://jdr.bio/ontologies/comptox.owl">
+        <owl:versionIRI rdf:resource="http://jdr.bio/ontologies/comptox.owl/0.1.0"/>
         <comptox:language xml:lang="en">English</comptox:language>
         <rdfs:comment xml:lang="en">An ontology describing entities essential to computational toxicology and applications of translational bioinformatics to computational toxicology.</rdfs:comment>
-        <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1</owl:versionInfo>
+        <owl:versionInfo rdf:datatype="http://www.w3.org/2000/01/rdf-schema#Literal">0.1.0</owl:versionInfo>
     </owl:Ontology>
     
 

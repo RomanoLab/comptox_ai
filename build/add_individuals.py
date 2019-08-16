@@ -3,7 +3,7 @@
 from owlready2 import get_ontology
 import pandas as pd
 
-from ipdb import set_trace
+import ipdb, traceback, sys
 
 ONTOLOGY_FNAME = "../comptox.rdf"
 ONTOLOGY_POPULATED_FNAME = "../comptox_populated.rdf"
@@ -83,4 +83,9 @@ for idx,n in hetio_nodes.iterrows():
 # 3. Link KEs to adverse outcomes (either link to AEs and then to Disease/Phenotype or remove AEs entirely)
 
 # Write modified graph (TO DIFFERENT FILE)
-ont.save(file=ONTOLOGY_POPULATED_FNAME, format="rdfxml")
+try:
+    ont.save(file=ONTOLOGY_POPULATED_FNAME, format="rdfxml")
+except TypeError:
+    extype, value, tb = sys.exc_info()
+    traceback.print_exc()
+    ipdb.post_mortem(tb)

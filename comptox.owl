@@ -5,13 +5,15 @@
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-     ontologyIRI="http://jdr.bio/ontologies/comptox.owl">
+     ontologyIRI="http://jdr.bio/ontologies/comptox.owl"
+     versionIRI="http://jdr.bio/ontologies/comptox.owl/0.1.0">
     <Prefix name="" IRI="http://jdr.bio/ontologies/comptox.owl"/>
     <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
     <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
     <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
     <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
     <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Prefix name="comptox" IRI="http://jdr.bio/ontologies/comptox.owl#"/>
     <Annotation>
         <AnnotationProperty IRI="#language"/>
         <Literal xml:lang="en">English</Literal>
@@ -22,13 +24,16 @@
     </Annotation>
     <Annotation>
         <AnnotationProperty abbreviatedIRI="owl:versionInfo"/>
-        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">0.1</Literal>
+        <Literal datatypeIRI="http://www.w3.org/2000/01/rdf-schema#Literal">0.1.0</Literal>
     </Annotation>
     <Declaration>
         <Class IRI="#AOP"/>
     </Declaration>
     <Declaration>
         <Class IRI="#AOPConcept"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#AdverseEffect"/>
     </Declaration>
     <Declaration>
         <Class IRI="#AdverseOutcome"/>
@@ -44,6 +49,9 @@
     </Declaration>
     <Declaration>
         <Class IRI="#Chemical"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ChemicalEffect"/>
     </Declaration>
     <Declaration>
         <Class IRI="#CopyNumberVariant"/>
@@ -101,6 +109,9 @@
     </Declaration>
     <Declaration>
         <Class IRI="#LossOfFunctionMutation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MedicalCondition"/>
     </Declaration>
     <Declaration>
         <Class IRI="#MetabolicPathway"/>
@@ -166,6 +177,9 @@
         <Class IRI="#SyntheticToxin"/>
     </Declaration>
     <Declaration>
+        <Class IRI="#TherapeuticEffect"/>
+    </Declaration>
+    <Declaration>
         <Class IRI="#Toxin"/>
     </Declaration>
     <Declaration>
@@ -184,6 +198,9 @@
         <ObjectProperty IRI="#altersBiologicalState"/>
     </Declaration>
     <Declaration>
+        <ObjectProperty IRI="#chemicalCausesEffect"/>
+    </Declaration>
+    <Declaration>
         <ObjectProperty IRI="#containsCellType"/>
     </Declaration>
     <Declaration>
@@ -191,6 +208,18 @@
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="#describedInPublication"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#diseaseDownregulatesGene"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#diseaseManifestedAsPhenotype"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#diseaseRegulatesGeneOther"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#diseaseUpregulatesGene"/>
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="#expressedInCellType"/>
@@ -220,13 +249,10 @@
         <ObjectProperty IRI="#includesProtein"/>
     </Declaration>
     <Declaration>
-        <ObjectProperty IRI="#manifestationOfDisease"/>
+        <ObjectProperty IRI="#pathwayRegulatesGene"/>
     </Declaration>
     <Declaration>
-        <ObjectProperty IRI="#manifestedAsPhenotype"/>
-    </Declaration>
-    <Declaration>
-        <ObjectProperty IRI="#regulatesGene"/>
+        <ObjectProperty IRI="#phenotypeManifestationOfDisease"/>
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="#riskGoverenedByExposure"/>
@@ -236,6 +262,9 @@
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="#stateAlteredBy"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#diseaseComplexity"/>
     </Declaration>
     <Declaration>
         <DataProperty IRI="#isXenobioticChemical"/>
@@ -304,7 +333,7 @@
         <ObjectIntersectionOf>
             <Class IRI="#Pathway"/>
             <ObjectSomeValuesFrom>
-                <ObjectProperty IRI="#regulatesGene"/>
+                <ObjectProperty IRI="#pathwayRegulatesGene"/>
                 <Class IRI="#Gene"/>
             </ObjectSomeValuesFrom>
         </ObjectIntersectionOf>
@@ -334,6 +363,10 @@
         <Class IRI="#AOPConcept"/>
     </SubClassOf>
     <SubClassOf>
+        <Class IRI="#AdverseEffect"/>
+        <Class IRI="#ChemicalEffect"/>
+    </SubClassOf>
+    <SubClassOf>
         <Class IRI="#AdverseOutcome"/>
         <Class IRI="#AOPConcept"/>
     </SubClassOf>
@@ -357,6 +390,17 @@
         </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
+        <Class IRI="#Chemical"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#chemicalCausesEffect"/>
+            <Class IRI="#ChemicalEffect"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ChemicalEffect"/>
+        <Class IRI="#Phenotype"/>
+    </SubClassOf>
+    <SubClassOf>
         <Class IRI="#CopyNumberVariant"/>
         <Class IRI="#Variant"/>
     </SubClassOf>
@@ -373,7 +417,35 @@
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Disease"/>
-        <Class IRI="#HumanConcept"/>
+        <Class IRI="#MedicalCondition"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Disease"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#diseaseDownregulatesGene"/>
+            <Class IRI="#Gene"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Disease"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#diseaseManifestedAsPhenotype"/>
+            <Class IRI="#Phenotype"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Disease"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#diseaseRegulatesGeneOther"/>
+            <Class IRI="#Gene"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Disease"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#diseaseUpregulatesGene"/>
+            <Class IRI="#Gene"/>
+        </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Disease"/>
@@ -384,13 +456,6 @@
                 <Class IRI="#Mutation"/>
                 <Class IRI="#RiskFactor"/>
             </ObjectUnionOf>
-        </ObjectSomeValuesFrom>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#Disease"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#manifestedAsPhenotype"/>
-            <Class IRI="#Phenotype"/>
         </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
@@ -419,6 +484,13 @@
             <ObjectProperty IRI="#hasProteinProduct"/>
             <Class IRI="#HumanProtein"/>
         </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#GeneticDisease"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#diseaseComplexity"/>
+            <Datatype abbreviatedIRI="owl:rational"/>
+        </DataSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#GeneticEntity"/>
@@ -460,6 +532,10 @@
     <SubClassOf>
         <Class IRI="#LossOfFunctionMutation"/>
         <Class IRI="#Mutation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MedicalCondition"/>
+        <Class IRI="#HumanConcept"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#MetabolicPathway"/>
@@ -516,10 +592,10 @@
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Phenotype"/>
-        <ObjectSomeValuesFrom>
-            <ObjectProperty IRI="#manifestationOfDisease"/>
+        <ObjectMinCardinality cardinality="0">
+            <ObjectProperty IRI="#phenotypeManifestationOfDisease"/>
             <Class IRI="#Disease"/>
-        </ObjectSomeValuesFrom>
+        </ObjectMinCardinality>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#PlantBiotoxin"/>
@@ -567,6 +643,10 @@
     <SubClassOf>
         <Class IRI="#SyntheticToxin"/>
         <Class IRI="#Toxin"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#TherapeuticEffect"/>
+        <Class IRI="#ChemicalEffect"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Toxin"/>
@@ -648,7 +728,6 @@
         <Class IRI="#GeneticRiskFactor"/>
     </DisjointClasses>
     <DisjointClasses>
-        <Class IRI="#GeneticPathway"/>
         <Class IRI="#MetabolicPathway"/>
         <Class IRI="#SignalTransductionPathway"/>
     </DisjointClasses>
@@ -698,16 +777,20 @@
         <ObjectProperty abbreviatedIRI="owl:topObjectProperty"/>
     </SubObjectPropertyOf>
     <InverseObjectProperties>
-        <ObjectProperty IRI="#expressedInCellType"/>
-        <ObjectProperty IRI="#expressesProtein"/>
+        <ObjectProperty IRI="#diseaseManifestedAsPhenotype"/>
+        <ObjectProperty IRI="#phenotypeManifestationOfDisease"/>
     </InverseObjectProperties>
     <InverseObjectProperties>
-        <ObjectProperty IRI="#manifestationOfDisease"/>
-        <ObjectProperty IRI="#manifestedAsPhenotype"/>
+        <ObjectProperty IRI="#expressedInCellType"/>
+        <ObjectProperty IRI="#expressesProtein"/>
     </InverseObjectProperties>
     <ObjectPropertyDomain>
         <ObjectProperty IRI="#altersBiologicalState"/>
         <Class IRI="#KeyEvent"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#chemicalCausesEffect"/>
+        <Class IRI="#Chemical"/>
     </ObjectPropertyDomain>
     <ObjectPropertyDomain>
         <ObjectProperty IRI="#containsCellType"/>
@@ -725,6 +808,22 @@
                 <Class IRI="#Publication"/>
             </ObjectComplementOf>
         </ObjectIntersectionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#diseaseDownregulatesGene"/>
+        <Class IRI="#Disease"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#diseaseManifestedAsPhenotype"/>
+        <Class IRI="#Disease"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#diseaseRegulatesGeneOther"/>
+        <Class IRI="#Disease"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#diseaseUpregulatesGene"/>
+        <Class IRI="#Disease"/>
     </ObjectPropertyDomain>
     <ObjectPropertyDomain>
         <ObjectProperty IRI="#expressedInCellType"/>
@@ -763,16 +862,12 @@
         <Class IRI="#Pathway"/>
     </ObjectPropertyDomain>
     <ObjectPropertyDomain>
-        <ObjectProperty IRI="#manifestationOfDisease"/>
-        <Class IRI="#Phenotype"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty IRI="#manifestedAsPhenotype"/>
-        <Class IRI="#Disease"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty IRI="#regulatesGene"/>
+        <ObjectProperty IRI="#pathwayRegulatesGene"/>
         <Class IRI="#GeneticPathway"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#phenotypeManifestationOfDisease"/>
+        <Class IRI="#Phenotype"/>
     </ObjectPropertyDomain>
     <ObjectPropertyDomain>
         <ObjectProperty IRI="#riskGoverenedByExposure"/>
@@ -791,6 +886,10 @@
         <Class IRI="#HumanConcept"/>
     </ObjectPropertyRange>
     <ObjectPropertyRange>
+        <ObjectProperty IRI="#chemicalCausesEffect"/>
+        <Class IRI="#ChemicalEffect"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
         <ObjectProperty IRI="#containsCellType"/>
         <Class IRI="#CellType"/>
     </ObjectPropertyRange>
@@ -801,6 +900,26 @@
     <ObjectPropertyRange>
         <ObjectProperty IRI="#describedInPublication"/>
         <Class IRI="#Publication"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#diseaseDownregulatesGene"/>
+        <Class IRI="#Gene"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#diseaseManifestedAsPhenotype"/>
+        <Class IRI="#ChemicalEffect"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#diseaseManifestedAsPhenotype"/>
+        <Class IRI="#Phenotype"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#diseaseRegulatesGeneOther"/>
+        <Class IRI="#Gene"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#diseaseUpregulatesGene"/>
+        <Class IRI="#Gene"/>
     </ObjectPropertyRange>
     <ObjectPropertyRange>
         <ObjectProperty IRI="#expressedInCellType"/>
@@ -835,16 +954,12 @@
         <Class IRI="#HumanProtein"/>
     </ObjectPropertyRange>
     <ObjectPropertyRange>
-        <ObjectProperty IRI="#manifestationOfDisease"/>
-        <Class IRI="#Disease"/>
-    </ObjectPropertyRange>
-    <ObjectPropertyRange>
-        <ObjectProperty IRI="#manifestedAsPhenotype"/>
-        <Class IRI="#Phenotype"/>
-    </ObjectPropertyRange>
-    <ObjectPropertyRange>
-        <ObjectProperty IRI="#regulatesGene"/>
+        <ObjectProperty IRI="#pathwayRegulatesGene"/>
         <Class IRI="#Gene"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#phenotypeManifestationOfDisease"/>
+        <Class IRI="#Disease"/>
     </ObjectPropertyRange>
     <ObjectPropertyRange>
         <ObjectProperty IRI="#riskGoverenedByExposure"/>
@@ -862,6 +977,10 @@
         <ObjectProperty IRI="#stateAlteredBy"/>
         <Class IRI="#HumanConcept"/>
     </ObjectPropertyRange>
+    <DataPropertyDomain>
+        <DataProperty IRI="#diseaseComplexity"/>
+        <Class IRI="#GeneticDisease"/>
+    </DataPropertyDomain>
     <DataPropertyDomain>
         <DataProperty IRI="#isXenobioticChemical"/>
         <Class IRI="#Chemical"/>

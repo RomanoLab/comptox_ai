@@ -130,16 +130,36 @@ def chemicalCausesEffect(edge_row):
     chem = ont.search_one(xrefDrugbank=db_id)
     effect = ont.search_one(xrefUmlsCUI=effect_id)
 
-    try:
-        if len(chem.chemicalCausesEffect) == 0:
-            chem.chemicalCausesEffect = [effect]
-        else:
-            chem.chemicalCausesEffect.append(effect)
-    except AttributeError:
-        ipdb.set_trace()
-        print()
-
+    if len(chem.chemicalCausesEffect) == 0:
+        chem.chemicalCausesEffect = [effect]
+    else:
+        chem.chemicalCausesEffect.append(effect)
+    
 def diseaseRegulatesGeneOther(edge_row):
+    dis_id = edge_row[0].split("::")[-1]
+    gene_id = edge_row[2].split("::")[-1]
+
+    disease = ont.search_one(xrefDiseaseOntology=dis_id)
+    gene = ont.search_one(xrefNcbiGene=gene_id)
+
+    if len(disease.diseaseRegulatesGeneOther) == 0:
+        disease.diseaseRegulatesGeneOther = [gene]
+    else:
+        disease.diseaseRegulatesGeneOther.append(gene)
+
+def diseaseDownregulatesGene(edge_row):
+    dis_id = edge_row[0].split("::")[-1]
+    gene_id = edge_row[2].split("::")[-1]
+
+    disease = ont.search_one(xrefDiseaseOntology=dis_id)
+    gene = ont.search_one(xrefNcbiGene=gene_id)
+
+    if len(disease.diseaseDownregulatesGene) == 0:
+        disease.diseaseDownregulatesGene = [gene]
+    else:
+        disease.diseaseDownregulatesGene.append(gene)
+
+def diseaseUpregulatesGene(edge_row):
     dis_id = edge_row[0].split("::")[-1]
     gene_id = edge_row[2].split("::")[-1]
 
@@ -150,12 +170,6 @@ def diseaseRegulatesGeneOther(edge_row):
         disease.diseaseUpregulatesGene = [gene]
     else:
         disease.diseaseUpregulatesGene.append(gene)
-
-def diseaseDownregulatesGene(edge_row):
-    pass
-
-def diseaseUpregulatesGene(edge_row):
-    pass
 
 # Add hetionet relationships:
 # 1. chemicalBindsGene ("BINDS_CbG")

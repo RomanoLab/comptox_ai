@@ -45,25 +45,41 @@ print("Adding Hetionet nodes as ontology individuals...")
 for idx,n in tqdm(hetio_nodes.iterrows(), total=len(hetio_nodes)):
     nodetype = n[2]
     nm = make_safe_property_label(n[1])
+
+    # Check whether node label already exists:
+    duplicate_nm = False
+    if ont[nm] is not None:
+        duplicate_nm = True
     
     if nodetype=="Anatomy":
+        if duplicate_nm:
+            nm += "_structuralentity"
         ont.StructuralEntity(nm, xrefUberon=n[0].split("::")[-1])
-    elif nodetype=="BiologicalProcess":
-        ipdb.set_trace()
-        print()
-    elif nodetype=="CellularComponent":
+    elif nodetype=="Biological Process":
+        continue
+    elif nodetype=="Cellular Component":
         continue
     elif nodetype=="Compound":
         # NOTE: "Compounds" in hetionet are DrugBank entities,
         # which correspond most closely to "Chemical"s in comptox
+        if duplicate_nm:
+            nm += "_chemical"
+        
         drugbank_id = n[0].split("::")[-1]
         ont.Chemical(nm, xrefDrugbank=drugbank_id, chemicalIsDrug=True)
     elif nodetype=="Disease":
-        continue
+        if duplicate_nm:
+            nm += "_disease"
+        
+        doid = n[0].split("::")[-1]
+        ont.Disease(nm, xrefDiseaseOntology=doid)
     elif nodetype=="Gene":
+        if duplicate_nm:
+            nm += "_gene"
+
         ncbi_gene = n[0].split("::")[-1]
         ont.Gene(nm, geneSymbol=n[1], xrefNcbiGene=ncbi_gene)
-    elif nodetype=="MolecularFunction":
+    elif nodetype=="Molecular Function":
         continue
     elif nodetype=="Pathway":
         pass  # NOTE: Need to assess quality of "pathway" entities! E.g., why is "Immune System"
@@ -80,12 +96,66 @@ for idx,n in tqdm(hetio_nodes.iterrows(), total=len(hetio_nodes)):
         continue
     elif nodetype=="Side Effect":
         # These nodes were sourced from SIDER, which - by definition - describes drug adverse effects.
+        if duplicate_nm:
+            nm += "_adverseeffect"
+        
         ont.AdverseEffect(nm, xrefUmlsCUI=n[0].split("::")[-1])
     elif nodetype=="Symptom":
         # NOTE: May need to revise knowledge model if symptoms can map to multiple MeSH terms (i.e.,
         # if the DbXref is not functional)
+        if duplicate_nm:
+            nm += "_phenotype"
+
         ont.Phenotype(nm, xrefMeSH=n[0].split("::")[-1])
 del(hetio_nodes)
+
+# Edge parsing functions:
+def chemicalBindsGene(edge_row):
+    # match chemical via xrefDrugbank
+    db_id = edge_row[0].split("::")[-1]
+    gene_id = edge_row[2].split("::")[-1]
+    
+    chem = ont.search_one(xrefDrugbank=db_id)
+    gene = ont.search_one(xrefNcbiGene=gene_id)
+
+    if len(chem.chemicalBindsGene) == 0:
+        chem.chemicalBindsGene = [gene]
+    else:
+        chem.chemicalBindsGene.append(gene)
+
+def chemicalCausesEffect(edge_row):
+    db_id = edge_row[0].split("::")[-1]
+    effect_id = edge_row[2].split("::")[-1]
+
+    chem = ont.search_one(xrefDrugbank=db_id)
+    effect = ont.search_one(xrefUmlsCUI=effect_id)
+
+    try:
+        if len(chem.chemicalCausesEffect) == 0:
+            chem.chemicalCausesEffect = [effect]
+        else:
+            chem.chemicalCausesEffect.append(effect)
+    except AttributeError:
+        ipdb.set_trace()
+        print()
+
+def diseaseRegulatesGeneOther(edge_row):
+    dis_id = edge_row[0].split("::")[-1]
+    gene_id = edge_row[2].split("::")[-1]
+
+    disease = ont.search_one(xrefDiseaseOntology=dis_id)
+    gene = ont.search_one(xrefNcbiGene=gene_id)
+
+    if len(disease.diseaseUpregulatesGene) == 0:
+        disease.diseaseUpregulatesGene = [gene]
+    else:
+        disease.diseaseUpregulatesGene.append(gene)
+
+def diseaseDownregulatesGene(edge_row):
+    pass
+
+def diseaseUpregulatesGene(edge_row):
+    pass
 
 # Add hetionet relationships:
 # 1. chemicalBindsGene ("BINDS_CbG")
@@ -93,10 +163,42 @@ del(hetio_nodes)
 # 3. diseaseRegulatesGeneOther ("ASSOCIATES_DaG")
 # 4. diseaseUpregulatesGene ("UPREGULATES_DuG")
 # 5. diseaseDownregulatesGene ("DOWNREGULATES_DdG")
-# hetio_rels = pd.read_csv("../data/hetionet/hetionet-v1.0-edges.sif", sep="\t")
-# for idx,r in tqdm(hetio_rels.iterrows(), total=len(hetio_rels)):
-#     continue
+metaedge_map = {
+    'AdG':  None,
+    'AeG':  None,
+    'AuG':  None,
+    'CbG':  chemicalBindsGene,  # (:Chemical)-[:CHEMICAL_BINDS_GENE]->(:Gene)
+    'CcSE': chemicalCausesEffect,  # (:Chemical)-[:CHEMICAL_CAUSES_EFFECT]->(:SideEffect)
+    'CdG':  None,
+    'CpD':  None,
+    'CrC':  None,
+    'CtD':  None,
+    'CuG':  None,
+    'DaG':  diseaseRegulatesGeneOther,
+    'DdG':  diseaseDownregulatesGene,
+    'DlA':  None,
+    'DpS':  None,
+    'DrD':  None,
+    'DuG':  diseaseUpregulatesGene,
+    'GcG':  None,
+    'GiG':  None,
+    'GpBP': None,
+    'GpCC': None,
+    'GpMF': None,
+    'GpPW': None,
+    'Gr>G': None,
+    'PCiC': None,
+}
 
+hetio_rels = pd.read_csv("../data/hetionet/hetionet-v1.0-edges.sif", sep="\t")
+for idx,r in tqdm(hetio_rels.iterrows(), total=len(hetio_rels)):
+    edge_type = r[1]
+    func = metaedge_map[edge_type]
+
+    if func:
+        func(edge_row=r)
+
+ 
 # Add hetionet property keys:
 # 1.
 
@@ -115,8 +217,10 @@ del(hetio_nodes)
 # 3. Link KEs to adverse outcomes (either link to AEs and then to Disease/Phenotype or remove AEs entirely)
 
 # Some final housekeeping
-ont.name = 'comptox-full'  # Name needs to be different from unpopulated ontology
-ont.base_iri = ONTOLOGY_POPULATED_IRI
+# ont.name = 'comptox-full'  # Name needs to be different from unpopulated ontology
+# ont.base_iri = ONTOLOGY_POPULATED_IRI
+
+ipdb.set_trace()
 
 # Write modified graph (TO DIFFERENT FILE)
 print("Writing populated ontology to disk (as RDF-formatted XML)...")

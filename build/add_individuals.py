@@ -171,6 +171,22 @@ def diseaseUpregulatesGene(edge_row):
     else:
         disease.diseaseUpregulatesGene.append(gene)
 
+def chemicalTreatsDisease(edge_row):
+    db_id = edge_row[0].split("::")[-1]
+    dis_id = edge_row[2].split("::")[-1]
+    
+    chem = ont.search_one(xrefDrugbank=db_id)
+    disease = ont.search_one(xrefDiseaseOntology=dis_id)
+
+    try:
+        if len(chem.chemicalTreatsDisease) == 0:
+            chem.chemicalTreatsDisease = [disease]
+        else:
+            chem.chemicalTreatsDisease.append(disease)
+    except:
+        ipdb.set_trace()
+        print()
+
 # Add hetionet relationships:
 # 1. chemicalBindsGene ("BINDS_CbG")
 # 2. chemicalCausesEffect ("CAUSES_CcSE")
@@ -184,9 +200,9 @@ metaedge_map = {
     'CbG':  chemicalBindsGene,  # (:Chemical)-[:CHEMICAL_BINDS_GENE]->(:Gene)
     'CcSE': chemicalCausesEffect,  # (:Chemical)-[:CHEMICAL_CAUSES_EFFECT]->(:SideEffect)
     'CdG':  None,
-    'CpD':  None,
+    'CpD':  None,  # SKIP FOR NOW! Are palliative effects of chemicals important to us at this point?
     'CrC':  None,
-    'CtD':  None,
+    'CtD':  chemicalTreatsDisease,
     'CuG':  None,
     'DaG':  diseaseRegulatesGeneOther,
     'DdG':  diseaseDownregulatesGene,

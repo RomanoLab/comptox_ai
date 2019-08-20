@@ -178,14 +178,10 @@ def chemicalTreatsDisease(edge_row):
     chem = ont.search_one(xrefDrugbank=db_id)
     disease = ont.search_one(xrefDiseaseOntology=dis_id)
 
-    try:
-        if len(chem.chemicalTreatsDisease) == 0:
-            chem.chemicalTreatsDisease = [disease]
-        else:
-            chem.chemicalTreatsDisease.append(disease)
-    except:
-        ipdb.set_trace()
-        print()
+    if len(chem.chemicalTreatsDisease) == 0:
+        chem.chemicalTreatsDisease = [disease]
+    else:
+        chem.chemicalTreatsDisease.append(disease)
 
 # Add hetionet relationships:
 # 1. chemicalBindsGene ("BINDS_CbG")
@@ -249,8 +245,6 @@ for idx,r in tqdm(hetio_rels.iterrows(), total=len(hetio_rels)):
 # Some final housekeeping
 # ont.name = 'comptox-full'  # Name needs to be different from unpopulated ontology
 # ont.base_iri = ONTOLOGY_POPULATED_IRI
-
-ipdb.set_trace()
 
 # Write modified graph (TO DIFFERENT FILE)
 print("Writing populated ontology to disk (as RDF-formatted XML)...")

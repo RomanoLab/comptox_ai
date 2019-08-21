@@ -183,6 +183,54 @@ def chemicalTreatsDisease(edge_row):
     else:
         chem.chemicalTreatsDisease.append(disease)
 
+def anatomyDownregulatesGene(edge_row):
+    db_anatomy = edge_row[0].split("::")[-1]
+    db_gene = edge_row[2].split("::")[-1]
+
+    anatomy = ont.search_one(xrefUberon=db_anatomy)
+    gene = ont.search_one(xrefNcbiGene=db_gene)
+
+    if len(anatomy.anatomyDownregulatesGene) == 0:
+        anatomy.anatomyDownregulatesGene = [gene]
+    else:
+        anatomy.anatomyDownregulatesGene.append(gene)
+
+def anatomyUpregulatesGene(edge_row):
+    db_anatomy = edge_row[0].split("::")[-1]
+    db_gene = edge_row[2].split("::")[-1]
+
+    anatomy = ont.search_one(xrefUberon=db_anatomy)
+    gene = ont.search_one(xrefNcbiGene=db_gene)
+
+    if len(anatomy.anatomyUpregulatesGene) == 0:
+        anatomy.anatomyUpregulatesGene = [gene]
+    else:
+        anatomy.anatomyUpregulatesGene.append(gene)
+
+def anatomyExpressesGene(edge_row):
+    db_anatomy = edge_row[0].split("::")[-1]
+    db_gene = edge_row[2].split("::")[-1]
+
+    anatomy = ont.search_one(xrefUberon=db_anatomy)
+    gene = ont.search_one(xrefNcbiGene=db_gene)
+
+    if len(anatomy.anatomyExpressesGene) == 0:
+        anatomy.anatomyExpressesGene = [gene]
+    else:
+        anatomy.anatomyExpressesGene.append(gene)
+
+def diseaseLocalizesToAnatomy(edge_row):
+    db_disease = edge_row[0].split("::")[-1]
+    db_anatomy = edge_row[2].split("::")[-1]
+
+    disease = ont.search_one(xrefDiseaseOntology=db_disease)
+    anatomy = ont.search_one(xrefUberon=db_anatomy)
+
+    if len(disease.diseaseLocalizesToAnatomy) == 0:
+        disease.diseaseLocalizesToAnatomy = [anatomy]
+    else:
+        disease.diseaseLocalizesToAnatomy.append(anatomy)
+
 # Add hetionet relationships:
 # 1. chemicalBindsGene ("BINDS_CbG")
 # 2. chemicalCausesEffect ("CAUSES_CcSE")
@@ -190,9 +238,9 @@ def chemicalTreatsDisease(edge_row):
 # 4. diseaseUpregulatesGene ("UPREGULATES_DuG")
 # 5. diseaseDownregulatesGene ("DOWNREGULATES_DdG")
 metaedge_map = {
-    'AdG':  None,
-    'AeG':  None,
-    'AuG':  None,
+    'AdG':  anatomyDownregulatesGene,
+    'AeG':  anatomyExpressesGene,
+    'AuG':  anatomyUpregulatesGene,
     'CbG':  chemicalBindsGene,  # (:Chemical)-[:CHEMICAL_BINDS_GENE]->(:Gene)
     'CcSE': chemicalCausesEffect,  # (:Chemical)-[:CHEMICAL_CAUSES_EFFECT]->(:SideEffect)
     'CdG':  None,
@@ -202,7 +250,7 @@ metaedge_map = {
     'CuG':  None,
     'DaG':  diseaseRegulatesGeneOther,
     'DdG':  diseaseDownregulatesGene,
-    'DlA':  None,
+    'DlA':  diseaseLocalizesToAnatomy,
     'DpS':  None,
     'DrD':  None,
     'DuG':  diseaseUpregulatesGene,

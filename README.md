@@ -52,3 +52,14 @@ When data types are defined multiple times below, I try to merge them in the bes
   - Chemicals
   - Product/Use Categories (i.e., a utilitarian type of chemical classification)
   - Assay (labeled as "Assay/Gene" because genes are often the assay endpoint)
+
+- - -
+
+## How to import the ontology into Neo4j:
+
+1. Install Neo4j and switch to a new (empty) graph database
+2. [Install the NSMNTX plugin](http://jbarrasa.github.io/neosemantics/#Install)
+3. From the Neo4j browser or Cypher shell, import the RDF file:
+```
+CALL semantics.importRDF("file:///path/to/ontology/comptox_populated.rdf", "RDF/XML");
+```

@@ -106,7 +106,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
+
 develop-eggs/
 downloads/
 eggs/
@@ -222,3 +222,5 @@ dmypy.json
 
 # End of https://www.gitignore.io/api/osx,linux,emacs,python
 /bin/
+
+NEO4J_CONFIG.cfg

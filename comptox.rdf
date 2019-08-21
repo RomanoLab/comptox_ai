@@ -80,6 +80,33 @@
     
 
 
+    <!-- http://jdr.bio/ontologies/comptox.owl#anatomyDownregulatesGene -->
+
+    <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#anatomyDownregulatesGene">
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#StructuralEntity"/>
+        <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#Gene"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#anatomyExpressesGene -->
+
+    <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#anatomyExpressesGene">
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#StructuralEntity"/>
+        <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#Gene"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#anatomyUpregulatesGene -->
+
+    <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#anatomyUpregulatesGene">
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#StructuralEntity"/>
+        <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#Gene"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://jdr.bio/ontologies/comptox.owl#chemicalBindsGene -->
 
     <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#chemicalBindsGene">
@@ -148,6 +175,15 @@
     <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#diseaseDownregulatesGene">
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Disease"/>
         <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#Gene"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#diseaseLocalizesToAnatomy -->
+
+    <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#diseaseLocalizesToAnatomy">
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Disease"/>
+        <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#StructuralEntity"/>
     </owl:ObjectProperty>
     
 
@@ -331,6 +367,15 @@
     
 
 
+    <!-- http://jdr.bio/ontologies/comptox.owl#chemicalIsInCTD -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#chemicalIsInCTD">
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Chemical"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://jdr.bio/ontologies/comptox.owl#chemicalIsXenobiotic -->
 
     <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#chemicalIsXenobiotic">
@@ -377,6 +422,16 @@
     
 
 
+    <!-- http://jdr.bio/ontologies/comptox.owl#xrefCasRN -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#xrefCasRN">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#dbXref"/>
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Chemical"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://jdr.bio/ontologies/comptox.owl#xrefDiseaseOntology -->
 
     <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#xrefDiseaseOntology">
@@ -406,6 +461,27 @@
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Phenotype"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#xrefMeSHParents -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#xrefMeSHParents">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#dbXref"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#xrefMeSHUI -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#xrefMeSHUI">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#dbXref"/>
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Chemical"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>A MeSH &quot;Unique ID&quot;. This is different from a true subject heading, and is usually a controlled term for a chemical substance.</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -549,7 +625,25 @@
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
+                <owl:onProperty rdf:resource="http://jdr.bio/ontologies/comptox.owl#chemicalIsInCTD"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://jdr.bio/ontologies/comptox.owl#xrefCasRN"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
                 <owl:onProperty rdf:resource="http://jdr.bio/ontologies/comptox.owl#xrefDrugbank"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://jdr.bio/ontologies/comptox.owl#xrefMeSHParents"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -596,6 +690,12 @@
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://jdr.bio/ontologies/comptox.owl#diseaseDownregulatesGene"/>
                 <owl:someValuesFrom rdf:resource="http://jdr.bio/ontologies/comptox.owl#Gene"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://jdr.bio/ontologies/comptox.owl#diseaseLocalizesToAnatomy"/>
+                <owl:someValuesFrom rdf:resource="http://jdr.bio/ontologies/comptox.owl#StructuralEntity"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
@@ -1061,6 +1161,24 @@
 
     <owl:Class rdf:about="http://jdr.bio/ontologies/comptox.owl#StructuralEntity">
         <rdfs:subClassOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#HumanConcept"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://jdr.bio/ontologies/comptox.owl#anatomyDownregulatesGene"/>
+                <owl:someValuesFrom rdf:resource="http://jdr.bio/ontologies/comptox.owl#Gene"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://jdr.bio/ontologies/comptox.owl#anatomyExpressesGene"/>
+                <owl:someValuesFrom rdf:resource="http://jdr.bio/ontologies/comptox.owl#Gene"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://jdr.bio/ontologies/comptox.owl#anatomyUpregulatesGene"/>
+                <owl:someValuesFrom rdf:resource="http://jdr.bio/ontologies/comptox.owl#Gene"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://jdr.bio/ontologies/comptox.owl#xrefUberon"/>

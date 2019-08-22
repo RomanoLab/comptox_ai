@@ -72,7 +72,8 @@ for idx,n in tqdm(hetio_nodes.iterrows(), total=len(hetio_nodes)):
             nm += "_disease"
         
         doid = n[0].split("::")[-1]
-        ont.Disease(nm, xrefDiseaseOntology=doid)
+        dis = ont.Disease(nm)
+        dis.xrefDiseaseOntology = [doid]
     elif nodetype=="Gene":
         if duplicate_nm:
             nm += "_gene"
@@ -264,6 +265,7 @@ metaedge_map = {
     'PCiC': None,
 }
 
+print("Linking nodes using Hetionet relationships...")
 hetio_rels = pd.read_csv("../data/hetionet/hetionet-v1.0-edges.sif", sep="\t")
 for idx,r in tqdm(hetio_rels.iterrows(), total=len(hetio_rels)):
     edge_type = r[1]

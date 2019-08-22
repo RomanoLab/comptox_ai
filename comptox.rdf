@@ -32,6 +32,12 @@ The decision to model idealised entities as individuals rather than classes allo
     
 
 
+    <!-- http://jdr.bio/ontologies/comptox.owl#associationIsTherapeutic -->
+
+    <owl:AnnotationProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#associationIsTherapeutic"/>
+    
+
+
     <!-- http://jdr.bio/ontologies/comptox.owl#fundedBy -->
 
     <owl:AnnotationProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#fundedBy">
@@ -145,6 +151,7 @@ The decision to model idealised entities as individuals rather than classes allo
         <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#chemicalAssociatesWithDisease"/>
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Chemical"/>
         <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#Disease"/>
+        <comptox:associationIsTherapeutic rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</comptox:associationIsTherapeutic>
     </owl:ObjectProperty>
     
 

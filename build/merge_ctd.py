@@ -92,6 +92,13 @@ def parse_ctd_doid(altDiseaseIDs):
     #     return None
     return matched_doids
 
+def parse_ctd_omim(altDiseaseIDs):
+    matched_doids = []
+    for x in altDiseaseIDs:
+        if x[:5] == "OMIM:":
+            matched_doids.append(x[5:])
+    return matched_doids
+
 print("Merging diseases...")
 diseases = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/diseases.csv")
 for idx, d_row in tqdm(diseases.iterrows(), total=len(diseases)):
@@ -102,17 +109,21 @@ for idx, d_row in tqdm(diseases.iterrows(), total=len(diseases)):
     parent_tree_nums = eval_list_field(d_row[4])
 
     doid = parse_ctd_doid(alt_ids)
+    omim = parse_ctd_omim(alt_ids)
 
     disease = None  # Make sure this variable remains in scope
 
     if len(doid) == 0:
-        # No DOID; search using MeSH<->DOID mapping, else create new individual
-        pass
-    elif len(doid) == 1:
-        # We have a singular match
-        disease = ont.search(xrefDiseaseOntology=doid[0])
+        # No DOID for this disease in CTD; create disease using MeSH
+        disease = ont.Disease(xrefMeSH=mesh)
+        if len(omim) > 0:
+            disease.xrefOMIM = omim
+    # elif len(doid) == 1:
+    #     # Just one DOID for this disease in CTD; 
+    #     disease = ont.search(xrefDiseaseOntology=doid[0])
+    #     disease.xrefMeSH = mesh
     else:
-        # We have multiple matches
+        # We have at least one DOID in CTD for this disease
 
         # First, do we have multiple diseases already for this MeSH disease?
         matches = []

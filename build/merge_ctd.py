@@ -33,6 +33,15 @@ def safe_add_property(entity, prop, value):
         else:
             getattr(entity, prop._python_name).append(value)
 
+def eval_list_field(list_string):
+    """Convert a list from a Neo4j CSV dump into a Python list.
+
+    In the Neo4j database dumps, lists are stored as strings. Therefore,
+    in order to use them as lists, we need to evaluate the string representation.
+    """
+    list_eval = eval(list_string)
+    return list_eval
+
 
 # Load graph
 ont = get_ontology(ONTOLOGY_POPULATED_FNAME).load()
@@ -56,9 +65,9 @@ print(num_matches)
 
 print("Reading objects (ontology, nodes, etc.) into memory...")
 
-
+print("Merging chemicals...")
 chemicals = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/chemicals.csv")
-for idx,c_row in chemicals.iterrows():
+for idx,c_row in tqdm(chemicals.iterrows(), total=len(chemicals)):
     casrn = c_row[0]
     mesh = c_row[1].split(":")[-1]
     name = c_row[2]
@@ -72,8 +81,61 @@ for idx,c_row in chemicals.iterrows():
         safe_add_property(match[0], ont.xrefMeSHUI, mesh)
 del(chemicals)
 
+def parse_ctd_doid(altDiseaseIDs):
+    matched_doids = []
+    for x in altDiseaseIDs:
+        if x[:3] == "DO:":
+            matched_doids.append(x[3:])
+    # if len(matched_doids) > 0:
+    #     return matched_doids
+    # else:
+    #     return None
+    return matched_doids
+
+print("Merging diseases...")
 diseases = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/diseases.csv")
-for idx, d_row in diseases.iterrows():
-    mesh = c_row[0].split(":")[-1]
-    ipdb.set_trace()
-del (diseases)
+for idx, d_row in tqdm(diseases.iterrows(), total=len(diseases)):
+    mesh             = d_row[0].split(":")[-1]
+    nm               = d_row[1]
+    alt_ids          = eval_list_field(d_row[2])
+    tree_nums        = eval_list_field(d_row[3])
+    parent_tree_nums = eval_list_field(d_row[4])
+
+    doid = parse_ctd_doid(alt_ids)
+
+    disease = None  # Make sure this variable remains in scope
+
+    if len(doid) == 0:
+        # No DOID; search using MeSH<->DOID mapping, else create new individual
+        pass
+    elif len(doid) == 1:
+        # We have a singular match
+        disease = ont.search(xrefDiseaseOntology=doid[0])
+    else:
+        # We have multiple matches
+
+        # First, do we have multiple diseases already for this MeSH disease?
+        matches = []
+        for x in doid:
+            res = ont.search(xrefDiseaseOntology=x)
+            if (len(res) > 0):
+                [matches.append(xx) for xx in res]
+
+        if len(matches) == 0:
+            # We made it this far, so we can create a new disease
+            disease = ont.Disease(nm, xrefMeSH=mesh)
+            disease.xrefDiseaseOntology = doid
+        elif len(matches) == 1:
+            # We have one (and only one) matching disease; we can just edit it
+            disease = matches[0]
+            [safe_add_property(disease, ont.xrefDiseaseOntology, d) for d in doid]
+            disease.xrefMeSH = mesh
+        else:
+            # Uh oh, we have multiple matching diseases in the ontology. Need to reassess...
+            ipdb.set_trace()
+            print("Whoopsie!")
+    
+    
+del(diseases)
+
+print("Linking chemicals to diseases via CTD data...")

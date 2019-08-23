@@ -444,6 +444,16 @@ The decision to model idealised entities as individuals rather than classes allo
     
 
 
+    <!-- http://jdr.bio/ontologies/comptox.owl#xrefAOPWiki -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#xrefAOPWiki">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#dbXref"/>
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#AOPConcept"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://jdr.bio/ontologies/comptox.owl#xrefCasRN -->
 
     <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#xrefCasRN">
@@ -584,7 +594,14 @@ The decision to model idealised entities as individuals rather than classes allo
 
     <!-- http://jdr.bio/ontologies/comptox.owl#AOPConcept -->
 
-    <owl:Class rdf:about="http://jdr.bio/ontologies/comptox.owl#AOPConcept"/>
+    <owl:Class rdf:about="http://jdr.bio/ontologies/comptox.owl#AOPConcept">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://jdr.bio/ontologies/comptox.owl#xrefAOPWiki"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
     
 
 

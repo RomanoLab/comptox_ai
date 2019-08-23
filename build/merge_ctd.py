@@ -4,7 +4,7 @@ from owlready2 import get_ontology
 import pandas as pd
 from tqdm import tqdm
 
-import ipdb, traceback, sys
+import ipdb, traceback, sys, math
 
 ONTOLOGY_FNAME = "../comptox.rdf"
 ONTOLOGY_POPULATED_FNAME = "../comptox_populated.rdf"
@@ -53,8 +53,12 @@ drugbank_map = pd.read_csv("../data/drug_links.csv")
 # Add CAS RN where available
 num_matches = 0
 for idx, m_row in drugbank_map.iterrows():
+    #ipdb.set_trace()
     dbid = m_row[0]
     casrn = m_row[2]
+    if isinstance(casrn, float):
+        print("Skipping map parsing for drug: {0}".format(m_row[1]))
+        continue
     match = ont.search(xrefDrugbank=dbid)
     if len(match) > 0:
         if len(match) > 1:
@@ -116,7 +120,8 @@ for idx, d_row in tqdm(diseases.iterrows(), total=len(diseases)):
 
     if len(doid) == 0:
         # No DOID for this disease in CTD; create disease using MeSH
-        disease = ont.Disease(xrefMeSH=mesh)
+        nm_safe = nm.lower().replace(" ","_")
+        disease = ont.Disease(nm_safe, xrefMeSH=mesh)
         # TODO: UNCOMMENT THESE LINES AFTER xrefOMIM IS BUILT INTO THE ONTOLOGY
         # if len(omim) > 0:
         #     disease.xrefOMIM = omim
@@ -181,9 +186,13 @@ for idx, cd_row in tqdm(chem_dis.iterrows(), total=len(chem_dis)):
         except AttributeError:
             ipdb.set_trace()
             print()
+del(chem_dis)
 
 print("Number of chemical-disease relationships that couldn't match to the database: {0}".format(unmatched_chem_dis_count))
 print("Number of chemical-disease links added to the populated ontology: {0}".format(num_chem_dis_added))
+
+
+
 
 
 print("Writing populated ontology to disk (as RDF-formatted XML)...")

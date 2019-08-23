@@ -8,6 +8,7 @@ import ipdb, traceback, sys
 
 ONTOLOGY_FNAME = "../comptox.rdf"
 ONTOLOGY_POPULATED_FNAME = "../comptox_populated.rdf"
+ONTOLOGY_POPULATED_LINKED_FNAME = "../comptox_populated_linked.rdf"
 
 ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
 ONTOLOGY_POPULATED_IRI = 'http://jdr.bio/ontologies/comptox-full.owl#'
@@ -61,8 +62,6 @@ for idx, m_row in drugbank_map.iterrows():
         num_matches += 1
         safe_add_property(match[0], ont.xrefCasRN, casrn)
         
-print(num_matches)
-
 print("Reading objects (ontology, nodes, etc.) into memory...")
 
 print("Merging chemicals...")
@@ -99,6 +98,8 @@ def parse_ctd_omim(altDiseaseIDs):
             matched_doids.append(x[5:])
     return matched_doids
 
+num_ambiguities = 0
+
 print("Merging diseases...")
 diseases = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/diseases.csv")
 for idx, d_row in tqdm(diseases.iterrows(), total=len(diseases)):
@@ -116,12 +117,9 @@ for idx, d_row in tqdm(diseases.iterrows(), total=len(diseases)):
     if len(doid) == 0:
         # No DOID for this disease in CTD; create disease using MeSH
         disease = ont.Disease(xrefMeSH=mesh)
-        if len(omim) > 0:
-            disease.xrefOMIM = omim
-    # elif len(doid) == 1:
-    #     # Just one DOID for this disease in CTD; 
-    #     disease = ont.search(xrefDiseaseOntology=doid[0])
-    #     disease.xrefMeSH = mesh
+        # TODO: UNCOMMENT THESE LINES AFTER xrefOMIM IS BUILT INTO THE ONTOLOGY
+        # if len(omim) > 0:
+        #     disease.xrefOMIM = omim
     else:
         # We have at least one DOID in CTD for this disease
 
@@ -134,8 +132,12 @@ for idx, d_row in tqdm(diseases.iterrows(), total=len(diseases)):
 
         if len(matches) == 0:
             # We made it this far, so we can create a new disease
-            disease = ont.Disease(nm, xrefMeSH=mesh)
-            disease.xrefDiseaseOntology = doid
+            try:
+                disease = ont.Disease(nm, xrefMeSH=mesh)
+                disease.xrefDiseaseOntology = doid
+            except TypeError:
+                print("Error creating node '{0}' - skipping".format(nm))
+                continue
         elif len(matches) == 1:
             # We have one (and only one) matching disease; we can just edit it
             disease = matches[0]
@@ -143,10 +145,54 @@ for idx, d_row in tqdm(diseases.iterrows(), total=len(diseases)):
             disease.xrefMeSH = mesh
         else:
             # Uh oh, we have multiple matching diseases in the ontology. Need to reassess...
-            ipdb.set_trace()
-            print("Whoopsie!")
-    
-    
+            num_ambiguities += 1
+            #ipdb.set_trace()
+            print("Whoopsie! {0}".format(nm))
+print("Number of ambiguities: {0}".format(num_ambiguities))    
 del(diseases)
 
 print("Linking chemicals to diseases via CTD data...")
+chem_dis = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/chemical_disease.csv")
+unmatched_chem_dis_count = 0
+num_chem_dis_added = 0
+for idx, cd_row in tqdm(chem_dis.iterrows(), total=len(chem_dis)):
+    # Check to make sure we have both the chemical and the disease
+    chem_mesh = cd_row[1].split(":")[-1]
+    chem = ont.search(xrefMeSHUI=chem_mesh)  # NOTE: Need to use xrefMeSHUI here
+    dis_mesh = cd_row[5].split(":")[-1]
+    dis = ont.search(xrefMeSH=dis_mesh)
+
+    if len(chem) == 0 or len(dis) == 0:
+        #ipdb.set_trace()
+        unmatched_chem_dis_count += 1
+    elif len(dis) == 0:
+        ipdb.set_trace()
+    else:
+        # We have a match for both the chemical and disease, we can add the relationship
+        #safe_add_property(chem, ont.chemicalAssociatesWithDisease, dis)
+        chem = chem[0]
+        dis = dis[0]
+        try:
+            if len(chem.chemicalAssociatesWithDisease) == 0:
+                chem.chemicalAssociatesWithDisease = [dis]
+            else:
+                chem.chemicalAssociatesWithDisease.append(dis)
+            num_chem_dis_added += 1
+        except AttributeError:
+            ipdb.set_trace()
+            print()
+
+print("Number of chemical-disease relationships that couldn't match to the database: {0}".format(unmatched_chem_dis_count))
+print("Number of chemical-disease links added to the populated ontology: {0}".format(num_chem_dis_added))
+
+
+print("Writing populated ontology to disk (as RDF-formatted XML)...")
+try:
+    ont.save(file=ONTOLOGY_POPULATED_LINKED_FNAME, format="rdfxml")
+    pass
+except TypeError:
+    extype, value, tb = sys.exc_info()
+    print("Uh oh, something went wrong when serializing the populated ontology to disk. Entering debug mode...")
+    traceback.print_exc()
+    ipdb.post_mortem(tb)
+

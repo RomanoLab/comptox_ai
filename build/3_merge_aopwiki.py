@@ -48,3 +48,14 @@ ke_components = pd.read_csv("../data/aop_ke_ec.tsv",
                                    'process_source',
                                    'process_ontology_id',
                                    'process_term'])
+
+print("=====================")
+print("LOADED AOP-WIKI DATA:")
+print()
+print("==COUNT OF ENTITIES==")
+print("Key events:              {0}".format(len(kes)))
+print("Key event relationships: {0}".format(len(kers)))
+print("Key event components:    {0}".format(len(ke_components)))
+print()
+print("=====================")
+

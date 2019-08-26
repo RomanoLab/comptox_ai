@@ -15,6 +15,9 @@ ONTOLOGY_POPULATED_LINKED_FNAME = "../comptox_populated_linked.rdf"
 ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
 ONTOLOGY_POPULATED_IRI = 'http://jdr.bio/ontologies/comptox-full.owl#'
 
+def strip_tag(tag):
+    return tag.split("}")[-1]
+
 OWL = get_ontology("http://www.w3.org/2002/07/owl#")
 
 ont = get_ontology("../comptox_populated_linked.rdf").load()
@@ -70,3 +73,82 @@ root = aop_wiki.getroot()
 
 print("Count of AOP Wiki element types:")
 print(Counter([x.tag.split("}")[-1] for x in root]).most_common())
+
+
+# ADD AOP WIKI NODES TO GRAPH
+already_parsed_kes = []
+for i, ke in tqdm(kes.iterrows(), total=len(kes)):
+    ke_type = ke.key_event_type
+    ke_id = ke.key_event_id
+    ke_name = ke.key_event_name
+    ke_aop_id = ke.aop_id
+
+    if ke_id in already_parsed_kes:
+        continue  # Don't re-add something we've already seen
+    already_parsed_kes.append(ke_id)
+
+    # Prepend "ke_" to avoid name conflicts
+    safe_name = "ke_"+ke_name.lower().replace(" ","_")
+
+    if ke_type == 'MolecularInitiatingEvent':
+        ont.MolecularInitiatingEvent(safe_name,
+                                     keyEventID=ke_id,
+                                     keyEventName=ke_name)
+    elif ke_type == 'KeyEvent':
+        ont.KeyEvent(safe_name,
+                     keyEventID=ke_id,
+                     keyEventName=ke_name)
+    elif ke_type == 'AdverseOutcome':
+        ont.AdverseOutcome(safe_name,
+                           keyEventID=ke_id,
+                           keyEventName=ke_name)
+    else:
+        raise ValueError("Unexpected key event type: {}".format(ke_type))
+
+# Come back to this to parse level of organization, supporting evidence, biological events, etc...
+# for elem in root:
+#     s_tag = strip_tag(elem.tag)
+#     if s_tag == 'key-event':
+#         ipdb.set_trace()
+#         print()
+#     elif s_tag == 'key-event-relationship':
+#         pass
+#     elif s_tag == 'stressor':
+#         pass
+#     elif s_tag == 'biological-object':
+#         pass
+#     elif s_tag == 'biological-process':
+#         pass
+#     elif s_tag == 'chemical':
+#         pass
+#     elif s_tag == 'aop':
+#         pass
+#     elif s_tag == 'taxonomy':
+#         pass
+#     elif s_tag == 'biological-action':
+#         pass
+#     elif s_tag == 'vendor-specific':
+#         pass
+#     else:
+#         raise ValueError("Unexpected XML tag in AOP Wiki data: {0}".format(s_tag))
+
+# ADD AOP WIKI RELATIONSHIPS TO GRAPH
+already_parsed_kers = []
+for i,ker in kers.iterrows():
+    aop_id = ker[0]
+    rel_id = ker[3]
+    upstream_event_id = ker[1]
+    downstream_event_id = ker[2]
+    adj_or_nonadj = ker[4]
+    evidence = ker[5]
+    quantitative = ker[6]
+
+    if rel_id in already_parsed_kers:
+        continue  # Don't re-add something we've already seen
+    already_parsed_kers.append(rel_id)
+
+    ipdb.set_trace()
+    #upstream_event = ont.search("")
+
+
+# LINK AOP NODES TO OTHER ONTOLOGY NODES

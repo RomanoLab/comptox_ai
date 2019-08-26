@@ -147,8 +147,25 @@ for i,ker in kers.iterrows():
         continue  # Don't re-add something we've already seen
     already_parsed_kers.append(rel_id)
 
-    ipdb.set_trace()
-    #upstream_event = ont.search("")
+    upstream_event = ont.search(keyEventID=upstream_event_id)
+    downstream_event = ont.search(keyEventID=downstream_event_id)
+
+    if (upstream_event == []) or (downstream_event == []):
+        ipdb.set_trace()
+        print()
+
+    upstream_event = upstream_event[0]
+    downstream_event = downstream_event[0]
+
+    if upstream_event.keyEventTriggers == None:
+        upstream_event.keyEventTriggers = [downstream_event]
+    else:
+        upstream_event.keyEventTriggers.append(downstream_event)
+
+    if downstream_event.keyEventTriggeredBy == None:
+        downstream_event.keyEventTriggeredBy = [upstream_event]
+    else:
+        downstream_event.keyEventTriggeredBy.append(upstream_event)
 
 
 # LINK AOP NODES TO OTHER ONTOLOGY NODES

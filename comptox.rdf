@@ -81,6 +81,16 @@ The decision to model idealised entities as individuals rather than classes allo
     
 
 
+    <!-- http://jdr.bio/ontologies/comptox.owl#aeEquivalentToAdverseOutcome -->
+
+    <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#aeEquivalentToAdverseOutcome">
+        <owl:inverseOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#aoEquivalentToAdverseEffect"/>
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#AdverseEffect"/>
+        <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#AdverseOutcome"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://jdr.bio/ontologies/comptox.owl#altersBiologicalState -->
 
     <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#altersBiologicalState">
@@ -94,6 +104,7 @@ The decision to model idealised entities as individuals rather than classes allo
     <!-- http://jdr.bio/ontologies/comptox.owl#anatomyDownregulatesGene -->
 
     <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#anatomyDownregulatesGene">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#hetionetObjectProperty"/>
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#StructuralEntity"/>
         <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#Gene"/>
     </owl:ObjectProperty>
@@ -103,6 +114,7 @@ The decision to model idealised entities as individuals rather than classes allo
     <!-- http://jdr.bio/ontologies/comptox.owl#anatomyExpressesGene -->
 
     <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#anatomyExpressesGene">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#hetionetObjectProperty"/>
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#StructuralEntity"/>
         <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#Gene"/>
     </owl:ObjectProperty>
@@ -112,15 +124,62 @@ The decision to model idealised entities as individuals rather than classes allo
     <!-- http://jdr.bio/ontologies/comptox.owl#anatomyUpregulatesGene -->
 
     <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#anatomyUpregulatesGene">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#hetionetObjectProperty"/>
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#StructuralEntity"/>
         <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#Gene"/>
     </owl:ObjectProperty>
     
 
 
+    <!-- http://jdr.bio/ontologies/comptox.owl#aoEquivalentToAdverseEffect -->
+
+    <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#aoEquivalentToAdverseEffect">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#aopObjectProperty"/>
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#AdverseOutcome"/>
+        <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#AdverseEffect"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#aoManifestedAsDisease -->
+
+    <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#aoManifestedAsDisease">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#aopObjectProperty"/>
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#AdverseOutcome"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#aopCausesAO -->
+
+    <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#aopCausesAO">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#aopObjectProperty"/>
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#AOP"/>
+        <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#AdverseOutcome"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#aopInitiatedByMIE -->
+
+    <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#aopInitiatedByMIE">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#aopObjectProperty"/>
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#AOP"/>
+        <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#MolecularInitiatingEvent"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#aopObjectProperty -->
+
+    <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#aopObjectProperty"/>
+    
+
+
     <!-- http://jdr.bio/ontologies/comptox.owl#chemicalAssociatesWithDisease -->
 
     <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#chemicalAssociatesWithDisease">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#hetionetObjectProperty"/>
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Chemical"/>
         <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#Disease"/>
     </owl:ObjectProperty>
@@ -130,6 +189,7 @@ The decision to model idealised entities as individuals rather than classes allo
     <!-- http://jdr.bio/ontologies/comptox.owl#chemicalBindsGene -->
 
     <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#chemicalBindsGene">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#hetionetObjectProperty"/>
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Chemical"/>
         <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#Gene"/>
     </owl:ObjectProperty>
@@ -139,6 +199,7 @@ The decision to model idealised entities as individuals rather than classes allo
     <!-- http://jdr.bio/ontologies/comptox.owl#chemicalCausesEffect -->
 
     <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#chemicalCausesEffect">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#hetionetObjectProperty"/>
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Chemical"/>
         <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#ChemicalEffect"/>
     </owl:ObjectProperty>
@@ -195,6 +256,7 @@ The decision to model idealised entities as individuals rather than classes allo
     <!-- http://jdr.bio/ontologies/comptox.owl#diseaseDownregulatesGene -->
 
     <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#diseaseDownregulatesGene">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#hetionetObjectProperty"/>
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Disease"/>
         <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#Gene"/>
     </owl:ObjectProperty>
@@ -204,6 +266,7 @@ The decision to model idealised entities as individuals rather than classes allo
     <!-- http://jdr.bio/ontologies/comptox.owl#diseaseLocalizesToAnatomy -->
 
     <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#diseaseLocalizesToAnatomy">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#hetionetObjectProperty"/>
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Disease"/>
         <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#StructuralEntity"/>
     </owl:ObjectProperty>
@@ -224,6 +287,7 @@ The decision to model idealised entities as individuals rather than classes allo
     <!-- http://jdr.bio/ontologies/comptox.owl#diseaseRegulatesGeneOther -->
 
     <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#diseaseRegulatesGeneOther">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#hetionetObjectProperty"/>
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Disease"/>
         <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#Gene"/>
     </owl:ObjectProperty>
@@ -233,6 +297,7 @@ The decision to model idealised entities as individuals rather than classes allo
     <!-- http://jdr.bio/ontologies/comptox.owl#diseaseUpregulatesGene -->
 
     <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#diseaseUpregulatesGene">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#hetionetObjectProperty"/>
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Disease"/>
         <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#Gene"/>
     </owl:ObjectProperty>
@@ -303,6 +368,12 @@ The decision to model idealised entities as individuals rather than classes allo
     
 
 
+    <!-- http://jdr.bio/ontologies/comptox.owl#hetionetObjectProperty -->
+
+    <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#hetionetObjectProperty"/>
+    
+
+
     <!-- http://jdr.bio/ontologies/comptox.owl#includesMetabolite -->
 
     <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#includesMetabolite">
@@ -317,6 +388,24 @@ The decision to model idealised entities as individuals rather than classes allo
     <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#includesProtein">
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Pathway"/>
         <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#HumanProtein"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#keyEventTriggeredBy -->
+
+    <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#keyEventTriggeredBy">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#aopObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#keyEventTriggers -->
+
+    <owl:ObjectProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#keyEventTriggers">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#aopObjectProperty"/>
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#KeyEvent"/>
+        <rdfs:range rdf:resource="http://jdr.bio/ontologies/comptox.owl#KeyEvent"/>
     </owl:ObjectProperty>
     
 
@@ -379,6 +468,12 @@ The decision to model idealised entities as individuals rather than classes allo
     
 
 
+    <!-- http://jdr.bio/ontologies/comptox.owl#aopDataProperty -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#aopDataProperty"/>
+    
+
+
     <!-- http://jdr.bio/ontologies/comptox.owl#chemicalIsDrug -->
 
     <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#chemicalIsDrug">
@@ -425,12 +520,79 @@ The decision to model idealised entities as individuals rather than classes allo
     
 
 
+    <!-- http://jdr.bio/ontologies/comptox.owl#keyEventAction -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#keyEventAction">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#aopDataProperty"/>
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#KeyEvent"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#keyEventID -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#keyEventID">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#aopDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#keyEventName -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#keyEventName">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#aopDataProperty"/>
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#KeyEvent"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#keyEventType -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#keyEventType">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#aopDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://jdr.bio/ontologies/comptox.owl#name -->
 
     <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#name">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#objectName -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#objectName">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#aopDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#objectSource -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#objectSource">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#aopDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#processName -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#processName">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#aopDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#processSource -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#processSource">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#aopDataProperty"/>
     </owl:DatatypeProperty>
     
 
@@ -454,12 +616,30 @@ The decision to model idealised entities as individuals rather than classes allo
     
 
 
+    <!-- http://jdr.bio/ontologies/comptox.owl#xrefCL -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#xrefCL">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#dbXref"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Term from the Cell Ontology (CL)</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://jdr.bio/ontologies/comptox.owl#xrefCasRN -->
 
     <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#xrefCasRN">
         <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#dbXref"/>
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Chemical"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#xrefChEBI -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#xrefChEBI">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#dbXref"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Term from Chemical Entities of Biological Interest (ChEBI)</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -482,6 +662,15 @@ The decision to model idealised entities as individuals rather than classes allo
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Chemical"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://jdr.bio/ontologies/comptox.owl#xrefFMA -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#xrefFMA">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#dbXref"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Term from the Foundational Model of Anatomy (FMA)</rdfs:comment>
     </owl:DatatypeProperty>
     
 
@@ -615,6 +804,7 @@ The decision to model idealised entities as individuals rather than classes allo
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment>Detrimental phenotypic effect resulting from exposure to a chemical</rdfs:comment>
     </owl:Class>
     
 
@@ -622,7 +812,8 @@ The decision to model idealised entities as individuals rather than classes allo
     <!-- http://jdr.bio/ontologies/comptox.owl#AdverseOutcome -->
 
     <owl:Class rdf:about="http://jdr.bio/ontologies/comptox.owl#AdverseOutcome">
-        <rdfs:subClassOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#AOPConcept"/>
+        <rdfs:subClassOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#KeyEvent"/>
+        <rdfs:comment>Deleterious effect arising as the final outcome of an adverse outcome pathway (see also: AdverseEffect)</rdfs:comment>
     </owl:Class>
     
 

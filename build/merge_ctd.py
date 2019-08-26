@@ -56,7 +56,7 @@ for idx, m_row in drugbank_map.iterrows():
     #ipdb.set_trace()
     dbid = m_row[0]
     casrn = m_row[2]
-    if isinstance(casrn, float):
+    if isinstance(casrn, float):  # If pandas thinks it is a float, that means it encountered NaN
         print("Skipping map parsing for drug: {0}".format(m_row[1]))
         continue
     match = ont.search(xrefDrugbank=dbid)

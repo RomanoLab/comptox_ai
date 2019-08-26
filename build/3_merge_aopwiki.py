@@ -3,6 +3,8 @@
 from owlready2 import get_ontology
 import pandas as pd
 from tqdm import tqdm
+from lxml import etree
+from collections import Counter
 
 import ipdb, traceback, sys
 
@@ -17,7 +19,7 @@ OWL = get_ontology("http://www.w3.org/2002/07/owl#")
 
 ont = get_ontology("../comptox_populated_linked.rdf").load()
 
-kes = pd.read_csv("../data/aop_ke_mie_ao.tsv",
+kes = pd.read_csv("../data/aopwiki/aop_ke_mie_ao.tsv",
                   sep="\t",
                   header=None,
                   names=['aop_id',
@@ -25,7 +27,7 @@ kes = pd.read_csv("../data/aop_ke_mie_ao.tsv",
                          'key_event_type',
                          'key_event_name'])
 
-kers = pd.read_csv("../data/aop_ke_ker.tsv",
+kers = pd.read_csv("../data/aopwiki/aop_ke_ker.tsv",
                    sep="\t",
                    header=None,
                    names=['aop_id',
@@ -36,7 +38,7 @@ kers = pd.read_csv("../data/aop_ke_ker.tsv",
                           'evidence',
                           'quantitative_understanding'])
 
-ke_components = pd.read_csv("../data/aop_ke_ec.tsv",
+ke_components = pd.read_csv("../data/aopwiki/aop_ke_ec.tsv",
                             sep="\t",
                             header=None,
                             names=['aop_id',
@@ -49,13 +51,22 @@ ke_components = pd.read_csv("../data/aop_ke_ec.tsv",
                                    'process_ontology_id',
                                    'process_term'])
 
-print("=====================")
-print("LOADED AOP-WIKI DATA:")
+aop_wiki = etree.parse("../data/aopwiki/aop-wiki-xml-2019-07-01.xml")
+
 print()
-print("==COUNT OF ENTITIES==")
+print("=================================")
+print("===== LOADED AOP-WIKI DATA: =====")
+print()
+print("== COUNT OF ENTITIES ==")
 print("Key events:              {0}".format(len(kes)))
 print("Key event relationships: {0}".format(len(kers)))
 print("Key event components:    {0}".format(len(ke_components)))
 print()
-print("=====================")
+print("=================================")
+print()
 
+
+root = aop_wiki.getroot()
+
+print("Count of AOP Wiki element types:")
+print(Counter([x.tag.split("}")[-1] for x in root]).most_common())

@@ -98,7 +98,14 @@ for i, ke in tqdm(kes.iterrows(), total=len(kes)):
     already_parsed_kes.append(ke_id)
 
     # Prepend "ke_" to avoid name conflicts
-    safe_name = "ke_"+ke_name.lower().replace(" ","_")
+    if ke_type == 'MolecularInitiatingEvent':
+        safe_name = "mie_"+ke_name.lower().replace(" ","_")
+    elif ke_type == 'KeyEvent':
+        safe_name = "ke_"+ke_name.lower().replace(" ","_")
+    elif ke_type == 'AdverseOutcome':
+        safe_name = "ao_"+ke_name.lower().replace(" ","_")
+    else:
+        raise ValueError("Unknown key event type")
 
     # do we have a node already for the AOP?
     aop_id = ke.aop_id

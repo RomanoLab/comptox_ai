@@ -4,6 +4,7 @@ from owlready2 import get_ontology
 import pandas as pd
 from tqdm import tqdm
 from lxml import etree
+import json
 from collections import Counter
 
 import ipdb, traceback, sys
@@ -11,6 +12,7 @@ import ipdb, traceback, sys
 ONTOLOGY_FNAME = "../comptox.rdf"
 ONTOLOGY_POPULATED_FNAME = "../comptox_populated.rdf"
 ONTOLOGY_POPULATED_LINKED_FNAME = "../comptox_populated_linked.rdf"
+ONTOLOGY_AOP_FNAME = "../comptox_aop.rdf"
 
 ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
 ONTOLOGY_POPULATED_IRI = 'http://jdr.bio/ontologies/comptox-full.owl#'
@@ -54,7 +56,17 @@ ke_components = pd.read_csv("../data/aopwiki/aop_ke_ec.tsv",
                                    'process_ontology_id',
                                    'process_term'])
 
-aop_wiki = etree.parse("../data/aopwiki/aop-wiki-xml-2019-07-01.xml")
+# aop_wiki = etree.parse("../data/aopwiki/aop-wiki-xml-2019-07-01.xml")
+# root = aop_wiki.getroot()
+# ex_chem = [x for x in root if x.tag.split("}")[-1] == 'chemical'][0]
+# ex_stress = [x for x in root if x.tag.split("}")[-1] == 'stressor'][0]
+# ex_aop = [x for x in root if x.tag.split("}")[-1] == 'aop'][0]
+# aop_xml_list = [x for x in root if x.tag.split("}")[-1] == 'aop']
+with open("../data/aopwiki/aops.json", 'r') as fp:
+    aops = json.load(fp)
+aop_dict = {}
+for a in aops:
+    aop_dict[str(a['id'])] = a
 
 print()
 print("=================================")
@@ -68,15 +80,13 @@ print()
 print("=================================")
 print()
 
-
-root = aop_wiki.getroot()
-
-print("Count of AOP Wiki element types:")
-print(Counter([x.tag.split("}")[-1] for x in root]).most_common())
+# print("Count of AOP Wiki element types:")
+# print(Counter([x.tag.split("}")[-1] for x in root]).most_common())
 
 
 # ADD AOP WIKI NODES TO GRAPH
 already_parsed_kes = []
+already_parsed_aops = []
 for i, ke in tqdm(kes.iterrows(), total=len(kes)):
     ke_type = ke.key_event_type
     ke_id = ke.key_event_id
@@ -90,18 +100,67 @@ for i, ke in tqdm(kes.iterrows(), total=len(kes)):
     # Prepend "ke_" to avoid name conflicts
     safe_name = "ke_"+ke_name.lower().replace(" ","_")
 
+    # do we have a node already for the AOP?
+    aop_id = ke.aop_id
+    if aop_id in already_parsed_aops:
+        existing_aop = True
+    else:
+        existing_aop = False
+
     if ke_type == 'MolecularInitiatingEvent':
-        ont.MolecularInitiatingEvent(safe_name,
-                                     keyEventID=ke_id,
-                                     keyEventName=ke_name)
+        new_mie_node = ont.MolecularInitiatingEvent(safe_name,
+                                                    keyEventID=ke_id,
+                                                    keyEventName=ke_name)
+        if existing_aop:
+            # add this MIE to the AOP
+            aop_node = ont.search(xrefAOPWiki=aop_id)
+            assert len(aop_node) == 1
+            aop_node = aop_node[0]
+            aop_node.aopHasMIE.append(new_mie_node)
+        else:
+            # Create an AOP with this as an MIE
+            if aop_id.split(":")[-1] in aop_dict.keys(): # Don't do anything if it's an obsolete AOP
+                aop_data = aop_dict[aop_id.split(":")[-1]]
+                safe_aop_name = 'aop_'+aop_data['short_name'].lower().replace(" ","_")
+                new_aop_node = ont.AOP(safe_aop_name)
+                new_aop_node.aopHasMIE = [new_mie_node]
+                
     elif ke_type == 'KeyEvent':
-        ont.KeyEvent(safe_name,
-                     keyEventID=ke_id,
-                     keyEventName=ke_name)
+        new_ke_node = ont.KeyEvent(safe_name,
+                                   keyEventID=ke_id,
+                                   keyEventName=ke_name)
+        if existing_aop:
+            # add this MIE to the AOP
+            aop_node = ont.search(xrefAOPWiki=aop_id)
+            assert len(aop_node) == 1
+            aop_node = aop_node[0]
+            aop_node.aopContainsKE.append(new_ke_node)
+        else:
+            # Create an AOP with this as an MIE
+            if aop_id.split(":")[-1] in aop_dict.keys(): # Don't do anything if it's an obsolete AOP
+                aop_data = aop_dict[aop_id.split(":")[-1]]
+                safe_aop_name = 'aop_'+aop_data['title'].lower().replace(" ","_")
+                new_aop_node = ont.AOP(safe_aop_name)
+                new_aop_node.aopContainsKE = [new_ke_node]
+
     elif ke_type == 'AdverseOutcome':
-        ont.AdverseOutcome(safe_name,
-                           keyEventID=ke_id,
-                           keyEventName=ke_name)
+        new_ao_node = ont.AdverseOutcome(safe_name,
+                                         keyEventID=ke_id,
+                                         keyEventName=ke_name)
+        if existing_aop:
+            # add this MIE to the AOP
+            aop_node = ont.search(xrefAOPWiki=aop_id)
+            assert len(aop_node) == 1
+            aop_node = aop_node[0]
+            aop_node.aopCausesAO.append(new_ao_node)
+        else:
+            # Create an AOP with this as an MIE
+            if aop_id.split(":")[-1] in aop_dict.keys(): # Don't do anything if it's an obsolete AOP
+                aop_data = aop_dict[aop_id.split(":")[-1]]
+                safe_aop_name = 'aop_'+aop_data['title'].lower().replace(" ","_")
+                new_aop_node = ont.AOP(safe_aop_name)
+                new_aop_node.aopCausesAO = [new_ao_node]
+
     else:
         raise ValueError("Unexpected key event type: {}".format(ke_type))
 
@@ -169,3 +228,14 @@ for i,ker in kers.iterrows():
 
 
 # LINK AOP NODES TO OTHER ONTOLOGY NODES
+
+
+print("Writing to disk as RDF file...")
+try:
+    ont.save(file=ONTOLOGY_AOP_FNAME, format="rdfxml")
+    pass
+except TypeError:
+    extype, value, tb = sys.exc_info()
+    print("Uh oh, something went wrong when serializing the populated ontology to disk. Entering debug mode...")
+    traceback.print_exc()
+    ipdb.post_mortem(tb)

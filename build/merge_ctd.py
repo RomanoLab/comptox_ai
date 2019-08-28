@@ -11,7 +11,6 @@ ONTOLOGY_POPULATED_FNAME = "../comptox_populated.rdf"
 ONTOLOGY_POPULATED_LINKED_FNAME = "../comptox_populated_linked.rdf"
 
 ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
-ONTOLOGY_POPULATED_IRI = 'http://jdr.bio/ontologies/comptox-full.owl#'
 
 OWL = get_ontology("http://www.w3.org/2002/07/owl#")
 

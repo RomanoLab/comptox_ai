@@ -22,7 +22,8 @@ def strip_tag(tag):
 
 OWL = get_ontology("http://www.w3.org/2002/07/owl#")
 
-ont = get_ontology("../comptox_populated_linked.rdf").load()
+#ont = get_ontology("../comptox_populated_linked.rdf").load()
+ont = get_ontology(ONTOLOGY_POPULATED_FNAME).load()
 
 kes = pd.read_csv("../data/aopwiki/aop_ke_mie_ao.tsv",
                   sep="\t",
@@ -235,6 +236,68 @@ for i,ker in kers.iterrows():
 
 
 # LINK AOP NODES TO OTHER ONTOLOGY NODES
+# I.e., use `ke_components` to do this.
+# for i,kec in tqdm(ke_components.iterrows(), total=len(ke_components)):
+#     ipdb.set_trace()
+#     aop_id = kec['aop_id']
+#     key_event_id = kec['key_event_id']
+#     action = kec['action']
+#     # start by just drawing links between AOs and diseases
+
+# find all AOs that have a ke_component (i.e., likely linked to diseases)
+all_aos = ont.search(is_a=ont.AdverseOutcome)
+ao_event_ids = [x.keyEventID for x in all_aos]
+ao_event_ids = [x for x in list(set(ao_event_ids)) if x is not None]
+ao_components = ke_components.loc[ke_components['key_event_id'].isin(ao_event_ids),:]
+for i,aoc in ao_components.iterrows():
+    ao_event_id = aoc['key_event_id']
+    object_source = aoc['object_source']
+    process_source = aoc['process_source']
+
+    # Pull out potential disease terms from 'object' and 'process'
+    if object_source == 'MESH':
+        object_disease = aoc['object_ontology_id']
+    else:
+        object_disease = None
+
+    if process_source == 'MESH':
+        process_disease = aoc['process_ontology_id']
+    else:
+        process_disease = None
+
+    # Conditionally set disease of interest to either 'process_disease' or 'object_disease'
+    # (If both are MeSH terms, we need to debug!)
+    two_disease_flag = False
+    if process_disease and object_disease:
+        two_disease_flag = True
+        linked_disease_1 = ont.search(xrefMeSH=process_disease)
+        linked_disease_2 = ont.search(xrefMeSH=object_disease)
+        if len(linked_disease_1) > 0 and len(linked_disease_2) > 0:
+            disease_node = [linked_disease_1[0], linked_disease_2[0]]
+        elif len(linked_disease_1) == 1:
+            linked_disease = linked_disease_1
+        elif len(linked_disease_2) == 1:
+            linked_disease = linked_disease_2
+        else:
+            # Neither matched to an existing MeSH reference
+            continue
+    elif process_disease:
+        linked_disease = process_disease
+    elif object_disease:
+        linked_disease = object_disease
+    else:
+        continue
+
+    if not two_disease_flag:
+        disease_node = ont.search(xrefMeSH=linked_disease)
+    
+    if len(disease_node) == 0:
+        continue
+
+    for dn in disease_node:
+        print("LINK -- {0} --> {1}".format(ao_event_id, dn))
+
+    
 
 
 print("Writing to disk as RDF file...")

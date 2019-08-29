@@ -416,7 +416,7 @@ for idx, d_row in tqdm(diseases.iterrows(), total=len(diseases)):
         if len(matches) == 0:
             # We made it this far, so we can create a new disease
             try:
-                disease = ont.Disease("dis_"+nm, xrefMeSH=mesh)
+                disease = ont.Disease("dis_"+nm_safe, xrefMeSH=mesh)
                 disease.xrefDiseaseOntology = doid
             except TypeError:
                 print("Error creating node '{0}' - skipping".format(nm))

@@ -393,11 +393,12 @@ for idx, d_row in tqdm(diseases.iterrows(), total=len(diseases)):
     doid = parse_ctd_doid(alt_ids)
     omim = parse_ctd_omim(alt_ids)
 
+    nm_safe = nm.lower().replace(" ","_")
+
     disease = None  # Make sure this variable remains in scope
 
     if len(doid) == 0:
         # No DOID for this disease in CTD; create disease using MeSH
-        nm_safe = nm.lower().replace(" ","_")
         
         disease = ont.Disease("dis_"+nm_safe, xrefMeSH=mesh, commonName=nm)
         # TODO: UNCOMMENT THESE LINES AFTER xrefOMIM IS BUILT INTO THE ONTOLOGY

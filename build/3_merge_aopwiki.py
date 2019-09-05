@@ -295,7 +295,13 @@ for i,aoc in ao_components.iterrows():
         continue
 
     for dn in disease_node:
-        print("LINK -- {0} --> {1}".format(ao_event_id, dn))
+        print("LINKING -- {0} --> {1}".format(ao_event_id, dn))
+        ao = ont.search(keyEventID=ao_event_id)
+        assert len(ao) == 1
+        if len(ao[0].aoManifestedAsDisease) == 0:
+            ao[0].aoManifestedAsDisease = [dn]
+        else:
+            ao[0].aoManifestedAsDisease.append(dn)
 
     
 

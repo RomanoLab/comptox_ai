@@ -73,7 +73,7 @@ for idx,n in tqdm(hetio_nodes.iterrows(), total=len(hetio_nodes)):
         #     nm += "_disease"
         
         doid = n[0].split("::")[-1]
-        dis = ont.Disease("dis_"+nm)
+        dis = ont.Disease("dis_"+nm, commonName=n[1])
         dis.xrefDiseaseOntology = [doid]
     elif nodetype=="Gene":
         # if duplicate_nm:
@@ -399,7 +399,7 @@ for idx, d_row in tqdm(diseases.iterrows(), total=len(diseases)):
         # No DOID for this disease in CTD; create disease using MeSH
         nm_safe = nm.lower().replace(" ","_")
         
-        disease = ont.Disease("dis_"+nm_safe, xrefMeSH=mesh)
+        disease = ont.Disease("dis_"+nm_safe, xrefMeSH=mesh, commonName=nm)
         # TODO: UNCOMMENT THESE LINES AFTER xrefOMIM IS BUILT INTO THE ONTOLOGY
         # if len(omim) > 0:
         #     disease.xrefOMIM = omim
@@ -416,7 +416,7 @@ for idx, d_row in tqdm(diseases.iterrows(), total=len(diseases)):
         if len(matches) == 0:
             # We made it this far, so we can create a new disease
             try:
-                disease = ont.Disease("dis_"+nm_safe, xrefMeSH=mesh)
+                disease = ont.Disease("dis_"+nm_safe, xrefMeSH=mesh, commonName=nm)
                 disease.xrefDiseaseOntology = doid
             except TypeError:
                 print("Error creating node '{0}' - skipping".format(nm))

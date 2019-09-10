@@ -59,7 +59,7 @@ if not os.path.isdir(themedir):
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'themedir'
+html_theme = 'scipy'
 html_theme_path = [themedir]
 
 # Add any paths that contain custom static files (such as style sheets) here,

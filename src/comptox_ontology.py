@@ -100,8 +100,12 @@ class ComptoxOntology(object):
         outcome using the Neo4j representation of the CO's knowledge
         base. 
 
-        :param mie_node: string - name of the MIE
-        :param ao_node: string - name of the adverse outcome
+        Parameters
+        ----------
+        mie_node : string
+                   Name of the MIE
+        ao_node : string
+                  Name of the adverse outcome
         """
         query_response = None
 
@@ -116,6 +120,20 @@ class ComptoxOntology(object):
         return(query_response)
 
     def fetch_nodes_by_label(self, label):
+        """
+        Fetch all nodes of a given label from the graph.
+
+        The returned object is a list of Neo4j `Record`s, each
+        containing a node `n` that has the queried label. Note that
+        Neo4j allows multiple labels per node, so other labels may be
+        present in the query results as well.
+
+        Parameters
+        ----------
+        label: string
+               Ontology class name corresponding to
+               the type of node desired
+        """
         if label == None:
             print("No label provided -- skipping")
         else:

@@ -6,3 +6,9 @@ MATCH
 WHERE length(p)>1
 RETURN p;
 """[1:-1]
+
+FETCH_NODES_BY_LABEL = """
+MATCH
+    (n:ns0__{})
+RETURN n;
+"""[1:-1]

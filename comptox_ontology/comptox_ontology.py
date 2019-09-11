@@ -14,10 +14,8 @@ import pandas as pd
 import ipdb
 import configparser
 
-config = configparser.ConfigParser()
-config.read('../NEO4J_CONFIG.cfg')
 
-from cypher import queries
+#from cypher import queries
 
 def execute_cypher_transaction(tx, query):
     records = []
@@ -34,16 +32,24 @@ class ComptoxOntology(object):
     def __init__(self,
                  username = None,
                  password = None,
-                 uri = None):
+                 uri = None,
+                 config_file = None):
         # set up Neo4j Bolt connection
         if (username is None) or (password is None) or (uri is None):
-            print("Incomplete authentication data provided---using local configuration file.")
-            self.username = config['NEO4J']['Username']
-            self.password = config['NEO4J']['Password']
-            hostname = config['NEO4J']['Hostname']
-            protocol = config['NEO4J']['Protocol']
-            port = config['NEO4J']['Port']
-            self.uri = "{0}://{1}:{2}".format(protocol, hostname, port)
+            if config_file is not None:
+                print("Loading configuration file...")
+                
+                config = configparser.ConfigParser()
+                config.read(config_file)
+
+                self.username = config['NEO4J']['Username']
+                self.password = config['NEO4J']['Password']
+                hostname = config['NEO4J']['Hostname']
+                protocol = config['NEO4J']['Protocol']
+                port = config['NEO4J']['Port']
+                self.uri = "{0}://{1}:{2}".format(protocol, hostname, port)
+            else:
+                print("Incomplete database configuration provided---aborting.")
         else:
             self.uri = uri
             self.username = username
@@ -147,6 +153,8 @@ class ComptoxOntology(object):
 
 # For testing basic functionality
 if __name__=="__main__":
-    co = ComptoxOntology()
+    
+    
+    co = ComptoxOntology(config_file = '../NEO4J_CONFIG.cfg')
     shortest_path = co.aopShortestPath("Event:888","Parkinsonian Disorders")
     adverse_outcomes = co.fetch_nodes_by_label("AdverseOutcome")

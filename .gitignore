@@ -166,6 +166,8 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+doc/_build/
+doc/build/
 
 # PyBuilder
 target/
@@ -242,3 +244,4 @@ dmypy.json
 /bin/
 
 NEO4J_CONFIG.cfg
+

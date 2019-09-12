@@ -33,6 +33,7 @@ release = '0.1a'
 extensions = [
     'sphinx.ext.autodoc',
     'numpydoc',
+    'sphinx.ext.autosummary',
     'IPython.sphinxext.ipython_console_highlighting',
     'IPython.sphinxext.ipython_directive',
 ]
@@ -66,3 +67,8 @@ html_theme_path = [themedir]
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# Autosummary stuff:
+
+import glob
+autosummary_generate = True

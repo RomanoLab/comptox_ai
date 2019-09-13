@@ -4,7 +4,7 @@
 The ComptoxAI Framework (:class:`ComptoxAI`)
 ***********************************************
 
-.. currentmodule:: comptoxai
+.. currentmodule:: comptox_ai
 
 .. autoclass:: ComptoxAI
    :members:

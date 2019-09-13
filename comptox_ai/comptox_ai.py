@@ -17,7 +17,7 @@ import configparser
 
 import nxneo4j
 
-from comptox_ai.graph import Graph
+from .graph import Graph
 
 
 #from cypher import queries
@@ -81,7 +81,7 @@ class ComptoxAI(object):
 
     def close_connection(self):
         if self.driver_connected:
-            self.driver.close()
+            self.graph.driver.close()
         else:
             print("Error: Connection to Neo4j is not currently active")
 
@@ -193,7 +193,6 @@ class ComptoxAI(object):
 # For testing basic functionality
 if __name__=="__main__":
     
-    
-    co = ComptoxOntology(config_file = '../NEO4J_CONFIG.cfg')
-    shortest_path = co.aopShortestPath("Event:888","Parkinsonian Disorders")
-    adverse_outcomes = co.fetch_nodes_by_label("AdverseOutcome")
+    cai = ComptoxAI(config_file = '../NEO4J_CONFIG.cfg')
+    shortest_path = cai.aopShortestPath("Event:888","Parkinsonian Disorders")
+    adverse_outcomes = cai.fetch_nodes_by_label("AdverseOutcome")

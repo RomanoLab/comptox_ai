@@ -22,6 +22,9 @@ toxicology.
    :caption: Contents:
 
    comptoxai
+   ontology
+   graph
+   aop
 
 
 ..

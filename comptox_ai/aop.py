@@ -25,15 +25,17 @@ class AdverseOutcomePathway(object):
         self.name = name
 
     @classmethod
-    def aop_from_owl(cls):
-        pass
+    def aop_from_owl(cls, name):
+        new_aop = cls.__init__(name)
+
+        return new_aop
 
     @classmethod
     def aop_from_neo4j(cls, neo):
-        pass
+        new_aop = cls.__init__(name)
+
+        return new_aop
 
     def build_key_event_graph(self, mie, key_events, adverse_outcomes):
         if isinstance(mies, list):
-            
-            
-        
+                    

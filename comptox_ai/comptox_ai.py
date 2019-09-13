@@ -22,13 +22,6 @@ from .graph import Graph
 
 #from cypher import queries
 
-def execute_cypher_transaction(tx, query):
-    records = []
-    for record in tx.run(query):
-        print(record)
-        records.append(record)
-    return(records)
-
 class ComptoxAI(object):
     """
     Base class for the Comptox Ontology and its related graph
@@ -78,11 +71,6 @@ class ComptoxAI(object):
         self.ontology = None
 
 
-    def run_query_in_session(self, query):
-        with self.driver.session() as session:
-            query_response = session.read_transaction(execute_cypher_transaction,
-                                                      query)
-        return(query_response)
 
         
 

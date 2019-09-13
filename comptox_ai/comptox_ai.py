@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-`ComptoxOntology` main class definition
+`ComptoxAI` main class definition
 """
 
 import owlready2
@@ -10,9 +10,14 @@ from neo4j import GraphDatabase
 import os, sys
 import networkx as nx
 import numpy as np
+import scipy as sp
 import pandas as pd
 import ipdb
 import configparser
+
+import nxneo4j
+
+from comptoxai.graph import Graph
 
 
 #from cypher import queries
@@ -24,7 +29,7 @@ def execute_cypher_transaction(tx, query):
         records.append(record)
     return(records)
 
-class ComptoxOntology(object):
+class ComptoxAI(object):
     """
     Base class for the Comptox Ontology and its related graph
     knowledge base.
@@ -34,7 +39,8 @@ class ComptoxOntology(object):
                  password = None,
                  uri = None,
                  config_file = None):
-        # set up Neo4j Bolt connection
+
+        # Connect to neo4j and set up graph object
         if (username is None) or (password is None) or (uri is None):
             if config_file is not None:
                 print("Loading configuration file...")
@@ -56,13 +62,19 @@ class ComptoxOntology(object):
             self.password = password
         try:
             #ipdb.set_trace()
-            self.driver = GraphDatabase.driver(self.uri,
-                                               auth=(self.username,
-                                                     self.password))
+            driver = GraphDatabase.driver(self.uri,
+                                          auth=(self.username,
+                                                self.password))
             self.driver_connected = True
-        except:
+            self.graph = Graph(driver=driver)
+        except Exception as ex:
             print("Error opening connection to Neo4j")
+            print(ex)
             self.driver_connected = False
+
+        # Create ontology
+        # TODO
+        self.ontology = None
 
     def __del__(self):
         self.close_connection()
@@ -149,6 +161,33 @@ class ComptoxOntology(object):
             query_response = self.run_query_in_session(self.query)
 
             return(query_response)
+
+    def build_adjacency_matrix(self, sparse=True):
+        """Construct an adjacency matrix of individuals in the
+        ontology graph.
+
+        The adjacency matrix is a square matrix where each row and
+        each column corresponds to one of the nodes in the graph. The
+        value of cell $(i,j)$ is 1 if a directed edge goes from
+        $\textrm{Node}_i$ to $\textrm{Node}_j$, and is $-1$ if an edge
+        goes from $\textrm{Node}_j$ to $\textrm{Node}_i$. 
+
+        In the case of an undirected graph, the adjacency matrix is
+        symmetric.
+        """
+        A = np.array()
+        
+        return A
+
+    def build_incidence_matrix(self, sparse=True):
+        """Construct an incidence matrix of individuals in the
+        ontology graph.
+
+        
+        """
+        B = np.array()
+
+        return B
         
 
 # For testing basic functionality

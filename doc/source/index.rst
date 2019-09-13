@@ -21,7 +21,7 @@ toxicology.
    :maxdepth: 2
    :caption: Contents:
 
-   ontology
+   comptoxai
 
 
 ..

@@ -1,6 +1,7 @@
-from .comptox_ontology import ComptoxOntology
+from .comptox_ai import ComptoxAI
 from .graph import Graph
 
-from comptox_ontology.cypher import *
+# Submodules
+from comptox_ai.cypher import *
 
-#__all__ = ['ComptoxOntology']
+__all__ = ['ComptoxOntology', 'Graph']

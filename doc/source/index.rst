@@ -9,7 +9,7 @@ Comptox Ontology Reference Guide
 :Release: |version|
 :Date: |today|
 
-.. module:: comptox-ontology
+.. module:: comptox_ai
 
 This reference manual describes the functions, modules, and objects
 included in (and associated with) Comptox Ontology - a centralized

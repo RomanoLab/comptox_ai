@@ -17,7 +17,7 @@ import sys
 
 # -- Project information -----------------------------------------------------
 
-project = 'Comptox Ontology'
+project = 'ComptoxAI'
 copyright = '2019, Joseph D. Romano'
 author = 'Joseph D. Romano, PhD'
 

@@ -80,6 +80,9 @@ class ComptoxAI(object):
         self.close_connection()
 
     def close_connection(self):
+        """Manually close the driver linking `self.graph` to a Neo4j
+        graph database.
+        """
         if self.driver_connected:
             self.graph.driver.close()
         else:
@@ -89,6 +92,9 @@ class ComptoxAI(object):
                         username,
                         password,
                         uri = "bolt://localhost:7687"):
+        """Manually establish a connection between `self.graph` and a
+        Neo4j graph database.
+        """
         if not self.driver_connected:
             try:
                 self.driver = GraphDatabase.driver(self.uri,
@@ -102,7 +108,10 @@ class ComptoxAI(object):
             print("Error: Connection to Neo4j is already active")
             print("       (Use `.close_connection()` and try again)")
 
-    def validate_connection_status(self):
+    def _validate_connection_status(self):
+        """Internal test for whether a connection to a Neo4j graph
+        database currently exists and is active.
+        """
         if not self.driver_connected:
             raise RuntimeError("Attempted to query Neo4j without an active database connection")
         return True

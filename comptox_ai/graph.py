@@ -3,7 +3,14 @@ from .cypher import queries
 from .utils import execute_cypher_transaction
 
 class Graph:
+    """
+    Base class for a knowledge graph used in ComptoxAI.
+    """
     def __init__(self, driver, **kwargs):
+        """Initialize a ComptoxAI knowledge graph supported by a Neo4j
+        graph database instance.
+        """
+
         self.driver = driver
 
         # If node_labels is the empty list, we don't filter on node type
@@ -11,7 +18,7 @@ class Graph:
         if isinstance(self.node_mask, str):
             self.node_labels = [self.node_labels]
  
-    def aopShortestPath(self, mie_node: str, ao_node: str):
+    def aop_shortest_path(self, mie_node: str, ao_node: str):
         """Find the shortest path between an MIE and an adverse
         outcome using the Neo4j representation of the CO's knowledge
         base. 
@@ -32,6 +39,11 @@ class Graph:
 
             # Run the query
             query_response = self.run_query_in_session(self.query)
+
+            assert len(query_response) <= 1
+
+            if len(query_response) == 1:
+                query_response = query_response[0]
 
         return(query_response)
 

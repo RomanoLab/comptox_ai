@@ -17,6 +17,21 @@ class Graph:
         self.node_mask = kwargs.get("node_mask", [])
         if isinstance(self.node_mask, str):
             self.node_labels = [self.node_labels]
+
+    def fetch_node_by_uri(self, uri):
+        if uri == None:
+            print("No URI given -- aborting")
+        else:
+            self.template = queries.FETCH_INDIVIDUAL_NODE_BY_URI
+            self.query = self.template.format(uri)
+
+            query_response = self.run_query_in_session(self.query)
+
+            if len(query_response) == 0:
+                return None
+            else:
+                assert len(query_response) == 1
+                return query_response[0]
  
     def fetch_nodes_by_label(self, label):
         """

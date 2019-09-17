@@ -13,6 +13,12 @@ MATCH
 RETURN n;
 """[1:-1]
 
+FETCH_INDIVIDUAL_NODE_BY_URI = """
+MATCH
+    (n:owl__NamedIndividual {{ uri: '{}' }})
+RETURN n;
+"""[1:-1]
+
 ## FROM networkx-neo4j
 ## (see: https://github.com/neo4j-graph-analytics/networkx-neo4j/blob/master/nxneo4j/base_graph.py)
 

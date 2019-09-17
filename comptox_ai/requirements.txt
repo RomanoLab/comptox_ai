@@ -1,0 +1,5 @@
+numpy
+networkx
+rdflib
+owlready2
+pytest

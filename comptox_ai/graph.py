@@ -18,35 +18,6 @@ class Graph:
         if isinstance(self.node_mask, str):
             self.node_labels = [self.node_labels]
  
-    def aop_shortest_path(self, mie_node: str, ao_node: str):
-        """Find the shortest path between an MIE and an adverse
-        outcome using the Neo4j representation of the CO's knowledge
-        base. 
-
-        Parameters
-        ----------
-        mie_node : string
-                   Name of the MIE
-        ao_node : string
-                  Name of the adverse outcome
-        """
-        query_response = None
-
-        if self._validate_connection_status():
-            
-            self.template = queries.MIE_DISEASE_PATH
-            self.query = self.template.format(mie_node, ao_node)
-
-            # Run the query
-            query_response = self.run_query_in_session(self.query)
-
-            assert len(query_response) <= 1
-
-            if len(query_response) == 1:
-                query_response = query_response[0]
-
-        return(query_response)
-
     def fetch_nodes_by_label(self, label):
         """
         Fetch all nodes of a given label from the graph.
@@ -144,3 +115,62 @@ class Graph:
             query_response = session.read_transaction(execute_cypher_transaction,
                                                       query)
         return(query_response)
+
+    def aop_shortest_path(self, mie_node: str, ao_node: str):
+        """Find the shortest path between an MIE and an adverse
+        outcome using the Neo4j representation of the CO's knowledge
+        base. 
+
+        Parameters
+        ----------
+        mie_node : string
+                   Name of the MIE
+        ao_node : string
+                  Name of the adverse outcome
+        """
+        query_response = None
+
+        if self._validate_connection_status():
+            
+            self.template = queries.MIE_DISEASE_PATH
+            self.query = self.template.format(mie_node, ao_node)
+
+            # Run the query
+            query_response = self.run_query_in_session(self.query)
+
+            assert len(query_response) <= 1
+
+            if len(query_response) == 1:
+                query_response = query_response[0]
+
+        shortest_path = Path(query_response['p'].nodes)
+
+        return(shortest_path)
+
+    
+
+class Path(object):
+    def __init__(self, node_list):
+        assert len(node_list) >= 1
+        
+        self.nodes = node_list
+
+        self.start_node = self.nodes[0]
+        self.end_node = self.nodes[-1]
+
+    def __repr__(self):
+        repr_str = "< 'Path' object of nodes with the following URI suffixes:\n\t["
+        for x in self.nodes:
+            repr_str += " {0},\n\t".format(x['uri'].split("#")[-1])
+        repr_str = repr_str[:-3]
+        repr_str += " ] >"
+        return repr_str
+
+    def __iter__(self):
+        return (x for x in self.nodes)
+
+    def get_uri_sequence(self):
+        uris = []
+        for node in self.nodes:
+            uris.append(node['uri'])
+        return uris

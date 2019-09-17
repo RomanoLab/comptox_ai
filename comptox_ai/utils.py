@@ -56,7 +56,8 @@ def summarize_networkx_graph(nx_graph):
     # Network size
     print("NETWORK SIZE")
     print("============")
-    print("The network has {} nodes and {} edges".format(nx_graph.number_of_nodes(), nx_graph.number_of_edges()))
+    print("The network has {} nodes and {} edges".format(nx_graph.number_of_nodes(),
+                                                         nx_graph.number_of_edges()))
     print()
 
     # Network size
@@ -79,6 +80,9 @@ def summarize_networkx_graph(nx_graph):
 
     print("DEGREE CENTRALITY")
     print("=================")
-    print("The mean degree centrality is {}, with stdev {}".format(mean(degrees), statistics.stdev(degrees)))
-    print("The densest node is {}, with value {}".format(max(dc, key=dc.get), max(dc.values())))
-    print("The sparsest node is {}, with value {}".format(min(dc, key=dc.get), min(dc.values())))
+    print("The mean degree centrality is {}, with stdev {}".format(mean(degrees),
+                                                                   statistics.stdev(degrees)))
+    print("The densest node is {}, with value {}".format(max(dc, key=dc.get),
+                                                         max(dc.values())))
+    print("The sparsest node is {}, with value {}".format(min(dc, key=dc.get),
+                                                          min(dc.values())))

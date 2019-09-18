@@ -13,6 +13,12 @@ MATCH
 RETURN n;
 """[1:-1]
 
+FETCH_NODE_IDS_BY_LABEL = """
+MATCH
+    (n:ns0__{})
+RETURN ID(n);
+"""[1:-1]
+
 FETCH_INDIVIDUAL_NODE_BY_URI = """
 MATCH
     (n:owl__NamedIndividual {{ uri: '{}' }})

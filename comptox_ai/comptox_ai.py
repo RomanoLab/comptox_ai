@@ -20,8 +20,6 @@ import nxneo4j
 from .graph import Graph
 
 
-#from cypher import queries
-
 class ComptoxAI(object):
     """
     Base class for the Comptox Ontology and its related graph
@@ -69,14 +67,3 @@ class ComptoxAI(object):
         # Create ontology
         # TODO
         self.ontology = None
-
-
-
-        
-
-# For testing basic functionality
-if __name__=="__main__":
-    
-    cai = ComptoxAI(config_file = '../NEO4J_CONFIG.cfg')
-    shortest_path = cai.aopShortestPath("Event:888","Parkinsonian Disorders")
-    adverse_outcomes = cai.fetch_nodes_by_label("AdverseOutcome")

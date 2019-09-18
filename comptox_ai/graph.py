@@ -1,3 +1,6 @@
+import numpy as np
+import nxneo4j
+
 from .cypher import queries
 
 from .utils import execute_cypher_transaction
@@ -70,8 +73,19 @@ class Graph:
 
         In the case of an undirected graph, the adjacency matrix is
         symmetric.
+
+        Parameters
+        ----------
+        sparse : bool (default: `True`)
+                 Whether to return the value as a Scipy sparse matrix
+                 (default behavior) or a dense Numpy `ndarray`.
+
         """
         A = np.array()
+
+        G = nxneo4j.Graph(self.driver)
+
+        
         
         return A
 

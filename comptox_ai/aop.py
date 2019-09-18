@@ -39,7 +39,7 @@ class AdverseOutcomePathway(object):
     def generate_aop_data_report(self, graph_db):
         print("Fetching AOP data from Neo4j database corresponding to {0}...").format(self.name)
 
-        graph_db.
+        #graph_db.
 
     def build_key_event_graph(self, mie, key_events, adverse_outcomes):
         if isinstance(mies, list):

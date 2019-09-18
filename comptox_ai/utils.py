@@ -22,6 +22,29 @@ def execute_cypher_transaction(tx, query, **kwargs):
         records.append(record)
     return records
 
+def test_neo4j_driver_connection(driver):
+    """Test whether a Neo4j Bolt driver object can successfully
+    communicate with a running Neo4j graph.
+
+    Parameters
+    ----------
+    driver : neo4j.Driver
+             Graph database driver object to test.
+             
+    Returns
+    -------
+    bool
+        `True` if connection is valid, `False` otherwise.
+    """
+    if driver is None:
+        print("No Bolt driver has been specified.")
+        return False
+    
+    session = driver.session()
+    value = session.run("RETURN 1").single().value()
+
+    return value == 1
+
 def rdf_file_to_rdflib(rdf_filename):
     """Read an XML-formatted RDF file and parse into an RDFlib graph
     object.

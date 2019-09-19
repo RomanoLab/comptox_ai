@@ -21,6 +21,21 @@ class Graph:
         if isinstance(self.node_mask, str):
             self.node_labels = [self.node_labels]
 
+    def get_node_degrees(self, node_type=None):
+        if node_type is None:
+            self.template = queries.FETCH_ALL_NODE_DEGREES
+            self.query = self.template
+        else:
+            self.template = queries.FETCH_NODE_DEGREES_FOR_CLASS
+            self.query = self.template.format(node_type)
+
+        query_response = self.run_query_in_session(self.query)
+
+        if len(query_response) == 0:
+            return None
+        else:
+            return [(x['uri'], x['degree']) for x in query_response]
+
     def fetch_node_by_uri(self, uri):
         if uri == None:
             print("No URI given -- aborting")

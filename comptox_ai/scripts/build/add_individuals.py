@@ -5,6 +5,7 @@ import pandas as pd
 from tqdm import tqdm
 
 import ipdb, traceback, sys, math
+import re
 
 ONTOLOGY_FNAME = "../comptox.rdf"
 ONTOLOGY_POPULATED_FNAME = "../comptox_populated.rdf"
@@ -23,7 +24,10 @@ def make_safe_property_label(label):
     This may have to be reevaluated later, if lowercasing entity names is leading to
     more problems down the line.
     """
-    return label.replace(" ", "_").lower()
+    safe = re.sub(r'[!@#$,()\'\"]', '', label)
+    safe = safe.replace(" ", "_").lower()
+    
+    return safe
 
 print("Reading objects (ontology, nodes, etc.) into memory...")
 
@@ -45,7 +49,8 @@ hetio_nodes = pd.read_csv("../data/hetionet/hetionet-v1.0-nodes.tsv", sep="\t")
 print("Adding Hetionet nodes as ontology individuals...")
 for idx,n in tqdm(hetio_nodes.iterrows(), total=len(hetio_nodes)):
     nodetype = n[2]
-    nm = make_safe_property_label(n[1])
+    nm = n[1]
+    safe_nm = make_safe_property_label(nm)
 
     # # Check whether node label already exists:
     # duplicate_nm = False
@@ -55,7 +60,7 @@ for idx,n in tqdm(hetio_nodes.iterrows(), total=len(hetio_nodes)):
     if nodetype=="Anatomy":
         # if duplicate_nm:
         #     nm += "_structuralentity"
-        ont.StructuralEntity("se_"+nm, xrefUberon=n[0].split("::")[-1])
+        ont.StructuralEntity("se_"+safe_nm, xrefUberon=n[0].split("::")[-1], commonName=nm)
     elif nodetype=="Biological Process":
         continue
     elif nodetype=="Cellular Component":
@@ -67,20 +72,20 @@ for idx,n in tqdm(hetio_nodes.iterrows(), total=len(hetio_nodes)):
         #     nm += "_chemical"
         
         drugbank_id = n[0].split("::")[-1]
-        ont.Chemical("chem_"+nm, xrefDrugbank=drugbank_id, chemicalIsDrug=True)
+        ont.Chemical("chem_"+nm_safe, xrefDrugbank=drugbank_id, chemicalIsDrug=True, commonName=nm)
     elif nodetype=="Disease":
         # if duplicate_nm:
         #     nm += "_disease"
         
         doid = n[0].split("::")[-1]
-        dis = ont.Disease("dis_"+nm, commonName=n[1])
+        dis = ont.Disease("dis_"+nm_safe, commonName=nm)
         dis.xrefDiseaseOntology = [doid]
     elif nodetype=="Gene":
         # if duplicate_nm:
         #     nm += "_gene"
 
         ncbi_gene = n[0].split("::")[-1]
-        ont.Gene("gene_"+nm, geneSymbol=n[1], xrefNcbiGene=ncbi_gene)
+        ont.Gene("gene_"+nm_safe, geneSymbol=n[1], xrefNcbiGene=ncbi_gene, commonName=nm)
     elif nodetype=="Molecular Function":
         continue
     elif nodetype=="Pathway":
@@ -101,14 +106,14 @@ for idx,n in tqdm(hetio_nodes.iterrows(), total=len(hetio_nodes)):
         # if duplicate_nm:
         #     nm += "_adverseeffect"
         
-        ont.AdverseEffect("ae_"+nm, xrefUmlsCUI=n[0].split("::")[-1])
+        ont.AdverseEffect("ae_"+nm_safe, xrefUmlsCUI=n[0].split("::")[-1], commonName=nm)
     elif nodetype=="Symptom":
         # NOTE: May need to revise knowledge model if symptoms can map to multiple MeSH terms (i.e.,
         # if the DbXref is not functional)
         # if duplicate_nm:
         #     nm += "_phenotype"
 
-        ont.Phenotype("phen_"+nm, xrefMeSH=n[0].split("::")[-1])
+        ont.Phenotype("phen_"+nm_safe, xrefMeSH=n[0].split("::")[-1], commonName=nm)
 del(hetio_nodes)
 
 # Edge parsing functions:

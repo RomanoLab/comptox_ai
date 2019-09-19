@@ -7,8 +7,8 @@ from tqdm import tqdm
 import ipdb, traceback, sys, math
 import re
 
-ONTOLOGY_FNAME = "../comptox.rdf"
-ONTOLOGY_POPULATED_FNAME = "../comptox_populated.rdf"
+ONTOLOGY_FNAME = "../../../comptox.rdf"
+ONTOLOGY_POPULATED_FNAME = "../../../comptox_populated.rdf"
 
 ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
 
@@ -45,7 +45,7 @@ ont = get_ontology(ONTOLOGY_FNAME).load()
 # 2. Drugs ("Compounds")
 # 3. Diseases
 # 4. Anatomic entities ("Anatomy")
-hetio_nodes = pd.read_csv("../data/hetionet/hetionet-v1.0-nodes.tsv", sep="\t")
+hetio_nodes = pd.read_csv("../../../data/external/hetionet/hetionet-v1.0-nodes.tsv", sep="\t")
 print("Adding Hetionet nodes as ontology individuals...")
 for idx,n in tqdm(hetio_nodes.iterrows(), total=len(hetio_nodes)):
     nodetype = n[2]
@@ -72,20 +72,20 @@ for idx,n in tqdm(hetio_nodes.iterrows(), total=len(hetio_nodes)):
         #     nm += "_chemical"
         
         drugbank_id = n[0].split("::")[-1]
-        ont.Chemical("chem_"+nm_safe, xrefDrugbank=drugbank_id, chemicalIsDrug=True, commonName=nm)
+        ont.Chemical("chem_"+safe_nm, xrefDrugbank=drugbank_id, chemicalIsDrug=True, commonName=nm)
     elif nodetype=="Disease":
         # if duplicate_nm:
         #     nm += "_disease"
         
         doid = n[0].split("::")[-1]
-        dis = ont.Disease("dis_"+nm_safe, commonName=nm)
+        dis = ont.Disease("dis_"+safe_nm, commonName=nm)
         dis.xrefDiseaseOntology = [doid]
     elif nodetype=="Gene":
         # if duplicate_nm:
         #     nm += "_gene"
 
         ncbi_gene = n[0].split("::")[-1]
-        ont.Gene("gene_"+nm_safe, geneSymbol=n[1], xrefNcbiGene=ncbi_gene, commonName=nm)
+        ont.Gene("gene_"+safe_nm, geneSymbol=n[1], xrefNcbiGene=ncbi_gene, commonName=nm)
     elif nodetype=="Molecular Function":
         continue
     elif nodetype=="Pathway":
@@ -106,14 +106,14 @@ for idx,n in tqdm(hetio_nodes.iterrows(), total=len(hetio_nodes)):
         # if duplicate_nm:
         #     nm += "_adverseeffect"
         
-        ont.AdverseEffect("ae_"+nm_safe, xrefUmlsCUI=n[0].split("::")[-1], commonName=nm)
+        ont.AdverseEffect("ae_"+safe_nm, xrefUmlsCUI=n[0].split("::")[-1], commonName=nm)
     elif nodetype=="Symptom":
         # NOTE: May need to revise knowledge model if symptoms can map to multiple MeSH terms (i.e.,
         # if the DbXref is not functional)
         # if duplicate_nm:
         #     nm += "_phenotype"
 
-        ont.Phenotype("phen_"+nm_safe, xrefMeSH=n[0].split("::")[-1], commonName=nm)
+        ont.Phenotype("phen_"+safe_nm, xrefMeSH=n[0].split("::")[-1], commonName=nm)
 del(hetio_nodes)
 
 # Edge parsing functions:
@@ -272,7 +272,7 @@ metaedge_map = {
 }
 
 print("Linking nodes using Hetionet relationships...")
-hetio_rels = pd.read_csv("../data/hetionet/hetionet-v1.0-edges.sif", sep="\t")
+hetio_rels = pd.read_csv("../../../data/external/hetionet/hetionet-v1.0-edges.sif", sep="\t")
 for idx,r in tqdm(hetio_rels.iterrows(), total=len(hetio_rels)):
     edge_type = r[1]
     func = metaedge_map[edge_type]
@@ -331,7 +331,7 @@ def eval_list_field(list_string):
 
 
 # Load mapping between drugbank ID and CAS RN
-drugbank_map = pd.read_csv("../data/drug_links.csv")
+drugbank_map = pd.read_csv("../../../data/external/drugbank/drug_links.csv")
 # Add CAS RN where available
 num_matches = 0
 for idx, m_row in drugbank_map.iterrows():
@@ -398,14 +398,14 @@ for idx, d_row in tqdm(diseases.iterrows(), total=len(diseases)):
     doid = parse_ctd_doid(alt_ids)
     omim = parse_ctd_omim(alt_ids)
 
-    nm_safe = nm.lower().replace(" ","_")
+    safe_nm = make_safe_property_label(nm)
 
     disease = None  # Make sure this variable remains in scope
 
     if len(doid) == 0:
         # No DOID for this disease in CTD; create disease using MeSH
         
-        disease = ont.Disease("dis_"+nm_safe, xrefMeSH=mesh, commonName=nm)
+        disease = ont.Disease("dis_"+safe_nm, xrefMeSH=mesh, commonName=nm)
         # TODO: UNCOMMENT THESE LINES AFTER xrefOMIM IS BUILT INTO THE ONTOLOGY
         # if len(omim) > 0:
         #     disease.xrefOMIM = omim
@@ -422,7 +422,7 @@ for idx, d_row in tqdm(diseases.iterrows(), total=len(diseases)):
         if len(matches) == 0:
             # We made it this far, so we can create a new disease
             try:
-                disease = ont.Disease("dis_"+nm_safe, xrefMeSH=mesh, commonName=nm)
+                disease = ont.Disease("dis_"+safe_nm, xrefMeSH=mesh, commonName=nm)
                 disease.xrefDiseaseOntology = doid
             except TypeError:
                 print("Error creating node '{0}' - skipping".format(nm))

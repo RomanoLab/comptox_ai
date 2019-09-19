@@ -5,17 +5,35 @@ import pandas as pd
 from tqdm import tqdm
 from lxml import etree
 import json
+import re
 from collections import Counter
 
 import ipdb, traceback, sys
 
-ONTOLOGY_FNAME = "../comptox.rdf"
-ONTOLOGY_POPULATED_FNAME = "../comptox_populated.rdf"
-ONTOLOGY_POPULATED_LINKED_FNAME = "../comptox_populated_linked.rdf"
-ONTOLOGY_AOP_FNAME = "../comptox_aop.rdf"
+ONTOLOGY_FNAME = "../../../comptox.rdf"
+ONTOLOGY_POPULATED_FNAME = "../../../comptox_populated.rdf"
+ONTOLOGY_POPULATED_LINKED_FNAME = "../../../comptox_populated_linked.rdf"
+ONTOLOGY_AOP_FNAME = "../../../comptox_aop.rdf"
 
 ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
 ONTOLOGY_POPULATED_IRI = 'http://jdr.bio/ontologies/comptox-full.owl#'
+
+def make_safe_property_label(label):
+    """Convert the label ("name") of a property to a safe format.
+
+    We follow the convention that only class names can begin with an uppercase letter.
+    This can be explained using the following example: One of the 'pathways' in Hetionet
+    is named "Disease", but Disease is already a class in the ontology. Therefore, there
+    is no way to distinguish between these two entities in Python.
+
+    This may have to be reevaluated later, if lowercasing entity names is leading to
+    more problems down the line.
+    """
+    safe = re.sub(r'[!@#$,()\'\"]', '', label)
+    safe = safe.replace(" ", "_").lower()
+    
+    return safe
+
 
 def strip_tag(tag):
     return tag.split("}")[-1]
@@ -25,7 +43,7 @@ OWL = get_ontology("http://www.w3.org/2002/07/owl#")
 #ont = get_ontology("../comptox_populated_linked.rdf").load()
 ont = get_ontology(ONTOLOGY_POPULATED_FNAME).load()
 
-kes = pd.read_csv("../data/aopwiki/aop_ke_mie_ao.tsv",
+kes = pd.read_csv("../../../data/external/aopwiki/aop_ke_mie_ao.tsv",
                   sep="\t",
                   header=None,
                   names=['aop_id',
@@ -33,7 +51,7 @@ kes = pd.read_csv("../data/aopwiki/aop_ke_mie_ao.tsv",
                          'key_event_type',
                          'key_event_name'])
 
-kers = pd.read_csv("../data/aopwiki/aop_ke_ker.tsv",
+kers = pd.read_csv("../../../data/external/aopwiki/aop_ke_ker.tsv",
                    sep="\t",
                    header=None,
                    names=['aop_id',
@@ -44,7 +62,7 @@ kers = pd.read_csv("../data/aopwiki/aop_ke_ker.tsv",
                           'evidence',
                           'quantitative_understanding'])
 
-ke_components = pd.read_csv("../data/aopwiki/aop_ke_ec.tsv",
+ke_components = pd.read_csv("../../../data/external/aopwiki/aop_ke_ec.tsv",
                             sep="\t",
                             header=None,
                             names=['aop_id',
@@ -63,7 +81,7 @@ ke_components = pd.read_csv("../data/aopwiki/aop_ke_ec.tsv",
 # ex_stress = [x for x in root if x.tag.split("}")[-1] == 'stressor'][0]
 # ex_aop = [x for x in root if x.tag.split("}")[-1] == 'aop'][0]
 # aop_xml_list = [x for x in root if x.tag.split("}")[-1] == 'aop']
-with open("../data/aopwiki/aops.json", 'r') as fp:
+with open("../../../data/external/aopwiki/aops.json", 'r') as fp:
     aops = json.load(fp)
 aop_dict = {}
 for a in aops:
@@ -100,11 +118,11 @@ for i, ke in tqdm(kes.iterrows(), total=len(kes)):
 
     # Prepend "ke_" to avoid name conflicts
     if ke_type == 'MolecularInitiatingEvent':
-        safe_name = "mie_"+ke_name.lower().replace(" ","_")
+        safe_name = "mie_"+make_safe_property_label(ke_name)
     elif ke_type == 'KeyEvent':
-        safe_name = "ke_"+ke_name.lower().replace(" ","_")
+        safe_name = "ke_"+make_safe_property_label(ke_name)
     elif ke_type == 'AdverseOutcome':
-        safe_name = "ao_"+ke_name.lower().replace(" ","_")
+        safe_name = "ao_"+make_safe_property_label(ke_name)
     else:
         raise ValueError("Unknown key event type")
 
@@ -118,7 +136,7 @@ for i, ke in tqdm(kes.iterrows(), total=len(kes)):
     if ke_type == 'MolecularInitiatingEvent':
         new_mie_node = ont.MolecularInitiatingEvent(safe_name,
                                                     keyEventID=ke_id,
-                                                    keyEventName=ke_name)
+                                                    commonName=ke_name)
         if existing_aop:
             # add this MIE to the AOP
             aop_node = ont.search(xrefAOPWiki=aop_id)
@@ -129,14 +147,14 @@ for i, ke in tqdm(kes.iterrows(), total=len(kes)):
             # Create an AOP with this as an MIE
             if aop_id.split(":")[-1] in aop_dict.keys(): # Don't do anything if it's an obsolete AOP
                 aop_data = aop_dict[aop_id.split(":")[-1]]
-                safe_aop_name = 'aop_'+aop_data['short_name'].lower().replace(" ","_")
-                new_aop_node = ont.AOP(safe_aop_name)
+                safe_aop_name = 'aop_'+make_safe_property_label(aop_data['short_name'])
+                new_aop_node = ont.AOP(safe_aop_name, commonName=aop_data['short_name'])
                 new_aop_node.aopHasMIE = [new_mie_node]
                 
     elif ke_type == 'KeyEvent':
         new_ke_node = ont.KeyEvent(safe_name,
                                    keyEventID=ke_id,
-                                   keyEventName=ke_name)
+                                   commonName=ke_name)
         if existing_aop:
             # add this MIE to the AOP
             aop_node = ont.search(xrefAOPWiki=aop_id)
@@ -147,14 +165,14 @@ for i, ke in tqdm(kes.iterrows(), total=len(kes)):
             # Create an AOP with this as an MIE
             if aop_id.split(":")[-1] in aop_dict.keys(): # Don't do anything if it's an obsolete AOP
                 aop_data = aop_dict[aop_id.split(":")[-1]]
-                safe_aop_name = 'aop_'+aop_data['title'].lower().replace(" ","_")
-                new_aop_node = ont.AOP(safe_aop_name)
+                safe_aop_name = 'aop_'+make_safe_property_label(aop_data['title'])
+                new_aop_node = ont.AOP(safe_aop_name, commonName=aop_data['title'])
                 new_aop_node.aopContainsKE = [new_ke_node]
 
     elif ke_type == 'AdverseOutcome':
         new_ao_node = ont.AdverseOutcome(safe_name,
                                          keyEventID=ke_id,
-                                         keyEventName=ke_name)
+                                         commonName=ke_name)
         if existing_aop:
             # add this MIE to the AOP
             aop_node = ont.search(xrefAOPWiki=aop_id)
@@ -165,8 +183,8 @@ for i, ke in tqdm(kes.iterrows(), total=len(kes)):
             # Create an AOP with this as an MIE
             if aop_id.split(":")[-1] in aop_dict.keys(): # Don't do anything if it's an obsolete AOP
                 aop_data = aop_dict[aop_id.split(":")[-1]]
-                safe_aop_name = 'aop_'+aop_data['title'].lower().replace(" ","_")
-                new_aop_node = ont.AOP(safe_aop_name)
+                safe_aop_name = 'aop_'+make_safe_property_label(aop_data['title'])
+                new_aop_node = ont.AOP(safe_aop_name, commonName=aop_data['title'])
                 new_aop_node.aopCausesAO = [new_ao_node]
 
     else:
@@ -218,8 +236,9 @@ for i,ker in kers.iterrows():
     downstream_event = ont.search(keyEventID=downstream_event_id)
 
     if (upstream_event == []) or (downstream_event == []):
-        ipdb.set_trace()
-        print()
+        #ipdb.set_trace()
+        print("mismatch: {}; {}".format(upstream_event_id, downstream_event_id))
+        continue
 
     upstream_event = upstream_event[0]
     downstream_event = downstream_event[0]

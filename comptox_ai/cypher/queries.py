@@ -25,6 +25,22 @@ MATCH
 RETURN n;
 """[1:-1]
 
+FETCH_ALL_NODE_DEGREES = """
+MATCH
+    (n:owl__NamedIndividual)
+RETURN
+    n.uri AS uri,
+    size((n)-[]-()) AS degree;
+"""[1:-1]
+
+FETCH_NODE_DEGREES_FOR_CLASS = """
+MATCH
+    (n:ns0__{})
+RETURN
+    n.uri AS uri,
+    size((n)-[]-()) AS degree;
+"""[1:-1]
+
 ## FROM networkx-neo4j
 ## (see: https://github.com/neo4j-graph-analytics/networkx-neo4j/blob/master/nxneo4j/base_graph.py)
 

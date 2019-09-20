@@ -25,6 +25,13 @@ MATCH
 RETURN n;
 """[1:-1]
 
+FETCH_NEIGHBORS_BY_URI = """
+MATCH
+    (n:owl__NamedIndividual {{ uri: '{}' }})-[]-(m)
+RETURN
+    m;
+"""[1:-1]
+
 FETCH_ALL_NODE_DEGREES = """
 MATCH
     (n:owl__NamedIndividual)
@@ -54,8 +61,8 @@ MERGE (:{} {{ {}: value }});
 """[1:-1]
 
 ADD_EDGE = """
-MERGE (node1:{} {{ {}: {{node1}} }})
-MERGE (node2:{} {{ {}: {{node2}} }})
+MERGE (node1:{} {{ {}: {{node2}} }})
+MERGE (node2:{} {{ {}: {{node1}} }})
 MERGE (node1)-[:{}]->(node2);
 """[1:-1]
 

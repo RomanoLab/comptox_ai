@@ -45,6 +45,7 @@ class ComptoxAI(object):
                 protocol = config['NEO4J']['Protocol']
                 port = config['NEO4J']['Port']
                 self.uri = "{0}://{1}:{2}".format(protocol, hostname, port)
+                print(self.uri)
             else:
                 print("Incomplete database configuration provided---aborting.")
         else:

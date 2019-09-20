@@ -22,6 +22,18 @@ class Graph:
             self.node_labels = [self.node_labels]
 
     def get_node_degrees(self, node_type=None):
+        """Retrieve a list of URIs and their corresponding degrees.
+        
+        Parameters
+        ----------
+        node_type : str, optional
+            Ontology class corresponding to the desired node type, by default None.
+        
+        Returns
+        -------
+        list of (str, int)
+            Each returned element is a tuple containing a node's URI and that node's degree.
+        """
         if node_type is None:
             self.template = queries.FETCH_ALL_NODE_DEGREES
             self.query = self.template
@@ -37,6 +49,18 @@ class Graph:
             return [(x['uri'], x['degree']) for x in query_response]
 
     def fetch_node_by_uri(self, uri):
+        """Retrieve a node from Neo4j matching the given URI.
+        
+        Parameters
+        ----------
+        uri : str
+            URI of the node to fetch.
+        
+        Returns
+        -------
+        neo4j.Record
+            Node corresponding to the provided URI.
+        """
         if uri == None:
             print("No URI given -- aborting")
         else:
@@ -50,6 +74,22 @@ class Graph:
             else:
                 assert len(query_response) == 1
                 return query_response[0]
+
+    def fetch_neighbors_by_uri(self, uri):
+        """Fetch nodes corresponding to neighbors of a node represented by a given URI.
+        """
+        if uri == None:
+            print("No URI given -- aborting")
+        else:
+            self.template = queries.FETCH_NEIGHBORS_BY_URI
+            self.query = self.template.format(uri)
+
+        query_response = self.run_query_in_session(self.query)
+
+        if len(query_response) == 0:
+            return None
+        else:
+            return query_response
  
     def fetch_nodes_by_label(self, label):
         """

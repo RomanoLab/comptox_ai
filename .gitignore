@@ -244,4 +244,4 @@ dmypy.json
 /bin/
 
 NEO4J_CONFIG.cfg
-
+CONFIG.cfg

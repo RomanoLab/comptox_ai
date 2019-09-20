@@ -3,4 +3,4 @@ networkx
 rdflib
 owlready2
 pytest
-nxneo4j
+networkx-neo4j

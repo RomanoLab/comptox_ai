@@ -14,12 +14,66 @@ class Graph:
         graph database instance.
         """
 
+        self.driver_connected = False
+
         self.driver = driver
+        self.test_driver
+        
 
         # If node_labels is the empty list, we don't filter on node type
         self.node_mask = kwargs.get("node_mask", [])
         if isinstance(self.node_mask, str):
             self.node_labels = [self.node_labels]
+
+    # GRAPH LIFECYCLE METHODS
+
+    def __del__(self):
+        self.close_connection()
+
+    def test_driver(self):
+        if isinstance(self.driver, neo4j.DirectDriver):
+            self.driver_connected = True
+        else:
+            self.driver_connected = False
+
+    def close_connection(self):
+        """Manually close the driver linking `self.graph` to a Neo4j
+        graph database.
+        """
+        if self.driver_connected:
+            self.driver.close()
+        else:
+            print("Error: Connection to Neo4j is not currently active")
+
+    def open_connection(self,
+                        username,
+                        password,
+                        uri = "bolt://localhost:7687"):
+        """Manually establish a connection between `self.graph` and a
+        Neo4j graph database.
+        """
+        if not self.driver_connected:
+            try:
+                self.driver = GraphDatabase.driver(self.uri,
+                                                   auth=(self.username,
+                                                         self.password))
+                self.driver_connected = True
+            except:
+                print("Error opening connection to Neo4j")
+                self.driver_connected = False
+        else:
+            print("Error: Connection to Neo4j is already active")
+            print("       (Use `.close_connection()` and try again)")
+
+    def _validate_connection_status(self):
+        """Internal test for whether a connection to a Neo4j graph
+        database currently exists and is active.
+        """
+        if not self.driver_connected:
+            raise RuntimeError("Attempted to query Neo4j without an active database connection")
+        return True
+
+    # NODE RETRIEVAL METHODS
 
     def get_node_degrees(self, node_type=None):
         """Retrieve a list of URIs and their corresponding degrees.
@@ -75,22 +129,7 @@ class Graph:
                 assert len(query_response) == 1
                 return query_response[0]
 
-    def fetch_neighbors_by_uri(self, uri):
-        """Fetch nodes corresponding to neighbors of a node represented by a given URI.
-        """
-        if uri == None:
-            print("No URI given -- aborting")
-        else:
-            self.template = queries.FETCH_NEIGHBORS_BY_URI
-            self.query = self.template.format(uri)
 
-        query_response = self.run_query_in_session(self.query)
-
-        if len(query_response) == 0:
-            return None
-        else:
-            return query_response
- 
     def fetch_nodes_by_label(self, label):
         """
         Fetch all nodes of a given label from the graph.
@@ -116,6 +155,26 @@ class Graph:
 
             return(query_response)
 
+    def fetch_neighbors_by_uri(self, uri):
+        """Fetch nodes corresponding to neighbors of a node represented by a given URI.
+        """
+        if uri == None:
+            print("No URI given -- aborting")
+        else:
+            self.template = queries.FETCH_NEIGHBORS_BY_URI
+            self.query = self.template.format(uri)
+
+        query_response = self.run_query_in_session(self.query)
+
+        if len(query_response) == 0:
+            return None
+        else:
+            return query_response
+
+    # NODE/GRAPH MODIFICATION METHODS
+
+    # GRAPH I/O
+
     def build_adjacency_matrix(self, sparse=True):
         """Construct an adjacency matrix of individuals in the
         ontology graph.
@@ -124,7 +183,7 @@ class Graph:
         each column corresponds to one of the nodes in the graph. The
         value of cell $(i,j)$ is 1 if a directed edge goes from
         $\textrm{Node}_i$ to $\textrm{Node}_j$, and is $-1$ if an edge
-        goes from $\textrm{Node}_j$ to $\textrm{Node}_i$. 
+        goes from $\textrm{Node}_j$ to $\textrm{Node}_i$.
 
         In the case of an undirected graph, the adjacency matrix is
         symmetric.
@@ -140,8 +199,6 @@ class Graph:
 
         G = nxneo4j.Graph(self.driver)
 
-        
-        
         return A
 
     def build_incidence_matrix(self, sparse=True):
@@ -153,52 +210,8 @@ class Graph:
         B = np.array()
 
         return B
-    
-    def __del__(self):
-        self.close_connection()
 
-    def close_connection(self):
-        """Manually close the driver linking `self.graph` to a Neo4j
-        graph database.
-        """
-        if self.driver_connected:
-            self.graph.driver.close()
-        else:
-            print("Error: Connection to Neo4j is not currently active")
-
-    def open_connection(self,
-                        username,
-                        password,
-                        uri = "bolt://localhost:7687"):
-        """Manually establish a connection between `self.graph` and a
-        Neo4j graph database.
-        """
-        if not self.driver_connected:
-            try:
-                self.driver = GraphDatabase.driver(self.uri,
-                                                   auth=(self.username,
-                                                         self.password))
-                self.driver_connected = True
-            except:
-                print("Error opening connection to Neo4j")
-                self.driver_connected = False
-        else:
-            print("Error: Connection to Neo4j is already active")
-            print("       (Use `.close_connection()` and try again)")
-
-    def _validate_connection_status(self):
-        """Internal test for whether a connection to a Neo4j graph
-        database currently exists and is active.
-        """
-        if not self.driver_connected:
-            raise RuntimeError("Attempted to query Neo4j without an active database connection")
-        return True
-
-    def run_query_in_session(self, query):
-        with self.driver.session() as session:
-            query_response = session.read_transaction(execute_cypher_transaction,
-                                                      query)
-        return(query_response)
+    # GRAPH ALGORITHMS (external implementations; temporary)
 
     def aop_shortest_path(self, mie_node: str, ao_node: str):
         """Find the shortest path between an MIE and an adverse
@@ -231,7 +244,25 @@ class Graph:
 
         return(shortest_path)
 
-    
+    # UTILITY METHODS
+
+    def run_query_in_session(self, query):
+        """Submit a cypher query transaction to the connected graph database driver and return the
+        response to the calling function.
+
+        Parameters
+        ----------
+        query : str
+                String representation of the cypher query to be executed.
+
+        Returns
+        -------
+        list of neo4j.Record
+        """
+        with self.driver.session() as session:
+            query_response = session.read_transaction(execute_cypher_transaction,
+                                                      query)
+        return(query_response)
 
 class Path(object):
     def __init__(self, node_list):

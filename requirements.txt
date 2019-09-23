@@ -9,3 +9,5 @@ neo4j
 networkx-neo4j
 ipdb
 tqdm
+coverage
+codecov

@@ -59,7 +59,28 @@ In the future, we hope to create interactive visualizations and discovery tools 
 
 Eventually, ComptoxAI will be posted to the Python Package Index and made available for remote installation with `pip`. For now, download the code (either through an official release on the Releases page, or by cloning the entire repository) and install via:
 
-`pip install /path/to/comptox_ai -i /path/to/comptox_ai/requirements.txt
+`pip install /path/to/comptox_ai -r /path/to/comptox_ai/requirements.txt`
+
+This should install ComptoxAI along with all required dependencies.
+
+#### Neo4j and plugins
+
+You'll need to install Neo4j and several plugins to work with the graph database portion of ComptoxAI. We recommend using [Neo4j Desktop](https://neo4j.com/docs/operations-manual/current/installation/neo4j-desktop/) rather than manually setting up the graph database server (the old preferred method), unless you are an expert. However you choose to install Neo4j, perform the following steps once the database server is running:
+
+1. (If using Neo4j desktop) Create a new project, with a name like "ComptoxAI"
+2. Make sure security authorization is enabled, and set a username and password that you will remember
+3. Access the configuration/settings file, and comment out the line that says `dbms.directories.import=import`
+4. Install the required plugins (the first two of which can be installed from the project's main detail page, if using Neo4j Desktop):
+    - APOC
+    - Graph Algorithms
+    - [NSMNTX](https://github.com/jbarrasa/neosemantics); make sure to modify the configuration/settings file as instructed
+5. Restart Neo4j
+6. Open the Neo4j browser (or a cypher shell, if you prefer)
+7. Run the following two cypher commands to import the populated ontology:
+    1. `CREATE INDEX ON :Resource(uri);`
+    2. `CALL semantics.importRdf("file:///path/to/comptox_ai/comptox_populated.rdf", "RDF/XML");`
+
+It should take a while for the entire database to import, but you will receive a response that indicates the import was successful (or, possibly, unsuccessful).
 
 - - -
 

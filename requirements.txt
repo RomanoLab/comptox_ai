@@ -1,7 +1,11 @@
 numpy
 scipy
+pandas
 networkx
 rdflib
 owlready2
 pytest
+neo4j
 networkx-neo4j
+ipdb
+tqdm

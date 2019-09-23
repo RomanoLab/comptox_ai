@@ -2,8 +2,12 @@ from neo4j import GraphDatabase
 import configparser
 
 import pytest
+import os, sys
 
-CONFIG_FILE = 'CONFIG.cfg'
+if os.path.exists('CONFIG.cfg'):
+    CONFIG_FILE = 'CONFIG.cfg'
+else:
+    CONFIG_FILE = 'CONFIG-default.cfg'
 
 class TestNeo4j:
     def test_can_establish_bolt_connection(self):

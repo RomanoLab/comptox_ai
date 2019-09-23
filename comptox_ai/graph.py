@@ -244,6 +244,34 @@ class Graph:
 
         return(shortest_path)
 
+    def page_rank(self, node_type=None):
+        """Compute page rank of all owl__NamedIndividual nodes in the attached graph.
+
+        Page rank uses eigenvector centrality to determine "importance" of individual nodes based
+        on the centrality of immediate neighbors.
+        
+        Parameters
+        ----------
+        node_type : str, optional
+            Ontology class of desired nodes. Page rank will be computed over all node types, but
+            only the desired type will be returned to the user. If None, no filtering will be
+            performed.
+
+        Returns
+        -------
+        list of tuple
+        """
+        G = nxneo4j.Graph(self.driver, config={
+            'node_label': 'owl__NamedIndividual',
+            'relationship_type': None,
+            'identifier_property': 'uri'
+        })
+        
+        pr = sorted(nxneo4j.centrality.pagerank(G).items(), key=lambda x: x[1], reverse=True)
+
+        return pr
+
+
     # UTILITY METHODS
 
     def run_query_in_session(self, query):
@@ -263,6 +291,7 @@ class Graph:
             query_response = session.read_transaction(execute_cypher_transaction,
                                                       query)
         return(query_response)
+
 
 class Path(object):
     def __init__(self, node_list):

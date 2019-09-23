@@ -3,7 +3,7 @@ import configparser
 
 import pytest
 
-CONFIG_FILE = 'NEO4J_CONFIG.cfg'
+CONFIG_FILE = 'CONFIG.cfg'
 
 class TestNeo4j:
     def test_can_establish_bolt_connection(self):

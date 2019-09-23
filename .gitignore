@@ -247,3 +247,5 @@ NEO4J_CONFIG.cfg
 CONFIG.cfg
 
 .vscode/
+
+catalog-*.xml

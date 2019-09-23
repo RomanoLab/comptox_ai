@@ -12,15 +12,50 @@ A modern biocomputing infrastructure for computational toxicology.
 
 - - -
 
-## Using the ontology
+## Main components of `ComptoxAI`
 
-There are two ontologies packaged in this repository:
+![Class hierarchy of Comptox Ontology and graph database individual counts](./doc/images/ontology-diagram.png)
+_(Counts current as of September 23, 2019)_
 
-- `comptox.rdf`: The core ontology, consisting of a class polyhierarchy
+### Comptox Ontology
+
+The Comptox Ontology provides a formal description of a wide array of conceptual entities involved in computational toxicology. Specifically, it is meant to support translational research in computational toxicology by defining and enumerating the relationships that occur between these entities.
+
+Two ontologies are included in the repository:
+
+- `comptox.rdf`: The core ontology, consisting of a class polyhierarchy and a definition of object/data properties and their domains/ranges.
 
 - `comptox_populated.rdf`: The same ontology, but populated with individuals for all currently supported classes.
 
-`comptox.rdf` was created by manually building out a class hierarchy and properties in Protégé. Only manually-defined named individuals (e.g., all instances of `Database`) are in the core ontology. `comptox_populated.rdf` was created by running the script `build/add_individuals.py`, which parses the core ontology, places individuals sourced from external data resources, attaches data properties, and links entities where appropriate using object properties.
+`comptox.rdf` was created by manually building a class hierarchy and properties in the Protégé ontology editor. `comptox_populated.rdf` was created by running the Python scripts in `comptox_ai/scripts/build/`, which parse the core ontology, place individuals sourced from external data resources, attach data properties, and link entities using object properties.
+
+### ComptoxAI graph database
+
+The graph database itself isn't distributed in flat files or database dumps. Instead, the full ontology file (`comptox_populated.rdf`) is imported using the external library NSMNTX (fomally NeoSemantics), which populates Neo4j databases with RDF triples.
+
+### Adverse Outcome Pathway toolbox (PLANNED)
+
+Adverse Outcome Pathways (AOPs) provide a conceptual framework for describing toxic exposures and the ways in which they result in downstream effects. An AOP consists of a Molecular Initiating Event (MIE) and an Adverse Outcome (AO), linked by one or more Key Events (KEs; MIEs happen to be a particular type of KE) organized as a directed acyclic graph (DAG). Some important properties of AOPs:
+
+- KEs can exist at different levels of organization (e.g., molecules, cells, tissues, organisms)
+- MIEs, KEs, and AOs can be shared among multiple AOPs
+- AOPs fit naturally into both the Comptox Ontology and ComptoxAI's graph database, since the ontology has `AOP`, `KeyEvent`, `MolecularInitiatingEvent`, and `AdverseOutcome` classes that are populated in the database using various external resources
+
+### Machine learning model library (PLANNED)
+
+One of the ultimate goals of ComptoxAI is to enable training advanced machine learning (ML) and deep learning (DL) models that can identify patterns and lead to new discoveries from existing computational toxicology data. A few of our areas of emphasis include:
+- Graph convolutional neural networks (Graph CNNs)
+- Transformations of the graph data that leverage heterogeneity of the multiple connected node types within the database
+- Autoencoder models to reduce dimensionality of computational toxicology data
+- Pytorch and/or Tensorflow implementations of these models
+
+### Web learning resources and interactive tools (PLANNED)
+
+In the future, we hope to create interactive visualizations and discovery tools that make it easier for toxicologists to interact with the data in ComptoxAI and the hypotheses that it enables.
+
+- - -
+
+## Installing `ComptoxAI`
 
 - - -
 

@@ -14,7 +14,7 @@ A modern biocomputing infrastructure for computational toxicology.
 
 ## Main components of `ComptoxAI`
 
-![Class hierarchy of Comptox Ontology and graph database individual counts](./doc/images/ontology-diagram.png)
+![Class hierarchy of Comptox Ontology and graph database individual counts](./doc/images/ontology.png)
 _(Counts current as of September 23, 2019)_
 
 ### Comptox Ontology

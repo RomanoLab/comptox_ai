@@ -5,6 +5,7 @@ networkx
 rdflib
 owlready2
 pytest
+pytest-cov
 neo4j
 networkx-neo4j
 ipdb

@@ -1,9 +1,11 @@
-# Comptox ontology
-A modern bioontology for computational toxicology.
+# `ComptoxAI`
+A modern biocomputing infrastructure for computational toxicology.
 
 - - -
 
-This is a temporary repository that I'm using to build an ontology to support computational toxicology. Shortly, when it is built out enough to support useful inference, discovery, and graph machine learning, I'll merge it into a larger computational toxicology framework. In the meantime, check out another incomplete comptox repository of mine: http://github.com/JDRomano2/aop_neo4j.
+`ComptoxAI` is a collection of resources made to enable a diverse range of artificial intelligence applications for computational toxicology data.
+
+`ComptoxAI` is developed by Joseph D. Romano, PhD, who is currently a member of the Computational Genetics laboratory at the University of Pennsylvania.
 
 - - -
 

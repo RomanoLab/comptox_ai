@@ -1,4 +1,7 @@
 # `ComptoxAI`
+
+![Travis (.org)](https://img.shields.io/travis/JDRomano2/comptox_ai?style=flat-square)
+
 A modern biocomputing infrastructure for computational toxicology.
 
 - - -

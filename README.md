@@ -6,13 +6,13 @@ A modern biocomputing infrastructure for computational toxicology.
 
 - - -
 
-`ComptoxAI` is a collection of resources made to enable a diverse range of artificial intelligence applications for computational toxicology data.
+ComptoxAI is a collection of resources made to enable a diverse range of artificial intelligence applications for computational toxicology data.
 
-`ComptoxAI` is developed by [Joseph D. Romano, PhD](http://jdr.bio), who is currently a member of the [Computational Genetics Laboratory](http://epistasis.org) at the University of Pennsylvania, as well as a postdoctoral fellow in the [Center for Excellence in Environmental Toxicology](http://ceet.upenn.edu/).
+ComptoxAI is developed by [Joseph D. Romano, PhD](http://jdr.bio), who is currently a member of the [Computational Genetics Laboratory](http://epistasis.org) at the University of Pennsylvania, as well as a postdoctoral fellow in the [Center for Excellence in Environmental Toxicology](http://ceet.upenn.edu/).
 
 - - -
 
-## Main components of `ComptoxAI`
+## Main components of ComptoxAI
 
 ![Class hierarchy of Comptox Ontology and graph database individual counts](./doc/images/ontology.png)
 _(Counts current as of September 23, 2019)_
@@ -55,7 +55,11 @@ In the future, we hope to create interactive visualizations and discovery tools 
 
 - - -
 
-## Installing `ComptoxAI`
+## Installing ComptoxAI
+
+Eventually, ComptoxAI will be posted to the Python Package Index and made available for remote installation with `pip`. For now, download the code (either through an official release on the Releases page, or by cloning the entire repository) and install via:
+
+`pip install /path/to/comptox_ai -i /path/to/comptox_ai/requirements.txt
 
 - - -
 

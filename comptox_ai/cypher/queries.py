@@ -7,6 +7,13 @@ WHERE length(p)>1
 RETURN p;
 """[1:-1]
 
+FETCH_ALL_TRIPLES = """
+MATCH
+    (n:owl__NamedIndividual)-[r]->(m:owl__NamedIndividual)
+RETURN
+    n, type(r), m;
+"""[1:-1]
+
 FETCH_NODES_BY_LABEL = """
 MATCH
     (n:ns0__{})

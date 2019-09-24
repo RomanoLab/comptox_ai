@@ -1,5 +1,6 @@
 import numpy as np
 import nxneo4j
+import networkx as nx
 
 from .cypher import queries
 
@@ -174,6 +175,38 @@ class Graph:
     # NODE/GRAPH MODIFICATION METHODS
 
     # GRAPH I/O
+
+    def to_networkx_graph(self):
+        """Construct a NetworkX graph object from the data in the
+        connected Neo4j graph database.
+
+        Returns
+        -------
+        networkx.graph
+        """
+        # NOTE: nxneo4j actually seems to be useless!!!
+        # We use nxneo4j to eliminate some of the implementation work
+        #n4j_g = nxneo4j.Graph(self.driver)
+
+        # Create an empty NetworkX graph
+        #nx_g = nx.graph()
+
+        # Fetch all triples
+        self.template = queries.FETCH_ALL_TRIPLES
+        self.query = self.template.format()
+
+        print("Fetching all triples for named individuals - this may take a while...")
+        query_response = self.run_query_in_session(self.query)
+
+        print("All triples received, now processing them...")
+        processed_triples = []
+        for triple in query_response:
+            n = triple['n'].get('uri').split('#')[-1]
+            r = triple['type(r)']
+            m = triple['m'].get('uri').split('#')[-1]
+            processed_triples.append((n,r,m))
+        return processed_triples
+
 
     def build_adjacency_matrix(self, sparse=True):
         """Construct an adjacency matrix of individuals in the

@@ -2,9 +2,48 @@ import numpy as np
 import nxneo4j
 import networkx as nx
 
+# for Spinner
+import sys
+import time
+import threading
+
 from .cypher import queries
 
 from .utils import execute_cypher_transaction
+
+#TODO: Move!!!
+class Spinner(object):
+    """See https://stackoverflow.com/a/39504463/1730417
+    """
+    busy = False
+    delay = 0.1
+
+    @staticmethod
+    def spinning_cursor():
+        while 1:
+            for cursor in '|/-\\': yield cursor
+
+    def __init__(self, delay=None):
+        self.spinner_generator = self.spinning_cursor()
+        if delay and float(delay): self.delay = delay
+
+    def spinner_task(self):
+        while self.busy:
+            sys.stdout.write(next(self.spinner_generator))
+            sys.stdout.flush()
+            time.sleep(self.delay)
+            sys.stdout.write('\b')
+            sys.stdout.flush()
+    
+    def __enter__(self):
+        self.busy = True
+        threading.Thread(target=self.spinner_task).start()
+
+    def __exit__(self, exception, value, tb):
+        self.busy = False
+        time.sleep(self.delay)
+        if exception is not None:
+            return False
 
 class Graph:
     """
@@ -196,16 +235,22 @@ class Graph:
         self.query = self.template.format()
 
         print("Fetching all triples for named individuals - this may take a while...")
-        query_response = self.run_query_in_session(self.query)
+        with Spinner():
+            query_response = self.run_query_in_session(self.query)
 
         print("All triples received, now processing them...")
-        processed_triples = []
+        edges = []
+        edge_labels = []
         for triple in query_response:
             n = triple['n'].get('uri').split('#')[-1]
             r = triple['type(r)']
             m = triple['m'].get('uri').split('#')[-1]
-            processed_triples.append((n,r,m))
-        return processed_triples
+            edges.append((n,m))
+            edge_labels.append(r)
+
+        G = nx.Graph()
+        G.add_edges_from(edges)
+        return (G, edges, edge_labels)
 
 
     def build_adjacency_matrix(self, sparse=True):

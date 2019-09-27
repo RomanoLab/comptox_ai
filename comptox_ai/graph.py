@@ -240,17 +240,30 @@ class Graph:
 
         print("All triples received, now processing them...")
         edges = []
-        edge_labels = []
+        #edge_labels = []
         for triple in query_response:
             n = triple['n'].get('uri').split('#')[-1]
             r = triple['type(r)']
             m = triple['m'].get('uri').split('#')[-1]
-            edges.append((n,m))
-            edge_labels.append(r)
+            edges.append((n,r,m))
+            #edge_labels.append(r)
 
-        G = nx.Graph()
-        G.add_edges_from(edges)
-        return (G, edges, edge_labels)
+        G = nx.DiGraph()
+        #G.add_edges_from(edges)
+
+        for n, r, m in edges:
+            G.add_edge(u_of_edge=n, v_of_edge=m, edge_label=r)
+
+        #return (G, edges, edge_labels)
+        return(G)
+
+    def to_graphml(self, G=None, edges=None, edge_labels=None):
+        if not all([G, edges, edge_labels]):
+            print("Incomplete network data given; calculating via to_networkx_graph()...")
+            G, edges, edge_labels = self.to_networkx_graph()
+            print("...done")
+
+        
 
 
     def build_adjacency_matrix(self, sparse=True):

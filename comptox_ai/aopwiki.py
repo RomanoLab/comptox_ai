@@ -9,17 +9,13 @@ import ipdb
 
 def get_subtree_element(element, subtree_type):
     element = [x for x in element if x.tag.split("}")[-1] == subtree_type]
-    # try:
-    #     assert len(element) <= 1
-    # except AssertionError:
-    #     ipdb.set_trace()
-    #     print()
     if len(element) == 1:
         return element[0]
     elif len(element) > 1:
         return element
     else:
         return None
+
 
 @dataclass
 class Stressor:
@@ -168,6 +164,12 @@ class AopWiki(object):
             print(f"(skipping for now)")
             return False
 
+    def add_stressor(self, stressor_element):
+        pass
+
+    def add_chemical(self, chemical_element):
+        pass
+
 
     def add_all_aops(self):
         aops = self.get_all_elements_of_type('aop')
@@ -181,12 +183,24 @@ class AopWiki(object):
         for ke in kes:
             self.add_ke(ke)
 
+    def add_all_chemicals(self):
+        chemicals = self.get_all_elements_of_type('chemical')
+
+        for chem in chemicals:
+            self.add_chemical(chem)
+
+    def add_all_stressors(self):
+        stressors = self.get_all_elements_of_type('stressor')
+
+        for stressor in stressors:
+            self.add_stressor(stressor)
+
 
     def parse_wiki(self):
         # First we add the elements
         self.add_all_aops()
         self.add_all_kes()
-        #self.add_all_chemicals()
-        #self.add_all_stressors()
+        self.add_all_chemicals()
+        self.add_all_stressors()
 
         # Then we link them together

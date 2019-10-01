@@ -22,6 +22,7 @@ def get_subtree_element(element, subtree_type):
 class Chemical:
     chemical_id: str
     dsstox_id: str
+    casrn: str
     jchem_inchi_key: str
     indigo_inchi_key: str
     synonyms: List[str]
@@ -220,6 +221,7 @@ class AopWiki(object):
         new_chemical = Chemical(
             chemical_id = chemical_id,
             dsstox_id = dsstox_id,
+            casrn = casrn,
             jchem_inchi_key = jchem_inchi_key,
             indigo_inchi_key = indigo_inchi_key,
             synonyms = synonyms,
@@ -289,13 +291,13 @@ class AopWiki(object):
 
     def print_wiki_info(self):
         aops = self.aops.values()
+        kes = self.kes.values()
 
 
         rel_counts = {
             'AOP-(has_mie)->KeyEvent': sum([len(x.mies) for x in aops]),
             'AOP-(has_ke)->KeyEvent': sum([len(x.kes) for x in aops]),
             'AOP-(has_ao)->KeyEvent': sum([len(x.aos) for x in aops]),
-
         }
 
         print(f"AOP WIKI")

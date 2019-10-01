@@ -45,6 +45,9 @@ class KE:
     stressor_ids: List[str]
     stressors: List[Stressor] = field(default_factory=list)
 
+    upstream_kes: List['KE'] = field(default_factory=list)
+    downstream_kes: List['KE'] = field(default_factory=list)
+
 @dataclass
 class AOP:
     title: str
@@ -259,6 +262,17 @@ class AopWiki(object):
         for stressor in stressors:
             self.add_stressor(stressor)
 
+    def link_key_event_relationships(self):
+        kers = self.get_all_elements_of_type('key-event-relationship')
+
+        for k in kers:
+            title = get_subtree_element(k,'title')
+            
+            upstream_id = get_subtree_element(title,'upstream-id').text
+            downstream_id = get_subtree_element(title,'downstream-id').text
+
+            self.kes[upstream_id].downstream_kes.append(downstream_id)
+            self.kes[downstream_id].upstream_kes.append(upstream_id)
 
     def parse_wiki(self):
         # First we add the elements
@@ -288,6 +302,13 @@ class AopWiki(object):
             # Link to stressors
             stressor_ids = k.stressor_ids
             k.stressors = [self.stressors[x] for x in stressor_ids]
+
+        for _,s in self.stressors.items():
+            chemical_ids = s.chemical_ids
+            s.chemicals = [self.chemicals[x] for x in chemical_ids]
+
+        # Finally, we add key event relationships to key events
+        self.link_key_event_relationships()
 
     def print_wiki_info(self):
         aops = self.aops.values()
@@ -320,5 +341,6 @@ if __name__=="__main__":
     if os.path.exists(wiki_xml_fname):
         wiki = AopWiki(xml_fname=wiki_xml_fname)
         wiki.print_wiki_info()
+
     else:
         sys.exit(1)

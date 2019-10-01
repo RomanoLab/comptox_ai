@@ -1,4 +1,5 @@
 import json
+import sys, os
 from dataclasses import dataclass, field
 from typing import List
 
@@ -18,9 +19,19 @@ def get_subtree_element(element, subtree_type):
 
 
 @dataclass
+class Chemical:
+    chemical_id: str
+    dsstox_id: str
+    jchem_inchi_key: str
+    indigo_inchi_key: str
+    synonyms: List[str]
+
+@dataclass
 class Stressor:
     name: str
     stressor_id: str
+    chemical_ids: List[str]
+    chemicals: List[Chemical] = field(default_factory=list)
 
 @dataclass
 class KE:
@@ -64,6 +75,8 @@ class AopWiki(object):
         # is an instance of the corresponding dataclass. These are filled later.
         self.aops = dict()
         self.kes = dict()
+        self.stressors = dict()
+        self.chemicals = dict()
 
         self.parse_wiki()
 
@@ -165,11 +178,60 @@ class AopWiki(object):
             return False
 
     def add_stressor(self, stressor_element):
-        pass
+        name = get_subtree_element(stressor_element, 'name').text
+
+        stressor_id = stressor_element.get('id')
+        
+        chemicals = get_subtree_element(stressor_element, 'chemicals')
+        chemical_ids = []
+        if chemicals is not None:
+            for chem in chemicals:
+                chemical_ids.append(chem.get('chemical-id'))
+
+        new_stressor = Stressor(
+            name = name,
+            stressor_id = stressor_id,
+            chemical_ids = chemical_ids,
+        )
+
+        if not new_stressor.stressor_id in self.stressors.keys():
+            self.stressors[new_stressor.stressor_id] = new_stressor
+            return True
+        else:
+            print(f"Error: Duplicate stressor id {new_stressor.stressor_id}")
+            print(f"(skipping for now)")
+            return False
+
 
     def add_chemical(self, chemical_element):
-        pass
+        chemical_id = chemical_element.get('id')
+        
+        dsstox_id = get_subtree_element(chemical_element, 'dsstox-id').text
+        casrn = get_subtree_element(chemical_element, 'casrn').text
+        jchem_inchi_key = get_subtree_element(chemical_element, 'jchem-inchi-key').text
+        indigo_inchi_key = get_subtree_element(chemical_element, 'indigo-inchi-key').text
 
+        syn_nodes = chemical_element.get('synonyms')
+        if syn_nodes:
+            synonyms = [x.text for x in syn_nodes]
+        else:
+            synonyms = []
+
+        new_chemical = Chemical(
+            chemical_id = chemical_id,
+            dsstox_id = dsstox_id,
+            jchem_inchi_key = jchem_inchi_key,
+            indigo_inchi_key = indigo_inchi_key,
+            synonyms = synonyms,
+        )
+
+        if not new_chemical.chemical_id in self.chemicals.keys():
+            self.chemicals[new_chemical.chemical_id] = new_chemical
+            return True
+        else:
+            print(f"Error: Duplicate chemical id {new_chemical.chemical_id}")
+            print(f"(skipping for now")
+            return False
 
     def add_all_aops(self):
         aops = self.get_all_elements_of_type('aop')
@@ -203,4 +265,58 @@ class AopWiki(object):
         self.add_all_chemicals()
         self.add_all_stressors()
 
+        #ipdb.set_trace()
+
         # Then we link them together
+        for _,a in self.aops.items():
+            
+            mie_ids = a.mie_ids
+            if a.mie_ids:
+                a.mies = [self.kes[x] for x in mie_ids]
+            
+            ke_ids = a.ke_ids
+            if a.ke_ids:
+                a.kes = [self.kes[y] for y in ke_ids]
+            
+            ao_ids = a.ao_ids
+            if a.ao_ids:
+                a.aos = [self.kes[z] for z in ao_ids]
+
+        for _,k in self.kes.items():
+            # Link to stressors
+            stressor_ids = k.stressor_ids
+            k.stressors = [self.stressors[x] for x in stressor_ids]
+
+    def print_wiki_info(self):
+        aops = self.aops.values()
+
+
+        rel_counts = {
+            'AOP-(has_mie)->KeyEvent': sum([len(x.mies) for x in aops]),
+            'AOP-(has_ke)->KeyEvent': sum([len(x.kes) for x in aops]),
+            'AOP-(has_ao)->KeyEvent': sum([len(x.aos) for x in aops]),
+
+        }
+
+        print(f"AOP WIKI")
+        print("--------")
+        print()
+        print(f"Counts of element types:")
+        print(f"  - AOPs:       {len(self.aops)}")
+        print(f"  - Key Events: {len(self.kes)}")
+        print(f"  - Stressors:  {len(self.stressors)}")
+        print(f"  - Chemicals:  {len(self.chemicals)}")
+        print()
+        print(f"Counts of relationships by type:")
+        [print(f"  - {k}: {v}") for k,v in rel_counts.items()]
+
+if __name__=="__main__":
+    script_dir = os.path.dirname(__file__)
+    wiki_xml_fname = os.path.join(script_dir,'..','data','external','aopwiki',
+                                  'aop-wiki-xml-2019-07-01.xml')
+    
+    if os.path.exists(wiki_xml_fname):
+        wiki = AopWiki(xml_fname=wiki_xml_fname)
+        wiki.print_wiki_info()
+    else:
+        sys.exit(1)

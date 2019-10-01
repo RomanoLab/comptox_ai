@@ -316,9 +316,11 @@ class AopWiki(object):
 
 
         rel_counts = {
-            'AOP-(has_mie)->KeyEvent': sum([len(x.mies) for x in aops]),
-            'AOP-(has_ke)->KeyEvent': sum([len(x.kes) for x in aops]),
-            'AOP-(has_ao)->KeyEvent': sum([len(x.aos) for x in aops]),
+            'AOP-(has_mie)--------->KeyEvent': sum([len(x.mies) for x in aops]),
+            'AOP-(has_ke)---------->KeyEvent': sum([len(x.kes) for x in aops]),
+            'AOP-(has_ao)---------->KeyEvent': sum([len(x.aos) for x in aops]),
+            'KE--(has_stressor)---->Stressor': sum([len(x.stressors) for x in kes]),
+            'KE<-(ke_relationship)->KE': sum([len(x.downstream_kes) for x in kes]),
         }
 
         print(f"AOP WIKI")

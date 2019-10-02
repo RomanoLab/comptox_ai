@@ -398,6 +398,7 @@ class AopWiki(object):
             'KE<-(ke_relationship)->KE': sum([len(x.downstream_kes) for x in kes]),
         }
 
+        print()
         print(f"AOP WIKI")
         print("--------")
         print()
@@ -408,7 +409,7 @@ class AopWiki(object):
         print(f"  - Chemicals:  {len(self.chemicals)}")
         print()
         print(f"Counts of relationships by type:")
-        [print(f"  - {k}: {v}") for k, v in rel_counts.items()]
+        [print(f"  - {k}: {v} (x2; bidirectional)") for k, v in rel_counts.items()]
 
 if __name__ == "__main__":
     script_dir = os.path.dirname(__file__)

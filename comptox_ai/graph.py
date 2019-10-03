@@ -2,11 +2,14 @@ import numpy as np
 import nxneo4j
 import neo4j
 import networkx as nx
+from collections import defaultdict
 
 # for Spinner
 import sys
 import time
 import threading
+
+import ipdb
 
 from .cypher import queries
 
@@ -22,7 +25,8 @@ class Spinner(object):
     @staticmethod
     def spinning_cursor():
         while 1:
-            for cursor in '|/-\\': yield cursor
+            for cursor in '|/-\\':
+                yield cursor
 
     def __init__(self, delay=None):
         self.spinner_generator = self.spinning_cursor()
@@ -117,6 +121,52 @@ class Graph:
 
     # NODE RETRIEVAL METHODS
 
+    def fetch_ontology_class_labels(self, populated_only=True,
+                                    include_counts=True):
+        """Get all classes from the Comptox AI that are present in the graph
+        database.
+
+        Parameters
+        ----------
+        populated_only : bool, optional
+            Whether to only include classes that have 1 or more named
+            individual, by default True.
+        include_counts : bool, optional
+            Whether to include counts for each label, by default True. If
+            False, the return value will be a list rather than dict.
+
+        Returns
+        -------
+        list or dict
+        """
+        if populated_only:
+            self.template = queries.NODE_COUNTS_BY_LABEL
+            self.query = self.template.format()
+
+            query_response = self.run_query_in_session(self.query)
+
+            nodes_of_type = defaultdict(int)
+            for label_set in query_response:
+                ct = label_set['count']
+                labels = label_set['labels']
+
+                if ct == 0:
+                    continue
+
+                if 'owl__NamedIndividual' not in labels:
+                    continue
+
+                for label in label_set['labels']:
+                    prefix = label.split('__')[0]
+                    suffix = label.split('__')[-1]
+                    if prefix == 'ns0':
+                        nodes_of_type[suffix] += ct
+
+            if include_counts:
+                return dict(nodes_of_type)
+            else:
+                return list(nodes_of_type.keys())
+
     def get_node_degrees(self, node_type=None):
         """Retrieve a list of URIs and their corresponding degrees.
 
@@ -129,7 +179,7 @@ class Graph:
         Returns
         -------
         list of (str, int)
-            Each returned element is a tuple containing a node's URI and that 
+            Each returned element is a tuple containing a node's URI and that
             node's degree.
         """
         if node_type is None:
@@ -188,7 +238,7 @@ class Graph:
                Ontology class name corresponding to
                the type of node desired
         """
-        if label == None:
+        if label is None:
             print("No label provided -- skipping")
         else:
             self.template = queries.FETCH_NODES_BY_LABEL
@@ -289,8 +339,6 @@ class Graph:
     def build_incidence_matrix(self, sparse=True):
         """Construct an incidence matrix of individuals in the
         ontology graph.
-
-        
         """
         B = np.array()
 
@@ -347,22 +395,29 @@ class Graph:
         -------
         list of tuple
         """
+        
+        if node_type is None:
+            node_label = 'owl__NamedIndividual'
+        else:
+            node_label = f"ns0__{node_type}"
+
         G = nxneo4j.Graph(self.driver, config={
-            'node_label': 'owl__NamedIndividual',
+            'node_label': node_label,
             'relationship_type': None,
             'identifier_property': 'uri'
         })
-        
-        pr = sorted(nxneo4j.centrality.pagerank(G).items(), key=lambda x: x[1], reverse=True)
+
+        pr = sorted(nxneo4j.centrality.pagerank(G).items(),
+                    key=lambda x: x[1],
+                    reverse=True)
 
         return pr
-
 
     # UTILITY METHODS
 
     def run_query_in_session(self, query):
-        """Submit a cypher query transaction to the connected graph database driver and return the
-        response to the calling function.
+        """Submit a cypher query transaction to the connected graph database
+        driver and return the response to the calling function.
 
         Parameters
         ----------
@@ -374,8 +429,10 @@ class Graph:
         list of neo4j.Record
         """
         with self.driver.session() as session:
-            query_response = session.read_transaction(execute_cypher_transaction,
-                                                      query)
+            query_response = session.read_transaction(
+                execute_cypher_transaction,
+                query
+            )
         return(query_response)
 
 
@@ -389,7 +446,8 @@ class Path(object):
         self.end_node = self.nodes[-1]
 
     def __repr__(self):
-        repr_str = "< 'Path' object of nodes with the following URI suffixes:\n\t["
+        repr_str = "< 'Path' object of nodes with the following URI suffixes:"\
+                   "\n\t["
         for x in self.nodes:
             repr_str += " {0},\n\t".format(x['uri'].split("#")[-1])
         repr_str = repr_str[:-3]

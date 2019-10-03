@@ -55,6 +55,13 @@ RETURN
     size((n)-[]-()) AS degree;
 """[1:-1]
 
+FETCH_CLASS_URIS = """
+MATCH
+    (n:owl__Class)
+RETURN
+    n.uri;
+"""[1:-1]
+
 ## FROM networkx-neo4j
 ## (see: https://github.com/neo4j-graph-analytics/networkx-neo4j/blob/master/nxneo4j/base_graph.py)
 
@@ -83,6 +90,13 @@ MERGE (node1)-[:{}]->(node2);
 NODE_COUNT = """
 MATCH (:{})
 RETURN count(*) AS numberOfNodes
+"""[1:-1]
+
+NODE_COUNTS_BY_LABEL = """
+MATCH (n)
+RETURN DISTINCT
+    labels(n) AS labels,
+    count(labels(n)) AS count;
 """[1:-1]
 
 BETWEENNESS_CENTRALITY = """

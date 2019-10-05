@@ -1,13 +1,20 @@
 #!/usr/bin/env python
 
+import os
+from pathlib import Path
 import setuptools
 
 with open("README.md", 'r') as fp:
     long_description = fp.read()
 
+package_src_dir = Path(__file__).parent
+
+version_file = open(os.path.join(package_src_dir, 'VERSION'), 'r')
+str_version = version_file.read().strip()
+
 setuptools.setup(
     name="comptox_ai",
-    version="0.0.1a",
+    version=str_version,
     author="Joseph D. Romano, PhD",
     author_email="joseph.romano@pennmedicine.upenn.edu",
     description="An ontology and knowledge base to support discovery in computational toxicology",

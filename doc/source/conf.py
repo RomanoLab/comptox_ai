@@ -12,17 +12,25 @@
 #
 import os
 import sys
+import time
+from pathlib import Path
+import importlib.resources as pkg_resources
 # sys.path.insert(0, os.path.abspath('.'))
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'ComptoxAI'
-copyright = '2019, Joseph D. Romano'
+# don't overwrite python builtin copyright variable
+my_copyright = time.strftime('%Y, Joseph D. Romano')
 author = 'Joseph D. Romano, PhD'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1a'
+comptoxai_src = Path(os.path.abspath(__file__)).parent.parent.parent
+if comptoxai_src not in sys.path:
+    sys.path.insert(0, comptoxai_src)
+version_file = open(os.path.join(comptoxai_src, 'VERSION'), 'r')
+str_version = version_file.read().strip()
 
 
 # -- General configuration ---------------------------------------------------

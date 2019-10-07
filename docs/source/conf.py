@@ -28,10 +28,12 @@ my_copyright = time.strftime('%Y, Joseph D. Romano')
 author = 'Joseph D. Romano, PhD'
 
 # The full version, including alpha/beta/rc tags
-comptoxai_src = Path(os.path.abspath(__file__)).parent.parent.parent
-if comptoxai_src not in sys.path:
-    sys.path.insert(0, comptoxai_src)
-version_file = open(os.path.join(comptoxai_src, 'VERSION'), 'r')
+comptox_ai_root = Path(os.path.abspath(__file__)).parent.parent.parent
+comptox_ai_src = os.path.join(comptox_ai_root, 'comptox_ai')
+print(comptox_ai_src)
+if comptox_ai_src not in sys.path:
+    sys.path.insert(0, comptox_ai_src)
+version_file = open(os.path.join(comptox_ai_root, 'VERSION'), 'r')
 str_version = version_file.read().strip()
 
 
@@ -57,7 +59,11 @@ source_suffix = '.rst'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+
+rst_prolog = """
+.. |version| replace:: VERSION
+""".replace('VERSION', str_version)
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -76,7 +82,7 @@ html_theme_path = [themedir]
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+#html_static_path = ['_static']
 
 # Autosummary stuff:
 

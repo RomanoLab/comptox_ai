@@ -35,7 +35,7 @@ class ComptoxAI(object):
         if (username is None) or (password is None) or (uri is None):
             if config_file is not None:
                 print("Loading configuration file...")
-                
+
                 config = configparser.ConfigParser()
                 config.read(config_file)
 
@@ -57,7 +57,7 @@ class ComptoxAI(object):
             driver = GraphDatabase.driver(self.uri,
                                           auth=(self.username,
                                                 self.password))
-            
+
             self.graph = Graph(driver=driver)
             self.graph.driver_connected = True
         except Exception as ex:

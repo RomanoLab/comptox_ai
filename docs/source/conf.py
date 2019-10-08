@@ -18,7 +18,7 @@ import time
 from pathlib import Path
 import importlib.resources as pkg_resources
 # sys.path.insert(0, os.path.abspath('.'))
-
+#sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
@@ -30,9 +30,9 @@ author = 'Joseph D. Romano, PhD'
 # The full version, including alpha/beta/rc tags
 comptox_ai_root = Path(os.path.abspath(__file__)).parent.parent.parent
 comptox_ai_src = os.path.join(comptox_ai_root, 'comptox_ai')
-print(comptox_ai_src)
-if comptox_ai_src not in sys.path:
-    sys.path.insert(0, comptox_ai_src)
+if comptox_ai_root not in sys.path:
+    sys.path.insert(0, comptox_ai_root)
+print(sys.path)
 version_file = open(os.path.join(comptox_ai_root, 'VERSION'), 'r')
 str_version = version_file.read().strip()
 

@@ -11,9 +11,9 @@ import threading
 
 import ipdb
 
-from .cypher import queries
+from comptox_ai.cypher import queries
 
-from .utils import execute_cypher_transaction
+from comptox_ai.utils import execute_cypher_transaction
 
 
 class Spinner(object):

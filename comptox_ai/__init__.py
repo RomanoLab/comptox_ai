@@ -7,9 +7,9 @@ import os
 from pathlib import Path
 
 from .comptox_ai import ComptoxAI
-from .graph import Graph
-from .ontology import ComptoxOntology
-from .feature_sets import FeatureSet
+from . import graph
+from . import ontology
+#from . import FeatureSet
 
 from . import cypher
 

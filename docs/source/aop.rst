@@ -4,7 +4,7 @@
 Representation of an Adverse Outcome Pathway (:class:`AOP`)
 ***********************************************************
 
-.. currentmodule:: aop
+.. currentmodule:: comptox_ai.aop
 
 .. autoclass:: AdverseOutcomePathway
    :members:

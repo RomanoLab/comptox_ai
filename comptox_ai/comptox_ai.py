@@ -7,7 +7,7 @@
 import owlready2
 import rdflib
 from neo4j import GraphDatabase
-import os, sys
+import sys
 import networkx as nx
 import numpy as np
 import scipy as sp
@@ -26,10 +26,10 @@ class ComptoxAI(object):
     knowledge base.
     """
     def __init__(self,
-                 username = None,
-                 password = None,
-                 uri = None,
-                 config_file = None):
+                 username=None,
+                 password=None,
+                 uri=None,
+                 config_file=None):
 
         # Connect to neo4j and set up graph object
         if (username is None) or (password is None) or (uri is None):
@@ -53,7 +53,6 @@ class ComptoxAI(object):
             self.username = username
             self.password = password
         try:
-            #ipdb.set_trace()
             driver = GraphDatabase.driver(self.uri,
                                           auth=(self.username,
                                                 self.password))

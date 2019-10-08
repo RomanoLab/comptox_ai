@@ -4,7 +4,7 @@
 The Comptox Ontology (:class:`ComptoxOntology`)
 ***********************************************
 
-.. currentmodule:: ontology
+.. currentmodule:: comptox_ai.ontology
 
 The ontology is the main point of interaction with both the knowledge
 representation and the knowledge base that---together---comprise

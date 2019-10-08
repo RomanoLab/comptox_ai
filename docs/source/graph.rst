@@ -4,7 +4,7 @@
 Pythonic view into a Neo4j Graph Database (:class:`Graph`)
 **********************************************************
 
-.. currentmodule:: comptox_ai
+.. currentmodule:: comptox_ai.graph
 
 .. autoclass:: Graph
    :members:

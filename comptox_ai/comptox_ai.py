@@ -17,7 +17,7 @@ import configparser
 
 import nxneo4j
 
-from .graph import Graph
+from comptox_ai.graph import Graph
 
 
 class ComptoxAI(object):

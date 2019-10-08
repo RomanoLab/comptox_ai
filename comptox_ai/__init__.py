@@ -9,7 +9,7 @@ from pathlib import Path
 from .comptox_ai import ComptoxAI
 from . import graph
 from . import ontology
-#from . import FeatureSet
+from . import aop
 
 from . import cypher
 

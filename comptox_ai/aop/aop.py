@@ -4,6 +4,7 @@
 Pythonic implementation of Adverse Outcome Pathways
 """
 
+
 class AdverseOutcomePathway(object):
     """Adverse Outcome Pathway---A framework for conceptualizing how
     toxic exposures result in downstream adverse phenotypic effects,
@@ -26,21 +27,21 @@ class AdverseOutcomePathway(object):
 
     @classmethod
     def aop_from_owl(cls, name):
-        new_aop = cls.__init__(name)
+        new_aop = cls(name)
 
         return new_aop
 
     @classmethod
     def aop_from_neo4j(cls, neo):
-        new_aop = cls.__init__(name)
+        new_aop = cls(neo)
 
         return new_aop
 
     def generate_aop_data_report(self, graph_db):
-        print("Fetching AOP data from Neo4j database corresponding to {0}...").format(self.name)
+        print(
+            "Fetching AOP data from Neo4j database corresponding to {0}..."
+        ).format(self.name)
 
-        #graph_db.
-
-    def build_key_event_graph(self, mie, key_events, adverse_outcomes):
+    def build_key_event_graph(self, mies, key_events, adverse_outcomes):
         if isinstance(mies, list):
             pass

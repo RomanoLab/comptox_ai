@@ -1,8 +1,8 @@
 .. _graph:
 
-**********************************************************
-Pythonic view into a Neo4j Graph Database (:class:`Graph`)
-**********************************************************
+*********************************************************************
+Graph representation of the ComptoxAI knowledge base (:class:`Graph`)
+*********************************************************************
 
 .. automodule:: comptox_ai.graph
    :members:

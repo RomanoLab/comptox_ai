@@ -17,7 +17,7 @@ ComptoxAI is developed by [Joseph D. Romano, PhD](http://jdr.bio), who is curren
 
 ### Comptox Ontology
 
-![Class hierarchy of Comptox Ontology and graph database individual counts](./doc/images/ontology.png)
+![Class hierarchy of Comptox Ontology and graph database individual counts](./docs/images/ontology.png)
 _(Counts current as of September 23, 2019)_
 
 The Comptox Ontology provides a formal description of a wide array of conceptual entities involved in computational toxicology. Specifically, it is meant to support translational research in computational toxicology by defining and enumerating the relationships that occur between these entities.

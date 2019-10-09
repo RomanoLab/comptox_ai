@@ -76,6 +76,15 @@ if not os.path.isdir(themedir):
 html_theme = 'scipy'
 html_theme_path = [themedir]
 
+html_theme_options = {
+    "rootlinks": [
+        ("https://comptox.ai/", "comptox.ai"),
+        ("https://comptox.ai/doc", "Docs")
+    ]
+}
+
+html_title = "%s v%s Manual" % (project, str_version)
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".

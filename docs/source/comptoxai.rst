@@ -1,8 +1,8 @@
 .. _comptoxai:
 
-***********************************************
-The ComptoxAI Framework (:class:`ComptoxAI`)
-***********************************************
+**************************************************
+A wrapper class for ComptoxAI (:class:`ComptoxAI`)
+**************************************************
 
 .. currentmodule:: comptox_ai
 

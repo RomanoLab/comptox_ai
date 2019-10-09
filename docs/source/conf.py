@@ -21,8 +21,7 @@ import importlib.resources as pkg_resources
 # -- Project information -----------------------------------------------------
 
 project = 'ComptoxAI'
-# don't overwrite python builtin copyright variable
-my_copyright = time.strftime('%Y, Joseph D. Romano')
+copyright = time.strftime('%Y, Joseph D. Romano')
 author = 'Joseph D. Romano, PhD'
 
 # The full version, including alpha/beta/rc tags
@@ -88,7 +87,7 @@ html_theme_path = [themedir]
 html_theme_options = {
     "rootlinks": [
         ("https://comptox.ai/", "comptox.ai"),
-        ("https://comptox.ai/doc", "Docs")
+        #("https://comptox.ai/docs", "API Docs home")
     ]
 }
 

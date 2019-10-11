@@ -75,12 +75,12 @@ ke_components = pd.read_csv("../../../data/external/aopwiki/aop_ke_ec.tsv",
                                    'process_ontology_id',
                                    'process_term'])
 
-# aop_wiki = etree.parse("../data/aopwiki/aop-wiki-xml-2019-07-01.xml")
-# root = aop_wiki.getroot()
-# ex_chem = [x for x in root if x.tag.split("}")[-1] == 'chemical'][0]
-# ex_stress = [x for x in root if x.tag.split("}")[-1] == 'stressor'][0]
-# ex_aop = [x for x in root if x.tag.split("}")[-1] == 'aop'][0]
-# aop_xml_list = [x for x in root if x.tag.split("}")[-1] == 'aop']
+aop_wiki = etree.parse("../../../data/external/aopwiki/aop-wiki-xml-2019-07-01.xml")
+root = aop_wiki.getroot()
+ex_chem = [x for x in root if x.tag.split("}")[-1] == 'chemical'][0]
+ex_stress = [x for x in root if x.tag.split("}")[-1] == 'stressor'][0]
+ex_aop = [x for x in root if x.tag.split("}")[-1] == 'aop'][0]
+aop_xml_list = [x for x in root if x.tag.split("}")[-1] == 'aop']
 with open("../../../data/external/aopwiki/aops.json", 'r') as fp:
     aops = json.load(fp)
 aop_dict = {}

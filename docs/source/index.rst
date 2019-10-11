@@ -1,8 +1,3 @@
-.. ComptoxAI documentation master file, created by
-   sphinx-quickstart on Tue Sep 10 14:01:53 2019.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 ComptoxAI Reference Guide
 =========================
 
@@ -11,14 +6,17 @@ ComptoxAI Reference Guide
 
 .. module:: comptox_ai
 
-This reference manual describes the functions, modules, and objects included in
-(and associated with) ComptoxAI - a centralized toolkit for computational
-toxicology.
+Welcome! This reference manual documents the tools and code that comprise
+ComptoxAI - a centralized toolkit for computational toxicology.
 
+For installation and other user guides, please visit the `main website
+<https://comptox.ai/>`_.
+
+Table of Contents
+=================
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
    comptoxai
    ontology
@@ -40,4 +38,6 @@ Acknowledgements
 ================
 
 ComptoxAI's documentation structure was adapted from the Numpy documentation
-(see `Numpydoc <https://numpydoc.readthedocs.io/en/latest>`).
+(see `numpydoc <https://numpydoc.readthedocs.io/en/latest>`_), and uses the
+`scipy-sphinx-theme <https://github.com/scipy/scipy-sphinx-theme>`_ for visual
+styling.

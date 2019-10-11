@@ -9,7 +9,7 @@ with open("README.md", 'r') as fp:
 
 package_src_dir = Path(__file__).parent
 
-version_file = open(os.path.join(package_src_dir, 'VERSION'), 'r')
+version_file = open(os.path.join(str(package_src_dir), 'VERSION'), 'r')
 str_version = version_file.read().strip()
 
 setuptools.setup(

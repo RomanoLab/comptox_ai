@@ -1,6 +1,8 @@
 """
 ComptoxAI
 =========
+
+A modern toolkit for AI research in computational toxicology.
 """
 
 import os

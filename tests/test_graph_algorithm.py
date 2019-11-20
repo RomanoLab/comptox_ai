@@ -12,7 +12,7 @@ else:
     CONFIG_FILE = 'CONFIG-default.cfg'
 
 
-def _validate_pr_results(pr_results):
+def _validate_pr_result_format(pr_results):
     results_list = np.array([
         isinstance(pr_results, list),
         isinstance(pr_results[0][0], str),
@@ -41,4 +41,4 @@ class TestGraphAlgorithm:
         pr = PageRank()
         pr.run(c.graph)
 
-        assert _validate_pr_results(pr.results)
+        assert _validate_pr_result_format(pr.results)

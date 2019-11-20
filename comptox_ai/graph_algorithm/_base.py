@@ -17,7 +17,9 @@ class GraphAlgorithm(ABC):
         self.algorithm_results = None
 
     def __repr__(self):
-        return "Graph algorithm: {0}".format(str(self.__class__))
+        return "Graph algorithm: {0}".format(
+            str(self.__class__.__name__)
+        )
 
     @abstractmethod
     def run(self):

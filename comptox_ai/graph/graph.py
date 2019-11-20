@@ -54,10 +54,24 @@ class Spinner(object):
 class Graph:
     """
     Base class for a knowledge graph used in ComptoxAI.
+
+    This is essentially a connection to a Neo4j graph database plus a plethora
+    of convenience methods for interacting with that graph database. Currently,
+    graph algorithms (or procedure calls to Neo4j that trigger
+    externally-defined graph algorithms) are defined _here_. In the future, this
+    is planned to change - a separate class will be built for all graph
+    algorithms, and this class will interact with the Graph class to execute
+    queries and consume the results.
     """
     def __init__(self, driver, **kwargs):
-        """Initialize a ComptoxAI knowledge graph supported by a Neo4j
+        """[summary]Initialize a ComptoxAI knowledge graph supported by a Neo4j
         graph database instance.
+        
+        Parameters
+        ----------
+        driver : neo4j.Driver
+            A Neo4j driver object that will maintain an active connection to a
+            Neo4j database server containing ComptoxAI data.
         """
 
         self.driver_connected = False
@@ -94,8 +108,19 @@ class Graph:
                         username,
                         password,
                         uri="bolt://localhost:7687"):
-        """Manually establish a connection between `self.graph` and a
-        Neo4j graph database.
+        """Open a new connection to a Neo4j graph database.
+
+        If a connection to a graph database already exists, it will be replaced.
+        
+        Parameters
+        ----------
+        username : str
+            Neo4j database username
+        password : str
+            Neo4j database password
+        uri : str, optional
+            URI to a Bolt server that points at the graph database of interest,
+            by default "bolt://localhost:7687"
         """
         if not self.driver_connected:
             try:
@@ -113,6 +138,12 @@ class Graph:
     def _validate_connection_status(self):
         """Internal test for whether a connection to a Neo4j graph
         database currently exists and is active.
+
+        Returns
+        -------
+        bool
+            True if a valid, active connection to a graph database exists,
+            RuntimeError raised otherwise
         """
         if not self.driver_connected:
             raise RuntimeError("Attempted to query Neo4j without an active \
@@ -249,8 +280,19 @@ class Graph:
             return(query_response)
 
     def fetch_neighbors_by_uri(self, uri):
-        """Fetch nodes corresponding to neighbors of a node represented by a
+        """[summary]Fetch nodes corresponding to neighbors of a node represented by a
         given URI.
+        
+        Parameters
+        ----------
+        uri : str
+            URI for a single node in the graph (including namespace)
+        
+        Returns
+        -------
+        list of neo4j.Record or None
+            List of graph database records that represent the neighbors of
+            `uri`. If the URI is invalid, `None` will be returned.
         """
         if uri is None:
             print("No URI given -- aborting")

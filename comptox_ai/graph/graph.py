@@ -385,76 +385,7 @@ class Graph:
         B = np.array()
 
         return B
-
-    # GRAPH ALGORITHMS (external implementations; temporary)
-
-    def aop_shortest_path(self, mie_node: str, ao_node: str):
-        """Find the shortest path between an MIE and an adverse
-        outcome using the Neo4j representation of the CO's knowledge
-        base.
-
-        Parameters
-        ----------
-        mie_node : string
-                   Name of the MIE
-        ao_node : string
-                  Name of the adverse outcome
-        """
-        query_response = None
-
-        if self._validate_connection_status():
-
-            self.template = queries.MIE_DISEASE_PATH
-            self.query = self.template.format(mie_node, ao_node)
-
-            # Run the query
-            query_response = self.run_query_in_session(self.query)
-
-            assert len(query_response) <= 1
-
-            if len(query_response) == 1:
-                query_response = query_response[0]
-
-        shortest_path = Path(query_response['p'].nodes)
-
-        return(shortest_path)
-
-    def page_rank(self, node_type=None):
-        """Compute page rank of all owl__NamedIndividual nodes in the attached
-        graph.
-
-        Page rank uses eigenvector centrality to determine "importance" of
-        individual nodes based on the centrality of immediate neighbors.
-
-        Parameters
-        ----------
-        node_type : str, optional
-            Ontology class of desired nodes. Page rank will be computed over
-            all node types, but only the desired type will be returned to the
-            user. If None, no filtering will be performed.
-
-        Returns
-        -------
-        list of tuple
-        """
         
-        if node_type is None:
-            node_label = 'owl__NamedIndividual'
-        else:
-            node_label = f"ns0__{node_type}"
-
-        G = nxneo4j.Graph(self.driver, config={
-            'node_label': node_label,
-            'relationship_type': None,
-            'identifier_property': 'uri'
-        })
-
-        pr = sorted(nxneo4j.centrality.pagerank(G).items(),
-                    key=lambda x: x[1],
-                    reverse=True)
-
-        return pr
-
     # UTILITY METHODS
 
     def run_query_in_session(self, query):

@@ -45,8 +45,12 @@ class GraphAlgorithm(ABC):
     def run(self, graph):
         self.graph = graph
 
-        self.validate_params
-        self._run_internal()
+        if self.graph._validate_connection_status():
+            self.validate_params()
+            
+            self._run_internal()
+
+        return self.algorithm_results
 
     @abstractmethod
     def _validate_internal(self):

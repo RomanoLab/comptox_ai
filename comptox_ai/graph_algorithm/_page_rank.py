@@ -17,17 +17,11 @@ class PageRank(GraphAlgorithm):
 
     def __init__(self, node_type=None):
         super().__init__(node_type)
+        self.name = "PageRank"
 
-    def run(self, graph):
-        self.graph = graph
-
-        if self.node_type is None:
-            node_label = 'owl__NamedIndividual'
-        else:
-            node_label = f"ns0__{self.node_type}"
-
+    def _run_internal(self):
         G = nxneo4j.Graph(self.graph.driver, config={
-            'node_label': node_label,
+            'node_label': self.node_label,
             'relationship_type': None,
             'identifier_property': 'uri'
         })
@@ -38,4 +32,5 @@ class PageRank(GraphAlgorithm):
 
         self.results = pr
 
-    
+    def _validate_internal(self):
+        pass

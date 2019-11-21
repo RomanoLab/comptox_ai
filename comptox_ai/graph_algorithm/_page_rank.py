@@ -37,7 +37,7 @@ class PageRank(GraphAlgorithm):
                     key=lambda x: x[1],
                     reverse=True)
 
-        self.results = pr
+        self.algorithm_results = pr
 
     def _validate_internal(self):
         pass

@@ -4,7 +4,7 @@ import pytest
 import numpy as np
 
 import comptox_ai
-from comptox_ai.graph_algorithm import PageRank
+from comptox_ai.graph_algorithm import PageRank, ShortestPath
 
 if os.path.exists('CONFIG.cfg'):
     CONFIG_FILE = 'CONFIG.cfg'
@@ -42,3 +42,14 @@ class TestGraphAlgorithm:
         pr.run(c.graph)
 
         assert _validate_pr_result_format(pr.results)
+
+    def test_shortest_path_returns_path(self):
+        c = comptox_ai.ComptoxAI(config_file=CONFIG_FILE)
+
+        # Find the shortest path between "mie_increase_urinary_bladder_calculi"
+        # and "dis_adenoma"
+
+        sp = ShortestPath(mie_node="Event:793", ao_node="Adenoma")
+        sp.run(c.graph)
+
+        assert isinstance(sp.algorithm_results, comptox_ai.graph.Path)

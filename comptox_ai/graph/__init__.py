@@ -1,4 +1,4 @@
-from .graph import Graph
+from .graph import Graph, Path
 
 
-__all__ = ["Graph"]
+__all__ = ["Graph", "Path"]

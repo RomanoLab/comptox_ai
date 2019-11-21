@@ -385,7 +385,7 @@ class Graph:
         B = np.array()
 
         return B
-        
+
     # UTILITY METHODS
 
     def run_query_in_session(self, query):
@@ -410,6 +410,8 @@ class Graph:
 
 
 class Path(object):
+    """A sequence of graph database nodes representing a directed path.
+    """
     def __init__(self, node_list):
         assert len(node_list) >= 1
 

@@ -6,8 +6,5 @@ install:
   - pip install .
 script:
   - pytest --cov=comptox_ai tests/
-
-after_script:
-  - codecov
 services:
   - neo4j

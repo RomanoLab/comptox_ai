@@ -9,3 +9,5 @@ script:
 
 after_script:
   - codecov
+services:
+  - neo4j

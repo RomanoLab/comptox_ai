@@ -11,10 +11,70 @@ storing data in tables - with keys linking rows of one table to rows of another
 entities as **edges**, resulting in a network-like data structure known to
 computer scientists as a **graph**.
 
-Installing the database locally
-===============================
+Building and installing the database locally
+============================================
 
-*(Instructions coming soon)*
+*(These instructions are incomplete - stay tuned for more info)*
+
+First, make sure you have the prerequisites installed.
+
+Building the complete database consists of 4 steps:
+
+1. Populating the ComptoxAI ontology with individuals for the core graph node
+   types.
+2. Importing the OWL file into Neo4j.
+3. Cleaning up the imported data.
+4. Merging other data into the graph database from external sources.
+
+We'll walk through these steps individually:
+
+Populating the ontology with individuals
+----------------------------------------
+
+The core ontology for ComptoxAI is already provided as part of the main code
+distribution, and can be found at ``data/comptox.owl``. We use the ontology in
+the graph database build process because doing so lets us control the
+consistency of node labels, data types, and relationship labels in the final
+graph database (Neo4j provides no out-of-box methods for doing so, which can be
+thought of as both a strength and a limitation of the software). The process
+relies upon the following rough equivalencies between a populated OWL ontology
+and a Neo4j-style graph database::
+
+.. list-table::
+    :header-rows: 1
+
+    * - OWL Ontology
+      - Neo4j-style graph database
+
+    * - Ontology
+      - Graph database
+
+    * - Class
+      - Node label
+
+    * - Individual
+      - Node
+
+    * - Object property
+      - Relationship
+
+    * - Data property
+      - Node data
+
+Importing the ontology into Neo4j
+---------------------------------
+
+Test.
+
+Cleaning up the imported data
+-----------------------------
+
+Test.
+
+Merging additional data sources
+-------------------------------
+
+Test.
 
 Connecting to our instance of the database
 ==========================================

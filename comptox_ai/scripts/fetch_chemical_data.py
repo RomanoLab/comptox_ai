@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import os, sys
-from dataclasses import dataclass
+from dataclasses import dataclass, astuple
 import pandas as pd
 from tqdm import tqdm
 import requests
@@ -18,14 +18,14 @@ ACTORWS_BASE = "https://actorws.epa.gov/actorws/"
 class Chemical:
     name: str  # preferred name
     casrn: str
-    dsstox_substance_id: str
+    dtxsid: str
     inchi_string: str
     inchi_key: str
     smiles: str
-    #qc_level: int
+    # qc_level: int
 
     def parse_devphyschemdb(self):
-        url = ACTORWS_BASE+"physchemdb/dev/properties/{}.json".format(self.casrn)
+        url = ACTORWS_BASE + "physchemdb/dev/properties/{}.json".format(self.casrn)
         r = requests.get(url)
         return r.json()
 
@@ -40,12 +40,12 @@ for _, row in tqdm(props.iterrows(), total=len(props)):
     r = dict(row)
     chemicals.append(
         Chemical(
-            name = r["Preferred_Name"],
-            casrn = r["CAS-RN"],
-            dsstox_substance_id = r["DSSTox_Substance_ID"],
-            inchi_string = r["InChIString"],
-            inchi_key = r["InChIKey"],
-            smiles = r["SMILES"],
+            name=r["Preferred_Name"],
+            casrn=r["CAS-RN"],
+            dtxsid=r["DSSTox_Substance_ID"],
+            inchi_string=r["InChIString"],
+            inchi_key=r["InChIKey"],
+            smiles=r["SMILES"],
         )
     )
 
@@ -74,3 +74,15 @@ for _, row in tqdm(props.iterrows(), total=len(props)):
 
 # DUMP ALL CHEMICALS TO FILE READY FOR LOADING INTO NEO4J
 
+chemical_tuples = [astuple(x) for x in chemicals]
+
+print("Writing chemicals to CSV file...")
+df = pd.DataFrame(chemical_tuples)
+df.columns = list(chemicals[0].__dataclass_fields__.keys())
+
+
+# Remove duplicates
+dups = df.loc[~df.duplicated(),:] # remove duplicated rows
+
+
+#df.to_csv("chemicals.csv", index=False)

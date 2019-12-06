@@ -18,6 +18,8 @@ import time
 from pathlib import Path
 import importlib.resources as pkg_resources
 
+import comptox_ai  # Just so we can find the version string
+
 # -- Project information -----------------------------------------------------
 
 project = 'ComptoxAI'
@@ -25,12 +27,13 @@ copyright = time.strftime('%Y, Joseph D. Romano')
 author = 'Joseph D. Romano, PhD'
 
 # The full version, including alpha/beta/rc tags
-comptox_ai_root = Path(os.path.abspath(__file__)).parent.parent.parent
-comptox_ai_src = os.path.join(comptox_ai_root, 'comptox_ai')
-if comptox_ai_root not in sys.path:
-    sys.path.insert(0, comptox_ai_root)
-version_file = open(os.path.join(comptox_ai_root, 'VERSION'), 'r')
-str_version = version_file.read().strip()
+#comptox_ai_root = Path(os.path.abspath(__file__)).parent.parent.parent
+#comptox_ai_src = os.path.join(comptox_ai_root, 'comptox_ai')
+#if comptox_ai_root not in sys.path:
+#    sys.path.insert(0, comptox_ai_root)
+#version_file = open(os.path.join(comptox_ai_root, 'VERSION'), 'r')
+#str_version = version_file.read().strip()
+str_version = comptox_ai.__version__
 
 
 # -- General configuration ---------------------------------------------------

@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+__all__ = [
+    'str_version'
+]
+
 import os
 from pathlib import Path
 import setuptools

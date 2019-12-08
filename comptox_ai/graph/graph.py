@@ -64,7 +64,7 @@ class Graph:
     queries and consume the results.
     """
     def __init__(self, driver, **kwargs):
-        """[summary]Initialize a ComptoxAI knowledge graph supported by a Neo4j
+        """Initialize a ComptoxAI knowledge graph supported by a Neo4j
         graph database instance.
         
         Parameters

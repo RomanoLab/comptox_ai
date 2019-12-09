@@ -39,7 +39,7 @@ tags
 # Python files #
 ################
 # setup.py working directory
-build
+docs/build
 docs/source/_build
 cythonize.dat
 dist

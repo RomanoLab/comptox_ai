@@ -78,7 +78,7 @@ def main(stdscr):
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
-    
+
     Press any key to continue."""
     stdscr.addstr(welcome)
     stdscr.getkey()
@@ -98,6 +98,12 @@ def main(stdscr):
         elif c == ord("2"):
             valid_entry = True
             export_ontology(stdscr)
+
+    # EXTRACT
+
+    # TRANSFORM
+
+    # LOAD
 
     # Print summary
 

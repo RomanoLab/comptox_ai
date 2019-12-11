@@ -23,12 +23,12 @@ ONTOLOGY_POPULATED_FNAME = "../../../comptox_populated.rdf"
 ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
 
 
-
 def show_lines(stdscr, lines):
     stdscr.clear()
     for i, line in enumerate(lines):
-        stdscr.addstr((i+1) * 2, 10, line)
+        stdscr.addstr((i + 1) * 2, 10, line)
     stdscr.refresh()
+
 
 # def track_step(stdscr):
 #     def inner_function(func):
@@ -40,7 +40,7 @@ def show_lines(stdscr, lines):
 #     return inner_function
 
 
-def extract_all(stdscr, dbs):
+def extract_all(stdscr, dbs, ont):
     OWL = get_ontology("http://www.w3.org/2002/07/owl#")
 
     dbs_parsed = []
@@ -49,16 +49,18 @@ def extract_all(stdscr, dbs):
         db_ins = db()
         db_ins.prepopulate()
         db_ins.fetch_raw_data()
-        db_ins.parse(OWL)
+        db_ins.parse(OWL, ont)
 
     return dbs_parsed
-        
+
 
 def transform_all(stdscr, dbs):
     pass
 
+
 def load_all(stdscr):
     pass
+
 
 def build_ontology(stdscr):
     """Load the unpopulated ontology, then populate it with individuals from
@@ -77,13 +79,9 @@ def build_ontology(stdscr):
     # ComptoxAI's ontology (this should be more flexible in the future):
     ont = get_ontology(ONTOLOGY_FNAME).load()
 
-    db_parse_order = [
-        databases.Hetionet,
-        databases.CTD,
-        databases.EPA
-    ]
+    db_parse_order = [databases.Hetionet, databases.CTD, databases.EPA]
 
-    dbs = extract_all(stdscr, db_parse_order)
+    dbs = extract_all(stdscr, db_parse_order, ont)
 
     transform_all(stdscr, dbs)
 

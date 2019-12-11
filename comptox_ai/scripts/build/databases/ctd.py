@@ -126,7 +126,7 @@ class CTD(Database):
         # Chemicals <-> Diseases
         unmatched_chem_dis_count = 0
         num_chem_dis_added = 0
-        for idx, cd_row in tqdm(chem_dis.iterrows(), total=len(chem_dis)):
+        for idx, cd_row in tqdm(self.chem_dis.iterrows(), total=len(self.chem_dis)):
             # Check to make sure we have both the chemical and the disease
             chem_mesh = cd_row[1].split(":")[-1]
             chem = self.cai_ont.search(xrefMeSHUI=chem_mesh)  # NOTE: Need to use xrefMeSHUI here

@@ -9,6 +9,7 @@ from textwrap import dedent
 from owlready2 import get_ontology
 import pandas as pd
 
+import curses
 from curses import wrapper
 from functools import wraps
 import os, sys
@@ -21,6 +22,8 @@ ONTOLOGY_FNAME = "../../../comptox.rdf"
 ONTOLOGY_POPULATED_FNAME = "../../../comptox_populated.rdf"
 
 ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
+
+INT_UNICODE_OFFSET = int(ord("0"))
 
 
 def show_lines(stdscr, lines):
@@ -68,7 +71,7 @@ def build_ontology(stdscr):
     
     Parameters
     ----------
-    stdscr : _curses.window
+    stdscr : curses.window
         Main Curses window for this application
     
     Returns
@@ -92,13 +95,63 @@ def export_ontology(stdscr):
     pass
 
 
+class ScreenManager(object):
+    """Manager for a curses window that acts as a user interface for the build
+    application.
+
+    This is designed to be easily generalized to other applications, but should
+    probably be refactored to be even more generalizable at some point.
+    """
+    def __init__(self, scr: curses.window):
+        self.scr = scr
+
+    def clear_screen(self):
+        self.scr.clear()
+        self.scr.refresh()
+
+    def draw_text_page(self, text):
+        self.clear_screen()
+
+        self.scr.addstr(text)
+        self.scr.getkey()
+
+    def draw_menu_page(self, info_text, menu_options):
+        self.clear_screen()
+        
+        self.scr.addstr(10, 10, info_text)
+        for i, mo in enumerate(menu_options):
+            self.scr.addstr(10+((i+1)*2), 10, mo)
+
+        valid_entry = False
+        while not valid_entry:
+            c = self.scr.getch()
+            try:
+                int_c = c - INT_UNICODE_OFFSET
+            except ValueError:
+                continue  # User gave non-integer input
+
+            print(int_c)
+
+            if 0 < int_c <= len(menu_options):
+                valid_entry = True
+
+        self.clear_screen()
+
+        return int_c
+
+    def draw_progress_page(self):
+        pass
+
+    def close_application(self):
+        self.scr.clear()
+        self.scr.addstr(10, 10, "Terminating program - press any key to continue.")
+        self.scr.refresh()
+        self.scr.getkey()
+
+
 def main(stdscr):
-    stdscr.clear()
+    scr = ScreenManager(stdscr)
 
-    ##############################
-    # Program logic goes here:
-
-    # Print welcome message
     welcome = """\n\n\n
     === COMPTOXAI BUILD UTILITY ===
 
@@ -123,24 +176,20 @@ def main(stdscr):
     SOFTWARE.
 
     Press any key to continue."""
-    stdscr.addstr(welcome)
-    stdscr.getkey()
+    scr.draw_text_page(welcome)
 
     # Enter program itself; add modules; export; etc...
-    stdscr.clear()
-    stdscr.addstr(10, 10, "Please select an option from the following:")
-    stdscr.addstr(12, 10, "(1) Build ontology.")
-    stdscr.addstr(14, 10, "(2) Export ontology into Neo4j graph database.")
-
-    valid_entry = False
-    while not valid_entry:
-        c = stdscr.getch()
-        if c == ord("1"):
-            valid_entry = True
-            build_ontology(stdscr)
-        elif c == ord("2"):
-            valid_entry = True
-            export_ontology(stdscr)
+    choice = scr.draw_menu_page(
+        "Please select an action from the following options:",
+        [
+            "(1) Build ontology.",
+            "(2) Export ontology into Neo4j graph database."
+        ]
+    )
+    if choice == 1:
+        build_ontology(scr)
+    elif choice == 2:
+        export_ontology(scr)
 
     # EXTRACT
 
@@ -153,13 +202,7 @@ def main(stdscr):
     # Clean up
 
     # Clear screen, proceed
-    stdscr.clear()
-    stdscr.addstr(10, 10, "Terminating program - press any key to continue.")
-    stdscr.refresh()
-
-    ##############################
-
-    stdscr.getkey()
+    scr.close_application()
 
 
 wrapper(main)

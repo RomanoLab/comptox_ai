@@ -38,7 +38,7 @@ ont = get_ontology(ONTOLOGY_FNAME).load()
 
 ####
 # Add general biomedical data
-#### 
+####
 
 # Add hetionet nodes:
 # 1. Genes

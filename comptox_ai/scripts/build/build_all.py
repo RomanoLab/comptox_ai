@@ -11,7 +11,6 @@ import pandas as pd
 
 import curses
 from curses import wrapper
-from functools import wraps
 import os, sys
 import glob
 
@@ -31,16 +30,6 @@ def show_lines(stdscr, lines):
     for i, line in enumerate(lines):
         stdscr.addstr((i + 1) * 2, 10, line)
     stdscr.refresh()
-
-
-# def track_step(stdscr):
-#     def inner_function(func):
-#         @wraps(func)
-#         def wrapper(*args, **kwargs):
-#             stdscr.addstr(20,20, "Testing!")
-#             func(*args, **kwargs)
-#         return wrapper
-#     return inner_function
 
 
 def extract_all(stdscr, dbs, ont):

@@ -64,6 +64,14 @@ Eventually, ComptoxAI will be posted to the Python Package Index and made availa
 
 This should install ComptoxAI along with all required dependencies.
 
+#### Installing using Conda
+
+If you would like to install packages using their Conda distributions (when available), run the following command **prior** to the `pip install` command that is shown above (from the root directory of the project):
+
+`conda install --file requirements-conda.txt`
+
+Several package dependencies are not indexed by the Anaconda project, so those still need to be installed via `pip` (or manually, if you're feeling especially sadistic).
+
 #### Neo4j and plugins
 
 You'll need to install Neo4j and several plugins to work with the graph database portion of ComptoxAI. We recommend using [Neo4j Desktop](https://neo4j.com/docs/operations-manual/current/installation/neo4j-desktop/) rather than manually setting up the graph database server (the old preferred method), unless you are an expert. However you choose to install Neo4j, perform the following steps once the database server is running:
@@ -82,6 +90,14 @@ You'll need to install Neo4j and several plugins to work with the graph database
     2. `CALL semantics.importRdf("file:///path/to/comptox_ai/comptox_populated.rdf", "RDF/XML");`
 
 It should take a while for the entire database to import, but you will receive a response that indicates the import was successful (or, possibly, unsuccessful).
+
+- - -
+
+## Running tests
+
+Unit tests can be run using the following command, issued from the root directory of the source repository:
+
+`pytest tests`
 
 - - -
 

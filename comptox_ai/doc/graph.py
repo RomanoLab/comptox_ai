@@ -1,11 +1,11 @@
 """
 ComptoxAI's graph database is meant to completely replace traditional
 relational databases used for computational toxicology data. Rather
-than storing data in tables - with keys linking rows of one table to
-rows of another
-- a graph database stores entities as **nodes** and the relationships
-  that join entities as **edges**, resulting in a network-like data
-  structure known to computer scientists as a **graph**.
+than storing data in tables with keys linking rows of one table to
+rows of another, a graph database stores entities as **nodes** and the
+relationships that join entities as **edges**, resulting in a
+network-like data structure known to computer scientists as a
+**graph**.
 
 Building and installing the database locally
 ============================================
@@ -69,7 +69,8 @@ load individuals into the (currently empty) graph database.
 Cleaning up the imported data
 -----------------------------
 
-If you look at the contents of the graph database now, you'll see that there are many odd prefixes and unnecessary 
+If you look at the contents of the graph database now, you'll see that
+there are many odd prefixes and unnecessary 
 
 Merging additional data sources
 -------------------------------

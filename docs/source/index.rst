@@ -6,8 +6,8 @@ ComptoxAI Reference Guide
 
 .. module:: comptox_ai
 
-Welcome! This reference manual documents the tools and code that comprise
-ComptoxAI - a centralized toolkit for computational toxicology.
+Welcome! This is the reference manual for ComptoxAI - a centralized
+toolkit for computational toxicology.
 
 For installation and other user guides, please visit the `main website
 <https://comptox.ai/>`_.

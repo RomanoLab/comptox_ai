@@ -26,21 +26,11 @@ project = 'ComptoxAI'
 copyright = time.strftime('%Y, Joseph D. Romano')
 author = 'Joseph D. Romano, PhD'
 
-# The full version, including alpha/beta/rc tags
-#comptox_ai_root = Path(os.path.abspath(__file__)).parent.parent.parent
-#comptox_ai_src = os.path.join(comptox_ai_root, 'comptox_ai')
-#if comptox_ai_root not in sys.path:
-#    sys.path.insert(0, comptox_ai_root)
-#version_file = open(os.path.join(comptox_ai_root, 'VERSION'), 'r')
-#str_version = version_file.read().strip()
 str_version = comptox_ai.__version__
 
 
 # -- General configuration ---------------------------------------------------
 
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
 extensions = [
     'sphinx.ext.autodoc',
     'numpydoc',
@@ -49,10 +39,8 @@ extensions = [
     'IPython.sphinxext.ipython_directive',
 ]
 
-# Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
-# Suffix for source filenames
 source_suffix = '.rst'
 
 # List of patterns, relative to source directory, that match files and
@@ -94,7 +82,19 @@ html_theme_options = {
     ]
 }
 
+html_additional_pages = {
+    'index': 'indexcontent.html',
+}
+
 html_title = "%s v%s Manual" % (project, str_version)
+html_static_path = ['_static']
+html_last_updated_fmt = '%b %d, %Y'
+
+html_use_modindex = True
+html_copy_source = False
+html_domain_indices = False
+html_file_suffix = '.html'
+
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

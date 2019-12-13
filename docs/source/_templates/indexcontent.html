@@ -1,0 +1,34 @@
+{% extends "defindex.html" %}
+{% block tables %}
+  <p><strong>Parts of the documentation:</strong></p>
+  <table class="contentstable" align="center"><tr>
+    <td width="50%">
+      <p class="biglink"><a href="{{ pathto("guide/index") }}" class="biglink">User guide</a></br>
+      <span class="linkdescr">How to install and use ComptoxAI</span></p>
+      
+      <p class="biglink"><a href="{{ pathto("api/index") }}" class="biglink">API Reference</a></br>
+      <span class="linkdescr">Reference to ComptoxAI's Python modules, classes, and functions</span></p>
+    </td></tr>
+  </table>
+
+  <p><strong>Indices and tables:</strong></p>
+  <table class="contentstable">
+    <tr>
+      <td>
+        <p class="biglink"><a href="" class="biglink">General Index</a></br>
+        <span class="linkdescr">List of all functions, classes, and terms</span></p>
+
+        <p class="biglink"><a href="" class="biglink">Glossary of Terms</a></br>
+        <span class="linkdescr">Important terms used in the documentation</span></p>
+      </td>
+    </tr>
+  </table>
+
+  <h2>Acknowledgements</h2>
+  <p>
+    Large parts of ComptoxAI's documentation structure are adapted from Numpy's Sphinx documentation, a guide to which can be found at "<a href="https://docs.scipy.org/doc/numpy-1.17.0/docs/howto_document.html">A Guide to NumPy/SciPy Documentation</a>".
+  </p>
+  <p>
+    ComptoxAI as a whole is made possible by funding support from multiple sources, the information for which is provided at <a href="http://comptox.ai/about.html">comptox.ai/about.html</a>.
+  </p>
+{% endblock %}

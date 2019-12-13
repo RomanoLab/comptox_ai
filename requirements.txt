@@ -1,3 +1,4 @@
+doc8==0.8.0
 docutils==0.15.2
 hypothesis==4.53.2
 ipdb==0.12.3

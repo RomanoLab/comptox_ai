@@ -43,6 +43,8 @@ templates_path = ['_templates']
 
 source_suffix = '.rst'
 
+master_doc = 'contents'
+
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
@@ -90,11 +92,14 @@ html_title = "%s v%s Manual" % (project, str_version)
 html_static_path = ['_static']
 html_last_updated_fmt = '%b %d, %Y'
 
+html_css_files = [
+    'css/custom.css',
+]
+
 html_use_modindex = True
 html_copy_source = False
 html_domain_indices = False
 html_file_suffix = '.html'
-
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

@@ -1,12 +1,3 @@
-{#
-    basic/defindex.html
-    ~~~~~~~~~~~~~~~~~~~
-
-    Default template for the "index" page.
-
-    :copyright: Copyright 2007-2019 by the Sphinx team, see AUTHORS.
-    :license: BSD, see LICENSE for details.
-#}{{ warn('Now base template defindex.html is deprecated.') }}
 {%- extends "layout.html" %}
 {% set title = _('Overview') %}
 {% block body %}
@@ -16,6 +7,11 @@
     {% block description %}{{ _('the documentation for') }} {{ project|e }}
     {{ release|e }}{% if last_updated %}, {{ _('last updated') }} {{ last_updated|e }}{% endif %}{% endblock %}.
   </p>
+  
+  <p>
+    To return to ComptoxAI's home page, click <a href="http://comptox.ai">here</a>.
+  </p>
+  
   {% block tables %}
   <p><strong>{{ _('Indices and tables:') }}</strong></p>
   <table class="contentstable"><tr>
@@ -24,7 +20,9 @@
          <span class="linkdescr">{{ _('lists all sections and subsections') }}</span></p>
       <p class="biglink"><a class="biglink" href="{{ pathto("search") }}">{{ _('Search Page') }}</a><br>
          <span class="linkdescr">{{ _('search this documentation') }}</span></p>
-    </td><td style="width: 50%">
+    </td>
+    
+    <td style="width: 50%">
       <p class="biglink"><a class="biglink" href="{{ pathto("modindex") }}">{{ _('Global Module Index') }}</a><br>
          <span class="linkdescr">{{ _('quick access to all modules') }}</span></p>
       <p class="biglink"><a class="biglink" href="{{ pathto("genindex") }}">{{ _('General Index') }}</a><br>

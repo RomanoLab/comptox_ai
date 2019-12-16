@@ -128,8 +128,14 @@ class ScreenManager(object):
 
         return int_c
 
-    def draw_progress_page(self):
-        pass
+    def draw_progress_page(self, top_text):
+        self.scr.addstr(2,2, top_text)
+        self.scr.refresh()
+
+    def add_progress_step(self, step_text, step_num, tqdm_bar=True):
+        self.scr.addstr((4+(step_num*2)), 3, step_text)
+        self.scr.refresh()
+        
 
     def close_application(self):
         self.scr.clear()
@@ -179,13 +185,7 @@ def main(stdscr):
         build_ontology(scr)
     elif choice == 2:
         export_ontology(scr)
-
-    # EXTRACT
-
-    # TRANSFORM
-
-    # LOAD
-
+    
     # Print summary
 
     # Clean up

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from .. import build_all
+
 from abc import abstractmethod
 import owlready2
 
@@ -8,8 +10,9 @@ import re
 
 
 class Database(object):
-    def __init__(self, name: str, path_or_file: str):
+    def __init__(self, scr: build_all.ScreenManager, name: str, path_or_file: str):
         self.name = name
+        self.scr = scr
 
         if os.path.isfile(path_or_file):
             self.file = path_or_file

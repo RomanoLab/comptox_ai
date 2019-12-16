@@ -1,8 +1,12 @@
 .. _aop:
 
-***********************************************************
-Representation of an Adverse Outcome Pathway (:class:`AOP`)
-***********************************************************
+**************************************
+Adverse Outcome Pathway (:class:`AOP`)
+**************************************
+
+.. seealso::
+
+    :ref:`guide_aop`
 
 .. automodule:: comptox_ai.aop
    :members:

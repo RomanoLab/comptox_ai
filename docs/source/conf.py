@@ -18,7 +18,7 @@ import time
 from pathlib import Path
 import importlib.resources as pkg_resources
 
-import comptox_ai  # Just so we can find the version string
+import comptox_ai  # Mostly so we can find the version string
 
 # -- Project information -----------------------------------------------------
 
@@ -34,6 +34,7 @@ str_version = comptox_ai.__version__
 extensions = [
     'sphinx.ext.autodoc',
     'numpydoc',
+    'sphinx.ext.coverage',
     'sphinx.ext.autosummary',
     'IPython.sphinxext.ipython_console_highlighting',
     'IPython.sphinxext.ipython_directive',
@@ -49,6 +50,8 @@ master_doc = 'contents'
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+
+default_role = "autolink"
 
 rst_prolog = """
 .. |version| replace:: VERSION
@@ -78,11 +81,18 @@ html_theme = 'scipy'
 html_theme_path = [themedir]
 
 html_theme_options = {
+    "edit_link": False,
+    "sidebar": "left",
+    "scipy_org_logo": False,
     "rootlinks": [
         ("https://comptox.ai/", "comptox.ai"),
         #("https://comptox.ai/docs", "API Docs home")
     ]
 }
+
+# html_sidebars = {
+#     'index': ['indexsidebar.html', 'searchbox.html']
+# }
 
 html_additional_pages = {
     'index': 'indexcontent.html',

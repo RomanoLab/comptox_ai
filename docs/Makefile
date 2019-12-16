@@ -6,15 +6,18 @@ PYVER:=(shell python -c 'from sys import version_info as v; print("{0}.{1}".form
 # You can set these variables from the command line, and also
 # from the environment for the first two.
 SPHINXOPTS    ?=
-SPHINXBUILD   ?= sphinx-build
+SPHINXBUILD   ?= LANG=C sphinx-build
+PAPER         ?=
 SOURCEDIR     = source
 BUILDDIR      = build
 DISTDIR       = ../../comptox.ai/www/docs/
 
+FILES=
+
 # Internal variables
-PAPEROPT      = -D latex_paper_size=a4
+PAPEROPT      =
 ALLSPHINXOPTS = -WT --keep-going -d build/doctrees $(PAPEROPT) \
-  #(SPHINXOPTS) source
+  $(SPHINXOPTS) source
 
 .PHONY: help clean html html-build latex dist Makefile
 
@@ -23,12 +26,16 @@ ALLSPHINXOPTS = -WT --keep-going -d build/doctrees $(PAPEROPT) \
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
+clean:
+	-rm -rf build/*
+	find . -name generated -type d -prune -exec rm -rf "{}" ";"
+
 dist:
 	$(MAKE) html
 	cp -r build/html/* $(DISTDIR)
 
 html: html-build
-html-build: generate
+html-build:
 	mkdir -p build/html build/doctrees
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) build/html $(FILES)
 	@echo

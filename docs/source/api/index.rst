@@ -14,6 +14,6 @@ look at the :ref:`user`.
 .. toctree::
    :maxdepth: 1
 
-   graphdb
+   graph
    ontology
    aop

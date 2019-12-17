@@ -87,7 +87,7 @@ html_theme_options = {
     "scipy_org_logo": False,
     "rootlinks": [
         ("https://comptox.ai/", "comptox.ai"),
-        ("https://comptox.ai/docs", "ComptoxAI Docs")
+        # ("https://comptox.ai/docs", "ComptoxAI Docs")
     ]
 }
 

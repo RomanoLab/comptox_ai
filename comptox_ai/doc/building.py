@@ -90,7 +90,11 @@ administrating client/server applications you may opt to use different
 Neo4j implementations, but most users should install Neo4j Desktop due
 to its ease of use and self-contained nature.
 
-
+.. seealso::
+   
+   :ref:`guide_databases`
+   
+   :ref:`graph`
 
 Running the build script
 ************************

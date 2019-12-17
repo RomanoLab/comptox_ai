@@ -1,3 +1,5 @@
+.. _guide_building:
+
 **********************
 How to build ComptoxAI
 **********************

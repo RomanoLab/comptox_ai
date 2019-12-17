@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from .. import build_all
+from comptox_ai.scripts.build.build_all import ScreenManager
 
 from abc import abstractmethod
 import owlready2
@@ -10,7 +10,7 @@ import re
 
 
 class Database(object):
-    def __init__(self, scr: build_all.ScreenManager, name: str, path_or_file: str):
+    def __init__(self, scr: ScreenManager, name: str, path_or_file: str):
         self.name = name
         self.scr = scr
 

@@ -15,7 +15,7 @@ import os, sys
 import glob
 
 
-import databases
+from comptox_ai.scripts.build import databases
 
 ONTOLOGY_FNAME = "../../../comptox.rdf"
 ONTOLOGY_POPULATED_FNAME = "../../../comptox_populated.rdf"
@@ -38,7 +38,7 @@ def extract_all(stdscr, dbs, ont):
     dbs_parsed = []
 
     for db in dbs:
-        db_ins = db()
+        db_ins = db(scr=stdscr)
         db_ins.prepopulate()
         db_ins.fetch_raw_data()
         db_ins.parse(OWL, ont)
@@ -91,8 +91,9 @@ class ScreenManager(object):
     This is designed to be easily generalized to other applications, but should
     probably be refactored to be even more generalizable at some point.
     """
-    def __init__(self, scr: curses.window):
+    def __init__(self, scr: curses.window, blink=False):
         self.scr = scr
+        curses.curs_set(0)
 
     def clear_screen(self):
         self.scr.clear()
@@ -129,11 +130,11 @@ class ScreenManager(object):
         return int_c
 
     def draw_progress_page(self, top_text):
-        self.scr.addstr(2,2, top_text)
+        self.scr.addstr(2,0, top_text)
         self.scr.refresh()
 
     def add_progress_step(self, step_text, step_num, tqdm_bar=True):
-        self.scr.addstr((4+(step_num*2)), 3, step_text)
+        self.scr.addstr((2+(step_num*2)), 3, "{0}: ".format(step_num)+step_text+"\n  ")
         self.scr.refresh()
         
 
@@ -194,4 +195,5 @@ def main(stdscr):
     scr.close_application()
 
 
-wrapper(main)
+if __name__=="__main__":
+    wrapper(main)

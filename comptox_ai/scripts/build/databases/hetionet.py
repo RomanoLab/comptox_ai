@@ -10,7 +10,7 @@ import re
 
 class Hetionet(Database):
     def __init__(self, scr, path_or_file="/data1/translational/hetionet", name="Hetionet"):
-        super().__init__(name, path_or_file, scr)
+        super().__init__(scr=scr, path_or_file=path_or_file, name=name)
         self.requires = None
 
     def make_safe_property_label(self, label):
@@ -40,7 +40,13 @@ class Hetionet(Database):
     def parse(self, owl: owlready2.namespace.Ontology, cai_ont: owlready2.namespace.Ontology):
         self.cai_ont = cai_ont
 
-        for _, n in tqdm(self.hetio_nodes.iterrows(), total=len(self.hetio_nodes)):
+        self.scr.draw_progress_page("===Parsing Hetionet===")
+        prog_step = 1
+
+        self.scr.add_progress_step("Adding primary node types", prog_step)
+        prog_step += 1
+
+        for _, n in tqdm(self.hetio_nodes.iterrows(), total=len(self.hetio_nodes),  desc="    "):
             nodetype = n[2]
             nm = n[1]
             safe_nm = self.make_safe_property_label(nm)
@@ -114,6 +120,8 @@ class Hetionet(Database):
         # 3. diseaseRegulatesGeneOther ("ASSOCIATES_DaG")
         # 4. diseaseUpregulatesGene ("UPREGULATES_DuG")
         # 5. diseaseDownregulatesGene ("DOWNREGULATES_DdG")
+        self.scr.add_progress_step("Connecting nodes", prog_step)
+        prog_step += 1
         self.metaedge_map = {
             'AdG':  self.anatomyDownregulatesGene,
             'AeG':  self.anatomyExpressesGene,
@@ -141,7 +149,7 @@ class Hetionet(Database):
             'PCiC': None,
         }
 
-        for _, r in tqdm(self.hetio_rels.iterrows(), total=len(self.hetio_rels)):
+        for _, r in tqdm(self.hetio_rels.iterrows(), total=len(self.hetio_rels), desc="    "):
             edge_type = r[1]
             func = self.metaedge_map[edge_type]
 

@@ -15,7 +15,7 @@ import os, sys
 import glob
 
 
-from comptox_ai.scripts.build import databases
+from comptox_ai.build import databases
 
 ONTOLOGY_FNAME = "../../../comptox.rdf"
 ONTOLOGY_POPULATED_FNAME = "../../../comptox_populated.rdf"

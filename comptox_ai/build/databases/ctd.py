@@ -25,7 +25,7 @@ def parse_ctd_omim(altDiseaseIDs):
     return matched_doids
 
 class CTD(Database):
-    def __init__(self, path_or_file="/data1/translational/ctd", name="CTD"):
+    def __init__(self, scr, path_or_file="/data1/translational/ctd", name="CTD"):
         super().__init__(name, path_or_file)
         self.requires = [Hetionet]
 

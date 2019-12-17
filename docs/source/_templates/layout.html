@@ -8,3 +8,8 @@
 </div>
 
 {% endblock %}
+{% block rootrellink %}
+  {% if pagename != 'index' %}
+    <li class="active"><a href="{{ pathto('index') }}">{{ shorttitle|e }}</a></li>
+  {% endif %}
+{% endblock %}

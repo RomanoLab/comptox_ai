@@ -1,6 +1,20 @@
 # Makefile for Sphinx documentation
 #
 
+# See: tech.davis-hansson.com/p/make/
+SHELL := bash
+.SHELLFLAGS := -eu -o pipefail -c
+.ONESHELL:
+.DELETE_ON_ERROR:
+MAKEFLAGS += --warn-undefined-variables
+MAKEFLAGS += --no-builtin-rules
+
+# ifeq ($(origin .RECIPEPREFIX), undefined)
+# 	$(error This Make does not support .RECIPEPREFIX. Please use GNU Make 4.0 or later)
+# endif
+# .RECIPEPREFIX = >
+
+
 PYVER:=(shell python -c 'from sys import version_info as v; print("{0}.{1}".format(v[0], v[1]))')
 
 # You can set these variables from the command line, and also
@@ -16,10 +30,9 @@ FILES=
 
 # Internal variables
 PAPEROPT      =
-ALLSPHINXOPTS = -WT --keep-going -d build/doctrees $(PAPEROPT) \
-  $(SPHINXOPTS) source
+ALLSPHINXOPTS = -WT --keep-going -d build/doctrees $(PAPEROPT) $(SPHINXOPTS) source
 
-.PHONY: help clean html html-build latex dist Makefile
+.PHONY: help clean html html-build latex dist Makefile dd
 
 #===============================================================================
 

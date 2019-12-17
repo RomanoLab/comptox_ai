@@ -9,8 +9,8 @@ import re
 
 
 class Hetionet(Database):
-    def __init__(self, path_or_file="/data1/translational/hetionet", name="Hetionet"):
-        super().__init__(name, path_or_file)
+    def __init__(self, scr, path_or_file="/data1/translational/hetionet", name="Hetionet"):
+        super().__init__(name, path_or_file, scr)
         self.requires = None
 
     def make_safe_property_label(self, label):

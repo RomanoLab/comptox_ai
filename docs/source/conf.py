@@ -36,6 +36,7 @@ extensions = [
     'numpydoc',
     'sphinx.ext.coverage',
     'sphinx.ext.autosummary',
+    'sphinx.ext.ifconfig',
     'IPython.sphinxext.ipython_console_highlighting',
     'IPython.sphinxext.ipython_directive',
 ]
@@ -44,7 +45,7 @@ templates_path = ['_templates']
 
 source_suffix = '.rst'
 
-master_doc = 'contents'
+master_doc = 'index'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -86,7 +87,7 @@ html_theme_options = {
     "scipy_org_logo": False,
     "rootlinks": [
         ("https://comptox.ai/", "comptox.ai"),
-        #("https://comptox.ai/docs", "API Docs home")
+        ("https://comptox.ai/docs", "ComptoxAI Docs")
     ]
 }
 

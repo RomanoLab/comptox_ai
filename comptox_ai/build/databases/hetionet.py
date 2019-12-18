@@ -15,10 +15,10 @@ import ipdb
 
 
 # NOTE: Must be defined at top level of a module (see https://stackoverflow.com/a/8805244/1730417)
-def process_split_edges(hnet, split_rels):
-    for _, r in tqdm(hnet.hetio_rels.iterrows(), total=len(hnet.hetio_rels), desc="    "):
+def process_split_edges(hrels, medge, split_rels):
+    for _, r in tqdm(hrels.iterrows(), total=len(hrels), desc="    "):
         edge_type = r[1]
-        func = hnet.metaedge_map[edge_type]
+        func = medge[edge_type]
 
         if func:
             func(edge_row=r)
@@ -168,7 +168,9 @@ class Hetionet(Database):
 
         
         split_rels = np.array_split(self.hetio_rels, 8)
-        pool_func_args = zip(itertools.repeat(self), split_rels)
+        pool_func_args = zip(itertools.repeat(self.hetio_rels), itertools.repeat(self.metaedge_map), split_rels)
+
+        ipdb.set_trace()
 
         with Pool(8) as pool:
             pool.starmap(process_split_edges, pool_func_args)

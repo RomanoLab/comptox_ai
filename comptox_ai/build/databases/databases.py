@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from comptox_ai.build.build_all import ScreenManager
+from ..build_all import ScreenManager
 
 from abc import abstractmethod
 import owlready2

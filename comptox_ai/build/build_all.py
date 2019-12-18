@@ -15,7 +15,7 @@ import os, sys
 import glob
 
 
-from comptox_ai.scripts.build import databases
+from comptox_ai.build import databases
 
 ONTOLOGY_FNAME = "../../../comptox.rdf"
 ONTOLOGY_POPULATED_FNAME = "../../../comptox_populated.rdf"
@@ -134,7 +134,7 @@ class ScreenManager(object):
         self.scr.refresh()
 
     def add_progress_step(self, step_text, step_num, tqdm_bar=True):
-        self.scr.addstr((2+(step_num*2)), 3, "{0}: ".format(step_num)+step_text+"\n  ")
+        self.scr.addstr((2+(step_num*2)), 0, "   {0}: ".format(step_num)+step_text+"\n  ")
         self.scr.refresh()
         
 

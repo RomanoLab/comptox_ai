@@ -1,16 +1,32 @@
 from .databases import Database
+from comptox_ai.build.build_all import ScreenManager
 
 import pandas as pd
+import numpy as np
 import owlready2
 from tqdm import tqdm
 
 import os
 import re
+import itertools
+from multiprocessing import Pool, freeze_support
+
+import ipdb
+
+
+# NOTE: Must be defined at top level of a module (see https://stackoverflow.com/a/8805244/1730417)
+def process_split_edges(hnet, split_rels):
+    for _, r in tqdm(hnet.hetio_rels.iterrows(), total=len(hnet.hetio_rels), desc="    "):
+        edge_type = r[1]
+        func = hnet.metaedge_map[edge_type]
+
+        if func:
+            func(edge_row=r)
 
 
 class Hetionet(Database):
     def __init__(self, scr, path_or_file="/data1/translational/hetionet", name="Hetionet"):
-        super().__init__(scr=scr, path_or_file=path_or_file, name=name)
+        super().__init__(name=name, scr=scr, path_or_file=path_or_file)
         self.requires = None
 
     def make_safe_property_label(self, label):
@@ -46,6 +62,7 @@ class Hetionet(Database):
         self.scr.add_progress_step("Adding primary node types", prog_step)
         prog_step += 1
 
+        # Nodes:
         for _, n in tqdm(self.hetio_nodes.iterrows(), total=len(self.hetio_nodes),  desc="    "):
             nodetype = n[2]
             nm = n[1]
@@ -114,7 +131,7 @@ class Hetionet(Database):
 
                 self.cai_ont.Phenotype("phen_"+safe_nm, xrefMeSH=n[0].split("::")[-1], commonName=nm)
 
-        # Add hetionet relationships:
+        # Relationships:
         # 1. chemicalBindsGene ("BINDS_CbG")
         # 2. chemicalCausesEffect ("CAUSES_CcSE")
         # 3. diseaseRegulatesGeneOther ("ASSOCIATES_DaG")
@@ -149,12 +166,19 @@ class Hetionet(Database):
             'PCiC': None,
         }
 
-        for _, r in tqdm(self.hetio_rels.iterrows(), total=len(self.hetio_rels), desc="    "):
-            edge_type = r[1]
-            func = self.metaedge_map[edge_type]
+        
+        split_rels = np.array_split(self.hetio_rels, 8)
+        pool_func_args = zip(itertools.repeat(self), split_rels)
 
-            if func:
-                func(edge_row=r)
+        with Pool(8) as pool:
+            pool.starmap(process_split_edges, pool_func_args)
+
+        # for _, r in tqdm(self.hetio_rels.iterrows(), total=len(self.hetio_rels), desc="    "):
+        #     edge_type = r[1]
+        #     func = self.metaedge_map[edge_type]
+
+        #     if func:
+        #         func(edge_row=r)
 
     # Edge parsing methods:
     def chemicalBindsGene(self, edge_row):

@@ -25,11 +25,11 @@ def parse_ctd_omim(altDiseaseIDs):
     return matched_doids
 
 class CTD(Database):
-    def __init__(self, path_or_file="/data1/translational/ctd", name="CTD"):
-        super().__init__(name, path_or_file)
+    def __init__(self, scr, path_or_file="/data1/translational/ctd", name="CTD"):
+        super().__init__(name=name, scr=scr, path_or_file=path_or_file)
         self.requires = [Hetionet]
 
-    def prepopulate(self):
+    def prepopulate(self, owl: owlready2.namespace.Ontology, cai_ont: owlready2.namespace.Ontology):
         # Build drugbank ID --> CASRN map
         self.drugbank_map = pd.read_csv("/data1/drug/drugbank/drug_links.csv")
 

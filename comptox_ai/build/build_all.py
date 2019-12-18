@@ -15,10 +15,11 @@ import os, sys
 import glob
 
 
+import comptox_ai.build.databases
 from comptox_ai.build import databases
 
-ONTOLOGY_FNAME = "../../../comptox.rdf"
-ONTOLOGY_POPULATED_FNAME = "../../../comptox_populated.rdf"
+ONTOLOGY_FNAME = "../../comptox.rdf"
+ONTOLOGY_POPULATED_FNAME = "../../comptox_populated.rdf"
 
 ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
 

@@ -9,9 +9,9 @@ from textwrap import dedent
 from owlready2 import get_ontology
 import pandas as pd
 
-import curses
-from curses import wrapper
+from blessed import Terminal
 import os, sys
+import termios, tty
 import glob
 
 
@@ -24,6 +24,25 @@ ONTOLOGY_POPULATED_FNAME = "../../comptox_populated.rdf"
 ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
 
 INT_UNICODE_OFFSET = int(ord("0"))
+
+# Values for TERM_STATUS:
+CLOSED = 0
+OPEN = 1
+
+
+def getchar():
+    """Return a single character from stdin
+
+    see: https://gist.github.com/jasonrdsouza/1901709
+    """
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(sys.stdin.fileno())
+        ch = sys.stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+    return ch
 
 
 def show_lines(stdscr, lines):
@@ -86,68 +105,36 @@ def export_ontology(stdscr):
 
 
 class ScreenManager(object):
-    """Manager for a curses window that acts as a user interface for the build
-    application.
+    def __init__(self):
+        """Terminal instance is entirely self contained - no need to instantiate
+        and pass the object in at initialization.
+        """
+        self.term = Terminal()
+        self.term_status = OPEN
+        self.term.enter_fullscreen()
+        self.term.clear()
 
-    This is designed to be easily generalized to other applications, but should
-    probably be refactored to be even more generalizable at some point.
-    """
-    def __init__(self, scr: curses.window, blink=False):
-        self.scr = scr
-        curses.curs_set(0)
+    def draw_text_page(self, text: str):
+        print(text)
+        _ = getchar()
 
-    def clear_screen(self):
-        self.scr.clear()
-        self.scr.refresh()
+    def draw_menu_page(self, info_text: str, menu_opts: list):
+        self.term.clear()
+        print(info_text)
+        usr_input = getchar()
+        return usr_input
 
-    def draw_text_page(self, text):
-        self.clear_screen()
+    def close_terminal(self):
+        self.term.exit_fullscreen()
+        self.term_status = CLOSED
 
-        self.scr.addstr(text)
-        self.scr.getkey()
-
-    def draw_menu_page(self, info_text, menu_options):
-        self.clear_screen()
-        
-        self.scr.addstr(10, 10, info_text)
-        for i, mo in enumerate(menu_options):
-            self.scr.addstr(10+((i+1)*2), 10, mo)
-
-        valid_entry = False
-        while not valid_entry:
-            c = self.scr.getch()
-            try:
-                int_c = c - INT_UNICODE_OFFSET
-            except ValueError:
-                continue  # User gave non-integer input
-
-            print(int_c)
-
-            if 0 < int_c <= len(menu_options):
-                valid_entry = True
-
-        self.clear_screen()
-
-        return int_c
-
-    def draw_progress_page(self, top_text):
-        self.scr.addstr(2,0, top_text)
-        self.scr.refresh()
-
-    def add_progress_step(self, step_text, step_num, tqdm_bar=True):
-        self.scr.addstr((2+(step_num*2)), 0, "   {0}: ".format(step_num)+step_text+"\n  ")
-        self.scr.refresh()
-        
-
-    def close_application(self):
-        self.scr.clear()
-        self.scr.addstr(10, 10, "Terminating program - press any key to continue.")
-        self.scr.refresh()
-        self.scr.getkey()
+    def __del__(self):
+        if self.term_status:
+            self.close_terminal()
 
 
-def main(stdscr):
-    scr = ScreenManager(stdscr)
+def main():
+    scr = ScreenManager()
 
     welcome = """\n\n\n
     === COMPTOXAI BUILD UTILITY ===
@@ -193,8 +180,8 @@ def main(stdscr):
     # Clean up
 
     # Clear screen, proceed
-    scr.close_application()
+    scr.close_terminal()
 
 
 if __name__=="__main__":
-    wrapper(main)
+    main()

@@ -10,8 +10,7 @@ from owlready2 import get_ontology
 import pandas as pd
 
 from blessed import Terminal  # blessed is a fork of blessings, which is a replacement for curses
-import os, sys, platform
-system = platform.system()
+import os, sys
 import glob
 from enum import Enum, unique
 
@@ -20,43 +19,17 @@ import ipdb
 import comptox_ai.build.databases
 from comptox_ai.build import databases
 
-# see: https://codereview.stackexchange.com/a/118726
-# and: https://gist.github.com/jasonrdsouza/1901709
-if system == "Windows":
-    # Windows doesn't provide termios
-    import msvcrt
-    def getch():
-        return msvcrt.getch()
-else:
-    import tty, termios
-    def getch():
-        fd = sys.stdin.fileno()
-        old_settings = termios.tcgetattr(fd)
-        try:
-            tty.setraw(sys.stdin.fileno())
-            ch = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-            return ch
-
 ONTOLOGY_FNAME = "../../comptox.rdf"
 ONTOLOGY_POPULATED_FNAME = "../../comptox_populated.rdf"
 
 ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
 
-INT_UNICODE_OFFSET = int(ord("0"))
 
 # enums:
 @unique
 class TermStatus(Enum):
     CLOSED = 0
     OPEN = 1
-@unique
-class InputType(Enum):
-    INT = 0
-    CHAR = 1
-    STR = 2
-    FLOAT = 3
 
 
 def show_lines(stdscr, lines):
@@ -128,20 +101,34 @@ class ScreenManager(object):
         self.term.enter_fullscreen()
         self.clear()
 
-    @classmethod
-    def validate_input(cls, user_input, valid_type: Enum = InputType.INT):
-        given_type = user_input.__class__
-        if valid_type == InputType.INT:
-            return given_type == int
-        elif valid_type == InputType.CHAR:
-            return (given_type == char) and (len(user_input) == 1)
-        elif valid_type == InputType.STR:
-            return (given_type == char) and (len(user_input) >= 1)
-        elif valid_type == InputType.FLOAT:
-            return given_type == float
-        else:
-            raise ValueError("Error: Invalid input value.")
+    def getchar(self, valid_chars: list = []):
+        """Read a single character from stdin using `blessed`s API.
 
+        Note that 'q' and 'Q' will ALWAYS quit the application when entered at a
+        prompt, and can't be overridden.
+        
+        Parameters
+        ----------
+        valid_chars : list
+            A list of characters that are valid inputs for the particular
+            context.
+        """
+
+        valid_chars = [str(x) for x in  valid_chars]
+
+        with self.term.cbreak():
+
+            # Respond to "press any key to continue"
+            if valid_chars == []:
+                _ = self.term.inkey()
+                return None
+
+            val = None
+            while val not in (u'q', u'Q'):
+                val = self.term.inkey()
+                if val in valid_chars:
+                    return val
+            sys.exit(0)
 
     def clear(self):
         print(self.term.clear())
@@ -153,23 +140,17 @@ class ScreenManager(object):
 
     def draw_text_page(self, text: str):
         print(text)
-        _ = getch()
+        _ = self.getchar()
 
     def draw_menu_page(self, info_text: str, menu_opts: list):
         self.clear()
-
         self.move_cursor(2,2)
+
         print(info_text)
+        [print("({0}): {1}".format(i+1, opt)) for i, opt in enumerate(menu_opts)]
 
-        [print(opt) for opt in menu_opts]
-        
-        
-        valid_input = False
-        while not valid_input:
-            usr_input = int(getch())
-            valid_input = self.validate_input(usr_input, valid_type=InputType.INT)
+        usr_input = self.getchar(list(range(1, len(menu_opts))))
 
-        ipdb.set_trace()
         return usr_input
 
     def close_terminal(self):
@@ -211,13 +192,14 @@ def main():
     scr.draw_text_page(welcome)
 
     # Enter program itself; add modules; export; etc...
-    choice = scr.draw_menu_page(
+    choice = int(scr.draw_menu_page(
         "Please select an action from the following options:",
         [
-            "(1) Build ontology.",
-            "(2) Export ontology into Neo4j graph database."
+            "Build ontology.",
+            "Export ontology into Neo4j graph database."
         ]
-    )
+    ))
+
     if choice == 1:
         build_ontology(scr)
     elif choice == 2:

@@ -153,6 +153,15 @@ class ScreenManager(object):
 
         return usr_input
 
+    def draw_progress_page(self, heading: str):
+        self.clear()
+        self.move_cursor(2,2)
+        print(heading)
+
+    def add_progress_step(self, step_text: str, step_num: int):
+        self.move_cursor(2+(2*step_num), 2)
+        print(step_text)
+
     def close_terminal(self):
         self.term.exit_fullscreen()
         self.term_status = TermStatus.CLOSED

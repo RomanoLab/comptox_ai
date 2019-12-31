@@ -9,14 +9,35 @@ from textwrap import dedent
 from owlready2 import get_ontology
 import pandas as pd
 
-from blessed import Terminal
-import os, sys
-import termios, tty
+from blessed import Terminal  # blessed is a fork of blessings, which is a replacement for curses
+import os, sys, platform
+system = platform.system()
 import glob
+from enum import Enum, unique
 
+import ipdb
 
 import comptox_ai.build.databases
 from comptox_ai.build import databases
+
+# see: https://codereview.stackexchange.com/a/118726
+# and: https://gist.github.com/jasonrdsouza/1901709
+if system == "Windows":
+    # Windows doesn't provide termios
+    import msvcrt
+    def getch():
+        return msvcrt.getch()
+else:
+    import tty, termios
+    def getch():
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(sys.stdin.fileno())
+            ch = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+            return ch
 
 ONTOLOGY_FNAME = "../../comptox.rdf"
 ONTOLOGY_POPULATED_FNAME = "../../comptox_populated.rdf"
@@ -25,24 +46,17 @@ ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
 
 INT_UNICODE_OFFSET = int(ord("0"))
 
-# Values for TERM_STATUS:
-CLOSED = 0
-OPEN = 1
-
-
-def getchar():
-    """Return a single character from stdin
-
-    see: https://gist.github.com/jasonrdsouza/1901709
-    """
-    fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
-    try:
-        tty.setraw(sys.stdin.fileno())
-        ch = sys.stdin.read(1)
-    finally:
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-    return ch
+# enums:
+@unique
+class TermStatus(Enum):
+    CLOSED = 0
+    OPEN = 1
+@unique
+class InputType(Enum):
+    INT = 0
+    CHAR = 1
+    STR = 2
+    FLOAT = 3
 
 
 def show_lines(stdscr, lines):
@@ -110,23 +124,57 @@ class ScreenManager(object):
         and pass the object in at initialization.
         """
         self.term = Terminal()
-        self.term_status = OPEN
+        self.term_status = TermStatus.OPEN
         self.term.enter_fullscreen()
-        self.term.clear()
+        self.clear()
+
+    @classmethod
+    def validate_input(cls, user_input, valid_type: Enum = InputType.INT):
+        given_type = user_input.__class__
+        if valid_type == InputType.INT:
+            return given_type == int
+        elif valid_type == InputType.CHAR:
+            return (given_type == char) and (len(user_input) == 1)
+        elif valid_type == InputType.STR:
+            return (given_type == char) and (len(user_input) >= 1)
+        elif valid_type == InputType.FLOAT:
+            return given_type == float
+        else:
+            raise ValueError("Error: Invalid input value.")
+
+
+    def clear(self):
+        print(self.term.clear())
+
+    def move_cursor(self, y, x):
+        """Move cursor to the given(y,x) coordinate, using curses conventions.
+        """
+        print(self.term.move(y, x))
 
     def draw_text_page(self, text: str):
         print(text)
-        _ = getchar()
+        _ = getch()
 
     def draw_menu_page(self, info_text: str, menu_opts: list):
-        self.term.clear()
+        self.clear()
+
+        self.move_cursor(2,2)
         print(info_text)
-        usr_input = getchar()
+
+        [print(opt) for opt in menu_opts]
+        
+        
+        valid_input = False
+        while not valid_input:
+            usr_input = int(getch())
+            valid_input = self.validate_input(usr_input, valid_type=InputType.INT)
+
+        ipdb.set_trace()
         return usr_input
 
     def close_terminal(self):
         self.term.exit_fullscreen()
-        self.term_status = CLOSED
+        self.term_status = TermStatus.CLOSED
 
     def __del__(self):
         if self.term_status:

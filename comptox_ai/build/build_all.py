@@ -13,19 +13,35 @@ from blessed import Terminal  # blessed is a fork of blessings, which is a repla
 import os, sys
 import glob
 from enum import Enum, unique
+import configparser
+from dataclasses import dataclass
 
 import ipdb
 
 import comptox_ai.build.databases
 from comptox_ai.build import databases
 
+
+CONFIG_FILE = "../../CONFIG.cfg"
 ONTOLOGY_FNAME = "../../comptox.rdf"
 ONTOLOGY_POPULATED_FNAME = "../../comptox_populated.rdf"
-
 ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
 
+cnf = configparser.ConfigParser()
+cnf.read(CONFIG_FILE)
+DATA_PREFIX = cnf['DATA']['prefix']
+DATA_TEMPDIR = cnf['DATA']['tempdir']
+DATA_LOCKFILE = cnf['DATA']['lockfile']
 
-# enums:
+@dataclass
+class Config():
+    data_prefix: str
+    data_tempdir: str
+    data_lockfile: str
+
+config = Config(DATA_PREFIX, DATA_TEMPDIR, DATA_LOCKFILE)
+
+
 @unique
 class TermStatus(Enum):
     CLOSED = 0
@@ -38,28 +54,24 @@ def show_lines(stdscr, lines):
         stdscr.addstr((i + 1) * 2, 10, line)
     stdscr.refresh()
 
-
 def extract_all(stdscr, dbs, ont):
     OWL = get_ontology("http://www.w3.org/2002/07/owl#")
 
     dbs_parsed = []
 
     for db in dbs:
-        db_ins = db(scr=stdscr)
-        db_ins.prepopulate()
+        db_ins = db(scr=stdscr, config=config)
+        db_ins.prepopulate(OWL, ont)
         db_ins.fetch_raw_data()
         db_ins.parse(OWL, ont)
 
     return dbs_parsed
 
-
 def transform_all(stdscr, dbs):
     pass
 
-
 def load_all(stdscr):
     pass
-
 
 def build_ontology(stdscr):
     """Load the unpopulated ontology, then populate it with individuals from
@@ -78,7 +90,8 @@ def build_ontology(stdscr):
     # ComptoxAI's ontology (this should be more flexible in the future):
     ont = get_ontology(ONTOLOGY_FNAME).load()
 
-    db_parse_order = [databases.Hetionet, databases.CTD, databases.EPA]
+    # db_parse_order = [databases.Hetionet, databases.CTD, databases.EPA]
+    db_parse_order = [databases.Hetionet, databases.CTD]
 
     dbs = extract_all(stdscr, db_parse_order, ont)
 

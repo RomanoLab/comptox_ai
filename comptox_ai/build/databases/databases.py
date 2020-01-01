@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from ..build_all import ScreenManager
+from ..build_all import ScreenManager, Config
 
 from abc import abstractmethod
 import owlready2
@@ -10,19 +10,13 @@ import re
 
 
 class Database(object):
-    def __init__(self, scr: ScreenManager, name: str, path_or_file: str):
+    def __init__(self, scr: ScreenManager, config: Config, name: str):
         self.name = name
         self.scr = scr
-
-        if os.path.isfile(path_or_file):
-            self.file = path_or_file
-        elif os.path.exists(path_or_file):
-            self.path = path_or_file
-        else:
-            raise FileNotFoundError("Error - data file or path does not exist")
+        self.config = config
 
     @abstractmethod
-    def prepopulate(self):
+    def prepopulate(self, owl: owlready2.namespace.Ontology, cai_ont: owlready2.namespace.Ontology):
         """Load any auxiliary data structures, like code mappings, etc.
         """
         pass

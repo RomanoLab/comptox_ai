@@ -9,24 +9,31 @@ from tqdm import tqdm
 import os
 import re
 import itertools
-from multiprocessing import Pool, freeze_support
+
+# from pathos.multiprocessing import ProcessingPool as Pool
+# import dill
+# dill.detect.trace(True)
 
 import ipdb
 
 
-# NOTE: Must be defined at top level of a module (see https://stackoverflow.com/a/8805244/1730417)
-def process_split_edges(hrels, medge, split_rels):
-    for _, r in tqdm(hrels.iterrows(), total=len(hrels), desc="    "):
+def process_edges(rels, medge_func_map):
+
+    # ipdb.set_trace()
+
+    for _, r in tqdm(rels.iterrows(), total=len(rels), desc="    "):
         edge_type = r[1]
-        func = medge[edge_type]
+        func = medge_func_map[edge_type]
 
         if func:
             func(edge_row=r)
 
 
 class Hetionet(Database):
-    def __init__(self, scr, path_or_file="/data1/translational/hetionet", name="Hetionet"):
-        super().__init__(name=name, scr=scr, path_or_file=path_or_file)
+    # def __init__(self, scr, path_or_file="/data1/translational/hetionet", name="Hetionet"):
+    def __init__(self, scr, config, name="Hetionet"):
+        super().__init__(name=name, scr=scr, config=config)
+        self.path = os.path.join(self.config.data_prefix, 'hetionet')
         self.requires = None
 
     def make_safe_property_label(self, label):
@@ -41,19 +48,25 @@ class Hetionet(Database):
         This may have to be reevaluated later, if lowercasing entity names is
         leading to more problems down the line.
         """
-        safe = re.sub(r'[!@#$,()\'\"]', '', label)
-        safe = safe.replace(" ","_").lower()
+        safe = re.sub(r"[!@#$,()\'\"]", "", label)
+        safe = safe.replace(" ", "_").lower()
 
         return safe
-    
-    def prepopulate(self):
+
+    def prepopulate(self, owl: owlready2.namespace.Ontology, cai_ont: owlready2.namespace.Ontology):
         pass
 
     def fetch_raw_data(self):
-        self.hetio_nodes = pd.read_csv(os.path.join(self.path, "hetionet-v1.0-nodes.tsv"), sep="\t")
-        self.hetio_rels = pd.read_csv(os.path.join(self.path, "hetionet-v1.0-edges.sif"), sep="\t")
+        self.hetio_nodes = pd.read_csv(
+            os.path.join(self.path, "hetionet-v1.0-nodes.tsv"), sep="\t"
+        )
+        self.hetio_rels = pd.read_csv(
+            os.path.join(self.path, "hetionet-v1.0-edges.sif"), sep="\t"
+        )
 
-    def parse(self, owl: owlready2.namespace.Ontology, cai_ont: owlready2.namespace.Ontology):
+    def parse(
+        self, owl: owlready2.namespace.Ontology, cai_ont: owlready2.namespace.Ontology
+    ):
         self.cai_ont = cai_ont
 
         self.scr.draw_progress_page("===Parsing Hetionet===")
@@ -63,7 +76,9 @@ class Hetionet(Database):
         prog_step += 1
 
         # Nodes:
-        for _, n in tqdm(self.hetio_nodes.iterrows(), total=len(self.hetio_nodes),  desc="    "):
+        for _, n in tqdm(
+            self.hetio_nodes.iterrows(), total=len(self.hetio_nodes), desc="    "
+        ):
             nodetype = n[2]
             nm = n[1]
             safe_nm = self.make_safe_property_label(nm)
@@ -72,41 +87,53 @@ class Hetionet(Database):
             # duplicate_nm = False
             # if ont[nm] is not None:
             #     duplicate_nm = True
-            
-            if nodetype=="Anatomy":
+
+            if nodetype == "Anatomy":
                 # if duplicate_nm:
                 #     nm += "_structuralentity"
-                self.cai_ont.StructuralEntity("se_"+safe_nm, xrefUberon=n[0].split("::")[-1], commonName=nm)
-            elif nodetype=="Biological Process":
+                self.cai_ont.StructuralEntity(
+                    "se_" + safe_nm, xrefUberon=n[0].split("::")[-1], commonName=nm
+                )
+            elif nodetype == "Biological Process":
                 continue
-            elif nodetype=="Cellular Component":
+            elif nodetype == "Cellular Component":
                 continue
-            elif nodetype=="Compound":
+            elif nodetype == "Compound":
                 # NOTE: "Compounds" in hetionet are DrugBank entities,
                 # which correspond most closely to "Chemical"s in comptox
                 # if duplicate_nm:
                 #     nm += "_chemical"
-                
+
                 drugbank_id = n[0].split("::")[-1]
-                self.cai_ont.Chemical("chem_"+safe_nm, xrefDrugbank=drugbank_id, chemicalIsDrug=True, commonName=nm)
-            elif nodetype=="Disease":
+                self.cai_ont.Chemical(
+                    "chem_" + safe_nm,
+                    xrefDrugbank=drugbank_id,
+                    chemicalIsDrug=True,
+                    commonName=nm,
+                )
+            elif nodetype == "Disease":
                 # if duplicate_nm:
                 #     nm += "_disease"
-                
+
                 doid = n[0].split("::")[-1]
-                dis = self.cai_ont.Disease("dis_"+safe_nm, commonName=nm)
+                dis = self.cai_ont.Disease("dis_" + safe_nm, commonName=nm)
                 dis.xrefDiseaseOntology = [doid]
-            elif nodetype=="Gene":
+            elif nodetype == "Gene":
                 # if duplicate_nm:
                 #     nm += "_gene"
 
                 ncbi_gene = n[0].split("::")[-1]
-                self.cai_ont.Gene("gene_"+safe_nm, geneSymbol=n[1], xrefNcbiGene=ncbi_gene, commonName=nm)
-            elif nodetype=="Molecular Function":
+                self.cai_ont.Gene(
+                    "gene_" + safe_nm,
+                    geneSymbol=n[1],
+                    xrefNcbiGene=ncbi_gene,
+                    commonName=nm,
+                )
+            elif nodetype == "Molecular Function":
                 continue
-            elif nodetype=="Pathway":
+            elif nodetype == "Pathway":
                 pass  # NOTE: Need to assess quality of "pathway" entities! E.g., why is "Immune System"
-                    # considered a pathway? And what do the identifiers mean (e.g., PC7_4688)???
+                # considered a pathway? And what do the identifiers mean (e.g., PC7_4688)???
                 # try:
                 #     hetio_id = n[0].split("::")[-1]
                 #     p = self.cai_ont.Pathway(nm)
@@ -114,22 +141,26 @@ class Hetionet(Database):
                 # except:
                 #     ipdb.set_trace()
                 #     print("Looks like something went wrong")
-            elif nodetype=="Pharmacologic Class":
+            elif nodetype == "Pharmacologic Class":
                 # TODO: Add drug class to ontology
                 continue
-            elif nodetype=="Side Effect":
+            elif nodetype == "Side Effect":
                 # These nodes were sourced from SIDER, which - by definition - describes drug adverse effects.
                 # if duplicate_nm:
                 #     nm += "_adverseeffect"
-                
-                self.cai_ont.AdverseEffect("ae_"+safe_nm, xrefUmlsCUI=n[0].split("::")[-1], commonName=nm)
-            elif nodetype=="Symptom":
+
+                self.cai_ont.AdverseEffect(
+                    "ae_" + safe_nm, xrefUmlsCUI=n[0].split("::")[-1], commonName=nm
+                )
+            elif nodetype == "Symptom":
                 # NOTE: May need to revise knowledge model if symptoms can map to multiple MeSH terms (i.e.,
                 # if the DbXref is not functional)
                 # if duplicate_nm:
                 #     nm += "_phenotype"
 
-                self.cai_ont.Phenotype("phen_"+safe_nm, xrefMeSH=n[0].split("::")[-1], commonName=nm)
+                self.cai_ont.Phenotype(
+                    "phen_" + safe_nm, xrefMeSH=n[0].split("::")[-1], commonName=nm
+                )
 
         # Relationships:
         # 1. chemicalBindsGene ("BINDS_CbG")
@@ -140,54 +171,60 @@ class Hetionet(Database):
         self.scr.add_progress_step("Connecting nodes", prog_step)
         prog_step += 1
         self.metaedge_map = {
-            'AdG':  self.anatomyDownregulatesGene,
-            'AeG':  self.anatomyExpressesGene,
-            'AuG':  self.anatomyUpregulatesGene,
-            'CbG':  self.chemicalBindsGene,  # (:Chemical)-[:CHEMICAL_BINDS_GENE]->(:Gene)
-            'CcSE': self.chemicalCausesEffect,  # (:Chemical)-[:CHEMICAL_CAUSES_EFFECT]->(:SideEffect)
-            'CdG':  None,
-            'CpD':  None,  # SKIP FOR NOW! Are palliative effects of chemicals important to us at this point?
-            'CrC':  None,
-            'CtD':  self.chemicalTreatsDisease,
-            'CuG':  None,
-            'DaG':  self.diseaseRegulatesGeneOther,
-            'DdG':  self.diseaseDownregulatesGene,
-            'DlA':  self.diseaseLocalizesToAnatomy,
-            'DpS':  None,
-            'DrD':  None,
-            'DuG':  self.diseaseUpregulatesGene,
-            'GcG':  None,
-            'GiG':  None,
-            'GpBP': None,
-            'GpCC': None,
-            'GpMF': None,
-            'GpPW': None,
-            'Gr>G': None,
-            'PCiC': None,
+            "AdG": self.anatomyDownregulatesGene,
+            "AeG": self.anatomyExpressesGene,
+            "AuG": self.anatomyUpregulatesGene,
+            "CbG": self.chemicalBindsGene,  # (:Chemical)-[:CHEMICAL_BINDS_GENE]->(:Gene)
+            "CcSE": self.chemicalCausesEffect,  # (:Chemical)-[:CHEMICAL_CAUSES_EFFECT]->(:SideEffect)
+            "CdG": None,
+            "CpD": None,  # SKIP FOR NOW! Are palliative effects of chemicals important to us at this point?
+            "CrC": None,
+            "CtD": self.chemicalTreatsDisease,
+            "CuG": None,
+            "DaG": self.diseaseRegulatesGeneOther,
+            "DdG": self.diseaseDownregulatesGene,
+            "DlA": self.diseaseLocalizesToAnatomy,
+            "DpS": None,
+            "DrD": None,
+            "DuG": self.diseaseUpregulatesGene,
+            "GcG": None,
+            "GiG": None,
+            "GpBP": None,
+            "GpCC": None,
+            "GpMF": None,
+            "GpPW": None,
+            "Gr>G": None,
+            "PCiC": None,
         }
 
+        # NOTE: Need to rethink multiprocessing; it's not possible to serialize
+        # self.cai_ont, or merge the results from multiple threads into a single
+        # ontology object.
+
+        # First, we split self.hetio_rels vertically into 8
+        # smaller arrays.
+        # split_rels = np.array_split(self.hetio_rels, 8)
+
+        # Now, we construct a list of tuples
+        # pool_func_args = zip(
+        #     split_rels,
+        #     itertools.repeat(self.metaedge_map),
+        # )
+        # pool_arg_1, pool_arg_2 = zip(*pool_func_args)
+        # pool = Pool(nodes=8)
+        # pool.map(process_edges, pool_arg_1, pool_arg_2)
         
-        split_rels = np.array_split(self.hetio_rels, 8)
-        pool_func_args = zip(itertools.repeat(self.hetio_rels), itertools.repeat(self.metaedge_map), split_rels)
+        # process_edges(pool_arg_1[0], pool_arg_2[0])
 
-        ipdb.set_trace()
-
-        with Pool(8) as pool:
-            pool.starmap(process_split_edges, pool_func_args)
-
-        # for _, r in tqdm(self.hetio_rels.iterrows(), total=len(self.hetio_rels), desc="    "):
-        #     edge_type = r[1]
-        #     func = self.metaedge_map[edge_type]
-
-        #     if func:
-        #         func(edge_row=r)
+        if False:
+            process_edges(self.hetio_rels, self.metaedge_map)
 
     # Edge parsing methods:
     def chemicalBindsGene(self, edge_row):
         # match chemical via xrefDrugbank
         db_id = edge_row[0].split("::")[-1]
         gene_id = edge_row[2].split("::")[-1]
-        
+
         chem = self.cai_ont.search_one(xrefDrugbank=db_id)
         gene = self.cai_ont.search_one(xrefNcbiGene=gene_id)
 
@@ -207,7 +244,7 @@ class Hetionet(Database):
             chem.chemicalCausesEffect = [effect]
         else:
             chem.chemicalCausesEffect.append(effect)
-        
+
     def diseaseRegulatesGeneOther(self, edge_row):
         dis_id = edge_row[0].split("::")[-1]
         gene_id = edge_row[2].split("::")[-1]
@@ -247,7 +284,7 @@ class Hetionet(Database):
     def chemicalTreatsDisease(self, edge_row):
         db_id = edge_row[0].split("::")[-1]
         dis_id = edge_row[2].split("::")[-1]
-        
+
         chem = self.cai_ont.search_one(xrefDrugbank=db_id)
         disease = self.cai_ont.search_one(xrefDiseaseOntology=dis_id)
 

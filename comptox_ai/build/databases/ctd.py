@@ -2,6 +2,7 @@ from .databases import Database
 from .hetionet import Hetionet
 from .utils import safe_add_property, eval_list_field, make_safe_property_label
 
+import os
 import pandas as pd
 import owlready2
 from tqdm import tqdm
@@ -25,13 +26,18 @@ def parse_ctd_omim(altDiseaseIDs):
     return matched_doids
 
 class CTD(Database):
-    def __init__(self, scr, path_or_file="/data1/translational/ctd", name="CTD"):
-        super().__init__(name=name, scr=scr, path_or_file=path_or_file)
+    def __init__(self, scr, config, name="CTD"):
+        super().__init__(name=name, scr=scr, config=config)
+        self.path = os.path.join(self.config.data_prefix, 'ctd')
+        self.drugbank_path = os.path.join(self.config.data_prefix, 'drugbank')
         self.requires = [Hetionet]
 
     def prepopulate(self, owl: owlready2.namespace.Ontology, cai_ont: owlready2.namespace.Ontology):
+        self.cai_ont = cai_ont
+        
         # Build drugbank ID --> CASRN map
-        self.drugbank_map = pd.read_csv("/data1/drug/drugbank/drug_links.csv")
+        drugbank_file = os.path.join(self.drugbank_path, 'drug_links.csv')
+        self.drugbank_map = pd.read_csv(drugbank_file)
 
         num_matches = 0
         for idx, m_row in self.drugbank_map.iterrows():
@@ -50,14 +56,22 @@ class CTD(Database):
 
     def fetch_raw_data(self):
         # Nodes
-        self.chemicals = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/chemicals.csv")
-        self.diseases = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/diseases.csv")
+        # self.chemicals = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/chemicals.csv")
+        # self.diseases = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/diseases.csv")
+        self.chemicals = pd.read_csv("D:/data/ctd/chemicals.csv")
+        self.diseases = pd.read_csv("D:/data/ctd/diseases.csv")
 
         # Edges
-        self.chem_dis = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/chemical_disease.csv")
+        # self.chem_dis = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/chemical_disease.csv")
+        self.chem_dis = pd.read_csv("D:/data/ctd/chemical_disease.csv")
 
     def parse(self, owl: owlready2.namespace.Ontology, cai_ont: owlready2.namespace.Ontology):
         self.cai_ont = cai_ont
+
+        self.scr.draw_progress_page("===Parsing CTDBase===")
+        prog_step = 1
+        self.scr.add_progress_step("Adding chemicals", prog_step)
+        prog_step += 1
         # Chemicals
         for _, c_row in tqdm(self.chemicals.iterrows(), total=len(self.chemicals)):
             casrn = c_row[0]
@@ -71,6 +85,9 @@ class CTD(Database):
 
                 safe_add_property(match[0], self.cai_ont.chemicalIsInCTD, True)
                 safe_add_property(match[0], self.cai_ont.xrefMeSHUI, mesh)
+
+        self.scr.add_progress_step("Adding chemicals", prog_step)
+        prog_step += 1
 
         # Diseases
         for _, d_row in tqdm(self.diseases.iterrows(), total=len(self.diseases)):
@@ -122,6 +139,9 @@ class CTD(Database):
                     num_ambiguities += 1
                     #ipdb.set_trace()
                     print("Whoopsie! {0}".format(nm))
+
+        self.scr.add_progress_step("Linking Chemicals to Diseases", prog_step)
+        prog_step += 1
 
         # Chemicals <-> Diseases
         unmatched_chem_dis_count = 0

@@ -162,8 +162,11 @@ class CTD(Database):
             dis_mesh = cd_row[4].split(":")[-1]
             dis = self.cai_ont.search(xrefMeSH=dis_mesh)
 
-            if len(chem) == 0:
+            if len(chem) == 0 or len(dis) == 0:
+                #ipdb.set_trace()
                 unmatched_chem_dis_count += 1
+            # elif len(dis) == 0:
+            #     raise RuntimeError
             else:
                 # We have a match for both the chemical and disease, we can add the relationship
                 #safe_add_property(chem, ont.chemicalAssociatesWithDisease, dis)

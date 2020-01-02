@@ -1,3 +1,6 @@
+import re
+import ipdb
+
 from owlready2 import get_ontology
 
 _OWL = get_ontology("http://www.w3.org/2002/07/owl#")
@@ -20,14 +23,37 @@ def safe_add_property(entity, prop, value):
         else:
             getattr(entity, prop._python_name).append(value)
 
-def eval_list_field(list_string):
+def eval_list_field(list_string: str):
     """Convert a list from a Neo4j CSV dump into a Python list.
 
     In the Neo4j database dumps, lists are stored as strings. Therefore,
     in order to use them as lists, we need to evaluate the string representation.
+
+    If list_string is passed as `nan`, we catch the TypeError and return the
+    empty list.
     """
-    list_eval = eval(list_string)
-    return list_eval
+    try:
+        list_eval = eval(list_string)
+        return list_eval
+    except TypeError:
+        return []
+
+def eval_list_field_delim(list_string: str, delim: str = "|"):
+    """Same as `eval_list_field`, but accept a (required) delimiter.
+
+    This is implemented as a separate function for speed considerations.
+    
+    Parameters
+    ----------
+    list_string : str
+        The string to split into a list.
+    delim : str
+        A string to use as a delimiter.
+    """
+    try:
+        return list_string.split(delim)
+    except AttributeError:
+        return []
 
 def make_safe_property_label(label):
     """Convert the label ("name") of a property to a safe format.

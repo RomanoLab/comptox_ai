@@ -57,15 +57,11 @@ class CTD(Database):
                 safe_add_property(match[0], self.cai_ont.xrefCasRN, casrn)
 
     def fetch_raw_data(self):
-        # Nodes
-        # self.chemicals = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/chemicals.csv")
-        # self.diseases = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/diseases.csv")
-        self.chemicals = pd.read_csv("D:/data/ctd/chemicals.csv", comment='#')
-        self.diseases = pd.read_csv("D:/data/ctd/diseases.csv", comment='#')
+        self.chemicals = pd.read_csv(os.path.join(self.path, 'CTD_chemicals.csv'), comment='#')
+        self.diseases = pd.read_csv(os.path.join(self.path, 'CTD_diseases.csv'), comment='#')
 
         # Edges
-        # self.chem_dis = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/chemical_disease.csv")
-        self.chem_dis = pd.read_csv("D:/data/ctd/chemical_disease.csv", comment='#')
+        self.chem_dis = pd.read_csv(os.path.join(self.path,"CTD_chemicals_diseases.csv"), comment='#')
 
     def parse(self, owl: owlready2.namespace.Ontology, cai_ont: owlready2.namespace.Ontology):
         self.cai_ont = cai_ont

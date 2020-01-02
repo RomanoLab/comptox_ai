@@ -9,7 +9,9 @@ from textwrap import dedent
 import owlready2
 import pandas as pd
 
-from blessed import Terminal  # blessed is a fork of blessings, which is a replacement for curses
+from blessed import (
+    Terminal,
+)  # blessed is a fork of blessings, which is a replacement for curses
 import os, sys
 import glob
 from enum import Enum, unique
@@ -23,23 +25,30 @@ from comptox_ai.build import databases
 
 
 CONFIG_FILE = "../../CONFIG.cfg"
-ONTOLOGY_FNAME = "../../comptox.rdf"
-ONTOLOGY_POPULATED_FNAME = "../../comptox_populated.rdf"
-ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
 
 OWL_RDF_FILE = "https://www.w3.org/2002/07/owl.rdf"
 
 cnf = configparser.ConfigParser()
 cnf.read(CONFIG_FILE)
-DATA_PREFIX = cnf['DATA']['prefix']
-DATA_TEMPDIR = cnf['DATA']['tempdir']
-DATA_LOCKFILE = cnf['DATA']['lockfile']
+DATA_PREFIX = cnf["DATA"]["prefix"]
+DATA_TEMPDIR = cnf["DATA"]["tempdir"]
+DATA_LOCKFILE = cnf["DATA"]["lockfile"]
+
+ONTOLOGY_FNAME = os.path.join(DATA_PREFIX, "comptox_ai", "comptox.rdf")
+ONTOLOGY_CHECKPOINT_FNAME = os.path.join(
+    DATA_PREFIX, "comptox_ai", "comptox_checkpoint.rdf"
+)
+ONTOLOGY_CHECKPOINT_LOCKFILE_FNAME = DATA_LOCKFILE
+ONTOLOGY_POPULATED_FNAME = os.path.join(DATA_PREFIX, "comptox_ai", "comptox_full.rdf")
+ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
+
 
 @dataclass
-class Config():
+class Config:
     data_prefix: str
     data_tempdir: str
     data_lockfile: str
+
 
 config = Config(DATA_PREFIX, DATA_TEMPDIR, DATA_LOCKFILE)
 
@@ -56,6 +65,7 @@ def show_lines(stdscr, lines):
         stdscr.addstr((i + 1) * 2, 10, line)
     stdscr.refresh()
 
+
 def extract_all(stdscr, dbs, ont):
     OWL = owlready2.get_ontology(OWL_RDF_FILE).load()
 
@@ -69,11 +79,14 @@ def extract_all(stdscr, dbs, ont):
 
     return dbs_parsed
 
+
 def transform_all(stdscr, dbs):
     pass
 
+
 def load_all(stdscr):
     pass
+
 
 def build_ontology(stdscr, ont):
     """Load the unpopulated ontology, then populate it with individuals from
@@ -91,7 +104,6 @@ def build_ontology(stdscr, ont):
     owlready2.namespace.Ontology
         The ComptoxAI ontology, now populated with individuals.
     """
-    
 
     # db_parse_order = [databases.Hetionet, databases.CTD, databases.EPA]
     db_parse_order = [databases.Hetionet, databases.CTD]
@@ -130,7 +142,7 @@ class ScreenManager(object):
             context.
         """
 
-        valid_chars = [str(x) for x in  valid_chars]
+        valid_chars = [str(x) for x in valid_chars]
 
         with self.term.cbreak():
 
@@ -140,7 +152,7 @@ class ScreenManager(object):
                 return None
 
             val = None
-            while val not in (u'q', u'Q'):
+            while val not in (u"q", u"Q"):
                 val = self.term.inkey()
                 if val in valid_chars:
                     return val
@@ -160,10 +172,10 @@ class ScreenManager(object):
 
     def draw_menu_page(self, info_text: str, menu_opts: list):
         self.clear()
-        self.move_cursor(2,2)
+        self.move_cursor(2, 2)
 
         print(info_text)
-        [print("({0}): {1}".format(i+1, opt)) for i, opt in enumerate(menu_opts)]
+        [print("({0}): {1}".format(i + 1, opt)) for i, opt in enumerate(menu_opts)]
 
         print()
         print("(Enter 'q' or 'Q' to quit at any time)")
@@ -175,11 +187,11 @@ class ScreenManager(object):
 
     def draw_progress_page(self, heading: str):
         self.clear()
-        self.move_cursor(2,2)
+        self.move_cursor(2, 2)
         print(heading)
 
     def add_progress_step(self, step_text: str, step_num: int):
-        self.move_cursor(2+(2*step_num), 2)
+        self.move_cursor(2 + (2 * step_num), 2)
         print(step_text)
 
     def close_terminal(self):
@@ -217,32 +229,38 @@ def main():
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 
+    For more information, see the documentation at http://comptox.ai.
+
     Press any key to continue."""
     scr.draw_text_page(welcome)
 
     # ComptoxAI's ontology (this should be more flexible in the future):
     ont = owlready2.get_ontology(ONTOLOGY_FNAME).load()
 
-
     while True:
         print()
-        choice = int(scr.draw_menu_page(
-            "Please select an action from the following options:",
-            [
-                "Build ontology.",
-                "Print ontology statistics",
-                "Save ontology to disk",
-                "Export ontology into Neo4j graph database.",
-            ]
-        ))
+        choice = int(
+            scr.draw_menu_page(
+                "Please select an action from the following options:",
+                [
+                    "Build ontology",
+                    "Load a partially complete previous run",
+                    "Print ontology statistics",
+                    "Save ontology to disk",
+                    "Export ontology into Neo4j graph database.",
+                ],
+            )
+        )
 
         if choice == 1:
             ont = build_ontology(scr, ont)
         elif choice == 2:
-            print_ontology_stats(scr, ont)
+            ont = load_incomplete_run(scr, ont)
         elif choice == 3:
-            save_ontology(scr, ont)
+            print_ontology_stats(scr, ont)
         elif choice == 4:
+            save_ontology(scr, ont)
+        elif choice == 5:
             export_ontology(scr, ont)
 
     # Clear screen, proceed
@@ -255,9 +273,9 @@ def print_ontology_stats(scr: ScreenManager, ont: owlready2.namespace.Ontology):
     num_individuals = sum(1 for _ in ont.individuals())
     num_dps = sum(1 for _ in ont.data_properties())
     num_ops = sum(1 for _ in ont.object_properties())
-    
+
     scr.clear()
-    scr.move_cursor(2,2)
+    scr.move_cursor(2, 2)
     print("  ===ONTOLOGY STATISTICS===")
     print()
 
@@ -266,10 +284,38 @@ def print_ontology_stats(scr: ScreenManager, ont: owlready2.namespace.Ontology):
     print("  Number of object properties: {0}".format(num_ops))
     print()
     print("  Number of individuals:       {0}".format(num_individuals))
-    print("  Number of relations:         {0}")
+    print("  Number of relations:         {0}".format("[UNIMPLEMENTED]"))
     print()
     print("  (Press any key to continue)")
     _ = scr.getchar()
 
-if __name__=="__main__":
+
+def save_ontology(scr: ScreenManager, ont: owlready2.namespace.Ontology):
+    save_message = """\n\n\n
+    Saving the populated ComptoxAI ontology to the local filesystem as
+    an OWL2 document (in RDF/XML syntax).
+
+    Full path and filename:
+    {0}
+
+    When you are happy with the populated ontology, the next step is
+    to read its contents into a Neo4j graph database. For detailed
+    instructions, please refer to http://comptox.ai/docs/guide/building.html.\n\n
+    """.format(
+        ONTOLOGY_POPULATED_FNAME
+    )
+
+    scr.draw_text_page(save_message)
+
+    print("   Saving to disk...")
+    ont.save(ONTOLOGY_POPULATED_FNAME, format="rdfxml")
+
+
+def load_incomplete_run(scr: ScreenManager, ont: owlready2.namespace.Ontology):
+    # TODO: Complete this function!
+    
+    return ont
+
+
+if __name__ == "__main__":
     main()

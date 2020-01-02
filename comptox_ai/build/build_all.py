@@ -165,6 +165,10 @@ class ScreenManager(object):
         print(info_text)
         [print("({0}): {1}".format(i+1, opt)) for i, opt in enumerate(menu_opts)]
 
+        print()
+        print("(Enter 'q' or 'Q' to quit at any time)")
+        print()
+
         usr_input = self.getchar(list(range(1, len(menu_opts))))
 
         return usr_input
@@ -216,45 +220,56 @@ def main():
     Press any key to continue."""
     scr.draw_text_page(welcome)
 
-    # Enter program itself; add modules; export; etc...
-    choice = int(scr.draw_menu_page(
-        "Please select an action from the following options:",
-        [
-            "Build ontology.",
-            "Print ontology statistics",
-            "Export ontology into Neo4j graph database.",
-        ]
-    ))
-
-    ont = None
-    
     # ComptoxAI's ontology (this should be more flexible in the future):
     ont = owlready2.get_ontology(ONTOLOGY_FNAME).load()
 
-    if choice == 1:
-        ont = build_ontology(scr, ont)
-    elif choice == 2:
-        print_ontology_stats(scr, ont)
-    elif choice == 2:
-        export_ontology(scr, ont)
 
-    # Print summary
+    while True:
+        print()
+        choice = int(scr.draw_menu_page(
+            "Please select an action from the following options:",
+            [
+                "Build ontology.",
+                "Print ontology statistics",
+                "Save ontology to disk",
+                "Export ontology into Neo4j graph database.",
+            ]
+        ))
 
-    # Clean up
+        if choice == 1:
+            ont = build_ontology(scr, ont)
+        elif choice == 2:
+            print_ontology_stats(scr, ont)
+        elif choice == 3:
+            save_ontology(scr, ont)
+        elif choice == 4:
+            export_ontology(scr, ont)
 
     # Clear screen, proceed
     scr.close_terminal()
 
 
 def print_ontology_stats(scr: ScreenManager, ont: owlready2.namespace.Ontology):
+
+    num_classes = sum(1 for _ in ont.classes())
+    num_individuals = sum(1 for _ in ont.individuals())
+    num_dps = sum(1 for _ in ont.data_properties())
+    num_ops = sum(1 for _ in ont.object_properties())
+    
     scr.clear()
     scr.move_cursor(2,2)
-    print("===ONTOLOGY STATISTICS===")
+    print("  ===ONTOLOGY STATISTICS===")
     print()
-    print("Number of classes: {0}".format())
-    print("Number of individuals: {0}")
-    ipdb.set_trace()
+
+    print("  Number of classes:           {0}".format(num_classes))
+    print("  Number of data properties:   {0}".format(num_dps))
+    print("  Number of object properties: {0}".format(num_ops))
     print()
+    print("  Number of individuals:       {0}".format(num_individuals))
+    print("  Number of relations:         {0}")
+    print()
+    print("  (Press any key to continue)")
+    _ = scr.getchar()
 
 if __name__=="__main__":
     main()

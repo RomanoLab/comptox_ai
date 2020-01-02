@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 import numpy as np
 from textwrap import dedent
-from owlready2 import get_ontology
+import owlready2
 import pandas as pd
 
 from blessed import Terminal  # blessed is a fork of blessings, which is a replacement for curses
@@ -26,6 +26,8 @@ CONFIG_FILE = "../../CONFIG.cfg"
 ONTOLOGY_FNAME = "../../comptox.rdf"
 ONTOLOGY_POPULATED_FNAME = "../../comptox_populated.rdf"
 ONTOLOGY_IRI = "http://jdr.bio/ontologies/comptox.owl#"
+
+OWL_RDF_FILE = "https://www.w3.org/2002/07/owl.rdf"
 
 cnf = configparser.ConfigParser()
 cnf.read(CONFIG_FILE)
@@ -55,7 +57,7 @@ def show_lines(stdscr, lines):
     stdscr.refresh()
 
 def extract_all(stdscr, dbs, ont):
-    OWL = get_ontology("http://www.w3.org/2002/07/owl#")
+    OWL = owlready2.get_ontology(OWL_RDF_FILE).load()
 
     dbs_parsed = []
 
@@ -73,7 +75,7 @@ def transform_all(stdscr, dbs):
 def load_all(stdscr):
     pass
 
-def build_ontology(stdscr):
+def build_ontology(stdscr, ont):
     """Load the unpopulated ontology, then populate it with individuals from
     external data sources.
     
@@ -81,14 +83,15 @@ def build_ontology(stdscr):
     ----------
     stdscr : curses.window
         Main Curses window for this application
+    ont : owlready2.namespace.Ontology
+        ComptoxAI ontology, without any individuals (yet).
     
     Returns
     -------
     owlready2.namespace.Ontology
         The ComptoxAI ontology, now populated with individuals.
     """
-    # ComptoxAI's ontology (this should be more flexible in the future):
-    ont = get_ontology(ONTOLOGY_FNAME).load()
+    
 
     # db_parse_order = [databases.Hetionet, databases.CTD, databases.EPA]
     db_parse_order = [databases.Hetionet, databases.CTD]
@@ -218,15 +221,23 @@ def main():
         "Please select an action from the following options:",
         [
             "Build ontology.",
-            "Export ontology into Neo4j graph database."
+            "Print ontology statistics",
+            "Export ontology into Neo4j graph database.",
         ]
     ))
 
-    if choice == 1:
-        build_ontology(scr)
-    elif choice == 2:
-        export_ontology(scr)
+    ont = None
     
+    # ComptoxAI's ontology (this should be more flexible in the future):
+    ont = owlready2.get_ontology(ONTOLOGY_FNAME).load()
+
+    if choice == 1:
+        ont = build_ontology(scr, ont)
+    elif choice == 2:
+        print_ontology_stats(scr, ont)
+    elif choice == 2:
+        export_ontology(scr, ont)
+
     # Print summary
 
     # Clean up
@@ -234,6 +245,16 @@ def main():
     # Clear screen, proceed
     scr.close_terminal()
 
+
+def print_ontology_stats(scr: ScreenManager, ont: owlready2.namespace.Ontology):
+    scr.clear()
+    scr.move_cursor(2,2)
+    print("===ONTOLOGY STATISTICS===")
+    print()
+    print("Number of classes: {0}".format())
+    print("Number of individuals: {0}")
+    ipdb.set_trace()
+    print()
 
 if __name__=="__main__":
     main()

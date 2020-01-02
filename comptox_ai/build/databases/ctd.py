@@ -1,11 +1,13 @@
 from .databases import Database
 from .hetionet import Hetionet
-from .utils import safe_add_property, eval_list_field, make_safe_property_label
+from .utils import safe_add_property, eval_list_field, eval_list_field_delim, make_safe_property_label
 
 import os
 import pandas as pd
 import owlready2
 from tqdm import tqdm
+
+import ipdb
 
 def parse_ctd_doid(altDiseaseIDs):
     matched_doids = []
@@ -58,12 +60,12 @@ class CTD(Database):
         # Nodes
         # self.chemicals = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/chemicals.csv")
         # self.diseases = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/diseases.csv")
-        self.chemicals = pd.read_csv("D:/data/ctd/chemicals.csv")
-        self.diseases = pd.read_csv("D:/data/ctd/diseases.csv")
+        self.chemicals = pd.read_csv("D:/data/ctd/chemicals.csv", comment='#')
+        self.diseases = pd.read_csv("D:/data/ctd/diseases.csv", comment='#')
 
         # Edges
         # self.chem_dis = pd.read_csv("~/projects/aop_neo4j/ctd_dumps/chemical_disease.csv")
-        self.chem_dis = pd.read_csv("D:/data/ctd/chemical_disease.csv")
+        self.chem_dis = pd.read_csv("D:/data/ctd/chemical_disease.csv", comment='#')
 
     def parse(self, owl: owlready2.namespace.Ontology, cai_ont: owlready2.namespace.Ontology):
         self.cai_ont = cai_ont
@@ -72,11 +74,17 @@ class CTD(Database):
         prog_step = 1
         self.scr.add_progress_step("Adding chemicals", prog_step)
         prog_step += 1
+
+        # NOTE: BIG CAVEAT:
+        # The CSV files for CTD have the header lines commented out.
+        # Currently, I just remove the "#" from the corresponding line, but
+        # this isn't a sustainable solution. Will need to revisit.
+
         # Chemicals
         for _, c_row in tqdm(self.chemicals.iterrows(), total=len(self.chemicals)):
-            casrn = c_row[0]
+            name = c_row[0]
             mesh = c_row[1].split(":")[-1]
-            name = c_row[2]
+            casrn = c_row[2]
 
             # Is it in the ontology already?
             match = self.cai_ont.search(xrefCasRN=casrn)
@@ -90,12 +98,13 @@ class CTD(Database):
         prog_step += 1
 
         # Diseases
+        num_ambiguities = 0
         for _, d_row in tqdm(self.diseases.iterrows(), total=len(self.diseases)):
-            mesh             = d_row[0].split(":")[-1]
-            nm               = d_row[1]
-            alt_ids          = eval_list_field(d_row[2])
-            tree_nums        = eval_list_field(d_row[3])
-            parent_tree_nums = eval_list_field(d_row[4])
+            nm               = d_row[0]
+            mesh             = d_row[1].split(":")[-1]
+            alt_ids          = eval_list_field_delim(d_row[2])
+            tree_nums        = eval_list_field_delim(d_row[5])
+            parent_tree_nums = eval_list_field_delim(d_row[6])
 
             doid = parse_ctd_doid(alt_ids)
             omim = parse_ctd_omim(alt_ids)
@@ -137,8 +146,8 @@ class CTD(Database):
                 else:
                     # Uh oh, we have multiple matching diseases in the ontology. Need to reassess...
                     num_ambiguities += 1
-                    #ipdb.set_trace()
-                    print("Whoopsie! {0}".format(nm))
+                    # TODO: Figure out some way to report ambiguities that doesn't look awful.
+                    # print("Whoopsie! {0}".format(nm))
 
         self.scr.add_progress_step("Linking Chemicals to Diseases", prog_step)
         prog_step += 1
@@ -150,14 +159,11 @@ class CTD(Database):
             # Check to make sure we have both the chemical and the disease
             chem_mesh = cd_row[1].split(":")[-1]
             chem = self.cai_ont.search(xrefMeSHUI=chem_mesh)  # NOTE: Need to use xrefMeSHUI here
-            dis_mesh = cd_row[5].split(":")[-1]
+            dis_mesh = cd_row[4].split(":")[-1]
             dis = self.cai_ont.search(xrefMeSH=dis_mesh)
 
-            if len(chem) == 0 or len(dis) == 0:
-                #ipdb.set_trace()
+            if len(chem) == 0:
                 unmatched_chem_dis_count += 1
-            elif len(dis) == 0:
-                raise RuntimeError
             else:
                 # We have a match for both the chemical and disease, we can add the relationship
                 #safe_add_property(chem, ont.chemicalAssociatesWithDisease, dis)

@@ -1,12 +1,12 @@
 language: python
 python:
   - "3.7"
+services:
+  - neo4j
 install:
   - pip install -r requirements.txt
   - pip install .
 script:
   - pytest --cov-report term --cov=comptox_ai tests/
-services:
-  - neo4j
-after_success:
+after_script:
   - codecov

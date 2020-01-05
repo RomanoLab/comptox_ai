@@ -8,3 +8,5 @@ script:
   - pytest --cov-report term --cov=comptox_ai tests/
 services:
   - neo4j
+after_success:
+  - codecov

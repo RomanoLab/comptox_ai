@@ -5,6 +5,6 @@ install:
   - pip install -r requirements.txt
   - pip install .
 script:
-  - pytest --cov=comptox_ai tests/
+  - pytest --cov-report term --cov=comptox_ai tests/
 services:
   - neo4j

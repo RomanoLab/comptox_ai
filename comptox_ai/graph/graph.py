@@ -13,8 +13,10 @@ import ipdb
 from tqdm import tqdm
 
 from comptox_ai.cypher import queries
-
 from comptox_ai.utils import execute_cypher_transaction
+from comptox_ai.graph.vertex import Vertex
+from comptox_ai.graph.edge import Edge
+from comptox_ai.graph.path import Path
 
 
 class Spinner(object):
@@ -238,7 +240,7 @@ class Graph:
 
         Returns
         -------
-        neo4j.Record
+        comptox_ai.graph.Vertex
             Node corresponding to the provided URI.
         """
         if uri is None:
@@ -253,7 +255,7 @@ class Graph:
                 return None
             else:
                 assert len(query_response) == 1
-                return query_response[0]
+                return Vertex(query_response[0])
 
     def fetch_nodes_by_label(self, label):
         """
@@ -437,31 +439,3 @@ class Graph:
         return(query_response)
 
 
-class Path(object):
-    """A sequence of graph database nodes representing a directed path.
-    """
-    def __init__(self, node_list):
-        assert len(node_list) >= 1
-
-        self.nodes = node_list
-
-        self.start_node = self.nodes[0]
-        self.end_node = self.nodes[-1]
-
-    def __repr__(self):
-        repr_str = "< 'Path' object of nodes with the following URI suffixes:"\
-                   "\n\t["
-        for x in self.nodes:
-            repr_str += " {0},\n\t".format(x['uri'].split("#")[-1])
-        repr_str = repr_str[:-3]
-        repr_str += " ] >"
-        return repr_str
-
-    def __iter__(self):
-        return (x for x in self.nodes)
-
-    def get_uri_sequence(self):
-        uris = []
-        for node in self.nodes:
-            uris.append(node['uri'])
-        return uris

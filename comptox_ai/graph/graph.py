@@ -1,4 +1,5 @@
 import numpy as np
+import scipy.sparse
 import nxneo4j
 import neo4j
 import networkx as nx
@@ -14,7 +15,8 @@ from tqdm import tqdm
 
 from comptox_ai.cypher import queries
 from comptox_ai.utils import execute_cypher_transaction
-from comptox_ai.graph.vertex import Vertex
+from comptox_ai.graph.metrics import vertex_count
+from .vertex import Vertex
 from comptox_ai.graph.edge import Edge
 from comptox_ai.graph.path import Path
 
@@ -54,7 +56,7 @@ class Spinner(object):
             return False
 
 
-class Graph:
+class Graph(object):
     """
     Base class for a knowledge graph used in ComptoxAI.
 
@@ -280,7 +282,7 @@ class Graph:
 
             query_response = self.run_query_in_session(self.query)
 
-            return(query_response)
+            return [Vertex(xx) for xx in query_response]
 
     def fetch_neighbors_by_uri(self, uri):
         """[summary]Fetch nodes corresponding to neighbors of a node represented by a
@@ -402,17 +404,37 @@ class Graph:
                  (default behavior) or a dense Numpy `ndarray`.
 
         """
-        A = np.array()
 
-        G = nxneo4j.Graph(self.driver)
+        # Generate index of nodes (i.e., a vector of int IDs)
+        if not hasattr(self, 'node_idx'):
+            self.node_idx = np.empty(vertex_count(self), np.uint32)
+            for i, n in enumerate(self.fetch_nodes_by_label('owl__NamedIndividual')):
+                self.node_idx[i] = n.n4j_id
+
+        if sparse:
+            A = scipy.sparse.lil_matrix()
+            #for 
+        else:
+            #A = np.array()
+            raise NotImplementedError
 
         return A
+        
 
     def build_incidence_matrix(self, sparse=True):
         """Construct an incidence matrix of individuals in the
         ontology graph.
         """
-        B = np.array()
+        if not hasattr(self, 'node_idx'):
+            self.node_idx = np.empty(vertex_count(self), np.uint32)
+            for i, n in enumerate(self.fetch_nodes_by_label('owl__NamedIndividual')):
+                self.node_idx[i] = n.n4j_id
+        
+        if sparse:
+            B = scipy.sparse.lil_matrix()
+        else:
+            #B = np.array()
+            raise NotImplementedError
 
         return B
 

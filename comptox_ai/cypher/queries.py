@@ -16,10 +16,12 @@ RETURN
 
 FETCH_NODES_BY_LABEL = """
 MATCH
-    (n:ns0__{})
+    (n:{})
 RETURN n;
 """[1:-1]
 
+# NOTE: We consider it an orphan if it has NO RELATIONSHIPS TO
+# ANOTHER owl__NamedIndividual
 FETCH_ORPHAN_NODES = """
 MATCH
     (n)
@@ -30,7 +32,7 @@ RETURN n;
 FETCH_ORPHAN_INDIVIDUAL_NODES = """
 MATCH
     (n:owl__NamedIndividual)
-WHERE NOT (n)-[*]-()
+WHERE NOT (n)-[]-(:owl__NamedIndividual)
 RETURN n;
 """[1:-1]
 

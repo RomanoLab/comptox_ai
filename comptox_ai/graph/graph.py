@@ -10,6 +10,7 @@ import time
 import threading
 
 import ipdb
+from tqdm import tqdm
 
 from comptox_ai.cypher import queries
 
@@ -311,9 +312,16 @@ class Graph:
 
     # GRAPH I/O
 
-    def to_networkx_graph(self):
+    def to_networkx_graph(self, store=True, include_orphans=True):
         """Construct a NetworkX graph object from the data in the
         connected Neo4j graph database.
+
+        Parameters
+        ----------
+        store : bool (default: `True`)
+            Specify whether to keep the networkx object in memory.
+        include_orphans : bool (default: `True`)
+            Whether to include nodes that are connected to no edges.
 
         Returns
         -------
@@ -324,7 +332,7 @@ class Graph:
         self.template = queries.FETCH_ALL_TRIPLES
         self.query = self.template.format()
 
-        print("Fetching all triples for named individuals - this may take a"
+        print("Fetching all triples for named individuals - this may take a "
               "while...")
         with Spinner():
             query_response = self.run_query_in_session(self.query)
@@ -332,7 +340,7 @@ class Graph:
         print("All triples received, now processing them...")
         edges = []
 
-        for triple in query_response:
+        for triple in tqdm(query_response):
             n = triple['n'].get('uri').split('#')[-1]
             r = triple['type(r)']
             m = triple['m'].get('uri').split('#')[-1]
@@ -340,8 +348,28 @@ class Graph:
 
         G = nx.DiGraph()
 
-        for n, r, m in edges:
+        for n, r, m in tqdm(edges):
             G.add_edge(u_of_edge=n, v_of_edge=m, edge_label=r)
+
+        if include_orphans:
+            print("Retrieving orphan nodes...")
+            self.template = queries.FETCH_ORPHAN_INDIVIDUAL_NODES
+            self.query = self.template.format()
+
+            query_response = self.run_query_in_session(self.query)
+
+            print("Adding orphans to network...")
+
+            for r in tqdm(query_response):
+                try:
+                    uri = r['n'].get('uri').split('#')[-1]
+                except AttributeError:
+                    uri = r['n'].get('uri')
+                    print()
+                G.add_node(uri)
+
+        if store:
+            self.nx = G
 
         return(G)
 

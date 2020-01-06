@@ -20,6 +20,20 @@ MATCH
 RETURN n;
 """[1:-1]
 
+FETCH_ORPHAN_NODES = """
+MATCH
+    (n)
+WHERE NOT (n)-[*]-()
+RETURN n;
+"""[1:-1]
+
+FETCH_ORPHAN_INDIVIDUAL_NODES = """
+MATCH
+    (n:owl__NamedIndividual)
+WHERE NOT (n)-[*]-()
+RETURN n;
+"""[1:-1]
+
 FETCH_NODE_IDS_BY_LABEL = """
 MATCH
     (n:ns0__{})

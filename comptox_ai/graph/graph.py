@@ -1,6 +1,5 @@
 import numpy as np
 import scipy.sparse
-import nxneo4j
 import neo4j
 import networkx as nx
 from collections import defaultdict
@@ -15,7 +14,7 @@ from tqdm import tqdm
 
 from comptox_ai.cypher import queries
 from comptox_ai.utils import execute_cypher_transaction
-from comptox_ai.graph.metrics import vertex_count
+from comptox_ai.graph.metrics import vertex_count, ensure_nx_available
 from .vertex import Vertex
 from comptox_ai.graph.edge import Edge
 from comptox_ai.graph.path import Path
@@ -345,9 +344,12 @@ class Graph(object):
         edges = []
 
         for triple in tqdm(query_response):
-            n = triple['n'].get('uri').split('#')[-1]
+            # n = triple['n'].get('uri').split('#')[-1]
+            # r = triple['type(r)']
+            # m = triple['m'].get('uri').split('#')[-1]
+            n = triple['n'].id
             r = triple['type(r)']
-            m = triple['m'].get('uri').split('#')[-1]
+            m = triple['m'].id
             edges.append((n, r, m))
 
         G = nx.DiGraph()
@@ -366,9 +368,9 @@ class Graph(object):
 
             for r in tqdm(query_response):
                 try:
-                    uri = r['n'].get('uri').split('#')[-1]
+                    uri = r['n'].id
                 except AttributeError:
-                    uri = r['n'].get('uri')
+                    uri = r['n'].id
                     print()
                 G.add_node(uri)
 
@@ -405,17 +407,24 @@ class Graph(object):
 
         """
 
+        ensure_nx_available(self)
+
         # Generate index of nodes (i.e., a vector of int IDs)
         if not hasattr(self, 'node_idx'):
-            self.node_idx = np.empty(vertex_count(self), np.uint32)
+            #self.node_idx = np.empty(vertex_count(self), np.uint32)
+            self.node_idx = {}
             for i, n in enumerate(self.fetch_nodes_by_label('owl__NamedIndividual')):
-                self.node_idx[i] = n.n4j_id
+                self.node_idx[n.n4j_id] = i
+
+        n_nodes = len(self.node_idx)
 
         if sparse:
-            A = scipy.sparse.lil_matrix()
-            #for 
+            A = scipy.sparse.lil_matrix((n_nodes, n_nodes), dtype=np.bool_)
+            for e in self.nx.edges():
+                #ipdb.set_trace()
+                x, y = e
+                A[self.node_idx[x],self.node_idx[y]] = 1
         else:
-            #A = np.array()
             raise NotImplementedError
 
         return A

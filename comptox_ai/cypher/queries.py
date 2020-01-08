@@ -20,6 +20,14 @@ MATCH
 RETURN n;
 """[1:-1]
 
+# Note: the list of IDs should be cast to string before formatting this query
+FETCH_NODES_BY_ID_LIST = """
+MATCH
+    (n)
+WHERE ID(n) IN {}
+RETURN n;
+"""[1:-1]
+
 # NOTE: We consider it an orphan if it has NO RELATIONSHIPS TO
 # ANOTHER owl__NamedIndividual
 FETCH_ORPHAN_NODES = """

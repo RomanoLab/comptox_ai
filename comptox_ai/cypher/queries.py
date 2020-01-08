@@ -78,6 +78,15 @@ RETURN
     n.uri;
 """[1:-1]
 
+SEARCH_NODE_BY_PROPERTY = """
+MATCH
+    (n:ns0__AOP)
+WHERE
+    n.ns0__commonName CONTAINS '{}'
+RETURN
+    n;
+"""[1:-1]
+
 ## FROM networkx-neo4j
 ## (see: https://github.com/neo4j-graph-analytics/networkx-neo4j/blob/master/nxneo4j/base_graph.py)
 

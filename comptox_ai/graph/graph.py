@@ -3,6 +3,7 @@ import scipy.sparse
 import neo4j
 import networkx as nx
 from collections import defaultdict
+from queue import Queue
 
 # for Spinner
 import sys
@@ -67,7 +68,7 @@ class Graph(object):
     algorithms, and this class will interact with the Graph class to execute
     queries and consume the results.
     """
-    def __init__(self, driver, **kwargs):
+    def __init__(self, driver, build_nx_graph=True, **kwargs):
         """Initialize a ComptoxAI knowledge graph supported by a Neo4j
         graph database instance.
         
@@ -87,6 +88,16 @@ class Graph(object):
         self.node_mask = kwargs.get("node_mask", [])
         if isinstance(self.node_mask, str):
             self.node_labels = [self.node_labels]
+
+        if build_nx_graph:
+            _ = self.to_networkx_graph()
+
+        # Generate index of nodes (i.e., a vector of int IDs)
+        if not hasattr(self, 'node_idx'):
+            #self.node_idx = np.empty(vertex_count(self), np.uint32)
+            self.node_idx = {}
+            for i, n in enumerate(self.fetch_nodes_by_label('owl__NamedIndividual')):
+                self.node_idx[n.n4j_id] = i
 
     # GRAPH LIFECYCLE METHODS
 
@@ -311,9 +322,59 @@ class Graph(object):
         else:
             return query_response
 
-    # NODE/GRAPH MODIFICATION METHODS
+    def to_aop_subgraph(self, aop_name, interactive_search=False):
+        # Note omission of ns0__keyEventTriggeredBy
+        allowed_rel_types = ['ns0__aopContainsKE','ns0__aopHasMIE','ns0__aopCausesAO','ns0__altersBiologicalState','ns0__keyEventTriggers']
 
-    # GRAPH I/O
+        ensure_nx_available(self)
+        
+        if interactive_search:
+            raise NotImplementedError
+        else:
+            # Find AOP node by name
+            self.template = queries.SEARCH_NODE_BY_PROPERTY
+            self.query = self.template.format(aop_name)
+            query_response = self.run_query_in_session(self.query)
+            if len(query_response) == 0:
+                print("No AOP found for query '{0}'. Please try again.".format(aop_name))
+            res = query_response[0]['n']
+            if len(query_response) > 1:
+                raise RuntimeWarning("""Warning--more than one AOP was found for the name '{0}'. 
+We'll proceed using the first result. If you would like to manually select an AOP from the results, 
+rerun this method using the argument `interactive_search=True`.""".format(aop_name))
+
+        aop_id = res.id
+
+        # Perform a depth-first expansion of the subgraph using `allowed_rel_types` as a constraint
+
+        # A list of nodes we have already added to the Queue
+        encountered_nodes = []  # We don't want to loop over cycles
+        subgraph_nodes = []
+        node_queue = Queue()
+        node_queue.put(aop_id)
+        subgraph_nodes.append(aop_id)
+
+        while not node_queue.empty():
+            q = node_queue.get()
+            # we get the relations for the queue element
+            q_item_atlas_view = self.nx[q]
+
+            # For each relationship, we check whether we've visited the object before,
+            # If so, we skip,
+            # If not, we add it to `encountered_nodes`,
+            # If the rel's edge_label isn't restricted, we add it to subgraph_nodes and node_queue.
+            for k, v in q_item_atlas_view.items():
+                if k in encountered_nodes:
+                    continue
+                encountered_nodes.append(k)
+                if v['edge_label'] in allowed_rel_types:
+                    subgraph_nodes.append(k)
+                    node_queue.put(k)
+
+            #ipdb.set_trace()
+            #print()
+        
+        return self.nx.subgraph(subgraph_nodes)
 
     def to_networkx_graph(self, store=True, include_orphans=True):
         """Construct a NetworkX graph object from the data in the
@@ -386,7 +447,7 @@ class Graph(object):
             G, edges, edge_labels = self.to_networkx_graph()
             print("...done")
 
-    def build_adjacency_matrix(self, sparse=True):
+    def to_adjacency_matrix(self, sparse=True, store=True):
         """Construct an adjacency matrix of individuals in the
         ontology graph.
 
@@ -409,13 +470,6 @@ class Graph(object):
 
         ensure_nx_available(self)
 
-        # Generate index of nodes (i.e., a vector of int IDs)
-        if not hasattr(self, 'node_idx'):
-            #self.node_idx = np.empty(vertex_count(self), np.uint32)
-            self.node_idx = {}
-            for i, n in enumerate(self.fetch_nodes_by_label('owl__NamedIndividual')):
-                self.node_idx[n.n4j_id] = i
-
         n_nodes = len(self.node_idx)
 
         if sparse:
@@ -427,10 +481,13 @@ class Graph(object):
         else:
             raise NotImplementedError
 
+        if store:
+            self.adjacency_matrix = A
+
         return A
         
 
-    def build_incidence_matrix(self, sparse=True):
+    def to_incidence_matrix(self, sparse=True):
         """Construct an incidence matrix of individuals in the
         ontology graph.
         """

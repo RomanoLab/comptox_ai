@@ -17,6 +17,7 @@ from comptox_ai.cypher import queries
 from comptox_ai.utils import execute_cypher_transaction
 from comptox_ai.graph.metrics import vertex_count, ensure_nx_available
 from .vertex import Vertex
+from .subgraph import Subgraph
 from comptox_ai.graph.edge import Edge
 from comptox_ai.graph.path import Path
 
@@ -24,25 +25,27 @@ from comptox_ai.graph.path import Path
 class Spinner(object):
     """See https://stackoverflow.com/a/39504463/1730417
     """
+
     busy = False
     delay = 0.1
 
     @staticmethod
     def spinning_cursor():
         while 1:
-            for cursor in '|/-\\':
+            for cursor in "|/-\\":
                 yield cursor
 
     def __init__(self, delay=None):
         self.spinner_generator = self.spinning_cursor()
-        if delay and float(delay): self.delay = delay
+        if delay and float(delay):
+            self.delay = delay
 
     def spinner_task(self):
         while self.busy:
             sys.stdout.write(next(self.spinner_generator))
             sys.stdout.flush()
             time.sleep(self.delay)
-            sys.stdout.write('\b')
+            sys.stdout.write("\b")
             sys.stdout.flush()
 
     def __enter__(self):
@@ -68,6 +71,7 @@ class Graph(object):
     algorithms, and this class will interact with the Graph class to execute
     queries and consume the results.
     """
+
     def __init__(self, driver, build_nx_graph=True, **kwargs):
         """Initialize a ComptoxAI knowledge graph supported by a Neo4j
         graph database instance.
@@ -82,7 +86,7 @@ class Graph(object):
         self.driver_connected = False
 
         self.driver = driver
-        self.test_driver
+        self.test_driver()
 
         # If node_labels is the empty list, we don't filter on node type
         self.node_mask = kwargs.get("node_mask", [])
@@ -93,10 +97,10 @@ class Graph(object):
             _ = self.to_networkx_graph()
 
         # Generate index of nodes (i.e., a vector of int IDs)
-        if not hasattr(self, 'node_idx'):
-            #self.node_idx = np.empty(vertex_count(self), np.uint32)
+        if not hasattr(self, "node_idx"):
+            # self.node_idx = np.empty(vertex_count(self), np.uint32)
             self.node_idx = {}
-            for i, n in enumerate(self.fetch_nodes_by_label('owl__NamedIndividual')):
+            for i, n in enumerate(self.fetch_nodes_by_label("owl__NamedIndividual")):
                 self.node_idx[n.n4j_id] = i
 
     # GRAPH LIFECYCLE METHODS
@@ -119,10 +123,7 @@ class Graph(object):
         else:
             print("Error: Connection to Neo4j is not currently active")
 
-    def open_connection(self,
-                        username,
-                        password,
-                        uri="bolt://localhost:7687"):
+    def open_connection(self, username, password, uri="bolt://localhost:7687"):
         """Open a new connection to a Neo4j graph database.
 
         If a connection to a graph database already exists, it will be replaced.
@@ -137,11 +138,14 @@ class Graph(object):
             URI to a Bolt server that points at the graph database of interest,
             by default "bolt://localhost:7687"
         """
+        self.username = username
+        self.password = password
+        
         if not self.driver_connected:
             try:
-                self.driver = GraphDatabase.driver(self.uri,
-                                                   auth=(self.username,
-                                                         self.password))
+                self.driver = GraphDatabase.driver(
+                    self.uri, auth=(self.username, self.password)
+                )
                 self.driver_connected = True
             except:
                 print("Error opening connection to Neo4j")
@@ -161,14 +165,15 @@ class Graph(object):
             RuntimeError raised otherwise
         """
         if not self.driver_connected:
-            raise RuntimeError("Attempted to query Neo4j without an active \
-                                database connection")
+            raise RuntimeError(
+                "Attempted to query Neo4j without an active \
+                                database connection"
+            )
         return True
 
     # NODE RETRIEVAL METHODS
 
-    def fetch_ontology_class_labels(self, populated_only=True,
-                                    include_counts=True):
+    def fetch_ontology_class_labels(self, populated_only=True, include_counts=True):
         """Get all classes from the Comptox AI that are present in the graph
         database.
 
@@ -193,19 +198,19 @@ class Graph(object):
 
             nodes_of_type = defaultdict(int)
             for label_set in query_response:
-                ct = label_set['count']
-                labels = label_set['labels']
+                ct = label_set["count"]
+                labels = label_set["labels"]
 
                 if ct == 0:
                     continue
 
-                if 'owl__NamedIndividual' not in labels:
+                if "owl__NamedIndividual" not in labels:
                     continue
 
-                for label in label_set['labels']:
-                    prefix = label.split('__')[0]
-                    suffix = label.split('__')[-1]
-                    if prefix == 'ns0':
+                for label in label_set["labels"]:
+                    prefix = label.split("__")[0]
+                    suffix = label.split("__")[-1]
+                    if prefix == "ns0":
                         nodes_of_type[suffix] += ct
 
             if include_counts:
@@ -240,7 +245,7 @@ class Graph(object):
         if len(query_response) == 0:
             return None
         else:
-            return [(x['uri'], x['degree']) for x in query_response]
+            return [(x["uri"], x["degree"]) for x in query_response]
 
     def fetch_node_by_uri(self, uri):
         """Retrieve a node from Neo4j matching the given URI.
@@ -323,11 +328,22 @@ class Graph(object):
             return query_response
 
     def to_aop_subgraph(self, aop_name, interactive_search=False):
+        """
+        Algorithm for finding an AOP and building an induced subgraph of `self`
+        that corresponds to the AOP's local network of concepts.
+        """
+
         # Note omission of ns0__keyEventTriggeredBy
-        allowed_rel_types = ['ns0__aopContainsKE','ns0__aopHasMIE','ns0__aopCausesAO','ns0__altersBiologicalState','ns0__keyEventTriggers']
+        allowed_rel_types = [
+            "ns0__aopContainsKE",
+            "ns0__aopHasMIE",
+            "ns0__aopCausesAO",
+            "ns0__altersBiologicalState",
+            "ns0__keyEventTriggers",
+        ]
 
         ensure_nx_available(self)
-        
+
         if interactive_search:
             raise NotImplementedError
         else:
@@ -336,16 +352,20 @@ class Graph(object):
             self.query = self.template.format(aop_name)
             query_response = self.run_query_in_session(self.query)
             if len(query_response) == 0:
-                print("No AOP found for query '{0}'. Please try again.".format(aop_name))
-            res = query_response[0]['n']
+                print(
+                    "No AOP found for query '{0}'. Please try again.".format(aop_name)
+                )
+            res = query_response[0]["n"]
             if len(query_response) > 1:
-                raise RuntimeWarning("""Warning--more than one AOP was found for the name '{0}'. 
+                print(
+                    """Warning--more than one AOP was found for the name '{0}'. 
 We'll proceed using the first result. If you would like to manually select an AOP from the results, 
-rerun this method using the argument `interactive_search=True`.""".format(aop_name))
+rerun this method using the argument `interactive_search=True`.""".format(
+                        aop_name
+                    )
+                )
 
         aop_id = res.id
-
-        # Perform a depth-first expansion of the subgraph using `allowed_rel_types` as a constraint
 
         # A list of nodes we have already added to the Queue
         encountered_nodes = []  # We don't want to loop over cycles
@@ -367,14 +387,11 @@ rerun this method using the argument `interactive_search=True`.""".format(aop_na
                 if k in encountered_nodes:
                     continue
                 encountered_nodes.append(k)
-                if v['edge_label'] in allowed_rel_types:
+                if v["edge_label"] in allowed_rel_types:
                     subgraph_nodes.append(k)
                     node_queue.put(k)
 
-            #ipdb.set_trace()
-            #print()
-        
-        return self.nx.subgraph(subgraph_nodes)
+        return Subgraph(self, from_nx_subgraph=self.nx.subgraph(subgraph_nodes))
 
     def to_networkx_graph(self, store=True, include_orphans=True):
         """Construct a NetworkX graph object from the data in the
@@ -396,8 +413,9 @@ rerun this method using the argument `interactive_search=True`.""".format(aop_na
         self.template = queries.FETCH_ALL_TRIPLES
         self.query = self.template.format()
 
-        print("Fetching all triples for named individuals - this may take a "
-              "while...")
+        print(
+            "Fetching all triples for named individuals - this may take a " "while..."
+        )
         with Spinner():
             query_response = self.run_query_in_session(self.query)
 
@@ -408,9 +426,9 @@ rerun this method using the argument `interactive_search=True`.""".format(aop_na
             # n = triple['n'].get('uri').split('#')[-1]
             # r = triple['type(r)']
             # m = triple['m'].get('uri').split('#')[-1]
-            n = triple['n'].id
-            r = triple['type(r)']
-            m = triple['m'].id
+            n = triple["n"].id
+            r = triple["type(r)"]
+            m = triple["m"].id
             edges.append((n, r, m))
 
         G = nx.DiGraph()
@@ -429,21 +447,23 @@ rerun this method using the argument `interactive_search=True`.""".format(aop_na
 
             for r in tqdm(query_response):
                 try:
-                    uri = r['n'].id
+                    uri = r["n"].id
                 except AttributeError:
-                    uri = r['n'].id
+                    uri = r["n"].id
                     print()
                 G.add_node(uri)
 
         if store:
             self.nx = G
 
-        return(G)
+        return G
 
     def to_graphml(self, G=None, edges=None, edge_labels=None):
         if not all([G, edges, edge_labels]):
-            print("Incomplete network data given; calculating via"
-                  "to_networkx_graph()...")
+            print(
+                "Incomplete network data given; calculating via"
+                "to_networkx_graph()..."
+            )
             G, edges, edge_labels = self.to_networkx_graph()
             print("...done")
 
@@ -475,9 +495,9 @@ rerun this method using the argument `interactive_search=True`.""".format(aop_na
         if sparse:
             A = scipy.sparse.lil_matrix((n_nodes, n_nodes), dtype=np.bool_)
             for e in self.nx.edges():
-                #ipdb.set_trace()
+                # ipdb.set_trace()
                 x, y = e
-                A[self.node_idx[x],self.node_idx[y]] = 1
+                A[self.node_idx[x], self.node_idx[y]] = 1
         else:
             raise NotImplementedError
 
@@ -485,21 +505,20 @@ rerun this method using the argument `interactive_search=True`.""".format(aop_na
             self.adjacency_matrix = A
 
         return A
-        
 
     def to_incidence_matrix(self, sparse=True):
         """Construct an incidence matrix of individuals in the
         ontology graph.
         """
-        if not hasattr(self, 'node_idx'):
+        if not hasattr(self, "node_idx"):
             self.node_idx = np.empty(vertex_count(self), np.uint32)
-            for i, n in enumerate(self.fetch_nodes_by_label('owl__NamedIndividual')):
+            for i, n in enumerate(self.fetch_nodes_by_label("owl__NamedIndividual")):
                 self.node_idx[i] = n.n4j_id
-        
+
         if sparse:
             B = scipy.sparse.lil_matrix()
         else:
-            #B = np.array()
+            # B = np.array()
             raise NotImplementedError
 
         return B
@@ -520,10 +539,5 @@ rerun this method using the argument `interactive_search=True`.""".format(aop_na
         list of neo4j.Record
         """
         with self.driver.session() as session:
-            query_response = session.read_transaction(
-                execute_cypher_transaction,
-                query
-            )
-        return(query_response)
-
-
+            query_response = session.read_transaction(execute_cypher_transaction, query)
+        return query_response

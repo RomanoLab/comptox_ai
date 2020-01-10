@@ -1,3 +1,4 @@
+blessed==1.16.1
 codecov==2.0.15
 doc8==0.8.0
 docutils==0.15.2

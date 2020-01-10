@@ -105,8 +105,8 @@ def build_ontology(stdscr, ont):
         The ComptoxAI ontology, now populated with individuals.
     """
 
-    # db_parse_order = [databases.Hetionet, databases.CTD, databases.EPA]
-    db_parse_order = [databases.Hetionet, databases.CTD]
+    db_parse_order = [databases.Hetionet, databases.CTD, databases.EPA]
+    #db_parse_order = [databases.Hetionet, databases.CTD]
 
     dbs = extract_all(stdscr, db_parse_order, ont)
 

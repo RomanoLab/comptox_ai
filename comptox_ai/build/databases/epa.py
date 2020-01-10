@@ -51,7 +51,7 @@ class EPA(Database):
         self.epa_map = self.epa_map.merge(cas_map, how='outer', left_on='DTXSID', right_on='dsstox_substance_id')
         del(cas_map)
         self.epa_map.drop(columns='dsstox_substance_id', inplace=True)
-        self.epa_map.dropna(axis=0, subset=['DTXSID'], inplace=False)
+        self.epa_map.dropna(axis=0, subset=['DTXSID'], inplace=True)
 
     def parse(self, owl: owlready2.namespace.Ontology, cai_ont: owlready2.namespace.Ontology):
         self.cai_ont = cai_ont

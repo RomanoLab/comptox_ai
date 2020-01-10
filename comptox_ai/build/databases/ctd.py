@@ -90,7 +90,7 @@ class CTD(Database):
                 safe_add_property(match[0], self.cai_ont.chemicalIsInCTD, True)
                 safe_add_property(match[0], self.cai_ont.xrefMeSHUI, mesh)
 
-        self.scr.add_progress_step("Adding chemicals", prog_step)
+        self.scr.add_progress_step("Adding Diseases", prog_step)
         prog_step += 1
 
         # Diseases
@@ -147,6 +147,9 @@ class CTD(Database):
 
         self.scr.add_progress_step("Linking Chemicals to Diseases", prog_step)
         prog_step += 1
+
+        if True:
+            return
 
         # Chemicals <-> Diseases
         unmatched_chem_dis_count = 0

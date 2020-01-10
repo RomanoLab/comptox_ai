@@ -15,6 +15,8 @@ def safe_add_property(entity, prop, value):
     This function cuts down on boilerplate code considerably when setting
     many property values in the ontology.
     """
+    if value is None:
+        return
     if _OWL.FunctionalProperty in prop.is_a:
         setattr(entity, prop._python_name, value)
     else:

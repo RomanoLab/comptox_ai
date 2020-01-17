@@ -523,6 +523,20 @@ rerun this method using the argument `interactive_search=True`.""".format(
 
         return B
 
+    def to_feature_matrix(self, nodes, node_types: list = None, edge_types: list = None):
+        """Construct a dataframe containing all properties for a set of
+        specified nodes and/or edges.
+        
+        Parameters
+        ----------
+        nodes : [type]
+            [description]
+        node_types : list, optional
+            [description], by default None
+        edge_types : list, optional
+            [description], by default None
+        """
+
     # UTILITY METHODS
 
     def run_query_in_session(self, query):

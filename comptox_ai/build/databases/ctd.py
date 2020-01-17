@@ -148,7 +148,8 @@ class CTD(Database):
         self.scr.add_progress_step("Linking Chemicals to Diseases", prog_step)
         prog_step += 1
 
-        if True:
+        # Set `True` to skip relationship parsing
+        if False:
             return
 
         # Chemicals <-> Diseases

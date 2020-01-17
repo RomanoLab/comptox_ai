@@ -106,7 +106,6 @@ def build_ontology(stdscr, ont):
     """
 
     db_parse_order = [databases.Hetionet, databases.CTD, databases.EPA]
-    #db_parse_order = [databases.Hetionet, databases.CTD]
 
     dbs = extract_all(stdscr, db_parse_order, ont)
 

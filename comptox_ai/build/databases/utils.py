@@ -68,7 +68,8 @@ def make_safe_property_label(label):
     This may have to be reevaluated later, if lowercasing entity names is leading to
     more problems down the line.
     """
-    safe = re.sub(r'[!@#$,()\'\"]', '', label)
+    #safe = re.sub(r'[!@#$,()\'\"\[\]\{\}\|]', '', label)
+    safe = re.sub(r'\W', '', label)
     safe = safe.replace(" ", "_").lower()
     
     return safe

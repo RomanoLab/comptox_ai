@@ -16,5 +16,6 @@ Python package, you can find that in the :ref:`reference`.
 
    building
    graph
+   graph_concepts
    databases
    aop

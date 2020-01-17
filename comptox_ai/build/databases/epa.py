@@ -77,7 +77,7 @@ class EPA(Database):
                 if len(match) == 0:
                     # We need to create a new chemical
                     safe_nm = make_safe_property_label(row['preferred_name'])
-                    chemical = self.cai_ont.Chemical("chem_"+safe_nm, xrefCasRN=row['casrn'], xrefDtxsid=row['DTXSID'], inchiKey=row['InChIKey'], inchi=row['InChI String'], xrefPubchemSID=row['SID'], xrefPubchemCID=row['CID'])
+                    chemical = self.cai_ont.Chemical("chem_"+safe_nm, preferredName=row['preferred_name'], xrefCasRN=row['casrn'], xrefDtxsid=row['DTXSID'], inchiKey=row['InChIKey'], inchi=row['InChI String'], xrefPubchemSID=row['SID'], xrefPubchemCID=row['CID'])
                 elif len(match) == 1:
                     # We already have the chemical, so merge into 'match'
                     safe_add_property(match[0], self.cai_ont.xrefDtxsid, row['DTXSID'])

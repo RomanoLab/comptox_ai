@@ -66,17 +66,6 @@ relationships in the graph database, we can use utility functions from
 APOC (Neo4j's standard library) to actually parse the OWL file and
 load individuals into the (currently empty) graph database.
 
-Cleaning up the imported data
------------------------------
-
-If you look at the contents of the graph database now, you'll see that
-there are many odd prefixes and unnecessary 
-
-Merging additional data sources
--------------------------------
-
-Test.
-
 Connecting to our instance of the database
 ==========================================
 

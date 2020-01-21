@@ -515,8 +515,11 @@ rerun this method using the argument `interactive_search=True`.""".format(
             for i, n in enumerate(self.fetch_nodes_by_label("owl__NamedIndividual")):
                 self.node_idx[i] = n.n4j_id
 
+        M = self.node_idx
+
         if sparse:
-            B = scipy.sparse.lil_matrix()
+            B = scipy.sparse.lil_matrix((M, M), int)
+            raise NotImplementedError
         else:
             # B = np.array()
             raise NotImplementedError

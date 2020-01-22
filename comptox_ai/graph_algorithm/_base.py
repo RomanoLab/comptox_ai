@@ -39,7 +39,7 @@ class GraphAlgorithm(ABC):
         )
 
     @abstractmethod
-    def _run_internal(self):
+    def _run_algorithm(self):
         pass
 
     def run(self, graph):
@@ -48,7 +48,7 @@ class GraphAlgorithm(ABC):
         if self.graph._validate_connection_status():
             self.validate_params()
             
-            self._run_internal()
+            self._run_algorithm()
 
         return self.algorithm_results
 

@@ -66,7 +66,7 @@ def show_lines(stdscr, lines):
     stdscr.refresh()
 
 
-def extract_all(stdscr, dbs, ont):
+def etl_all(stdscr, dbs, ont):
     OWL = owlready2.get_ontology(OWL_RDF_FILE).load()
 
     dbs_parsed = []
@@ -78,14 +78,6 @@ def extract_all(stdscr, dbs, ont):
         db_ins.parse(OWL, ont)
 
     return dbs_parsed
-
-
-def transform_all(stdscr, dbs):
-    pass
-
-
-def load_all(stdscr):
-    pass
 
 
 def build_ontology(stdscr, ont):
@@ -105,11 +97,9 @@ def build_ontology(stdscr, ont):
         The ComptoxAI ontology, now populated with individuals.
     """
 
-    db_parse_order = [databases.Hetionet, databases.CTD, databases.EPA]
+    db_parse_order = [databases.Hetionet, databases.CTD, databases.EPA, databases.AOPWiki]
 
-    dbs = extract_all(stdscr, db_parse_order, ont)
-
-    transform_all(stdscr, dbs)
+    dbs = etl_all(stdscr, db_parse_order, ont)
 
     return ont
 

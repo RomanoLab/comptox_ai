@@ -50,6 +50,15 @@ MATCH
 RETURN ID(n);
 """[1:-1]
 
+# E.g., when building an index of ontology classes, where
+# we can use owl__NamedIndividual to get all individuals,
+# then use its other labels to interpret the ontology class.
+FETCH_NODE_LABELS_BY_LABEL = """
+MATCH
+    (n:{})
+RETURN ID(n), labels(n);
+"""[1:-1]
+
 FETCH_INDIVIDUAL_NODE_BY_URI = """
 MATCH
     (n:owl__NamedIndividual {{ uri: '{}' }})

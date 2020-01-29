@@ -18,8 +18,6 @@ from comptox_ai.utils import execute_cypher_transaction
 from comptox_ai.graph.metrics import vertex_count, ensure_nx_available
 from .vertex import Vertex
 from .subgraph import Subgraph
-from comptox_ai.graph.edge import Edge
-from comptox_ai.graph.path import Path
 
 
 class Spinner(object):

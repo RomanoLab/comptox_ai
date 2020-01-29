@@ -56,7 +56,7 @@ class AOPWiki(Database):
                                             'process_ontology_id',
                                             'process_term'])
 
-        with open(os.path.join(self.path, "aops.json"), 'r') as fp:
+        with open(os.path.join(self.path, "aops.json"), 'r', encoding="utf8") as fp:
             aop_json = json.load(fp)
         self.aop_dict = {}
         for a in aop_json:

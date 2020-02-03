@@ -1,14 +1,28 @@
+"""
+ComptoxAI graphs.
+
+A typical graph workflow looks something like the following:
+
+>>> from comptox_ai import Graph
+>>> G = Graph.from_neo4j(config_file = "./CONFIG.cfg")
+>>> G.convert_inplace(to='networkx')
+>>> A = G.get_adjacency()
+>>> GS = G.convert(to='graphsage')
+"""
+
 import numpy as np
 import scipy.sparse
 import neo4j
 import networkx as nx
+from networkx.readwrite import json_graph
 from collections import defaultdict
 from queue import Queue
 
-# for Spinner
-import sys
-import time
-import threading
+from abc import abstractmethod
+from typing import List, Iterable, Union
+import os
+import json
+from textwrap import dedent
 
 import ipdb
 from tqdm import tqdm
@@ -18,541 +32,200 @@ from comptox_ai.utils import execute_cypher_transaction
 from comptox_ai.graph.metrics import vertex_count, ensure_nx_available
 from .vertex import Vertex
 from .subgraph import Subgraph
+from .utils import Spinner
 
-
-class Spinner(object):
-    """See https://stackoverflow.com/a/39504463/1730417
-    """
-
-    busy = False
-    delay = 0.1
-
-    @staticmethod
-    def spinning_cursor():
-        while 1:
-            for cursor in "|/-\\":
-                yield cursor
-
-    def __init__(self, delay=None):
-        self.spinner_generator = self.spinning_cursor()
-        if delay and float(delay):
-            self.delay = delay
-
-    def spinner_task(self):
-        while self.busy:
-            sys.stdout.write(next(self.spinner_generator))
-            sys.stdout.flush()
-            time.sleep(self.delay)
-            sys.stdout.write("\b")
-            sys.stdout.flush()
-
-    def __enter__(self):
-        self.busy = True
-        threading.Thread(target=self.spinner_task).start()
-
-    def __exit__(self, exception, value, tb):
-        self.busy = False
-        time.sleep(self.delay)
-        if exception is not None:
-            return False
-
+from .io import GraphDataMixin, Neo4j, NetworkX, GraphSAGE
 
 class Graph(object):
     """
-    Base class for a knowledge graph used in ComptoxAI.
+    Mixin class defining the standard interface for all graph data structures
+    used in ComptoxAI.
+    
+    Classes implementing this interface will have a minimal set of data
+    accession and manipulation routines with identical type signatures, each of
+    which is inspired by the NetworkX API (but modified to more fluidly handle
+    heterogeneous graphs).
 
-    This is essentially a connection to a Neo4j graph database plus a plethora
-    of convenience methods for interacting with that graph database. Currently,
-    graph algorithms (or procedure calls to Neo4j that trigger
-    externally-defined graph algorithms) are defined _here_. In the future, this
-    is planned to change - a separate class will be built for all graph
-    algorithms, and this class will interact with the Graph class to execute
-    queries and consume the results.
+    Parameters
+        ----------
+        node_map : dict, default=None
+            Map of neo4j node ids to consecutive integers.
+        edge_map : dict, default=None
+            Map of neo4j edge ids to consecutive integers.
+        node_classes : list of str, default=None
+            List of ontology classes present in the set of graph nodes. If 
+            None, the graph will be parsed as a homogeneous graph (i.e., all
+            nodes share the same feature space).
+        edge_classes : list of str, default=None
+            List of ontology object properties present in the set of graph
+            edges (called "edge labels" by Neo4j). If None, no semantic
+            information will be bound to edges in the graph.
+        node_features : {array-like, dict of array-like}, default=None
+            One or more array-like data structures containing node features.
+            Must be compatible with node_classes - if node_classes is None,
+            node_features should be either None or a single array-like. If
+            node_classes is a list of length n, node_features should be either
+            None or a dict of length n mapping each element of node_classes to
+            its corresponding array-like of node features.
+        edge_features : {array-like, dict of array-like}, default=None
+            One or more array-like data structures containing edge features.
+            Must be compatible with edge_classes - if edge_classes is None,
+            edge_features should be either None or a single array-like. If
+            edge_classes is a list of length m, edge_features should be either
+            None or a dict of length m mapping each element of edge_classes to
+            its corresponding array-like of edge features.
     """
 
-    def __init__(self, driver, build_nx_graph=True, **kwargs):
-        """Initialize a ComptoxAI knowledge graph supported by a Neo4j
-        graph database instance.
-        
-        Parameters
-        ----------
-        driver : neo4j.Driver
-            A Neo4j driver object that will maintain an active connection to a
-            Neo4j database server containing ComptoxAI data.
-        """
+    def __init__(self, data: GraphDataMixin):
+        self._data = data
 
-        self.driver_connected = False
+        if isinstance(data, Neo4j):
+            self.format = 'neo4j'
+        elif isinstance(data, NetworkX):
+            self.format = 'networkx'
+        elif isinstance(data, GraphSAGE):
+            self.format = 'graphsage'
 
-        self.driver = driver
-        self.test_driver()
-
-        # If node_labels is the empty list, we don't filter on node type
-        self.node_mask = kwargs.get("node_mask", [])
-        if isinstance(self.node_mask, str):
-            self.node_labels = [self.node_labels]
-
-        if build_nx_graph:
-            _ = self.to_networkx_graph()
-
-        # Generate index of nodes (i.e., a vector of int IDs)
-        if not hasattr(self, "node_idx"):
-            # self.node_idx = np.empty(vertex_count(self), np.uint32)
-            self.node_idx = {}
-            for i, n in enumerate(self.fetch_nodes_by_label("owl__NamedIndividual")):
-                self.node_idx[n.n4j_id] = i
-
-    # GRAPH LIFECYCLE METHODS
-
-    def __del__(self):
-        self.close_connection()
-
-    def test_driver(self):
-        if isinstance(self.driver, neo4j.DirectDriver):
-            self.driver_connected = True
-        else:
-            self.driver_connected = False
-
-    def close_connection(self):
-        """Manually close the driver linking `self.graph` to a Neo4j
-        graph database.
-        """
-        if self.driver_connected:
-            self.driver.close()
-        else:
-            print("Error: Connection to Neo4j is not currently active")
-
-    def open_connection(self, username, password, uri="bolt://localhost:7687"):
-        """Open a new connection to a Neo4j graph database.
-
-        If a connection to a graph database already exists, it will be replaced.
-        
-        Parameters
-        ----------
-        username : str
-            Neo4j database username
-        password : str
-            Neo4j database password
-        uri : str, optional
-            URI to a Bolt server that points at the graph database of interest,
-            by default "bolt://localhost:7687"
-        """
-        self.username = username
-        self.password = password
-        
-        if not self.driver_connected:
-            try:
-                self.driver = GraphDatabase.driver(
-                    self.uri, auth=(self.username, self.password)
-                )
-                self.driver_connected = True
-            except:
-                print("Error opening connection to Neo4j")
-                self.driver_connected = False
-        else:
-            print("Error: Connection to Neo4j is already active")
-            print("       (Use `.close_connection()` and try again)")
-
-    def _validate_connection_status(self):
-        """Internal test for whether a connection to a Neo4j graph
-        database currently exists and is active.
-
-        Returns
-        -------
-        bool
-            True if a valid, active connection to a graph database exists,
-            RuntimeError raised otherwise
-        """
-        if not self.driver_connected:
-            raise RuntimeError(
-                "Attempted to query Neo4j without an active \
-                                database connection"
-            )
-        return True
-
-    # NODE RETRIEVAL METHODS
-
-    def fetch_ontology_class_labels(self, populated_only=True, include_counts=True):
-        """Get all classes from the Comptox AI that are present in the graph
-        database.
-
-        Parameters
-        ----------
-        populated_only : bool, optional
-            Whether to only include classes that have 1 or more named
-            individual, by default True.
-        include_counts : bool, optional
-            Whether to include counts for each label, by default True. If
-            False, the return value will be a list rather than dict.
-
-        Returns
-        -------
-        list or dict
-        """
-        if populated_only:
-            self.template = queries.NODE_COUNTS_BY_LABEL
-            self.query = self.template.format()
-
-            query_response = self.run_query_in_session(self.query)
-
-            nodes_of_type = defaultdict(int)
-            for label_set in query_response:
-                ct = label_set["count"]
-                labels = label_set["labels"]
-
-                if ct == 0:
-                    continue
-
-                if "owl__NamedIndividual" not in labels:
-                    continue
-
-                for label in label_set["labels"]:
-                    prefix = label.split("__")[0]
-                    suffix = label.split("__")[-1]
-                    if prefix == "ns0":
-                        nodes_of_type[suffix] += ct
-
-            if include_counts:
-                return dict(nodes_of_type)
-            else:
-                return list(nodes_of_type.keys())
-
-    def get_node_degrees(self, node_type=None):
-        """Retrieve a list of URIs and their corresponding degrees.
-
-        Parameters
-        ----------
-        node_type : str, optional
-            Ontology class corresponding to the desired node type, by default
-            None.
-
-        Returns
-        -------
-        list of (str, int)
-            Each returned element is a tuple containing a node's URI and that
-            node's degree.
-        """
-        if node_type is None:
-            self.template = queries.FETCH_ALL_NODE_DEGREES
-            self.query = self.template
-        else:
-            self.template = queries.FETCH_NODE_DEGREES_FOR_CLASS
-            self.query = self.template.format(node_type)
-
-        query_response = self.run_query_in_session(self.query)
-
-        if len(query_response) == 0:
-            return None
-        else:
-            return [(x["uri"], x["degree"]) for x in query_response]
-
-    def fetch_node_by_uri(self, uri):
-        """Retrieve a node from Neo4j matching the given URI.
-
-        Parameters
-        ----------
-        uri : str
-            URI of the node to fetch.
-
-        Returns
-        -------
-        comptox_ai.graph.Vertex
-            Node corresponding to the provided URI.
-        """
-        if uri is None:
-            print("No URI given -- aborting")
-        else:
-            self.template = queries.FETCH_INDIVIDUAL_NODE_BY_URI
-            self.query = self.template.format(uri)
-
-            query_response = self.run_query_in_session(self.query)
-
-            if len(query_response) == 0:
-                return None
-            else:
-                assert len(query_response) == 1
-                return Vertex(query_response[0])
-
-    def fetch_nodes_by_label(self, label):
-        """
-        Fetch all nodes of a given label from the graph.
-
-        The returned object is a list of Neo4j `Record`s, each
-        containing a node `n` that has the queried label. Note that
-        Neo4j allows multiple labels per node, so other labels may be
-        present in the query results as well.
-
-        Parameters
-        ----------
-        label: string
-               Ontology class name corresponding to
-               the type of node desired
-        """
-        if label is None:
-            print("No label provided -- skipping")
-        else:
-            self.template = queries.FETCH_NODES_BY_LABEL
-            self.query = self.template.format(label)
-
-            query_response = self.run_query_in_session(self.query)
-
-            return [Vertex(xx) for xx in query_response]
-
-    def fetch_neighbors_by_uri(self, uri):
-        """[summary]Fetch nodes corresponding to neighbors of a node represented by a
-        given URI.
-        
-        Parameters
-        ----------
-        uri : str
-            URI for a single node in the graph (including namespace)
-        
-        Returns
-        -------
-        list of neo4j.Record or None
-            List of graph database records that represent the neighbors of
-            `uri`. If the URI is invalid, `None` will be returned.
-        """
-        if uri is None:
-            print("No URI given -- aborting")
-        else:
-            self.template = queries.FETCH_NEIGHBORS_BY_URI
-            self.query = self.template.format(uri)
-
-        query_response = self.run_query_in_session(self.query)
-
-        if len(query_response) == 0:
-            return None
-        else:
-            return query_response
-
-    def to_aop_subgraph(self, aop_name, interactive_search=False):
-        """
-        Algorithm for finding an AOP and building an induced subgraph of `self`
-        that corresponds to the AOP's local network of concepts.
-        """
-
-        # Note omission of ns0__keyEventTriggeredBy
-        allowed_rel_types = [
-            "ns0__aopContainsKE",
-            "ns0__aopHasMIE",
-            "ns0__aopCausesAO",
-            "ns0__altersBiologicalState",
-            "ns0__keyEventTriggers",
-        ]
-
-        ensure_nx_available(self)
-
-        if interactive_search:
-            raise NotImplementedError
-        else:
-            # Find AOP node by name
-            self.template = queries.SEARCH_NODE_BY_PROPERTY
-            self.query = self.template.format(aop_name)
-            query_response = self.run_query_in_session(self.query)
-            if len(query_response) == 0:
-                print(
-                    "No AOP found for query '{0}'. Please try again.".format(aop_name)
-                )
-            res = query_response[0]["n"]
-            if len(query_response) > 1:
-                print(
-                    """Warning--more than one AOP was found for the name '{0}'. 
-We'll proceed using the first result. If you would like to manually select an AOP from the results, 
-rerun this method using the argument `interactive_search=True`.""".format(
-                        aop_name
-                    )
-                )
-
-        aop_id = res.id
-
-        # A list of nodes we have already added to the Queue
-        encountered_nodes = []  # We don't want to loop over cycles
-        subgraph_nodes = []
-        node_queue = Queue()
-        node_queue.put(aop_id)
-        subgraph_nodes.append(aop_id)
-
-        while not node_queue.empty():
-            q = node_queue.get()
-            # we get the relations for the queue element
-            q_item_atlas_view = self.nx[q]
-
-            # For each relationship, we check whether we've visited the object before,
-            # If so, we skip,
-            # If not, we add it to `encountered_nodes`,
-            # If the rel's edge_label isn't restricted, we add it to subgraph_nodes and node_queue.
-            for k, v in q_item_atlas_view.items():
-                if k in encountered_nodes:
-                    continue
-                encountered_nodes.append(k)
-                if v["edge_label"] in allowed_rel_types:
-                    subgraph_nodes.append(k)
-                    node_queue.put(k)
-
-        return Subgraph(self, from_nx_subgraph=self.nx.subgraph(subgraph_nodes))
-
-    def to_networkx_graph(self, store=True, include_orphans=True):
-        """Construct a NetworkX graph object from the data in the
-        connected Neo4j graph database.
-
-        Parameters
-        ----------
-        store : bool (default: `True`)
-            Specify whether to keep the networkx object in memory.
-        include_orphans : bool (default: `True`)
-            Whether to include nodes that are connected to no edges.
-
-        Returns
-        -------
-        networkx.graph
-        """
-
-        # Fetch all triples
-        self.template = queries.FETCH_ALL_TRIPLES
-        self.query = self.template.format()
-
-        print(
-            "Fetching all triples for named individuals - this may take a " "while..."
+    def __repr__(self):
+        return dedent(
+            """
+            ComptoxAI Graph
+            ---------------
+            Format:     {0}
+            Node count: {1}
+            Edge count: {2}
+            """
+        ).format(
+            self.format,
+            len(self.get_nodes()),
+            len(self.get_edges())
         )
-        with Spinner():
-            query_response = self.run_query_in_session(self.query)
 
-        print("All triples received, now processing them...")
-        edges = []
+    def get_nodes(self):
+        return self._data.nodes
 
-        for triple in tqdm(query_response):
-            # n = triple['n'].get('uri').split('#')[-1]
-            # r = triple['type(r)']
-            # m = triple['m'].get('uri').split('#')[-1]
-            n = triple["n"].id
-            r = triple["type(r)"]
-            m = triple["m"].id
-            edges.append((n, r, m))
+    @abstractmethod
+    def add_node(self, nodes: Union[List[tuple], tuple]):
+        pass
 
-        G = nx.DiGraph()
+    def get_edges(self):
+        return self._data.edges
 
-        for n, r, m in tqdm(edges):
-            G.add_edge(u_of_edge=n, v_of_edge=m, edge_label=r)
+    @abstractmethod
+    def add_edge(self, edges):
+        pass
 
-        if include_orphans:
-            print("Retrieving orphan nodes...")
-            self.template = queries.FETCH_ORPHAN_INDIVIDUAL_NODES
-            self.query = self.template.format()
+    @property
+    @abstractmethod
+    def id_map(self):
+        pass
 
-            query_response = self.run_query_in_session(self.query)
+    @abstractmethod
+    def __getitem__(self, key):
+        pass
 
-            print("Adding orphans to network...")
+    @abstractmethod
+    def __setitem__(self, key, value):
+        pass
 
-            for r in tqdm(query_response):
-                try:
-                    uri = r["n"].id
-                except AttributeError:
-                    uri = r["n"].id
-                    print()
-                G.add_node(uri)
+    @property
+    def is_heterogeneous(self):
+        return self._data._is_heterogeneous
 
-        if store:
-            self.nx = G
+    @classmethod
+    def from_neo4j(cls):
+        raise NotImplementedError
 
-        return G
+    @classmethod
+    def from_networkx(cls):
+        raise NotImplementedError
 
-    def to_graphml(self, G=None, edges=None, edge_labels=None):
-        if not all([G, edges, edge_labels]):
-            print(
-                "Incomplete network data given; calculating via"
-                "to_networkx_graph()..."
-            )
-            G, edges, edge_labels = self.to_networkx_graph()
-            print("...done")
+    @classmethod
+    def from_graphsage(cls, prefix: str, directory: str=None):
+        """
+        Create a new GraphSAGE data structure from files formatted according to
+        the examples given in https://github.com/williamleif/GraphSAGE.
 
-    def to_adjacency_matrix(self, sparse=True, store=True):
-        """Construct an adjacency matrix of individuals in the
-        ontology graph.
+        The parameters should point to files with the following structure:
 
-        The adjacency matrix is a square matrix where each row and
-        each column corresponds to one of the nodes in the graph. The
-        value of cell $(i,j)$ is 1 if a directed edge goes from
-        $\textrm{Node}_i$ to $\textrm{Node}_j$, and is $-1$ if an edge
-        goes from $\textrm{Node}_j$ to $\textrm{Node}_i$.
+        {prefix}-G.json
+            JSON file containing a NetworkX 'node link' instance of the input
+            graph. GraphSAGE usually expects there to be 'val' and 'test'
+            attributes on each node indicating if they are part of the
+            validation and test sets, but this isn't enforced by ComptoxAI (at
+            least not currently).
 
-        In the case of an undirected graph, the adjacency matrix is
-        symmetric.
+        {prefix}-id_map.json
+            A JSON object that maps graph node ids (integers) to consecutive
+            integers (0-indexed).
+
+        {prefix}-class_map.json (OPTIONAL)
+            A JSON object that maps graph node ids (integers) to a one-hot list
+            of binary class membership (e.g., {2: [0, 0, 1, 0, 1]} means that
+            node 2 is a member of classes 3 and 5). NOTE: While this is shown
+            as a mandatory component of a dataset in GraphSAGE's documentation,
+            we don't enforce that. NOTE: The notion of a class in terms of
+            GraphSAGE is different than the notion of a class in heterogeneous
+            network theory. Here, a 'class' is a label to be used in a
+            supervised learning setting (such as classifying chemicals as
+            likely carcinogens versus likely non-carcinogens).
+
+        {prefix}-feats.npy (OPTIONAL)
+            A NumPy ndarray containing numerical node features. NOTE: This
+            serialization is currently not compatible with heterogeneous
+            graphs, as GraphSAGE was originally implemented for
+            nonheterogeneous graphs only.
+
+        {prefix}-walks.txt (OPTIONAL)
+            A text file containing precomputed random walks along the graph.
+            Each line is a pair of node integers (e.g., the second fields in
+            the id_map file) indicating an edge included in random walks. The
+            lines should be arranged in ascending order, starting with the 
+            first item in each pair.
 
         Parameters
         ----------
-        sparse : bool (default: `True`)
-                 Whether to return the value as a Scipy sparse matrix
-                 (default behavior) or a dense Numpy `ndarray`.
-
+        prefix : str
+            The prefix used at the beginning of each file name (see above for
+            format specification).
+        directory : str, default=None
+            The directory (fully specified or relative) containing the data
+            files to load.
         """
 
-        ensure_nx_available(self)
+        nx_json_file = os.path.join(directory, "".join([prefix, '-G.json']))
+        id_map_file = os.path.join(directory, "".join([prefix, '-id_map.json']))
+        class_map_file = os.path.join(directory, "".join([prefix, '-class_map.json']))
+        feats_map_file = os.path.join(directory, "".join([prefix, '-feats.npy']))
+        walks_file = os.path.join(directory, "".join([prefix, '-walks.txt']))
 
-        n_nodes = len(self.node_idx)
+        G = json_graph.node_link_graph(json.load(open(nx_json_file, 'r')))
+        id_map = json.load(open(id_map_file, 'r'))
 
-        if sparse:
-            A = scipy.sparse.lil_matrix((n_nodes, n_nodes), dtype=np.bool_)
-            for e in self.nx.edges():
-                # ipdb.set_trace()
-                x, y = e
-                A[self.node_idx[x], self.node_idx[y]] = 1
-        else:
-            raise NotImplementedError
+        try:
+            class_map = json.load(open(class_map_file, 'r'))
+        except FileNotFoundError:
+            class_map = None
 
-        if store:
-            self.adjacency_matrix = A
+        try:
+            feats_map = np.load(feats_map_file)
+        except FileNotFoundError:
+            feats_map = None
 
-        return A
+        try:
+            walks = []
+            with open(walks_file, 'r') as fp:
+                for l in fp:
+                    walks.append(l)
+        except FileNotFoundError:
+            walks = None
 
-    def to_incidence_matrix(self, sparse=True):
-        """Construct an incidence matrix of individuals in the
-        ontology graph.
-        """
-        if not hasattr(self, "node_idx"):
-            self.node_idx = np.empty(vertex_count(self), np.uint32)
-            for i, n in enumerate(self.fetch_nodes_by_label("owl__NamedIndividual")):
-                self.node_idx[i] = n.n4j_id
+        graph_data = GraphSAGE(graph=G, node_map=id_map,
+                               node_classes=class_map,
+                               node_features=feats_map)
 
-        M = self.node_idx
-
-        if sparse:
-            B = scipy.sparse.lil_matrix((M, M), int)
-            raise NotImplementedError
-        else:
-            # B = np.array()
-            raise NotImplementedError
-
-        return B
-
-    def to_feature_matrix(self, nodes, node_types: list = None, edge_types: list = None):
-        """Construct a dataframe containing all properties for a set of
-        specified nodes and/or edges.
-        
-        Parameters
-        ----------
-        nodes : [type]
-            [description]
-        node_types : list, optional
-            [description], by default None
-        edge_types : list, optional
-            [description], by default None
-        """
-
-    # UTILITY METHODS
-
-    def run_query_in_session(self, query):
-        """Submit a cypher query transaction to the connected graph database
-        driver and return the response to the calling function.
-
-        Parameters
-        ----------
-        query : str
-                String representation of the cypher query to be executed.
-
-        Returns
-        -------
-        list of neo4j.Record
-        """
-        with self.driver.session() as session:
-            query_response = session.read_transaction(execute_cypher_transaction, query)
-        return query_response
+        return cls(data = graph_data)
+    
+    @classmethod
+    def from_dgl(cls):
+        raise NotImplementedError

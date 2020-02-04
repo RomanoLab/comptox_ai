@@ -20,6 +20,47 @@ from typing import Iterable, List, Tuple, Union
 import networkx as nx
 import numpy as np
 import pandas as pd
+import neo4j
+
+import ipdb
+
+from ..cypher import queries
+from ..utils import load_config
+
+# def _infer_ontology_class_map(G: Graph):
+#     # We only care about nodes that are a member of one of these ontology
+#     # classes. If a node is a member than more than one of these, we have a
+#     # problem.
+#     valid_ontology_classes = set(
+#         'Chemical',
+#         'Disease',
+#         'Gene',
+#         'AdverseEffect',
+#         'StructuralEntity',
+#         'Phenotype',
+#         'Database',
+#         'AOP',
+#         'MolecularInitiatingEvent',
+#     )
+
+#     nodes = G.run_query_in_session(FETCH_NODE_LABELS_BY_LABEL.format("owl__NamedIndividual"))    
+
+#     class_map = {}
+#     for n in nodes:
+
+def _execute_cypher_transaction(tx, query, **kwargs):
+    if kwargs:
+        verbose = kwargs['verbose']
+    else:
+        verbose = False
+
+    records = []
+    for record in tx.run(query):
+        if verbose:
+            print(record)
+        records.append(record)
+    return records
+
 
 class GraphDataMixin(object):
     """
@@ -34,6 +75,11 @@ class GraphDataMixin(object):
     @property
     @abstractmethod
     def edges(self):
+        pass
+
+    @property
+    @abstractmethod
+    def is_heterogeneous(self):
         pass
 
     @abstractmethod
@@ -58,7 +104,7 @@ class GraphSAGE(GraphDataMixin):
     """
     Internal representation of a GraphSAGE formatted graph/dataset.
 
-    This is essentially a NetworkX graph with a few extra data components 
+    This is essentially a NetworkX graph with a few extra data components
     needed to run the GraphSAGE algorithms. It also provides a more flexible
     way to work with node features, which are stored in a separate NumPy array
     (which, unfortunately, isn't natively compatible with heterogeneous
@@ -91,6 +137,8 @@ class GraphSAGE(GraphDataMixin):
     edge_features : array-like, default=None
         Array of edge features.
     """
+
+    format = 'graphsage'
     
     def __init__(self, graph: nx.DiGraph, node_map: Iterable=None,
                  edge_map: Iterable=None, node_classes: List[str]=None,
@@ -115,6 +163,15 @@ class GraphSAGE(GraphDataMixin):
     @property
     def edges(self):
         return self._graph.edges()
+
+    @property
+    def is_heterogeneous(self):
+        """Return True if graph is heterogeneous, False otherwise.
+        """
+        # GraphSAGE is (CURRENTLY) only compatible with non-heterogeneous
+        # graphs, so we always return False.
+        # TODO: Revisit to potentially extend to heterogeneous case.
+        return False
 
     def add_node(self, node: int, **kwargs):
         """
@@ -160,7 +217,79 @@ class GraphSAGE(GraphDataMixin):
             self._graph.add_edge(u, v)
 
 class Neo4j(GraphDataMixin):
-    pass
+    """Internal representation of a connection to a Neo4j graph database
+    containing ComptoxAI data.
+
+    Importantly, this data structure does not load the complete contents of the
+    database into Python's memory space. This places significantly less demand
+    on system resources when not executing large queries or performing complex
+    data manipulations. This representation is also able to unload a fair deal
+    of logic onto Neo4j's standard library in implementing various standardized
+    operations.
+
+    """
+
+    format = 'neo4j'
+
+    def __init__(self, driver: neo4j.Driver):
+        self._driver = driver
+
+        node_idx_qry = queries.FETCH_NODE_IDS_BY_LABEL.format("owl__NamedIndividual")
+        node_idx_res = self.run_query_in_session(node_idx_qry)
+        self._node_ids = [x['ID(n)'] for x in node_idx_res]
+    
+    @property
+    def nodes(self):
+        """Get a list of all node IDs corresponding to a named individual in
+        the ComptoxAI ontology.
+        
+        Returns
+        -------
+        list of int
+            List of all Neo4j node IDs corresponding to a named individual.
+        """
+        return self._node_ids
+
+    @property
+    def edges(self):
+        pass
+
+    @property
+    def is_heterogeneous(self):
+        pass
+
+    def add_node(self, node, **kwargs):
+        """Adding a node to the Neo4j graph database requires several
+        components that aren't needed for the other data types. These should be
+        passed as a dictionary to **kwargs so it is compliant with the
+        standardized method signature.
+        
+        Parameters
+        ----------
+        node : int
+            [description]
+        """
+        pass
+    
+    def add_edge(self, edge):
+        pass
+
+    def run_query_in_session(self, query: str):
+        """Submit a cypher query transaction to the connected graph database
+        driver and return the response to the calling function.
+
+        Parameters
+        ----------
+        query : str
+            String representation of the cypher query to be executed.
+
+        Returns
+        -------
+        list of neo4j.Record
+        """
+        with self._driver.session() as session:
+            query_response = session.read_transaction(_execute_cypher_transaction, query)
+        return query_response
 
 class NetworkX(GraphDataMixin):
-    pass
+    format = 'networkx'

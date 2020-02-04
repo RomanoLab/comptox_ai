@@ -12,11 +12,10 @@ A typical graph workflow looks something like the following:
 
 import numpy as np
 import scipy.sparse
-import neo4j
 import networkx as nx
 from networkx.readwrite import json_graph
 from collections import defaultdict
-from queue import Queue
+from neo4j import GraphDatabase
 
 from abc import abstractmethod
 from typing import List, Iterable, Union
@@ -24,15 +23,12 @@ import os
 import json
 from textwrap import dedent
 
-import ipdb
-from tqdm import tqdm
-
 from comptox_ai.cypher import queries
 from comptox_ai.utils import execute_cypher_transaction
 from comptox_ai.graph.metrics import vertex_count, ensure_nx_available
 from .vertex import Vertex
 from .subgraph import Subgraph
-from .utils import Spinner
+from ..utils import load_config
 
 from .io import GraphDataMixin, Neo4j, NetworkX, GraphSAGE
 
@@ -47,44 +43,45 @@ class Graph(object):
     heterogeneous graphs).
 
     Parameters
-        ----------
-        node_map : dict, default=None
-            Map of neo4j node ids to consecutive integers.
-        edge_map : dict, default=None
-            Map of neo4j edge ids to consecutive integers.
-        node_classes : list of str, default=None
-            List of ontology classes present in the set of graph nodes. If 
-            None, the graph will be parsed as a homogeneous graph (i.e., all
-            nodes share the same feature space).
-        edge_classes : list of str, default=None
-            List of ontology object properties present in the set of graph
-            edges (called "edge labels" by Neo4j). If None, no semantic
-            information will be bound to edges in the graph.
-        node_features : {array-like, dict of array-like}, default=None
-            One or more array-like data structures containing node features.
-            Must be compatible with node_classes - if node_classes is None,
-            node_features should be either None or a single array-like. If
-            node_classes is a list of length n, node_features should be either
-            None or a dict of length n mapping each element of node_classes to
-            its corresponding array-like of node features.
-        edge_features : {array-like, dict of array-like}, default=None
-            One or more array-like data structures containing edge features.
-            Must be compatible with edge_classes - if edge_classes is None,
-            edge_features should be either None or a single array-like. If
-            edge_classes is a list of length m, edge_features should be either
-            None or a dict of length m mapping each element of edge_classes to
-            its corresponding array-like of edge features.
+    ----------
+    node_map : dict, default=None
+        Map of neo4j node ids to consecutive integers.
+    edge_map : dict, default=None
+        Map of neo4j edge ids to consecutive integers.
+    node_classes : list of str, default=None
+        List of ontology classes present in the set of graph nodes. If 
+        None, the graph will be parsed as a homogeneous graph (i.e., all
+        nodes share the same feature space).
+    edge_classes : list of str, default=None
+        List of ontology object properties present in the set of graph
+        edges (called "edge labels" by Neo4j). If None, no semantic
+        information will be bound to edges in the graph.
+    node_features : {array-like, dict of array-like}, default=None
+        One or more array-like data structures containing node features.
+        Must be compatible with node_classes - if node_classes is None,
+        node_features should be either None or a single array-like. If
+        node_classes is a list of length n, node_features should be either
+        None or a dict of length n mapping each element of node_classes to
+        its corresponding array-like of node features.
+    edge_features : {array-like, dict of array-like}, default=None
+        One or more array-like data structures containing edge features.
+        Must be compatible with edge_classes - if edge_classes is None,
+        edge_features should be either None or a single array-like. If
+        edge_classes is a list of length m, edge_features should be either
+        None or a dict of length m mapping each element of edge_classes to
+        its corresponding array-like of edge features.
+
+    Attributes
+    ----------
+    format : {"graphsage", "networkx", "neo4j}
+        Internal format of the graph data. The format determines many aspects
+        of how you interact with the graph, including the set of methods that
+        can be called on it and the types of models that you can construct
+        without first converting to another format.
     """
 
     def __init__(self, data: GraphDataMixin):
         self._data = data
-
-        if isinstance(data, Neo4j):
-            self.format = 'neo4j'
-        elif isinstance(data, NetworkX):
-            self.format = 'networkx'
-        elif isinstance(data, GraphSAGE):
-            self.format = 'graphsage'
 
     def __repr__(self):
         return dedent(
@@ -101,30 +98,29 @@ class Graph(object):
             len(self.get_edges())
         )
 
+    @property
+    def format(self):
+        return self._data.format
+
     def get_nodes(self):
         return self._data.nodes
 
-    @abstractmethod
-    def add_node(self, nodes: Union[List[tuple], tuple]):
+    def add_nodes(self, nodes: Union[List[tuple], tuple]):
         pass
 
     def get_edges(self):
         return self._data.edges
 
-    @abstractmethod
     def add_edge(self, edges):
         pass
 
     @property
-    @abstractmethod
     def id_map(self):
         pass
 
-    @abstractmethod
     def __getitem__(self, key):
         pass
 
-    @abstractmethod
     def __setitem__(self, key, value):
         pass
 
@@ -133,8 +129,48 @@ class Graph(object):
         return self._data._is_heterogeneous
 
     @classmethod
-    def from_neo4j(cls):
-        raise NotImplementedError
+    def from_neo4j(cls, config_file: str = None):
+        """Load a connection to a Neo4j graph database and use it to
+        instantiate a comptox_ai.graph.io.Neo4j object.
+
+        Parameters
+        ----------
+        config_file : str, default None
+            Path to a ComptoxAI configuration file. If None, ComptoxAI will
+            search for a configuration file in the default location. For more
+            information, refer to http://comptox.ai/docs/guide/building.html.
+        
+        Raises
+        ------
+        RuntimeError
+            If the data in the configuration file does not point to a valid
+            Neo4j graph database.
+
+        See Also
+        --------
+        comptox_ai.graph.io.Neo4j
+        """
+        config_dict = load_config(config_file)
+
+        if not config_dict:
+            raise RuntimeError("Could not load Neo4j configuration; aborting.")
+
+        username = config_dict['NEO4J']['Username']
+        password = config_dict['NEO4J']['Password']
+        hostname = config_dict['NEO4J']['Hostname']
+        protocol = config_dict['NEO4J']['Protocol']
+        port = config_dict['NEO4J']['Port']
+
+        uri = "{0}://{1}:{2}".format(protocol, hostname, port)
+        print(uri)
+
+        driver = GraphDatabase.driver(uri,
+                                      auth=(username,
+                                            password))
+
+        neo4j_data = Neo4j(driver = driver)
+
+        return cls(data = neo4j_data)
 
     @classmethod
     def from_networkx(cls):
@@ -225,7 +261,7 @@ class Graph(object):
                                node_features=feats_map)
 
         return cls(data = graph_data)
-    
+
     @classmethod
     def from_dgl(cls):
         raise NotImplementedError

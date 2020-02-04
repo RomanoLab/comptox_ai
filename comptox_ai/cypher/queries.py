@@ -46,7 +46,7 @@ RETURN n;
 
 FETCH_NODE_IDS_BY_LABEL = """
 MATCH
-    (n:ns0__{})
+    (n:{})
 RETURN ID(n);
 """[1:-1]
 
@@ -82,7 +82,7 @@ RETURN
 
 FETCH_NODE_DEGREES_FOR_CLASS = """
 MATCH
-    (n:ns0__{})
+    (n:{})
 RETURN
     n.uri AS uri,
     size((n)-[]-()) AS degree;

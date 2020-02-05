@@ -1,6 +1,6 @@
 """
-Overview of the build process
-*****************************
+Overview of the installation and build processes
+************************************************
 
 ComptoxAI consists of several main components:
 

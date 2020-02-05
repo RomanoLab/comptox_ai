@@ -227,6 +227,14 @@ class Neo4j(GraphDataMixin):
     of logic onto Neo4j's standard library in implementing various standardized
     operations.
 
+    The recommended way to instantiate this class is by calling
+    comptox_ai.Graph.from_neo4j(), which handles establishing a database driver
+    connection.
+
+    Parameters
+    ----------
+    driver : neo4j.Driver
+        A driver connected to a Neo4j graph database containing ComptoxAI data.
     """
 
     format = 'neo4j'

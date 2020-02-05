@@ -34,43 +34,17 @@ from .io import GraphDataMixin, Neo4j, NetworkX, GraphSAGE
 
 class Graph(object):
     """
-    Mixin class defining the standard interface for all graph data structures
-    used in ComptoxAI.
-    
-    Classes implementing this interface will have a minimal set of data
-    accession and manipulation routines with identical type signatures, each of
-    which is inspired by the NetworkX API (but modified to more fluidly handle
-    heterogeneous graphs).
+    A graph representation of ComptoxAI data.
+
+    The internal data storage can be in several different formats, each of
+    which has advantages in different scenarios.
 
     Parameters
     ----------
-    node_map : dict, default=None
-        Map of neo4j node ids to consecutive integers.
-    edge_map : dict, default=None
-        Map of neo4j edge ids to consecutive integers.
-    node_classes : list of str, default=None
-        List of ontology classes present in the set of graph nodes. If 
-        None, the graph will be parsed as a homogeneous graph (i.e., all
-        nodes share the same feature space).
-    edge_classes : list of str, default=None
-        List of ontology object properties present in the set of graph
-        edges (called "edge labels" by Neo4j). If None, no semantic
-        information will be bound to edges in the graph.
-    node_features : {array-like, dict of array-like}, default=None
-        One or more array-like data structures containing node features.
-        Must be compatible with node_classes - if node_classes is None,
-        node_features should be either None or a single array-like. If
-        node_classes is a list of length n, node_features should be either
-        None or a dict of length n mapping each element of node_classes to
-        its corresponding array-like of node features.
-    edge_features : {array-like, dict of array-like}, default=None
-        One or more array-like data structures containing edge features.
-        Must be compatible with edge_classes - if edge_classes is None,
-        edge_features should be either None or a single array-like. If
-        edge_classes is a list of length m, edge_features should be either
-        None or a dict of length m mapping each element of edge_classes to
-        its corresponding array-like of edge features.
-
+    data : comptox_ai.graph.io.GraphDataMixin
+        A graph data structure that is of one of the formats compliant with
+        ComptoxAI's standardized graph API.
+    
     Attributes
     ----------
     format : {"graphsage", "networkx", "neo4j}
@@ -103,12 +77,28 @@ class Graph(object):
         return self._data.format
 
     def get_nodes(self):
+        """Get all nodes in the graph and return as an iterable of tuples.
+        
+        Returns
+        -------
+        iterable
+            Iterable over 2-tuples containing graph nodes. The first element is
+            the node's integer ID and the second is the URI of that node (if
+            available).
+        """
         return self._data.nodes
 
     def add_nodes(self, nodes: Union[List[tuple], tuple]):
         pass
 
     def get_edges(self):
+        """Get all edges in the graph and return as an iterable of tuples.
+        
+        Returns
+        -------
+        iterable
+            Iterable over tuples containing graph edge triples.
+        """
         return self._data.edges
 
     def add_edge(self, edges):
@@ -132,6 +122,11 @@ class Graph(object):
     def from_neo4j(cls, config_file: str = None):
         """Load a connection to a Neo4j graph database and use it to
         instantiate a comptox_ai.graph.io.Neo4j object.
+
+        NOTE: All we do here is create a driver for the graph database; the
+        Neo4j constructor handles building the node index and other important
+        attributes. This is different from most of the other formats, where
+        the attributes are provided by the constructor
 
         Parameters
         ----------

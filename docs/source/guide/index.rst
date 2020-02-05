@@ -14,7 +14,8 @@ Python package, you can find that in the :ref:`reference`.
 .. toctree::
    :maxdepth: 1
 
-   building
+   installing
+   usage
    graph
    graph_concepts
    databases

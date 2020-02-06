@@ -32,6 +32,23 @@ from ..utils import load_config
 
 from .io import GraphDataMixin, Neo4j, NetworkX, GraphSAGE
 
+def _convert(data: GraphDataMixin, from_fmt: str, to_fmt: str, safe: bool=True):
+    # Initialize the new data structure
+    if to_fmt == 'neo4j':
+        pass
+    elif to_fmt == 'networkx':
+        pass
+    elif to_fmt == 'graphsage':
+        pass
+    elif to_fmt == 'dgl':
+        pass
+
+    # Populate nodes and edges
+
+    # Validate new graph
+
+    
+
 class Graph(object):
     """
     A graph representation of ComptoxAI data.
@@ -88,9 +105,6 @@ class Graph(object):
         """
         return self._data.nodes
 
-    def add_nodes(self, nodes: Union[List[tuple], tuple]):
-        pass
-
     def get_edges(self):
         """Get all edges in the graph and return as an iterable of tuples.
         
@@ -101,12 +115,15 @@ class Graph(object):
         """
         return self._data.edges
 
-    def add_edge(self, edges):
+    def add_nodes(self, nodes: Union[List[tuple], tuple]):
+        pass
+
+    def add_edges(self, edges: Union[List[tuple], tuple]):
         pass
 
     @property
-    def id_map(self):
-        pass
+    def node_id_map(self):
+        return self._data._node_map
 
     def __getitem__(self, key):
         pass
@@ -117,6 +134,30 @@ class Graph(object):
     @property
     def is_heterogeneous(self):
         return self._data._is_heterogeneous
+
+    def convert(self, to_fmt: str):
+        if to_fmt not in [
+            'neo4j',
+            'networkx',
+            'graphsage',
+            'dgl'
+        ]:
+            raise AttributeError("Invalid format provided for graph conversion.")
+
+        from_fmt = self._data.format
+
+        if from_fmt == to_fmt:
+            return True
+
+        new_graph = _convert(data = self._data,
+                             from_fmt=from_fmt,
+                             to_fmt=to_fmt)
+
+        # Free memory held for old graph
+        delattr(self._data)
+
+        self._data = new_graph
+        return True
 
     @classmethod
     def from_neo4j(cls, config_file: str = None):

@@ -278,6 +278,10 @@ class Neo4j(GraphDataMixin):
             [description]
         """
         pass
+
+    def add_nodes(self, nodes: List[tuple]):
+        nodes_conv = [Node(x[0], x[1]) for x in nodes]
+
     
     def add_edge(self, edge):
         pass

@@ -18,5 +18,7 @@ Python package, you can find that in the :ref:`reference`.
    usage
    graph
    graph_concepts
+   entity_types
    databases
+   data_schema
    aop

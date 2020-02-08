@@ -292,7 +292,10 @@ class Neo4j(GraphDataMixin):
         Add a list of nodes to the graph and synchronize them to the remote
         database.
         """
+
         ns = []
+        # Since we have to synchronize changes as a single chunk, it's not as
+        # simple as calling add_node() for every element of `nodes`.
         for n in nodes:
             n_id, n_label, n_props = n
             nn = Node(n_id, n_props)
@@ -319,6 +322,8 @@ class Neo4j(GraphDataMixin):
         database.
         """
         es = []
+        # Since we have to synchronize changes as a single chunk, it's not as
+        # simple as calling add_edge() for every element of `edges`.
         for e in edges:
             u, rel_type, v, props = e
             ee = Relationship(u, rel_type, v, props)
@@ -349,4 +354,23 @@ class NetworkX(GraphDataMixin):
     format = 'networkx'
 
     def __init__(self):
-        
+        self._graph = nx.DiGraph()
+
+    def add_node(self, node: tuple):
+        n_id, n_label, n_props = node
+        n_props['LABELS'] = {'owl__NamedIndividual', n_label, 'Resource'}
+        # Use kwargs expansion to explode props
+        self._graph.add_node(n_id, **n_props)
+
+    def add_edge(self, edge: tuple):
+        u, rel_type, v, e_props = edge
+        e_props['TYPE'] = rel_type
+        self._graph.add_edge(u, v, **e_props)
+
+    def add_nodes(self, nodes: List(tuple)):
+        for n in nodes:
+            self.add_node(n)
+
+    def add_edges(self, edges: List(tuple)):
+        for e in edges:
+            self.add_edge(e)

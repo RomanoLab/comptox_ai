@@ -15,7 +15,7 @@ import scipy.sparse
 import networkx as nx
 from networkx.readwrite import json_graph
 from collections import defaultdict
-from neo4j import GraphDatabase
+from py2neo import Database
 
 from abc import abstractmethod
 from typing import List, Iterable, Union
@@ -26,27 +26,48 @@ from textwrap import dedent
 from comptox_ai.cypher import queries
 from comptox_ai.utils import execute_cypher_transaction
 from comptox_ai.graph.metrics import vertex_count, ensure_nx_available
-from .vertex import Vertex
-from .subgraph import Subgraph
 from ..utils import load_config
 
 from .io import GraphDataMixin, Neo4j, NetworkX, GraphSAGE
 
+def _load_neo4j_config(config_file: str = None):
+    config_dict = load_config(config_file)
+
+    if not config_dict:
+        raise RuntimeError("Could not load Neo4j configuration; aborting.")
+
+    username = config_dict['NEO4J']['Username']
+    password = config_dict['NEO4J']['Password']
+    hostname = config_dict['NEO4J']['Hostname']
+    protocol = config_dict['NEO4J']['Protocol']
+    port = config_dict['NEO4J']['Port']
+
+    uri = "{0}://{1}:{2}".format(protocol, hostname, port)
+
+    return (uri, username, password)
+
+
 def _convert(data: GraphDataMixin, from_fmt: str, to_fmt: str, safe: bool=True):
     # Initialize the new data structure
     if to_fmt == 'neo4j':
-        pass
+        # TODO: Only compatible with default config file for now
+        uri, username, password = _load_neo4j_config()
+        db = Database(uri, auth=(username, password))
+        new_data = Neo4j(db)
     elif to_fmt == 'networkx':
-        pass
+        new_data = NetworkX()
     elif to_fmt == 'graphsage':
-        pass
+        raise NotImplementedError
     elif to_fmt == 'dgl':
-        pass
+        raise NotImplementedError
 
     # Populate nodes and edges
+    nodes = data.nodes
+    edges = data.edges
+    new_data.add_nodes(nodes)
+    new_data.add_edges(edges)
 
-    # Validate new graph
-
+    return new_data
     
 
 class Graph(object):
@@ -85,8 +106,8 @@ class Graph(object):
             """
         ).format(
             self.format,
-            len(self.get_nodes()),
-            len(self.get_edges())
+            len(self._data._nodes),
+            len(self._data._edges)
         )
 
     @property
@@ -154,7 +175,7 @@ class Graph(object):
                              to_fmt=to_fmt)
 
         # Free memory held for old graph
-        delattr(self._data)
+        delattr(self, )
 
         self._data = new_graph
         return True
@@ -186,25 +207,14 @@ class Graph(object):
         --------
         comptox_ai.graph.io.Neo4j
         """
-        config_dict = load_config(config_file)
+        print("Parsing Neo4j configuration...")
+        uri, username, password = _load_neo4j_config()
+        print("  URI:", uri)
 
-        if not config_dict:
-            raise RuntimeError("Could not load Neo4j configuration; aborting.")
-
-        username = config_dict['NEO4J']['Username']
-        password = config_dict['NEO4J']['Password']
-        hostname = config_dict['NEO4J']['Hostname']
-        protocol = config_dict['NEO4J']['Protocol']
-        port = config_dict['NEO4J']['Port']
-
-        uri = "{0}://{1}:{2}".format(protocol, hostname, port)
-        print(uri)
-
-        driver = GraphDatabase.driver(uri,
-                                      auth=(username,
-                                            password))
-
-        neo4j_data = Neo4j(driver = driver)
+        print("Creating database connection via py2neo...")
+        database = Database(uri, auth=(username, password))
+        print("Connected to database, now reading contents")
+        neo4j_data = Neo4j(database = database)
 
         return cls(data = neo4j_data)
 
@@ -301,3 +311,4 @@ class Graph(object):
     @classmethod
     def from_dgl(cls):
         raise NotImplementedError
+

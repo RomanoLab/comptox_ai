@@ -21,32 +21,12 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 import neo4j
+from py2neo import Database, Graph, Subgraph, Node, Relationship
 
 import ipdb
 
 from ..cypher import queries
 from ..utils import load_config
-
-# def _infer_ontology_class_map(G: Graph):
-#     # We only care about nodes that are a member of one of these ontology
-#     # classes. If a node is a member than more than one of these, we have a
-#     # problem.
-#     valid_ontology_classes = set(
-#         'Chemical',
-#         'Disease',
-#         'Gene',
-#         'AdverseEffect',
-#         'StructuralEntity',
-#         'Phenotype',
-#         'Database',
-#         'AOP',
-#         'MolecularInitiatingEvent',
-#     )
-
-#     nodes = G.run_query_in_session(FETCH_NODE_LABELS_BY_LABEL.format("owl__NamedIndividual"))    
-
-#     class_map = {}
-#     for n in nodes:
 
 def _execute_cypher_transaction(tx, query, **kwargs):
     if kwargs:
@@ -83,21 +63,20 @@ class GraphDataMixin(object):
         pass
 
     @abstractmethod
-    def add_node(self, node, **kwargs):
+    def add_node(self, node: tuple):
         pass
     
     @abstractmethod
-    def add_edge(self, edge):
+    def add_edge(self, edge: tuple):
         pass
 
-    def add_nodes(self, nodes):
-        for n in nodes:
-            self.add_node(n)
+    @abstractmethod
+    def add_nodes(self, nodes: List(tuple)):
+        pass
 
     @abstractmethod
-    def add_edges(self, edges):
-        for e in edges:
-            self.add_edge(e)
+    def add_edges(self, edges: List(tuple)):
+        pass
 
 
 class GraphSAGE(GraphDataMixin):
@@ -239,52 +218,114 @@ class Neo4j(GraphDataMixin):
 
     format = 'neo4j'
 
-    def __init__(self, driver: neo4j.Driver):
-        self._driver = driver
+    def __init__(self, database: Database):
+        #ipdb.set_trace()
+        self._graph = database.default_graph
 
-        node_idx_qry = queries.FETCH_NODE_IDS_BY_LABEL.format("owl__NamedIndividual")
-        node_idx_res = self.run_query_in_session(node_idx_qry)
-        self._node_ids = [x['ID(n)'] for x in node_idx_res]
+        print("  Reading nodes (this may take a while)...")
+        self._nodes = list(self._graph.nodes.match("owl__NamedIndividual"))
+        print("  Reading edges (this may take a while)...")
+        self._edges = list(self._graph.relationships.match())
+        print("  Building index of node IDs...")
+        self._node_ids = [n.identity for n in self._nodes]
+        print()
+        print("Done! The database connection is ready to use.")
+
+    @staticmethod
+    def standardize_node(n: Node):
+        return ((
+            n.identity,
+            n.labels - {'Resource', 'owl__NamedIndividual'},
+            dict(n)
+        ))
+
+    @staticmethod
+    def standardize_edge(e: Relationship):
+        return ((
+            e.start_node.identity,
+            list(e.types())[0],
+            e.end_node.identity,
+            dict(e)
+        ))
     
     @property
     def nodes(self):
-        """Get a list of all node IDs corresponding to a named individual in
-        the ComptoxAI ontology.
+        """Get a list of all nodes corresponding to a named individual in the
+        ComptoxAI ontology.
         
         Returns
         -------
-        list of int
-            List of all Neo4j node IDs corresponding to a named individual.
+        list of py2neo.Node
+            List of all Neo4j nodes corresponding to a named individual.
         """
-        return self._node_ids
+        return [self.standardize_node(n) for n in self._nodes]
 
     @property
     def edges(self):
-        pass
+        return [self.standardize_edge(e) for e in self._edges]
 
     @property
     def is_heterogeneous(self):
         pass
 
-    def add_node(self, node, **kwargs):
-        """Adding a node to the Neo4j graph database requires several
-        components that aren't needed for the other data types. These should be
-        passed as a dictionary to **kwargs so it is compliant with the
-        standardized method signature.
+    def add_node(self, node: tuple):
+        """
+        Add a node to the graph and synchronize it to the remote database.
         
         Parameters
         ----------
-        node : int
-            [description]
+        node : tuple of (int, label, **props)
+            Node to add to the graph.
         """
-        pass
+        n_id, n_label, n_props = node
+        n = Node(n_id, n_props)
+        n.update_labels([
+            'owl__NamedIndividual',
+            n_label,
+            'Resource'
+        ])
+
+        self._graph.create(n)
 
     def add_nodes(self, nodes: List[tuple]):
-        nodes_conv = [Node(x[0], x[1]) for x in nodes]
-
+        """
+        Add a list of nodes to the graph and synchronize them to the remote
+        database.
+        """
+        ns = []
+        for n in nodes:
+            n_id, n_label, n_props = n
+            nn = Node(n_id, n_props)
+            nn.update_labels([
+                'owl__NamedIndividual',
+                n_label,
+                'Resource'
+            ])
+            ns.append(nn)
+        
+        self._graph.create(Subgraph(ns))
     
-    def add_edge(self, edge):
-        pass
+    def add_edge(self, edge: tuple):
+        """
+        Add an edge to the graph and synchronize it to the remote database.
+        """
+        u, rel_type, v, props = edge
+        e = Relationship(u, rel_type, v, props)
+        self._graph.create(e)
+
+    def add_edges(self, edges: List[tuple]):
+        """
+        Add a list of edges to the graph and synchronize them to the remote
+        database.
+        """
+        es = []
+        for e in edges:
+            u, rel_type, v, props = e
+            ee = Relationship(u, rel_type, v, props)
+            es.append(ee)
+
+        self._graph.create(Subgraph(es))
+
 
     def run_query_in_session(self, query: str):
         """Submit a cypher query transaction to the connected graph database
@@ -299,9 +340,13 @@ class Neo4j(GraphDataMixin):
         -------
         list of neo4j.Record
         """
-        with self._driver.session() as session:
-            query_response = session.read_transaction(_execute_cypher_transaction, query)
-        return query_response
+        raise NotImplementedError
+        # with self._driver.session() as session:
+        #     query_response = session.read_transaction(_execute_cypher_transaction, query)
+        # return query_response
 
 class NetworkX(GraphDataMixin):
     format = 'networkx'
+
+    def __init__(self):
+        

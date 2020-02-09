@@ -71,11 +71,11 @@ class GraphDataMixin(object):
         pass
 
     @abstractmethod
-    def add_nodes(self, nodes: List(tuple)):
+    def add_nodes(self, nodes: List[tuple]):
         pass
 
     @abstractmethod
-    def add_edges(self, edges: List(tuple)):
+    def add_edges(self, edges: List[tuple]):
         pass
 
 
@@ -235,7 +235,7 @@ class Neo4j(GraphDataMixin):
     def standardize_node(n: Node):
         return ((
             n.identity,
-            n.labels - {'Resource', 'owl__NamedIndividual'},
+            list(n.labels - {'Resource', 'owl__NamedIndividual'})[0],
             dict(n)
         ))
 
@@ -356,6 +356,14 @@ class NetworkX(GraphDataMixin):
     def __init__(self):
         self._graph = nx.DiGraph()
 
+    @property
+    def nodes(self):
+        return self._graph.nodes()
+
+    @property
+    def edges(self):
+        return self._graph.edges()
+
     def add_node(self, node: tuple):
         n_id, n_label, n_props = node
         n_props['LABELS'] = {'owl__NamedIndividual', n_label, 'Resource'}
@@ -367,10 +375,10 @@ class NetworkX(GraphDataMixin):
         e_props['TYPE'] = rel_type
         self._graph.add_edge(u, v, **e_props)
 
-    def add_nodes(self, nodes: List(tuple)):
+    def add_nodes(self, nodes: List[tuple]):
         for n in nodes:
             self.add_node(n)
 
-    def add_edges(self, edges: List(tuple)):
+    def add_edges(self, edges: List[tuple]):
         for e in edges:
             self.add_edge(e)

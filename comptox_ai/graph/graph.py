@@ -23,6 +23,8 @@ import os
 import json
 from textwrap import dedent
 
+import ipdb
+
 from comptox_ai.cypher import queries
 from comptox_ai.utils import execute_cypher_transaction
 from comptox_ai.graph.metrics import vertex_count, ensure_nx_available
@@ -61,9 +63,12 @@ def _convert(data: GraphDataMixin, from_fmt: str, to_fmt: str, safe: bool=True):
     elif to_fmt == 'dgl':
         raise NotImplementedError
 
+    
+
     # Populate nodes and edges
     nodes = data.nodes
     edges = data.edges
+    ipdb.set_trace()
     new_data.add_nodes(nodes)
     new_data.add_edges(edges)
 
@@ -175,7 +180,7 @@ class Graph(object):
                              to_fmt=to_fmt)
 
         # Free memory held for old graph
-        delattr(self, )
+        #delattr(self, )
 
         self._data = new_graph
         return True

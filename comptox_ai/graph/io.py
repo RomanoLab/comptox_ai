@@ -22,6 +22,8 @@ import numpy as np
 import pandas as pd
 import neo4j
 from py2neo import Database, Graph, Subgraph, Node, Relationship
+from json import JSONEncoder, dump
+from networkx.readwrite.json_graph import node_link_data
 
 import ipdb
 
@@ -40,7 +42,6 @@ def _execute_cypher_transaction(tx, query, **kwargs):
             print(record)
         records.append(record)
     return records
-
 
 class GraphDataMixin(object):
     """
@@ -76,6 +77,10 @@ class GraphDataMixin(object):
 
     @abstractmethod
     def add_edges(self, edges: List[tuple]):
+        pass
+
+    @abstractmethod
+    def save_graph(self):
         pass
 
 
@@ -264,10 +269,6 @@ class Neo4j(GraphDataMixin):
     def edges(self):
         return [self.standardize_edge(e) for e in self._edges]
 
-    @property
-    def is_heterogeneous(self):
-        pass
-
     def add_node(self, node: tuple):
         """
         Add a node to the graph and synchronize it to the remote database.
@@ -331,7 +332,6 @@ class Neo4j(GraphDataMixin):
 
         self._graph.create(Subgraph(es))
 
-
     def run_query_in_session(self, query: str):
         """Submit a cypher query transaction to the connected graph database
         driver and return the response to the calling function.
@@ -353,8 +353,23 @@ class Neo4j(GraphDataMixin):
 class NetworkX(GraphDataMixin):
     format = 'networkx'
 
-    def __init__(self):
-        self._graph = nx.DiGraph()
+    class NetworkxJsonEncoder(JSONEncoder):
+        """
+        When encoding JSON, sets are converted to lists.
+        """
+        def default(self, o):
+            try:
+                iterable = iter(o)
+            except TypeError:
+                pass
+            else:
+                return list(iterable)
+
+    def __init__(self, graph: nx.DiGraph=None):
+        if graph is not None:
+            self._graph = graph
+        else:
+            self._graph = nx.DiGraph()
 
     @property
     def nodes(self):
@@ -382,3 +397,7 @@ class NetworkX(GraphDataMixin):
     def add_edges(self, edges: List[tuple]):
         for e in edges:
             self.add_edge(e)
+
+    def save_graph(self, format=''):
+        with open('test_json.json', 'w') as fp:
+            dump(node_link_data(self._graph), fp, cls=self.NetworkxJsonEncoder)

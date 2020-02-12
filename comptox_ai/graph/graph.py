@@ -63,12 +63,10 @@ def _convert(data: GraphDataMixin, from_fmt: str, to_fmt: str, safe: bool=True):
     elif to_fmt == 'dgl':
         raise NotImplementedError
 
-    
-
     # Populate nodes and edges
     nodes = data.nodes
     edges = data.edges
-    ipdb.set_trace()
+    #ipdb.set_trace()
     new_data.add_nodes(nodes)
     new_data.add_edges(edges)
 
@@ -116,11 +114,16 @@ class Graph(object):
         )
 
     @property
+    def data(self):
+        return self._data
+
+    @property
     def format(self):
         return self._data.format
 
-    def get_nodes(self):
-        """Get all nodes in the graph and return as an iterable of tuples.
+    def nodes(self):
+        """
+        Get all nodes in the graph and return as an iterable of tuples.
         
         Returns
         -------
@@ -131,8 +134,9 @@ class Graph(object):
         """
         return self._data.nodes
 
-    def get_edges(self):
-        """Get all edges in the graph and return as an iterable of tuples.
+    def edges(self):
+        """
+        Get all edges in the graph and return as an iterable of tuples.
         
         Returns
         -------
@@ -142,26 +146,42 @@ class Graph(object):
         return self._data.edges
 
     def add_nodes(self, nodes: Union[List[tuple], tuple]):
-        pass
+        """
+        Add one or more nodes to the graph.
+        """
+        if isinstance(nodes, tuple):
+            self._data.add_node(nodes)
+        elif isinstance(nodes, list):
+            self._data.add_nodes(nodes)
+        else:
+            raise AttributeError("`nodes` must be a node tuple or list of node tuples - got {0}".format(type(nodes)))
 
     def add_edges(self, edges: Union[List[tuple], tuple]):
-        pass
+        """
+        Add one or more edges to the graph.
+        """
+        if isinstance(edges, tuple):
+            self._data.add_edge(edges)
+        elif isinstance(edges, list):
+            self._data.add_edges(edges)
+        else:
+            raise AttributeError("`edges` must be a node tuple or list of node tuples - got {0}".format(type(edges)))
 
     @property
     def node_id_map(self):
         return self._data._node_map
-
-    def __getitem__(self, key):
-        pass
-
-    def __setitem__(self, key, value):
-        pass
 
     @property
     def is_heterogeneous(self):
         return self._data._is_heterogeneous
 
     def convert(self, to_fmt: str):
+        """
+        Convert the graph data structure into the specified format.
+
+        The actual graph contained in a `comptox_ai.Graph` can be in a variety
+        of different formats. When the user loads a graph 
+        """
         if to_fmt not in [
             'neo4j',
             'networkx',
@@ -180,10 +200,9 @@ class Graph(object):
                              to_fmt=to_fmt)
 
         # Free memory held for old graph
-        #delattr(self, )
+        delattr(self, _data)
 
         self._data = new_graph
-        return True
 
     @classmethod
     def from_neo4j(cls, config_file: str = None):
@@ -225,7 +244,19 @@ class Graph(object):
 
     @classmethod
     def from_networkx(cls):
-        raise NotImplementedError
+        """
+        Create a new NetworkX graph from a JSON node-link graph file.
+        """
+
+        print("Reading NetworkX graph from file...")
+        with open("./test_json.json", 'r') as fp:
+            graph_text = json.load(fp)
+
+        nx_g = nx.readwrite.json_graph.node_link_graph(graph_text)
+
+        networkx_data = NetworkX(graph = nx_g)
+
+        return cls(data = networkx_data)
 
     @classmethod
     def from_graphsage(cls, prefix: str, directory: str=None):

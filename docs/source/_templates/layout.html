@@ -1,11 +1,6 @@
 {% extends "!layout.html" %}  <!-- Loads layout.html from 'basic' theme -->
 
 {%- block header %}
-<!-- <div class="container">
-  <span class="top-logo-header">
-    <a href="/" class="navbar-brand" id="logo">ComptoxAI</a>
-  </span> 
-</div> -->
 <header>
   <nav class="navbar navbar-expand-md navbar-light bg-light">
     <a href="" class="navbar-brand" id="logo">ComptoxAI</a>
@@ -31,4 +26,22 @@
   {% if pagename != 'index' %}
     <li class="active"><a href="{{ pathto('index') }}">{{ shorttitle|e }}</a></li>
   {% endif %}
+{% endblock %}
+
+{%- block extrahead %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto&display=swap" rel="stylesheet">
+<script src="https://use.fontawesome.com/04f6e4e6fe.js"></script>
+<style>
+  .navbar-light .navbar-nav .nav-link {
+    color: #226b07;
+  }
+  .navbar-brand {
+    padding-bottom: 7px;
+  }
+  h1 {
+    font-size: 2.4rem;
+  }
+</style>
 {% endblock %}

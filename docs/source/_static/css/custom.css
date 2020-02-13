@@ -1,12 +1,24 @@
-@font-face {
-    font-family: "Roboto";
-    src: url("./Roboto-Regular.ttf");
-}
+@import '../alabaster.css';
 
 header {
-    line-height: 24px;
+    Font-family: 'Roboto', sans-serif;
     padding-bottom: 50px;
-    color: #226b07;
+}
+
+p {
+    font-family: 'Open Sans', sans-serif;
+}
+
+div.body h1, div.body h2, div.body h3, div.body h4 {
+    font-family: Roboto;
+}
+
+h1 {
+    font-size: 32px;
+}
+
+div.sphinxsidebar h3, div.sphinxsidebar h4 {
+    font-family: Roboto;
 }
 
 .top-logo-header {
@@ -21,10 +33,32 @@ header {
     padding-top: 8px;
 }
 
+.navbar-brand{
+    padding-bottom: 7px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #226b07;
+}
+
+.nav-link {
+    color: #226b07;
+}
+
+.navbar-nav {
+    margin-left: 0px;
+}
+
+.fa-2x {
+    font-size: 2em;
+    color: #226b07;
+}
+
 #logo {
     color: #226b07;
     font-weight: 600;
-    padding-bottom: 20px;
+    padding-bottom: 7px;
+    /* padding-bottom: 20px;
     padding-top: 24px;
     margin-right: 0px;
     font-size: 1.25rem;
@@ -32,5 +66,5 @@ header {
     white-space: nowrap;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
-    text-align: left;
+    text-align: left; */
 }

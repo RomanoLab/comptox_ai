@@ -1,7 +1,7 @@
 .. _guide_databases:
 
-*******************************
-Databases included in ComptoxAI
-*******************************
+****************
+Source databases
+****************
 
 .. automodule:: comptox_ai.doc.databases

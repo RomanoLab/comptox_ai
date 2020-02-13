@@ -17,7 +17,7 @@ import sys
 import time
 from pathlib import Path
 import importlib.resources as pkg_resources
-
+import glob
 import comptox_ai  # Mostly so we can find the version string
 
 # -- Project information -----------------------------------------------------
@@ -28,72 +28,36 @@ author = 'Joseph D. Romano, PhD'
 
 str_version = comptox_ai.__version__
 
-
 # -- General configuration ---------------------------------------------------
 
 extensions = [
     'sphinx.ext.autodoc',
-    'numpydoc',
-    'sphinx.ext.coverage',
     'sphinx.ext.autosummary',
+    'sphinx.ext.coverage',
     'sphinx.ext.ifconfig',
     'IPython.sphinxext.ipython_console_highlighting',
     'IPython.sphinxext.ipython_directive',
+    'numpydoc',
 ]
 
 templates_path = ['_templates']
-
 source_suffix = '.rst'
-
-master_doc = 'index'
-
-# List of patterns, relative to source directory, that match files and
-# directories to ignore when looking for source files.
-# This pattern also affects html_static_path and html_extra_path.
+master_doc = 'contents'
+autosummary_generate = True
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
-
 default_role = "autolink"
 
 rst_prolog = """
 .. |version| replace:: VERSION
 """.replace('VERSION', str_version)
 
-
 def skip(app, what, name, obj, would_skip, options):
     if name == "__init__":
         return False
     return would_skip
 
-
 def setup(app):
     app.connect("autodoc-skip-member", skip)
-
-# -- Options for HTML output -------------------------------------------------
-
-themedir = os.path.join(os.pardir, 'scipy-sphinx-theme', '_theme')
-if not os.path.isdir(themedir):
-    raise RuntimeError("Get the scipy-sphinx-theme first, "
-                       "via git submodule init && git submodule update")
-
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-#
-html_theme = 'scipy'
-html_theme_path = [themedir]
-
-html_theme_options = {
-    "edit_link": False,
-    "sidebar": "left",
-    "scipy_org_logo": False,
-    "rootlinks": [
-        ("https://comptox.ai/", "comptox.ai"),
-        # ("https://comptox.ai/docs", "ComptoxAI Docs")
-    ]
-}
-
-# html_sidebars = {
-#     'index': ['indexsidebar.html', 'searchbox.html']
-# }
 
 html_additional_pages = {
     'index': 'indexcontent.html',
@@ -102,22 +66,11 @@ html_additional_pages = {
 html_title = "%s v%s Manual" % (project, str_version)
 html_static_path = ['_static']
 html_last_updated_fmt = '%b %d, %Y'
-
 html_css_files = [
     'css/custom.css',
 ]
-
 html_use_modindex = True
 html_copy_source = False
 html_domain_indices = False
 html_file_suffix = '.html'
-
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
-#html_static_path = ['_static']
-
-# Autosummary stuff:
-
-import glob
-autosummary_generate = True
+html_favicon = os.path.join('_static', 'img', 'favicon.ico')

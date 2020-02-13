@@ -4,4 +4,4 @@
 ComptoxAI's graph database
 **************************
 
-.. automodule:: comptox_ai.doc.graph
+.. automodule:: comptox_ai.doc.graph_db

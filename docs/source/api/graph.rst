@@ -1,7 +1,7 @@
 .. _graph:
 
 *******************************************
-ComptoxAI graph (:class:`comptox_ai.Graph`)
+ComptoxAI graph (:class:`Graph`)
 *******************************************
 
 .. automodule:: comptox_ai.graph

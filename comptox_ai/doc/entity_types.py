@@ -2,7 +2,7 @@
 Entity Types
 ************
 
-.. seealso:: :ref:`databases`
+.. seealso:: :ref:`Source databases <guide_databases>`
 
 Node types
 ----------

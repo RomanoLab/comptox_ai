@@ -1,7 +1,7 @@
 .. _guide_usage:
 
-******************************************
-Usage guide for ComptoxAI's Python package
-******************************************
+***********
+Usage guide
+***********
 
 .. automodule:: comptox_ai.doc.usage

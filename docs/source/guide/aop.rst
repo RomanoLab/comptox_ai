@@ -1,7 +1,7 @@
 .. _guide_aop:
 
-********************************************
-AOPs (Adverse Outcome Pathways) in ComptoxAI
-********************************************
+************************
+Adverse Outcome Pathways
+************************
 
 .. automodule:: comptox_ai.doc.aop

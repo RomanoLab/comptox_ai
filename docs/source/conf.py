@@ -32,7 +32,7 @@ str_version = comptox_ai.__version__
 
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
+    # 'sphinx.ext.autosummary',
     'sphinx.ext.coverage',
     'sphinx.ext.ifconfig',
     'IPython.sphinxext.ipython_console_highlighting',
@@ -42,8 +42,7 @@ extensions = [
 
 templates_path = ['_templates']
 source_suffix = '.rst'
-master_doc = 'contents'
-autosummary_generate = True
+master_doc = 'index'
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 default_role = "autolink"
 
@@ -63,14 +62,34 @@ html_additional_pages = {
     'index': 'indexcontent.html',
 }
 
+html_theme = 'alabaster'
+
 html_title = "%s v%s Manual" % (project, str_version)
 html_static_path = ['_static']
 html_last_updated_fmt = '%b %d, %Y'
 html_css_files = [
     'css/custom.css',
 ]
+html_style = 'css/custom.css'
 html_use_modindex = True
 html_copy_source = False
 html_domain_indices = False
 html_file_suffix = '.html'
 html_favicon = os.path.join('_static', 'img', 'favicon.ico')
+html_sidebars = {
+    '**': [
+        'about.html',
+        'navigation.html',
+        'relations.html',
+        'searchbox.html'
+    ]
+}
+html_theme_options = {
+    'github_user': 'jdromano2',
+    'github_repo': 'comptoxai',
+    'github_button': 'true',
+    'fixed_sidebar': 'fixed',
+    'description': 'An AI research toolkit for computational toxicology.',
+    'show_powered_by': 'false',
+    'sidebar_header': '#226b07'
+}

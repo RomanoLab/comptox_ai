@@ -1,7 +1,7 @@
 .. _guide_installing:
 
-**********************************
-How to install and build ComptoxAI
-**********************************
+********************
+Installing ComptoxAI
+********************
 
 .. automodule:: comptox_ai.doc.installing

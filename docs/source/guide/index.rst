@@ -16,9 +16,10 @@ Python package, you can find that in the :ref:`reference`.
 
    installing
    usage
-   graph
+   graph_db
    graph_concepts
    entity_types
    databases
    data_schema
    aop
+   useful_queries

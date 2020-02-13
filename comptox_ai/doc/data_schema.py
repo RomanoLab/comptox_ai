@@ -1,6 +1,6 @@
 """
-Data formats and standardization in ComptoxAI
-*********************************************
+Graph data formats
+******************
 
 ComptoxAI manages the interchange of data in a number of disparate formats. To
 do this dynamically, its critically important to ensure that all of the
@@ -8,7 +8,7 @@ datatype handlers write to and read from a well-specified intermediate format.
 
 Here, we describe the (Python-centric) specification for this format.
 
-.. topic:: What's up with the "ns0__" and "owl__" prefixes?
+.. topic:: What's up with the ``ns0__`` and ``owl__`` prefixes?
 
   These prefixes indicate the namespace that each entity in ComptoxAI belongs
   to. They can be used to determine if an entity (e.g., a node, a relationship,

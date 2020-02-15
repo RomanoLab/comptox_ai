@@ -26,7 +26,7 @@ Python prerequisites
 ComptoxAI is only compatible with Python 3. If you'd still like to use Python 2
 for other applications, there are several good solutions for maintaining
 multiple Python installations on a single system. We recommend using either
-`Anaconda <https://anaconda.org/` or `pyenv <https://github.com/pyenv/pyenv>` if
+`Anaconda <https://anaconda.org/>`_ or `pyenv <https://github.com/pyenv/pyenv>`_ if
 this applies to you.
 
 =============  ==============  ==========
@@ -93,7 +93,7 @@ both academic and commercial applications.
 
 .. seealso::
 
-   :ref:`graph`
+   :class:`comptox_ai.graph.Graph`
 
 Installing the ComptoxAI Python package
 ***************************************

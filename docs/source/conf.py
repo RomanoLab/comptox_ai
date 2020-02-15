@@ -31,6 +31,8 @@ release = '0.1a'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.autodoc',
+    'numpydoc'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -52,4 +54,19 @@ html_theme = 'alabaster'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ['_static', '_static/css']
+
+html_favicon = '_static/img/favicon.ico'
+
+html_theme_options = {
+    'github_user': 'jdromano2',
+    'github_repo': 'comptox_ai',
+    'fixed_sidebar': True,
+    'badge_branch': 'master',
+    'github_button': True,
+    'show_powered_by': False,
+    'font_family': "'Open Sans', sans-serif",
+    'head_font_family': "'Roboto', sans-serif",
+    'font_size': '16px',
+    'page_width': '1140px'
+}

@@ -6,9 +6,14 @@
 Welcome to ComptoxAI's documentation!
 =====================================
 
+`Click here <http://comptox.ai/>`_ to return to the home page.
+
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
+
+   guide/index
+   api/index
 
 
 

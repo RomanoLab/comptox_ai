@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300|Roboto|Roboto+Condensed|Roboto+Mono&display=swap');
+
+header {
+    box-sizing: border-box;
+    color: rgb(33, 37, 41);
+    display: block;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    line-height: 24;
+    padding-bottom: 50;
+    text-align: left;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+.navbar {
+    align-items: center;
+    background-color: rgb(248,249,250);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    font-size: 16px;
+    justify-content: flex-start;
+    line-height: 24;
+    padding-bottom: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 8px;
+    position: relative;
+    -webkit-box-align: center;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -webkit-box-pack: start;
+}
+
+.navbar-brand {
+    box-sizing: border-box;
+    color: rgb(34, 107, 7);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 30px;
+    margin-right: 16px;
+    padding-bottom: 7px;
+    padding-top: 5px;
+    text-decoration-color: rgb(34,107,7);
+    text-decoration-line: none;
+    text-decoration-style: solid;
+    white-space: nowrap;
+    -webkit-box-direction: normal;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+.navbar-collapse{
+    align-items: center;
+    box-sizing: border-box;
+    color: rgb(33, 37, 41);
+    display: flex;
+    flex-basis: auto;
+    flex-grow: 1;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+    text-size-adjust: 100%;
+    -webkit-box-align: center;
+    -webkit-box-direction: normal;
+    -webkit-box-flex: 1;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+.navbar-nav {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    font-size: 16px;
+    font-weight: 400;
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+    margin-block-end: 0px;
+    margin-block-start: 0px;
+    margin-bottom: 0px;
+    text-align: left;
+    text-size-adjust: 100%;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+.nav-item {
+    box-sizing: border-box;
+    display: list-item;
+}
+
+.nav-link {
+    background-color: rgba(0,0,0,0);
+    color: rgb(34,107,7);
+    cursor: pointer;
+    display: block;
+    padding: 8px;
+    text-decoration-color: rgb(34,107,7);
+    text-decoration-line: none;
+    text-decoration-style: solid;
+}
+
+.fa-2x {
+    font-size: 2em;
+    color: #226b07;
+}

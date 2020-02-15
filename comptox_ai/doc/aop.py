@@ -19,7 +19,7 @@ database.
 For example, an AOP can be used to describe the processes that lead from PPARα
 activation to decreased male fertility through the following steps:
 
-.. figure:: ../../images/aop_fertility.jpg
+.. figure:: ../_static/img/aop_fertility.jpg
    :width: 360px
    :align: center
    :alt: AOP 18

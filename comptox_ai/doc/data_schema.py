@@ -27,7 +27,7 @@ by experienced users who aren't afraid to potentially screw up their data.
 See the API reference for a complete description of the methods provided by
 the comptox_ai.Graph class.
 
-.. seealso:: :ref:`Graph`
+.. seealso:: :class:`comptox_ai.graph.Graph`
 
 Nodes
 -----

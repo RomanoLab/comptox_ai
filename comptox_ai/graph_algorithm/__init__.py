@@ -1,4 +1,5 @@
-"""The :mod:`comptox_ai.graph_algorithm module implements algorithms to
+"""
+The :mod:`comptox_ai.graph_algorithm` module implements algorithms to
 perform on a graph database of computational toxicology knowledge.
 """
 

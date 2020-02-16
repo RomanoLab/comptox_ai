@@ -84,7 +84,7 @@ class GraphDataMixin(object):
         pass
 
 
-class GraphSAGE(GraphDataMixin):
+class GraphSAGEData(GraphDataMixin):
     """
     Internal representation of a GraphSAGE formatted graph/dataset.
 
@@ -200,7 +200,7 @@ class GraphSAGE(GraphDataMixin):
         else:
             self._graph.add_edge(u, v)
 
-class Neo4j(GraphDataMixin):
+class Neo4jData(GraphDataMixin):
     """Internal representation of a connection to a Neo4j graph database
     containing ComptoxAI data.
 
@@ -350,7 +350,7 @@ class Neo4j(GraphDataMixin):
         #     query_response = session.read_transaction(_execute_cypher_transaction, query)
         # return query_response
 
-class NetworkX(GraphDataMixin):
+class NetworkXData(GraphDataMixin):
     format = 'networkx'
 
     class NetworkxJsonEncoder(JSONEncoder):

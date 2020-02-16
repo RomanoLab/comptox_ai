@@ -30,7 +30,7 @@ from comptox_ai.utils import execute_cypher_transaction
 from comptox_ai.graph.metrics import vertex_count, ensure_nx_available
 from ..utils import load_config
 
-from .io import GraphDataMixin, Neo4j, NetworkX, GraphSAGE
+from .io import GraphDataMixin, Neo4jData, NetworkXData, GraphSAGEData
 
 def _load_neo4j_config(config_file: str = None):
     config_dict = load_config(config_file)
@@ -55,9 +55,9 @@ def _convert(data: GraphDataMixin, from_fmt: str, to_fmt: str, safe: bool=True):
         # TODO: Only compatible with default config file for now
         uri, username, password = _load_neo4j_config()
         db = Database(uri, auth=(username, password))
-        new_data = Neo4j(db)
+        new_data = Neo4jData(db)
     elif to_fmt == 'networkx':
-        new_data = NetworkX()
+        new_data = NetworkXData()
     elif to_fmt == 'graphsage':
         raise NotImplementedError
     elif to_fmt == 'dgl':
@@ -238,7 +238,7 @@ class Graph(object):
         print("Creating database connection via py2neo...")
         database = Database(uri, auth=(username, password))
         print("Connected to database, now reading contents")
-        neo4j_data = Neo4j(database = database)
+        neo4j_data = Neo4jData(database = database)
 
         return cls(data = neo4j_data)
 
@@ -254,7 +254,7 @@ class Graph(object):
 
         nx_g = nx.readwrite.json_graph.node_link_graph(graph_text)
 
-        networkx_data = NetworkX(graph = nx_g)
+        networkx_data = NetworkXData(graph = nx_g)
 
         return cls(data = networkx_data)
 
@@ -338,7 +338,7 @@ class Graph(object):
         except FileNotFoundError:
             walks = None
 
-        graph_data = GraphSAGE(graph=G, node_map=id_map,
+        graph_data = GraphSAGEData(graph=G, node_map=id_map,
                                node_classes=class_map,
                                node_features=feats_map)
 

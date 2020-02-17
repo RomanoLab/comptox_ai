@@ -146,7 +146,7 @@ Shortest path between a molecular initiating event and a resulting disease:
 ```
 MATCH
 	(d:ns0__Disease {ns0__commonName: 'Parkinsonian Disorders'}),
-	(m:ns0__MolecularInitiatingEvent {ns0__keyEventID: "Event:888"}),
+	(m:ns0__MolecularInitiatingEvent {ns0__xrefAOPWikiKEID: "Event:888"}),
 	p=shortestPath((d)-[*]-(m))
 WHERE length(p)>1
 RETURN p;

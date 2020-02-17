@@ -68,6 +68,9 @@ class EPA(Database):
 
         self.scr.add_progress_step("Merging chemicals from map file", prog_step)
         prog_step += 1
+
+        # if True:
+        #     return
         
         for i, row in tqdm(self.epa_map.iterrows(), total=len(self.epa_map)):
             #ipdb.set_trace()

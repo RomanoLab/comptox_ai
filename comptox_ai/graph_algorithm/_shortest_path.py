@@ -13,7 +13,7 @@ class ShortestPath(GraphAlgorithm):
         Parameters
         ----------
         mie_node : string
-            KeyEventID for an MIE
+            xrefAOPWikiKEID for an MIE
         ao_node : string
             Common name for a disease
         node_type : string or list, optional

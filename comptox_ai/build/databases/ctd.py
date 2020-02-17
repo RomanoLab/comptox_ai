@@ -149,8 +149,8 @@ class CTD(Database):
         prog_step += 1
 
         # Set `True` to skip relationship parsing
-        if False:
-            return
+        # if True:
+        #     return
 
         # Chemicals <-> Diseases
         unmatched_chem_dis_count = 0

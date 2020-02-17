@@ -28,33 +28,33 @@ class AOPWiki(Database):
                                 sep="\t",
                                 header=None,
                                 names=['aop_id',
-                                        'key_event_id',
-                                        'key_event_type',
-                                        'key_event_name'])
+                                       'key_event_id',
+                                       'key_event_type',
+                                       'key_event_name'])
 
         self.kers = pd.read_csv(os.path.join(self.path, "aop_ke_ker.tsv"),
                                 sep="\t",
                                 header=None,
                                 names=['aop_id',
-                                        'upstream_event_id',
-                                        'downstream_event_id',
-                                        'relationship_id',
-                                        'direct_or_indirect',
-                                        'evidence',
-                                        'quantitative_understanding'])
+                                       'upstream_event_id',
+                                       'downstream_event_id',
+                                       'relationship_id',
+                                       'direct_or_indirect',
+                                       'evidence',
+                                       'quantitative_understanding'])
 
         self.ke_components = pd.read_csv(os.path.join(self.path, "aop_ke_ec.tsv"),
-                                        sep="\t",
-                                        header=None,
-                                        names=['aop_id',
-                                            'key_event_id',
-                                            'action',
-                                            'object_source',
-                                            'object_ontology_id',
-                                            'object_term',
-                                            'process_source',
-                                            'process_ontology_id',
-                                            'process_term'])
+                                         sep="\t",
+                                         header=None,
+                                         names=['aop_id',
+                                                'key_event_id',
+                                                'action',
+                                                'object_source',
+                                                'object_ontology_id',
+                                                'object_term',
+                                                'process_source',
+                                                'process_ontology_id',
+                                                'process_term'])
 
         with open(os.path.join(self.path, "aops.json"), 'r', encoding="utf8") as fp:
             aop_json = json.load(fp)
@@ -75,10 +75,10 @@ class AOPWiki(Database):
         already_parsed_aops = []
         for i, ke in tqdm(self.kes.iterrows(), total=len(self.kes)):
             ke_type = ke.key_event_type
-            ke_id = ke.key_event_id
+            ke_id = ke.key_event_id.split(":")[-1]
             ke_name = ke.key_event_name
-            ke_aop_id = ke.aop_id
-
+            ke_aop_id = ke.aop_id.split(":")[-1]
+            
             if ke_id in already_parsed_kes:
                 continue  # Don't re-add something we've already seen
             already_parsed_kes.append(ke_id)
@@ -94,64 +94,67 @@ class AOPWiki(Database):
                 raise ValueError("Unknown key event type")
 
             # do we have a node already for the AOP?
-            aop_id = ke.aop_id
-            if aop_id in already_parsed_aops:
+            if ke_aop_id in already_parsed_aops:
                 existing_aop = True
             else:
                 existing_aop = False
 
             if ke_type == 'MolecularInitiatingEvent':
                 new_mie_node = cai_ont.MolecularInitiatingEvent(safe_name,
-                                                            keyEventID=ke_id,
-                                                            commonName=ke_name)
+                                                                xrefAOPWikiKEID=ke_id,
+                                                                commonName=ke_name)
                 if existing_aop:
                     # add this MIE to the AOP
-                    aop_node = cai_ont.search(xrefAOPWiki=aop_id)
+                    aop_node = cai_ont.search(xrefAOPWikiKEID=ke_aop_id)
                     assert len(aop_node) == 1
                     aop_node = aop_node[0]
                     aop_node.aopHasMIE.append(new_mie_node)
                 else:
                     # Create an AOP with this as an MIE
-                    if aop_id.split(":")[-1] in self.aop_dict.keys(): # Don't do anything if it's an obsolete AOP
-                        aop_data = self.aop_dict[aop_id.split(":")[-1]]
+                    if ke_aop_id.split(":")[-1] in self.aop_dict.keys(): # Don't do anything if it's an obsolete AOP
+                        aop_data = self.aop_dict[ke_aop_id]
                         safe_aop_name = 'aop_'+make_safe_property_label(aop_data['short_name'])
-                        new_aop_node = cai_ont.AOP(safe_aop_name, commonName=aop_data['short_name'])
+                        new_aop_node = cai_ont.AOP(safe_aop_name, 
+                                                   commonName=aop_data['short_name'],
+                                                   xrefAOPWikiAOPID=aop_data['id'])
                         new_aop_node.aopHasMIE = [new_mie_node]
                         
             elif ke_type == 'KeyEvent':
                 new_ke_node = cai_ont.KeyEvent(safe_name,
-                                        keyEventID=ke_id,
+                                        xrefAOPWikiKEID=ke_id,
                                         commonName=ke_name)
                 if existing_aop:
                     # add this MIE to the AOP
-                    aop_node = cai_ont.search(xrefAOPWiki=aop_id)
+                    aop_node = cai_ont.search(xrefAOPWikiKEID=ke_aop_id)
                     assert len(aop_node) == 1
                     aop_node = aop_node[0]
                     aop_node.aopContainsKE.append(new_ke_node)
                 else:
                     # Create an AOP with this as an MIE
-                    if aop_id.split(":")[-1] in self.aop_dict.keys(): # Don't do anything if it's an obsolete AOP
-                        aop_data = self.aop_dict[aop_id.split(":")[-1]]
-                        safe_aop_name = 'aop_'+make_safe_property_label(aop_data['title'])
-                        new_aop_node = cai_ont.AOP(safe_aop_name, commonName=aop_data['title'])
+                    if ke_aop_id in self.aop_dict.keys(): # Don't do anything if it's an obsolete AOP
+                        aop_data = self.aop_dict[ke_aop_id]
+                        safe_aop_name = 'aop_'+make_safe_property_label(aop_data['short_name'])
+                        new_aop_node = cai_ont.AOP(safe_aop_name, 
+                                                   commonName=aop_data['short_name'],
+                                                   xrefAOPWikiAOPID=aop_data['id'])
                         new_aop_node.aopContainsKE = [new_ke_node]
 
             elif ke_type == 'AdverseOutcome':
                 new_ao_node = cai_ont.AdverseOutcome(safe_name,
-                                                keyEventID=ke_id,
+                                                xrefAOPWikiAOPID=ke_id,
                                                 commonName=ke_name)
                 if existing_aop:
                     # add this MIE to the AOP
-                    aop_node = cai_ont.search(xrefAOPWiki=aop_id)
+                    aop_node = cai_ont.search(xrefAOPWikiKEID=ke_aop_id)
                     assert len(aop_node) == 1
                     aop_node = aop_node[0]
                     aop_node.aopCausesAO.append(new_ao_node)
                 else:
                     # Create an AOP with this as an MIE
-                    if aop_id.split(":")[-1] in self.aop_dict.keys(): # Don't do anything if it's an obsolete AOP
-                        aop_data = self.aop_dict[aop_id.split(":")[-1]]
-                        safe_aop_name = 'aop_'+make_safe_property_label(aop_data['title'])
-                        new_aop_node = cai_ont.AOP(safe_aop_name, commonName=aop_data['title'])
+                    if ke_aop_id in self.aop_dict.keys(): # Don't do anything if it's an obsolete AOP
+                        aop_data = self.aop_dict[ke_aop_id]
+                        safe_aop_name = 'aop_'+make_safe_property_label(aop_data['short_name'])
+                        new_aop_node = cai_ont.AOP(safe_aop_name, commonName=aop_data['short_name'], xrefAOPWikiAOPID=aop_data['id'])
                         new_aop_node.aopCausesAO = [new_ao_node]
 
             else:
@@ -163,10 +166,10 @@ class AOPWiki(Database):
         # ADD AOP WIKI RELATIONSHIPS TO GRAPH
         already_parsed_kers = []
         for i,ker in tqdm(self.kers.iterrows(), total=len(self.kers)):
-            aop_id = ker[0]
-            rel_id = ker[3]
-            upstream_event_id = ker[1]
-            downstream_event_id = ker[2]
+            aop_id = ker[0].split(":")[-1]
+            rel_id = ker[3].split(":")[-1]
+            upstream_event_id = ker[1].split(":")[-1]
+            downstream_event_id = ker[2].split(":")[-1]
             adj_or_nonadj = ker[4]
             evidence = ker[5]
             quantitative = ker[6]
@@ -175,11 +178,10 @@ class AOPWiki(Database):
                 continue  # Don't re-add something we've already seen
             already_parsed_kers.append(rel_id)
 
-            upstream_event = cai_ont.search(keyEventID=upstream_event_id)
-            downstream_event = cai_ont.search(keyEventID=downstream_event_id)
+            upstream_event = cai_ont.search(xrefAOPWikiKEID=upstream_event_id)
+            downstream_event = cai_ont.search(xrefAOPWikiKEID=downstream_event_id)
 
             if (upstream_event == []) or (downstream_event == []):
-                #ipdb.set_trace()
                 print("mismatch: {}; {}".format(upstream_event_id, downstream_event_id))
                 continue
 
@@ -198,7 +200,7 @@ class AOPWiki(Database):
 
         # find all AOs that have a ke_component (i.e., likely linked to diseases)
         all_aos = cai_ont.search(is_a=cai_ont.AdverseOutcome)
-        ao_event_ids = [x.keyEventID for x in all_aos]
+        ao_event_ids = [x.xrefAOPWikiKEID for x in all_aos]
         ao_event_ids = [x for x in list(set(ao_event_ids)) if x is not None]
         ao_components = self.ke_components.loc[self.ke_components['key_event_id'].isin(ao_event_ids),:]
         for i,aoc in tqdm(ao_components.iterrows(), total=len(ao_components)):
@@ -248,7 +250,7 @@ class AOPWiki(Database):
 
             for dn in disease_node:
                 print("LINKING -- {0} --> {1}".format(ao_event_id, dn))
-                ao = cai_ont.search(keyEventID=ao_event_id)
+                ao = cai_ont.search(xrefAOPWikiKEID=ao_event_id)
                 assert len(ao) == 1
                 if len(ao[0].aoManifestedAsDisease) == 0:
                     ao[0].aoManifestedAsDisease = [dn]

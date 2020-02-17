@@ -48,7 +48,7 @@ class TestGraphAlgorithm:
 
         # Find the shortest path between "mie_increase_urinary_bladder_calculi"
         # and "dis_adenoma"
-        sp = ShortestPath(mie_node="Event:793", ao_node="Adenoma")
+        sp = ShortestPath(mie_node="793", ao_node="Adenoma")
         sp.run(c.graph)
 
         assert isinstance(sp.algorithm_results, comptox_ai.graph.Path)

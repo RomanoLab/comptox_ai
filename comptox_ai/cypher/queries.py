@@ -1,6 +1,6 @@
 MIE_DISEASE_PATH = """
 MATCH
-    (m:ns0__MolecularInitiatingEvent {{ns0__keyEventID: '{}'}}),
+    (m:ns0__MolecularInitiatingEvent {{ns0__xrefAOPWikiKEID: '{}'}}),
 	(d:ns0__Disease {{ns0__commonName: '{}'}}),
 p=shortestPath((d)-[*]-(m))
 WHERE length(p)>1

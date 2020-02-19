@@ -19,9 +19,12 @@ class NeuralNetwork(object):
             'name',
             'lr',
             'num_epochs',
-            'logging'            
+            'logging',
+            'verbose'
         }
         for kwarg in kwargs.keys():
             assert kwarg in arg_opts, 'Invalid argument: {}'.format(kwarg)
+
+        self.verbose = kwargs.get('verbose', False)
 
     ext_library = 'pytorch'

@@ -45,7 +45,7 @@ def _execute_cypher_transaction(tx, query, **kwargs):
 
 class GraphDataMixin(object):
     """
-    Abstract base class specifying a common interface for all graph data 
+    Abstract base class specifying a common interface for all graph data.
     """
     
     @property
@@ -179,11 +179,14 @@ class GraphSAGEData(GraphDataMixin):
 
         Edge format:
         3-tuple with format:
-        (
-            {ID of u},
-            {relationship label (str)},
-            {ID of v}
-        )
+
+        .. code-block::
+
+           (
+               {ID of u},
+               {relationship label (str)},
+               {ID of v}
+           )
 
         If the edge does not have a label, you should use the empty string
         ('') as the second element of `edge`.
@@ -351,6 +354,12 @@ class Neo4jData(GraphDataMixin):
         # return query_response
 
 class NetworkXData(GraphDataMixin):
+    def __init__(self, graph: nx.DiGraph=None):
+        if graph is not None:
+            self._graph = graph
+        else:
+            self._graph = nx.DiGraph()
+
     format = 'networkx'
 
     class NetworkxJsonEncoder(JSONEncoder):
@@ -364,12 +373,6 @@ class NetworkXData(GraphDataMixin):
                 pass
             else:
                 return list(iterable)
-
-    def __init__(self, graph: nx.DiGraph=None):
-        if graph is not None:
-            self._graph = graph
-        else:
-            self._graph = nx.DiGraph()
 
     @property
     def nodes(self):
@@ -386,6 +389,25 @@ class NetworkXData(GraphDataMixin):
         self._graph.add_node(n_id, **n_props)
 
     def add_edge(self, edge: tuple):
+        """
+        Add one edge to the graph from a tuple.
+
+        The tuple should be formatted as follows:
+
+        .. code-block::
+
+           (
+               {ID of u},
+               {relationship type},
+               {ID of v},
+               {dict of edge properties (leave empty if none)}
+           )
+
+        Parameters
+        ----------
+        edge : tuple
+            Tuple containing edge data (see above for format specification).
+        """
         u, rel_type, v, e_props = edge
         e_props['TYPE'] = rel_type
         self._graph.add_edge(u, v, **e_props)
@@ -395,9 +417,60 @@ class NetworkXData(GraphDataMixin):
             self.add_node(n)
 
     def add_edges(self, edges: List[tuple]):
+        """
+        Add one or more edges to the graph from a list of tuples.
+
+        See Also
+        --------
+        add_edge : Add a single edge from a tuple
+        """
         for e in edges:
             self.add_edge(e)
 
     def save_graph(self, format=''):
+        """
+        Save NetworkX representation of ComptoxAI's knowledge graph to disk in
+        JSON "node-link" format.
+
+        Notes
+        -----
+
+        Users should not need to interact with these JSON files directly, but
+        for reference they should be formatted similarly to the following
+        example:
+
+        .. code-block::
+
+           {
+               'directed': True,
+               'multigraph': False,
+               'graph': {},
+               'nodes': [
+                   {
+                       'ns0__xrefPubchemCID': 71392231,
+                       'ns0__xrefPubChemSID': 316343675,
+                       'ns0__inchi': 'InChI=1S/C8H12Cl2N4S2/c1-5(9)3-11-7(15)13-14-8(16)12-4-6(2)10/h1-4H2,(H2,11,13,15)(H2,12,14,16)',
+                       'ns0__xrefCasRN': '61784-89-2',
+                       'uri': 'http://jdr.bio/ontologies/comptox.owl#chem_n1n2bis2chloroprop2en1ylhydrazine12dicarbothioamide',
+                       'ns0__xrefDtxsid': 'DTXSID70814050',
+                       'ns0__inchiKey': 'UAZDGQNKXGUQPD-UHFFFAOYSA-N',
+                       'LABELS': ['ns0__Chemical', 'Resource', 'owl__NamedIndividual'],
+                       'id': 0
+                   },
+                   ...
+               ],
+               'links': [
+                   {
+                       'TYPE': 'ns0__keyEventTriggeredBy',
+                       'source': 46954,
+                       'target': 47667
+                   },
+                   ...
+               ]
+           }
+
+        Notice that ``'graph'`` is empty - the contents of the graph are
+        entirely specified in the ``'nodes'`` and ``'links'`` lists.
+        """
         with open('test_json.json', 'w') as fp:
             dump(node_link_data(self._graph), fp, cls=self.NetworkxJsonEncoder)

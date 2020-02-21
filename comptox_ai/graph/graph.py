@@ -200,7 +200,7 @@ class Graph(object):
                              to_fmt=to_fmt)
 
         # Free memory held for old graph
-        delattr(self, _data)
+        #delattr(self, _data)
 
         self._data = new_graph
 
@@ -229,7 +229,7 @@ class Graph(object):
 
         See Also
         --------
-        comptox_ai.graph.io.Neo4j
+        comptox_ai.graph.Neo4jData
         """
         print("Parsing Neo4j configuration...")
         uri, username, password = _load_neo4j_config()
@@ -245,7 +245,12 @@ class Graph(object):
     @classmethod
     def from_networkx(cls):
         """
-        Create a new NetworkX graph from a JSON node-link graph file.
+        Create a new ComptoxAI graph from a JSON node-link graph file, storing
+        the data as a NetworkX graph.
+
+        See Also
+        --------
+        comptox_ai.graph.NetworkXData
         """
 
         print("Reading NetworkX graph from file...")
@@ -263,6 +268,23 @@ class Graph(object):
         """
         Create a new GraphSAGE data structure from files formatted according to
         the examples given in https://github.com/williamleif/GraphSAGE.
+
+
+        Parameters
+        ----------
+        prefix : str
+            The prefix used at the beginning of each file name (see above for
+            format specification).
+        directory : str, default=None
+            The directory (fully specified or relative) containing the data
+            files to load.
+
+        See Also
+        --------
+        comptox_ai.graph.GraphSAGEData
+
+        Notes
+        -----
 
         The parameters should point to files with the following structure:
 
@@ -300,15 +322,6 @@ class Graph(object):
             the id_map file) indicating an edge included in random walks. The
             lines should be arranged in ascending order, starting with the 
             first item in each pair.
-
-        Parameters
-        ----------
-        prefix : str
-            The prefix used at the beginning of each file name (see above for
-            format specification).
-        directory : str, default=None
-            The directory (fully specified or relative) containing the data
-            files to load.
         """
 
         nx_json_file = os.path.join(directory, "".join([prefix, '-G.json']))
@@ -346,5 +359,13 @@ class Graph(object):
 
     @classmethod
     def from_dgl(cls):
+        """
+        Create a ComptoxAI graph, populating the contents from a DGL graph (not
+        yet implemented).
+
+        Raises
+        ------
+        NotImplementedError
+        """
         raise NotImplementedError
 

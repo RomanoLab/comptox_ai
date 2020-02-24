@@ -40,9 +40,8 @@ header {
     font-weight: 600;
     line-height: 30px;
     margin-right: 16px;
-    padding-bottom: 0;
-    padding-top: 0;
-    max-height: 47px;
+    padding-bottom: 7px;
+    padding-top: 5px;
     text-decoration-color: rgb(34,107,7);
     text-decoration-line: none;
     text-decoration-style: solid;
@@ -88,11 +87,6 @@ header {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
-.nav-item {
-    box-sizing: border-box;
-    display: list-item;
-}
-
 .nav-link {
     background-color: rgba(0,0,0,0);
     color: rgb(34,107,7);
@@ -107,4 +101,14 @@ header {
 .fa-2x {
     font-size: 2em;
     color: #226b07;
+}
+
+#bootstrap-overrides .nav-link {
+    color: rgb(34, 107, 7);
+    box-sizing: border-box;
+    display: list-item;
+}
+
+#logo {
+    color: rgb(34, 107, 7);
 }

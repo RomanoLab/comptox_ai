@@ -1,0 +1,21 @@
+{%- if docstitle %}
+{%- set titlesuffix = " &mdash; "|safe + docstitle|e %}
+{%- else %}
+{%- set titlesuffix = "" %}
+{%- endif %}
+{%- set lang_attr = 'en' if language == None else (language | replace('_', '-')) %}
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+
+<head>
+  {% include "head.html" %}
+  {%- block extrahead %} {% endblock %}
+</head>
+
+<!-- see: https://stackoverflow.com/a/27704409/1730417 -->
+<body id="bootstrap-overrides">
+  {% include "navbar.html" %}
+
+  {% include "body.html" %}
+  <img src="_static/img/helo-fish-.jpg" alt=""/>
+</body>

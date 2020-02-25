@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% set title = 'ComptoxAI: A modern toolkit for AI research in computational toxicology' %}
+{% block content %}
+<div class="container pt-3 body" role="main">
+
+  <div class="row">
+    <h2 class="pb-2">ComptoxAI: A modern toolkit for AI research in computational toixcology</h2>
+  </div>
+
+  <div class="row">
+    <div class="container-fluid alert alert-primary">
+      <p>Stay tuned while we finish building this site!</p>
+      <hr>
+      <p class='mb-0'>In the meantime, check out our code repository on GitHub: <a href="https://github.com/JDRomano2/comptox_ai">github.com/JDRomano2/comptox_ai</a>.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <img src="_static/img/ontology.png" alt="ComptoxAI ontology" id="ont-graph" />
+  </div>
+
+  <div class="row">
+    <h4>ComptoxAI provides:</h4>
+    <ul>
+      <li>A <b><a href="https://neo4j.com/blog/why-graph-databases-are-the-future/" target="_blank">graph database</a></b> for storing and retrieving data used in computational toxicology research (implemented in <a href="https://neo4j.com" target="_blank">Neo4j</a>)</li>
+      <li><b>Algorithms</b> for analyzing the structure of data stored in the graph database</li>
+      <li>A full-featured <b>OWL ontology</b> for computational toxicology (which is used to structure and query the graph database)</li>
+      <li><b>This website</b>, which includes a blog (coming soon) and showcase of research resulting from ComptoxAI</li>
+      <li>(Coming soon:) A gallery of <b>machine learning models</b> for making scientific discovery from ComptoxAI data</li>
+    </ul>
+  </div>
+
+  <hr />
+</div>
+{% endblock %}

@@ -15,7 +15,17 @@
 <!-- see: https://stackoverflow.com/a/27704409/1730417 -->
 <body id="bootstrap-overrides">
   {% include "navbar.html" %}
-
-  {% include "body.html" %}
-  <img src="_static/img/helo-fish-.jpg" alt=""/>
+  
+  {%- block content %}
+    <div class="d-flex">
+      <div class="content-wrapper">
+        <div class="page-content container-fluid body px-md-3" role="main">
+          {% block body %}{% endblock %}
+        </div>
+      </div>
+    </div>
+    <!-- <div class="container">
+      <img src="_static/img/helo-fish-.jpg" alt=""/>
+    </div> -->
+  {% endblock %}
 </body>

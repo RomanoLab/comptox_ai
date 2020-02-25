@@ -26,6 +26,10 @@ extensions = [
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['templates']
 
+source_suffix = '.rst'
+
+master_doc = 'contents'
+
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -37,6 +41,13 @@ html_theme_path = ['themes']
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static', '_static/img']
+
+html_additional_pages = {
+    'index': 'index.html'
+}
+
+html_domain_indices = False  # Don't automatically generate a module index
+html_use_index = False  # Don't automatically generate an index
 
 html_favicon = '_static/img/favicon.ico'
 

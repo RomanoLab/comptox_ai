@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% set title = 'ComptoxAI: A modern toolkit for AI research in computational toxicology' %}
 {% block content %}
-<div class="container pt-3 body" role="main">
+<div class="container pt-3" id="page-wrapper" role="main">
 
   <div class="row">
-    <h2 class="pb-2">ComptoxAI: A modern toolkit for AI research in computational toixcology</h2>
+    <h2 class="pb-2">ComptoxAI: A modern toolkit for AI research in computational toxicology</h2>
   </div>
 
   <div class="row">
@@ -31,5 +31,7 @@
   </div>
 
   <hr />
+
+  {% include "footer.html" %}
 </div>
 {% endblock %}

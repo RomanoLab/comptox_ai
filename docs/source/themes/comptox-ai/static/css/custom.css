@@ -1,5 +1,26 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300|Roboto|Roboto+Condensed|Roboto+Mono&display=swap');
 
+@font-face {
+    font-family: 'cmu_serifroman';
+    src: url('../fonts/cmunrm-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'cmu_sans_serifbold';
+    src: url('../fonts/cmunsx-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'cmu_typewriter_textregular';
+    src: url('../fonts/cmuntt-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+
 header {
     box-sizing: border-box;
     color: rgb(33, 37, 41);
@@ -7,9 +28,16 @@ header {
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     line-height: 24;
+    height: 116px;
     padding-bottom: 50px;
     text-align: left;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+footer {
+    padding: 1rem 0;
+    color: #999;
+    text-align: right;
 }
 
 h1, h2, h3, h4, h5 {
@@ -20,16 +48,107 @@ p {
     font-family: 'Open Sans', sans-serif;
 }
 
+a {
+    color: #2878A2;
+}
+
+body h1 {
+    text-align: center;
+    background-color: #dddddd;
+    border-radius: 3px;
+    font-family: 'cmu_sans_serifbold', sans-serif;
+    padding-top: 4px;
+}
+
+body h2 {
+    font-family: 'cmu_sans_serifbold', sans-serif;
+    font-size: 28px;
+}
+
+body h3 {
+    font-family: 'cmu_sans_serifbold', sans-serif;
+    font-size: 18px;
+}
+
+pre {
+    margin-bottom: 0;
+}
+
+div.highlight {
+    padding: 0.2rem 0.5rem;
+    border: 1px solid #ddd;
+    margin-bottom: 1rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+}
+
+code {
+    color: #222;
+    background-color: #ecf0f3;
+    border-radius: 2px;
+    white-space: nowrap;
+    padding: 0.15rem;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table.align-default {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table.docutils {
+    margin-bottom: 1rem;
+    line-height: 1rem;
+    max-width: 100%;
+}
+
+thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+table.docutils tr {
+    border-style: solid none solid none;
+    border-width: 1px 0;
+    border-color: #ddd;
+}
+
+table.docutils tr:nth-child(odd) {
+    background-color: #f0f7fa;
+}
+
+table.docutils td, table.docutils th {
+    padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+}
+
+table.docutils p {
+    margin-bottom: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: initial;
+}
+
+th {
+    text-align: inherit;
+}
+
+.highlight {
+    background: #f8f8f8;
+}
+
 .navbar {
     align-items: center;
-    background-color: rgb(248,249,250);
+    background-color: #dddddd;
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     font-size: 16px;
     justify-content: flex-start;
-    line-height: 24;
     padding-bottom: 8px;
     padding-left: 16px;
     padding-right: 16px;
@@ -100,7 +219,7 @@ p {
     color: rgb(34,107,7);
     cursor: pointer;
     display: block;
-    padding: 8px;
+    padding: 13px;
     text-decoration-color: rgb(34,107,7);
     text-decoration-line: none;
     text-decoration-style: solid;
@@ -123,4 +242,24 @@ p {
 
 #ont-graph {
     max-width: 100%;
+}
+
+#page-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    margin-top: 116px;
+    margin-bottom: 24px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    padding-left: 180px;
+    max-width: 1240px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#page-content {
+    padding-left: 2rem;
+    padding-right: 2rem;
 }

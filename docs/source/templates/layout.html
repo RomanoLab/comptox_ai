@@ -17,15 +17,14 @@
   {% include "navbar.html" %}
   
   {%- block content %}
-    <div class="d-flex">
-      <div class="content-wrapper">
+    <div class="d-flex" id="page-wrapper">
+      <div id="page-content-wrapper">
         <div class="page-content container-fluid body px-md-3" role="main">
           {% block body %}{% endblock %}
+
+          {% include "footer.html" %}
         </div>
       </div>
     </div>
-    <!-- <div class="container">
-      <img src="_static/img/helo-fish-.jpg" alt=""/>
-    </div> -->
   {% endblock %}
 </body>

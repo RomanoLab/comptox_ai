@@ -1,0 +1,4 @@
+Sphinx==2.2.2
+doc9==0.8.0
+codecov==2.0.15
+docutils==0.15.2

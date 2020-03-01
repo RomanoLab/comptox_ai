@@ -38,6 +38,8 @@ def _load_neo4j_config(config_file: str = None):
     if not config_dict:
         raise RuntimeError("Could not load Neo4j configuration; aborting.")
 
+    ipdb.set_trace()
+
     username = config_dict['NEO4J']['Username']
     password = config_dict['NEO4J']['Password']
     hostname = config_dict['NEO4J']['Hostname']

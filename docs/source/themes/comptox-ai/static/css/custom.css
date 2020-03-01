@@ -230,6 +230,15 @@ th {
     color: #226b07;
 }
 
+.brand-align-mid {
+    display: flex;
+    align-items: center;
+}
+
+/* .valign-mid {
+    
+} */
+
 #bootstrap-overrides .nav-link {
     color: rgb(34, 107, 7);
     box-sizing: border-box;
@@ -262,4 +271,8 @@ th {
 #page-content {
     padding-left: 2rem;
     padding-right: 2rem;
+}
+
+#icon {
+    margin-right: 4px;
 }

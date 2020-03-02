@@ -38,6 +38,3 @@ class PageRank(GraphAlgorithm):
                     reverse=True)
 
         self.algorithm_results = pr
-
-    def _validate_internal(self):
-        pass

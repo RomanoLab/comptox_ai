@@ -9,7 +9,7 @@ class GraphAlgorithm(ABC):
         [description]
     """
 
-    def __init__(self, node_type=None):
+    def __init__(self, node_type=None, req_format=None):
         """Construct a new graph algorithm using parameters general to all
         algorithms. Algorithm-specific parameters should be implemented in
         child classes.
@@ -33,6 +33,9 @@ class GraphAlgorithm(ABC):
         else:
             self.node_label = f"ns0__{self.node_type}"
 
+        if req_format is None:
+            raise AttributeError("Algorithm must specify `req_format` attribute.")
+
     def __repr__(self):
         return "Graph algorithm: {0}".format(
             str(self.__class__.__name__)
@@ -51,16 +54,3 @@ class GraphAlgorithm(ABC):
             self._run_algorithm()
 
         return self.algorithm_results
-
-    @abstractmethod
-    def _validate_internal(self):
-        pass
-
-    def validate_params(self):
-        """Validate whether algorithm parameters and graph are 'compatible'.
-        """
-        if self.graph is None:
-            print("Error: Algorithm must be associated with a graph before parameters can be validated.")
-            return False
-
-        self._validate_internal()

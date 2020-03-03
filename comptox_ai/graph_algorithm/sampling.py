@@ -46,15 +46,15 @@ def _run_forest_fire(g: Graph, sample_size: float=0.17, p_f: float=0.35,
     """
     nx_g = g._data._graph
 
-    v_seen = []
+    subg_nodes = {}
 
     while True:
-        v = choice(list(nx_g.nodes()))  # evaluate performance - typecasting to list may be computationally bad
-        if v in v_seen:
+        v = choice(nx_g.nodes())
+        if v in seen:
             continue
-        v_seen.append(v)
+        seen.append(v)
 
-        ipdb.set_trace()
+        for v_edge in v.
 
 
 class SampleGraph(GraphAlgorithm):

@@ -1,4 +1,4 @@
-:: _graph_db:
+.. _graph_db:
 
 ***************
 Graph Databases

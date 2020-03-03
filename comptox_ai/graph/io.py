@@ -230,9 +230,15 @@ class Neo4jData(GraphDataMixin):
         #ipdb.set_trace()
         self._graph = database.default_graph
 
-        print("  Reading nodes (this may take a while)...")
+        n_size = len(self._graph.nodes)
+        e_size = len(self._graph.relationships)
+
+        if (n_size > 100000) or (e_size > 400000):
+            print("Warning: This is a very large graph! It may take a long time to load.")
+
+        print("  Reading {0} nodes...".format(n_size))
         self._nodes = list(self._graph.nodes.match("owl__NamedIndividual"))
-        print("  Reading edges (this may take a while)...")
+        print("  Reading {0} edges...".format(e_size))
         self._edges = list(self._graph.relationships.match())
         print("  Building index of node IDs...")
         self._node_ids = [n.identity for n in self._nodes]

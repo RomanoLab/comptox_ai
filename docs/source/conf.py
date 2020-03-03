@@ -22,9 +22,12 @@ import ablog
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.imgmath',
     'numpydoc',
     'ablog'
 ]
+
+imgmath_image_format = 'svg'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['templates', ablog.get_html_templates_path()]
@@ -61,3 +64,6 @@ html_short_title = 'comptox-ai'
 html_theme_options = {
     'google_analytics': True,
 }
+
+# pngmath_use_preview = True
+# pngmath_dvipng_args = ['-gamma', '1.5', '-D', '96', '-bg', 'Transparent']

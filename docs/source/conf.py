@@ -15,20 +15,25 @@ release = '0.1a'
 
 # -- General configuration ---------------------------------------------------
 
+import ablog
+
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'numpydoc'
+    'numpydoc',
+    'ablog'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['templates']
+templates_path = ['templates', ablog.get_html_templates_path()]
 
 source_suffix = '.rst'
 
 master_doc = 'contents'
+
+blog_title = 'ComptoxAI\'s blog'
 
 # -- Options for HTML output -------------------------------------------------
 

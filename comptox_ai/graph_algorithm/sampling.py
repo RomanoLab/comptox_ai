@@ -23,6 +23,8 @@ from ..graph import Graph
 from ._base import GraphAlgorithm
 
 from random import choice
+import numpy as np
+
 import ipdb
 
 def _run_forest_fire(g: Graph, sample_size: float=0.17, p_f: float=0.35,
@@ -46,15 +48,24 @@ def _run_forest_fire(g: Graph, sample_size: float=0.17, p_f: float=0.35,
     """
     nx_g = g._data._graph
 
-    subg_nodes = {}
+    # Node IDs that we've already visited
+    visited_nodes = {}
+
+    # 'Burned' Node IDs (i.e., members of the sampled subgraph)
+    burned_nodes = {}
 
     while True:
-        v = choice(nx_g.nodes())
+        # If we don't sample on nodes cast to list, it returns a dict 
+        # representation of the random node, which drops the NodeID
+        v = choice(list(nx_g.nodes()))
+        
         if v in seen:
             continue
-        seen.append(v)
+        visited_nodes.add(v)
 
-        for v_edge in v.
+        edges
+
+        np.random.binomial()
 
 
 class SampleGraph(GraphAlgorithm):

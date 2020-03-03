@@ -25,8 +25,8 @@ from ._base import GraphAlgorithm
 from random import choice
 import ipdb
 
-def _run_forest_fire(g: Graph, sample_size: float=0.17, p: float=0.35,
-                     r: float=0.20):
+def _run_forest_fire(g: Graph, sample_size: float=0.17, p_f: float=0.35,
+                     p_b: float=0.20):
     """Run the forest fire graph sampling algorithm.
 
     Default parameters are based on the assumption the graph is "densifying" -
@@ -39,9 +39,9 @@ def _run_forest_fire(g: Graph, sample_size: float=0.17, p: float=0.35,
     sample_size : float (default: 0.17)
         A number from 0. to 1.0 indicating the proportional size of the sampled
         graph, relative to the parent graph.
-    p : float (default: 0.35)
+    p_f : float (default: 0.35)
         Forward burning probability.
-    r : float (default: 0.20)
+    p_b : float (default: 0.20)
         Backwards burning probability.
     """
     nx_g = g._data._graph

@@ -235,6 +235,10 @@ th {
     align-items: center;
 }
 
+.headerlink {
+    color: #aaaaaa;
+}
+
 /* .valign-mid {
     
 } */

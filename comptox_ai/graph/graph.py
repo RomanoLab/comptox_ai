@@ -66,7 +66,7 @@ def _convert(data: GraphDataMixin, from_fmt: str, to_fmt: str, safe: bool=True):
     # Populate nodes and edges
     nodes = data.nodes
     edges = data.edges
-    ipdb.set_trace()
+    #ipdb.set_trace()
     new_data.add_nodes(nodes)
     new_data.add_edges(edges)
 
@@ -232,7 +232,7 @@ class Graph(object):
         comptox_ai.graph.Neo4jData
         """
         print("Parsing Neo4j configuration...")
-        uri, username, password = _load_neo4j_config()
+        uri, username, password = _load_neo4j_config(config_file=config_file)
         print("  URI:", uri)
 
         print("Creating database connection via py2neo...")

@@ -226,24 +226,29 @@ class Neo4jData(GraphDataMixin):
 
     format = 'neo4j'
 
-    def __init__(self, database: Database):
+    def __init__(self, database: Database, verbose: bool = False):
         #ipdb.set_trace()
         self._graph = database.default_graph
 
         n_size = len(self._graph.nodes)
         e_size = len(self._graph.relationships)
 
-        if (n_size > 100000) or (e_size > 400000):
-            print("Warning: This is a very large graph! It may take a long time to load.")
+        if verbose:
+            if (n_size > 100000) or (e_size > 400000):
+                print("Warning: This is a very large graph! It may take a long time to load.")
 
-        print("  Reading {0} nodes...".format(n_size))
+        if verbose:
+            print("  Reading {0} nodes...".format(n_size))
         self._nodes = list(self._graph.nodes.match("owl__NamedIndividual"))
-        print("  Reading {0} edges...".format(e_size))
+        if verbose:
+            print("  Reading {0} edges...".format(e_size))
         self._edges = list(self._graph.relationships.match())
-        print("  Building index of node IDs...")
+        if verbose:
+            print("  Building index of node IDs...")
         self._node_ids = [n.identity for n in self._nodes]
-        print()
-        print("Done! The database connection is ready to use.")
+        if verbose:
+            print()
+            print("Done! The database connection is ready to use.")
 
     @staticmethod
     def standardize_node(n: Node):

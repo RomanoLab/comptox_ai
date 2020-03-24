@@ -205,7 +205,7 @@ class Graph(object):
         self._data = new_graph
 
     @classmethod
-    def from_neo4j(cls, config_file: str = None):
+    def from_neo4j(cls, config_file: str = None, verbose: bool = False):
         """Load a connection to a Neo4j graph database and use it to
         instantiate a comptox_ai.graph.io.Neo4j object.
 
@@ -231,13 +231,17 @@ class Graph(object):
         --------
         comptox_ai.graph.Neo4jData
         """
-        print("Parsing Neo4j configuration...")
+        if verbose:
+            print("Parsing Neo4j configuration...")
         uri, username, password = _load_neo4j_config()
-        print("  URI:", uri)
+        if verbose:
+            print("  URI:", uri)
 
-        print("Creating database connection via py2neo...")
+        if verbose:
+            print("Creating database connection via py2neo...")
         database = Database(uri, auth=(username, password))
-        print("Connected to database, now reading contents")
+        if verbose:
+            print("Connected to database, now reading contents")
         neo4j_data = Neo4jData(database = database)
 
         return cls(data = neo4j_data)

@@ -136,6 +136,12 @@ th {
     text-align: inherit;
 }
 
+.align-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .highlight {
     background: #f8f8f8;
 }

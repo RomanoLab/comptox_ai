@@ -52,6 +52,14 @@ class EPA(Database):
         del(cas_map)
         self.epa_map.drop(columns='dsstox_substance_id', inplace=True)
         self.epa_map.dropna(axis=0, subset=['DTXSID'], inplace=True)
+        self.epa_map.SID = self.epa_map.SID.fillna(-1)
+        self.epa_map.CID = self.epa_map.CID.fillna(-1)
+
+        # Chemical lists
+        self.chemical_lists_file = os.path.join(self.path, 'chem_lists_data.csv')
+        self.chemical_lists_meta_file = os.path.join(self.path, 'Chemical Lists.tsv')
+        self.chem_lists = pd.read_csv(self.chemical_lists_file, sep=",", index_col=None)
+        self.chem_lists_meta = pd.read_csv(self.chemical_lists_meta_file, sep="\t", index_col=None)
 
     def parse(self, owl: owlready2.namespace.Ontology, cai_ont: owlready2.namespace.Ontology):
         self.cai_ont = cai_ont
@@ -80,7 +88,11 @@ class EPA(Database):
                 if len(match) == 0:
                     # We need to create a new chemical
                     safe_nm = make_safe_property_label(row['preferred_name'])
-                    chemical = self.cai_ont.Chemical("chem_"+safe_nm, preferredName=row['preferred_name'], xrefCasRN=row['casrn'], xrefDtxsid=row['DTXSID'], inchiKey=row['InChIKey'], inchi=row['InChI String'], xrefPubchemSID=row['SID'], xrefPubchemCID=row['CID'])
+                    try:
+                        chemical = self.cai_ont.Chemical("chem_"+safe_nm, preferredName=row['preferred_name'], xrefCasRN=row['casrn'], xrefDtxsid=row['DTXSID'], inchiKey=row['InChIKey'], inchi=row['InChI String'], xrefPubchemSID=row['SID'], xrefPubchemCID=row['CID'])
+                    except ValueError:
+                        ipdb.set_trace()
+                        print()
                 elif len(match) == 1:
                     # We already have the chemical, so merge into 'match'
                     safe_add_property(match[0], self.cai_ont.xrefDtxsid, row['DTXSID'])
@@ -94,3 +106,37 @@ class EPA(Database):
             else:
                 # No CasRN; we create a new chemical that doesn't have a CasRN
                 chemical = self.cai_ont.Chemical("chem_"+safe_nm, xrefDtxsid=row['DTXSID'], inchiKey=row['InChIKey'], inchi=row['InChI String'], xrefPubchemSID=row['SID'], xrefPubchemCID=row['CID'])
+
+        # Add chemical lists data
+        # (stored in self.chem_lists)
+        print("Adding chemical list classes.")
+        for i, c_l in self.chem_lists_meta.iterrows():
+            #ipdb.set_trace()
+            acronym = c_l['LIST_ACRONYM'].split('/')[-1]
+            safe_nm = make_safe_property_label(acronym)
+            self.cai_ont.ChemicalList("chemList_"+safe_nm, listAcronym=acronym, listUrl=c_l['LIST_ACRONYM'], listDescription=c_l['LIST_DESCRIPTION'])
+
+        print("Adding links from chemicals to associated chemical lists.")
+        for i, c_annot in self.chem_lists.iterrows():
+            if not pd.isnull(c_annot['a']):
+                match = self.cai_ont.search(xrefCasRN=c_annot['a'])
+
+                if len(match) == 0:
+                    pass
+                elif len(match) == 1:
+                    # Make the link
+                    chem = match[0]
+                    chem_list_match = self.cai_ont.search(listAcronym=c_annot['List'])[0]
+
+                    if len(chem.chemicalInList) == 0:
+                        chem.chemicalInList = [chem_list_match]
+                    else:
+                        chem.chemicalInList.append(chem_list_match)
+
+                    # Make the inverse link
+                    if len(chem_list_match.listContainsChemical) == 0:
+                        chem_list_match.listContainsChemical = [chem]
+                    else:
+                        chem_list_match.listContainsChemical.append(chem)
+                else:
+                    raise RuntimeError("Multiple chemicals found for CasRN {0}".format(c_annot['a']))

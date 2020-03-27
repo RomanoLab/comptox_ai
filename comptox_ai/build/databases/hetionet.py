@@ -216,7 +216,7 @@ class Hetionet(Database):
         
         # process_edges(pool_arg_1[0], pool_arg_2[0])
 
-        if True:
+        if False:
             process_edges(self.hetio_rels, self.metaedge_map)
 
     # Edge parsing methods:

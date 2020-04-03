@@ -1,51 +1,24 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300|Roboto|Roboto+Condensed|Roboto+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:wght@400,700|Open+Sans+Condensed:300|Roboto|Roboto+Condensed|Roboto+Mono&display=swap');
 
 @font-face {
     font-family: 'cmu_serifroman';
     src: url('../fonts/cmunrm-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-  }
+}
   
-  @font-face {
+@font-face {
     font-family: 'cmu_sans_serifbold';
     src: url('../fonts/cmunsx-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-  }
+}
   
-  @font-face {
+@font-face {
     font-family: 'cmu_typewriter_textregular';
     src: url('../fonts/cmuntt-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-  }
-
-header {
-    box-sizing: border-box;
-    color: rgb(33, 37, 41);
-    display: block;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-    line-height: 24;
-    height: 116px;
-    padding-bottom: 50px;
-    text-align: left;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
-
-footer {
-    padding: 1rem 0;
-    color: #999;
-    text-align: right;
-}
-
-h1, h2, h3, h4, h5 {
-    font-family: 'Roboto', sans-serif;
-}
-
-p {
-    font-family: 'Open Sans', sans-serif;
 }
 
 a {
@@ -70,8 +43,22 @@ body h3 {
     font-size: 18px;
 }
 
-pre {
-    margin-bottom: 0;
+code {
+    color: #222;
+    background-color: #ecf0f3;
+    border-radius: 2px;
+    white-space: nowrap;
+    padding: 0.15rem;
+}
+
+code.descname {
+    font-weight: bold;
+    background-color: transparent;
+    padding: 0;
+}
+
+code.descclassname {
+    background-color: transparent;
 }
 
 div.highlight {
@@ -82,12 +69,78 @@ div.highlight {
     margin-right: 1.5rem;
 }
 
-code {
-    color: #222;
-    background-color: #ecf0f3;
-    border-radius: 2px;
-    white-space: nowrap;
-    padding: 0.15rem;
+div.page-content h2 {
+    padding: 0.5rem;
+    background-color: #c5d5ea;
+    border-radius: 0.3rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    word-wrap: break-word;
+}
+
+dl {
+    font-family: 'Open Sans', sans-serif;
+}
+
+dl.field-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+dl.field-list > dt {
+    flex-basis: 100%;
+    font-weight: bold;
+    word-break: break-word;
+}
+
+dl.field-list > dd {
+    flex-basis: 100%;
+    margin-bottom: 0;
+}
+
+@media screen and (min-width: 768px) {
+    dl.field-list > dt {
+        flex-basis: 110px;
+    }
+    dl.field-list > dd {
+        flex: 1 0 calc(100% - 110px);
+        max-width: calc(100% - 110px);
+    }
+}
+
+footer {
+    padding: 1rem 0;
+    color: #999;
+    text-align: right;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Roboto', sans-serif;
+}
+
+h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
+    background-color: transparent;
+}
+
+header {
+    box-sizing: border-box;
+    color: rgb(33, 37, 41);
+    display: block;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    line-height: 24;
+    height: 116px;
+    padding-bottom: 50px;
+    text-align: left;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+p {
+    font-family: 'Open Sans', sans-serif;
+}
+
+pre {
+    margin-bottom: 0;
 }
 
 table {
@@ -105,10 +158,11 @@ table.docutils {
     max-width: 100%;
 }
 
-thead {
-    display: table-header-group;
-    vertical-align: middle;
-    border-color: inherit;
+table.docutils p {
+    margin-bottom: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: initial;
 }
 
 table.docutils tr {
@@ -125,21 +179,57 @@ table.docutils td, table.docutils th {
     padding: 0.25rem 0.5rem 0.25rem 0.25rem;
 }
 
-table.docutils p {
-    margin-bottom: 0;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    word-break: initial;
-}
-
 th {
     text-align: inherit;
+}
+
+thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
 }
 
 .align-center {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+.brand-align-mid {
+    display: flex;
+    align-items: center;
+}
+
+.class > dt, .function > dt, .method > dt {
+    padding: 0.5rem;
+    background-color: #f8f8f8;
+    font-weight: normal;
+    border: 1px solid rgba(0,0,0,0.125);
+    border-left: 2px solid #226b07;
+}
+
+.class > dt::after, .function > dt::after, .method > dt::after {
+    overflow: auto;
+}
+
+.classifier {
+    font-style: italic;
+}
+
+.classifier::before {
+    font-style: normal;
+    margin: 0.3rem;
+    content: ":";
+}
+
+.fa-2x {
+    font-size: 2em;
+    color: #226b07;
+}
+
+.headerlink {
+    color: #aaaaaa;
+
 }
 
 .highlight {
@@ -201,6 +291,17 @@ th {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
+.nav-link {
+    background-color: rgba(0,0,0,0);
+    color: rgb(34,107,7);
+    cursor: pointer;
+    display: block;
+    padding: 13px;
+    text-decoration-color: rgb(34,107,7);
+    text-decoration-line: none;
+    text-decoration-style: solid;
+}
+
 .navbar-nav {
     box-sizing: border-box;
     display: flex;
@@ -220,39 +321,19 @@ th {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
-.nav-link {
-    background-color: rgba(0,0,0,0);
-    color: rgb(34,107,7);
-    cursor: pointer;
-    display: block;
-    padding: 13px;
-    text-decoration-color: rgb(34,107,7);
-    text-decoration-line: none;
-    text-decoration-style: solid;
+.rubric {
+    font-weight: bold;
+    margin-top: 1rem;
 }
-
-.fa-2x {
-    font-size: 2em;
-    color: #226b07;
-}
-
-.brand-align-mid {
-    display: flex;
-    align-items: center;
-}
-
-.headerlink {
-    color: #aaaaaa;
-}
-
-/* .valign-mid {
-    
-} */
 
 #bootstrap-overrides .nav-link {
     color: rgb(34, 107, 7);
     box-sizing: border-box;
     display: list-item;
+}
+
+#icon {
+    margin-right: 4px;
 }
 
 #logo {
@@ -263,11 +344,9 @@ th {
     max-width: 100%;
 }
 
-#page-wrapper {
-    max-width: 1400px;
-    margin: 0 auto;
-    margin-top: 116px;
-    margin-bottom: 24px;
+#page-content {
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 #page-content-wrapper {
@@ -278,11 +357,9 @@ th {
     margin-right: auto;
 }
 
-#page-content {
-    padding-left: 2rem;
-    padding-right: 2rem;
-}
-
-#icon {
-    margin-right: 4px;
+#page-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    margin-top: 116px;
+    margin-bottom: 24px;
 }

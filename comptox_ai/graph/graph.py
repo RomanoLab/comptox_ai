@@ -80,6 +80,8 @@ class Graph(object):
     The internal data storage can be in several different formats, each of
     which has advantages in different scenarios.
 
+    Read more in the :ref:`User Guide <graph>`.
+
     Parameters
     ----------
     data : comptox_ai.graph.io.GraphDataMixin
@@ -88,7 +90,7 @@ class Graph(object):
     
     Attributes
     ----------
-    format : {"graphsage", "networkx", "neo4j}
+    format : {"graphsage", "networkx", "neo4j"}
         Internal format of the graph data. The format determines many aspects
         of how you interact with the graph, including the set of methods that
         can be called on it and the types of models that you can construct

@@ -1,6 +1,8 @@
 """
 Graph databases have many advantages - both theoretical and practical - over traditional relational databases. Many good descriptions of graph database concepts are available on the internet, but users will probably find it helpful to hear this information from the perspective of biomedical knowledge representation and AI (and, of course, ComptoxAI in particular).
 
+In ComptoxAI, the :class:`comptox_ai.graph.Graph` class
+
 Behavior of Neo4j
 =================
 

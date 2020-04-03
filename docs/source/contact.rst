@@ -9,8 +9,9 @@ at **joseph.romano [at] pennmedicine.upenn.edu**.
 
 If you believe you've found a bug, would like to request a new feature, or are
 interested in contributing to the continued development of ComptoxAI, please
-see `the CONTRIBUTING.md document
-<https://github.com/jdromano2/comptox_ai/CONTRIBUTING.md>`_ on GitHub.
+see `CONTRIBUTING.md
+<https://github.com/jdromano2/comptox_ai/blob/master/CONTRIBUTING.md>`_ on
+GitHub.
 
 Similar projects can be found at `Dr. Romano's personal website
 <http://jdr.bio>`_, or at the University of Pennsylvania's `Computational

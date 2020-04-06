@@ -169,13 +169,17 @@ class Graph(object):
         else:
             raise AttributeError("`edges` must be a node tuple or list of node tuples - got {0}".format(type(edges)))
 
-    @property
     def node_id_map(self):
         return self._data._node_map
 
-    @property
     def is_heterogeneous(self):
         return self._data._is_heterogeneous
+
+    def classes(self):
+        """
+        Get a list of ontology classes present in the graph.
+        """
+        return self._data.node_labels
 
     def convert(self, to_fmt: str):
         """

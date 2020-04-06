@@ -282,6 +282,19 @@ class Neo4jData(GraphDataMixin):
     @property
     def edges(self):
         return [self.standardize_edge(e) for e in self._edges]
+    
+    def node_labels(self):
+        """
+        Get all node labels from ns0.
+
+        Returns
+        -------
+        set of str
+            Set of ontology labels (as strings) present in the graph schema.
+        """
+        all_lbl_set = self._graph.schema.node_labels
+        filter_lbls = [x for x in all_lbl_set if x[:5] == "ns0__"]
+        return set(filter_lbls)
 
     def add_node(self, node: tuple):
         """

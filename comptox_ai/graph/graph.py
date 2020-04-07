@@ -239,7 +239,7 @@ class Graph(object):
         """
         if verbose:
             print("Parsing Neo4j configuration...")
-        uri, username, password = _load_neo4j_config()
+        uri, username, password = _load_neo4j_config(config_file)
         if verbose:
             print("  URI:", uri)
 

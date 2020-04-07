@@ -149,7 +149,7 @@ class CTD(Database):
         prog_step += 1
 
         # Set `True` to skip relationship parsing
-        if True:
+        if False:
             return
 
         # Chemicals <-> Diseases

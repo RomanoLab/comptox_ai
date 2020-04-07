@@ -372,10 +372,10 @@ class Neo4jData(GraphDataMixin):
         -------
         list of neo4j.Record
         """
-        raise NotImplementedError
-        # with self._driver.session() as session:
-        #     query_response = session.read_transaction(_execute_cypher_transaction, query)
-        # return query_response
+        #raise NotImplementedError
+        with self._driver.session() as session:
+            query_response = session.read_transaction(_execute_cypher_transaction, query)
+        return query_response
 
 class NetworkXData(GraphDataMixin):
     def __init__(self, graph: nx.DiGraph=None):

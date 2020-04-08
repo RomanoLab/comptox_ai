@@ -1,10 +1,10 @@
+ablog==0.10.4
 blessed==1.16.1
 codecov==2.0.15
 doc8==0.8.0
 docutils==0.15.2
 hypothesis==4.53.2
 ipdb==0.12.3
-ipython==7.10.1
 lxml==4.4.2
 neo4j==1.7.6
 networkx==2.4

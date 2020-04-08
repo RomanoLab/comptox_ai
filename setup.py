@@ -51,7 +51,8 @@ setuptools.setup(
         'neo4j',
         'numpydoc',
         'docutils',
-        'ipdb'
+        'ipdb',
+        'rdflib'
     ],
     extras_require={
         "testing": ["pytest"],

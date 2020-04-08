@@ -37,5 +37,21 @@ setuptools.setup(
         "Environment :: Console"
     ],
     python_requires='>=3.7',
-    include_package_data=True
+    include_package_data=True,
+    install_requires=[
+        'py2neo',
+        'owlready2',
+        'numpy',
+        'pandas',
+        'scipy',
+        'networkx',
+        'ablog',
+        'Sphinx',
+        'blessed',
+        'neo4j'
+    ],
+    extras_require={
+        "testing": ["pytest"],
+        "coverage": ["pytest-cov", "codecov"]
+    }
 )

@@ -15,6 +15,10 @@ release = '0.1a'
 
 # -- General configuration ---------------------------------------------------
 
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
 import ablog
 
 # Add any Sphinx extension module names here, as strings. They can be

@@ -19,6 +19,8 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
+import comptox_ai
+
 import ablog
 
 # Add any Sphinx extension module names here, as strings. They can be

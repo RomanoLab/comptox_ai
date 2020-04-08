@@ -48,7 +48,10 @@ setuptools.setup(
         'ablog',
         'Sphinx',
         'blessed',
-        'neo4j'
+        'neo4j',
+        'numpydoc',
+        'docutils',
+        'ipdb'
     ],
     extras_require={
         "testing": ["pytest"],

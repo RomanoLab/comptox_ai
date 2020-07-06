@@ -6,6 +6,7 @@ blessed==1.17.4           # via comptox_ai (setup.py)
 certifi==2020.4.5.1       # via py2neo, requests
 chardet==3.0.4            # via requests
 click==7.0                # via py2neo
+codecov==2.0.15
 colorama==0.4.3           # via py2neo, sphinx
 decorator==4.4.2          # via networkx
 docutils==0.16            # via sphinx

@@ -25,8 +25,6 @@ from py2neo import Database, Graph, Subgraph, Node, Relationship
 from json import JSONEncoder, dump
 from networkx.readwrite.json_graph import node_link_data
 
-import ipdb
-
 from ..cypher import queries
 from ..utils import load_config
 
@@ -227,7 +225,6 @@ class Neo4jData(GraphDataMixin):
     format = 'neo4j'
 
     def __init__(self, database: Database, verbose: bool = False):
-        #ipdb.set_trace()
         self._graph = database.default_graph
 
         n_size = len(self._graph.nodes)

@@ -6,5 +6,8 @@ install:
   - pip install .
 script:
   - pytest --cov-report term --cov=comptox_ai tests/
-after_script:
-  - codecov
+after_success:
+  # Ignore coveralls failures as the coveralls server is not very reliable
+  # but we don't want travis to report a failure in the github UI just
+  # because the coverage report failed to be published.
+  - coveralls

@@ -25,8 +25,6 @@ from ._base import GraphAlgorithm
 from random import choice
 import numpy as np
 
-import ipdb
-
 def _run_forest_fire(g: Graph, sample_size: float=0.17, p_f: float=0.35,
                      p_b: float=0.20):
     """Run the forest fire graph sampling algorithm.

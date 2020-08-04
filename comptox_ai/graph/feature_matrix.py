@@ -3,8 +3,6 @@ import scipy.sparse
 import pandas as pd
 import networkx as nx
 
-import ipdb
-
 from ..cypher.queries import FETCH_NODES_BY_ID_LIST
 
 from typing import List
@@ -16,8 +14,6 @@ def _build_data_matrix(graph: Graph, id_list: List[int]):
     res = graph.run_query_in_session(query)
 
     np.array((), dtype=np.float16)
-
-    ipdb.set_trace()
 
 def _build_metadata_df(graph: Graph, id_list: List[int]):
     raise NotImplementedError

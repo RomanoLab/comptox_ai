@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 __all__ = [
-    'str_version'
+    'VERSION'
 ]
 
 import os
@@ -13,13 +13,18 @@ with open("README.md", 'r') as fp:
 
 package_src_dir = Path(__file__).parent
 
-# version_file = open(os.path.join(str(package_src_dir), 'VERSION'), 'r')
-# str_version = version_file.read().strip()
-str_version = "0.1.dev0"
+MAJOR      = 0
+MINOR      = 01
+MICRO      = 0
+ISRELEASED = False
+VERSION    = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
+
+def get_docs_url():
+    return "https://comptox.ai/use/index.html"
 
 setuptools.setup(
     name="comptox_ai",
-    version=str_version,
+    version=VERSION,
     author="Joseph D. Romano, PhD",
     author_email="joseph.romano@pennmedicine.upenn.edu",
     description="An ontology and knowledge base to support discovery in computational toxicology",

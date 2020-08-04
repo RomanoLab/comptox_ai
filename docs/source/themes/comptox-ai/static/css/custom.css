@@ -23,6 +23,7 @@
 
 a {
     color: #2878A2;
+    word-wrap: break-word;
 }
 
 body h1 {
@@ -61,6 +62,14 @@ code.descclassname {
     background-color: transparent;
 }
 
+div.admonition {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 7px;
+    background-color: #ffc;
+    border: 1px solid #ff6;
+}
+
 div.highlight {
     padding: 0.2rem 0.5rem;
     border: 1px solid #ddd;
@@ -78,8 +87,62 @@ div.page-content h2 {
     word-wrap: break-word;
 }
 
+div.sidebar-toc-wrapper {
+    font-size: 0.9rem;
+    width: 252px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 100vh;
+    padding-right: 1.75rem;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+div.sidebar-toc-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+div.sidebar-toc-wrapper::after {
+    display: block;
+    content: "";
+    height: 3rem;
+    visibility: hidden;
+}
+
+div.sidebar-toc > ul > li > a {
+    font-weight: bold;
+}
+
+div.sidebar-toc > ul,
+div.sidebar-toc ul ul {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+div.sidebar-toc ul ul ul {
+    list-style: square;
+    margin-left: 1rem;
+}
+
+div.sidebar-toc ul li ul li ul {
+    display: none;
+}
+
+div.sidebar-toc span {
+    white-space: pre;
+}
+
 dl {
     font-family: 'Open Sans', sans-serif;
+}
+
+dl.citation > dd > ol {
+    margin-bottom: 0;
+}
+
+dl.citation > dd > ol > li {
+    display: inline;
 }
 
 dl.field-list {
@@ -96,16 +159,6 @@ dl.field-list > dt {
 dl.field-list > dd {
     flex-basis: 100%;
     margin-bottom: 0;
-}
-
-@media screen and (min-width: 768px) {
-    dl.field-list > dt {
-        flex-basis: 110px;
-    }
-    dl.field-list > dd {
-        flex: 1 0 calc(100% - 110px);
-        max-width: calc(100% - 110px);
-    }
 }
 
 footer {
@@ -137,6 +190,15 @@ header {
 
 p {
     font-family: 'Open Sans', sans-serif;
+}
+
+p.admonition-title {
+    display: inline;
+    font-weight: bold;
+}
+
+p.admonition-title:after {
+    content: ":";
 }
 
 pre {
@@ -351,10 +413,6 @@ thead {
 
 #page-content-wrapper {
     width: 100%;
-    padding-left: 180px;
-    max-width: 1240px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 #page-wrapper {
@@ -362,4 +420,38 @@ thead {
     margin: 0 auto;
     margin-top: 116px;
     margin-bottom: 24px;
+}
+
+#sidebar-wrapper {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    position: fixed;
+    margin-left: -240px;
+    padding: 0 0.5rem 0.5rem 0.5rem;
+    z-index: 2;
+}
+
+@media screen and (min-width: 768px) {
+
+    dl.field-list > dt {
+        flex-basis: 110px;
+    }
+    
+    dl.field-list > dd {
+        flex: 1 0 calc(100% - 110px);
+        max-width: calc(100% - 110px);
+    }
+
+    #page-content-wrapper {
+        padding-left: 240px;
+        max-width: 1240px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #sidebar-wrapper {
+        margin-left: 0;
+        opacity: 1;
+    }
 }

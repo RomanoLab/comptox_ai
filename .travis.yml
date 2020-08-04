@@ -1,18 +1,13 @@
 language: python
 python:
   - "3.7"
-before_install:
-  - wget -O - https://debian.neo4j.com/neotechnology.gpg.key | sudo apt-key add -
-  - echo 'deb https://debian.neo4j.com stable latest' | sudo tee -a /etc/apt/sources.list.d/neo4j.list
-  - sudo apt-get update
-  - apt list -a neo4j
-  - sudo apt-get install neo4j=1:4.0.0
-services:
-  - neo4j
 install:
   - pip install -r requirements.txt
   - pip install .
 script:
   - pytest --cov-report term --cov=comptox_ai tests/
-after_script:
-  - codecov
+after_success:
+  # Ignore coveralls failures as the coveralls server is not very reliable
+  # but we don't want travis to report a failure in the github UI just
+  # because the coverage report failed to be published.
+  - coveralls

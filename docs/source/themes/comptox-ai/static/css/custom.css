@@ -62,6 +62,14 @@ code.descclassname {
     background-color: transparent;
 }
 
+div.admonition {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 7px;
+    background-color: #ffc;
+    border: 1px solid #ff6;
+}
+
 div.highlight {
     padding: 0.2rem 0.5rem;
     border: 1px solid #ddd;
@@ -182,6 +190,15 @@ header {
 
 p {
     font-family: 'Open Sans', sans-serif;
+}
+
+p.admonition-title {
+    display: inline;
+    font-weight: bold;
+}
+
+p.admonition-title:after {
+    content: ":";
 }
 
 pre {

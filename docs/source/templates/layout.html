@@ -12,12 +12,49 @@
   {%- block extrahead %} {% endblock %}
 </head>
 
-<!-- see: https://stackoverflow.com/a/27704409/1730417 -->
+{# see: https://stackoverflow.com/a/27704409/1730417 #}
+{# Body layout influenced by scikit-learn:
+   See https://github.com/scikit-learn/scikit-learn #}
 <body id="bootstrap-overrides">
   {% include "navbar.html" %}
   
   {%- block content %}
     <div class="d-flex" id="page-wrapper">
+      <div id="sidebar-wrapper" class="border-right">
+        <div class="sidebar-toc-wrapper">
+          <div class="btn-group w-100 mb-2" role="group" aria-label="rellinks">
+            {%- if prev %}
+              <a href="{{ prev.link|e }}" role="button" class="btn btn-rellink py-1">Prev</a>
+            {%- else %}
+              <a href="#" role="button" class="btn btn-rellink py-1 disabled">Prev</a>
+            {%- endif %}
+            {%- if parents %}
+              <a href="{{ parents[-1].link|e }}" role="button" class="btn btn-rellink py-1">Up</a>
+            {%- else %}
+              <a href="#" role="button" class="btn btn-rellink py-1 disabled">Up</a>
+            {%- endif %}
+            {%- if next %}
+              <a href="{{ next.link|e }}" role="button" class="btn btn-rellink py-1">Next</a>
+            {%- else %}
+              <a href="#" role="button" class="btn btn-rellink py-1 disabled">Next</a>
+            {%- endif %}
+          </div>
+          <div class="alert alert-info p-1 mb-2" role="alert">
+            <p class="text-center mb-0">
+              Please cite us if you use this software!
+            </p>
+          </div>
+          {%- if meta and meta['globalsidebartoc']|tobool %}
+            <div class="sidebar-toc sidebar-global-toc">
+              {{ toctree(maxdepth=2, titles_only=True) }}
+            </div>
+          {%- else %}
+            <div class="sidebar-toc">
+              {{ toc }}
+            </div>
+          {%- endif %}
+        </div>
+      </div>
       <div id="page-content-wrapper">
         <div class="page-content container-fluid body px-md-3" role="main">
           {% block body %}{% endblock %}

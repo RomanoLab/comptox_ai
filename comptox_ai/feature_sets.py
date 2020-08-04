@@ -1,5 +1,4 @@
 import numpy as np
-import ipdb
 
 from .utils import test_neo4j_driver_connection, execute_cypher_transaction
 
@@ -63,6 +62,3 @@ class FeatureSet(object):
         with self.driver.session() as session:
             query_response = session.read_transaction(execute_cypher_transaction,
                                                       query)
-
-        ipdb.set_trace()
-        print()

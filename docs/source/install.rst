@@ -14,6 +14,10 @@ features won't be available without the database installed and running. A
 future release will include the option to connect to a remote version of the
 database; we will update this guide accordingly when this is implemented.
 
+.. important::
+
+   The examples on this page are roughly compatible with most modern UNIX (or UNIX-like) command line applications. If you are installing ComptoxAI on Windows (or something else), you should modify the examples accordingly.
+
 Installing the ``comptox_ai`` Python package
 --------------------------------------------
 
@@ -99,6 +103,9 @@ know by `filing an Issue on GitHub
 Setting up and preparing Neo4j
 ------------------------------
 
+Install Neo4j
+^^^^^^^^^^^^^
+
 We recommend `Neo4j Desktop <https://neo4j.com/download/>`_ for most users, as
 it runs with minimal headaches and is self-contained. More advanced users can
 opt to download `Neo4j Community
@@ -118,42 +125,69 @@ the graph has finished being created. After a few moments, you will see the
 status indicator for the graph turn from yellow to green, and it will say
 "Active". You now have an empty graph database to use!
 
-You will now need to install 3 (free) Neo4j plugins that provide important
-utilities leveraged by ComptoxAI. The first two can be installed simply by
-clicking the "Add Plugin" button on the Project page in Neo4j Desktop:
+Install Neo4j plugins
+^^^^^^^^^^^^^^^^^^^^^
 
-* APOC
-* GRAPH ALGORITHMS
+You need the following 3 plugins:
 
-Click the "Install" button beneath each of these plugins' names, choosing
-"Install and Restart" when prompted. Note that, after installing the first
-plugin, you will have to wait a short time for the database to restart before
-you can choose the Install button for the second one.
+- APOC
+- Graph Algorithms
+- neosemantics (n10s)
 
-The third plugin - NSMNTX - needs to be installed manually. The instructions
-for doing so can be found `on Neo4j Labs
-<https://neo4j.com/docs/labs/nsmntx/current/install/>`_, but they don't provide
-detailed steps for users with Neo4j Desktop. In short, you should do the
-following:
+APOC and Graph Algorithms are easily installed from Neo4j Desktop by going to
+its main screen, clicking on the ComptoxAI project, and then clicking "Add Plugin". Both plugins should be listed and available to install.
+
+Neosemantics needs to be installed manually. You can find instructions for how to do so at `<https://neo4j.com/docs/labs/nsmntx/current/install/>`_, but note
+that they don't provide detailed steps for users with Neo4j Desktop. To get it
+working on our desktop, we did roughly the following:
 
 #. Download the most recent ``.jar`` file from the `Github Releases page
-<https://github.com/neo4j-labs/neosemantics/releases>`_. Make sure that the
-version you download is compatible with the version of Neo4j you chose when you
-created the ComptoxAI graph.
-
+   <https://github.com/neo4j-labs/neosemantics/releases>`_. Make sure that the
+   version you download is compatible with the version of Neo4j you chose when
+   you created the ComptoxAI graph.
 #. In Neo4j Desktop, click "Manage" in the graph status panel. Next to
    "Open Folder", click the down arrow, and then "Plugins".
-#. Move the NSMNTX ``.jar`` file to the plugins folder.
+#. Move the neosemantics ``.jar`` file to the plugins folder.
 #. Back in Neo4j Desktop, click the "Settings" tab, and add a line to the bottom containing the following::
    ``dbms.unmanaged_extension_classes=semantics.extension=/rdf``
 #. Go back to the Project page and restart the server.
+#. Create an index/constraint on ``Resource`` nodes by, e.g., running::
+   ``CREATE CONSTRAINT n10s_unique_uri ON (r:Resource) ASSERT r.uri IS UNIQUE``
 
 Building the database and populating Neo4j
 ------------------------------------------
 
-Before you can load the RDF-formatted data into the graph database, you need to
-create an index (otherwise, you will receive an error when you run the import
-command).
+Build the graph database and store as RDF
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+From the root directory of ComptoxAI, navigate to ``comptox_ai/build/`` and
+run ``python build_all.py``. From the application's main menu, choose the
+option to ``Build ontology``. This will take a long time to complete!
+
+Once that has finished, select the option to ``Save ontology to disk``. After
+this has completed, you can press ``q`` or ``Q`` to quit the application.
+
+Import the RDF file into Neo4j using neosemantics
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. important::
+   
+   While importing the data, you may encounter errors related to null values
+   (represented as the string ``None`` in the RDF file). The best way to handle
+   these are by simply filtering out all lines in the file that contain the
+   string ``None``, e.g., by running ``sed``::
+   ``sed '/None/d' COMPTOX_FULL.rdf > COMPTOX_FULL_TRIMMED.rdf``
+
+Since neosemantics is under active development, the correct syntax for 
+importing the RDF file into Neo4j changes fairly frequently. Refer to its
+documentation for up-to-date info for the version of neosemantics you 
+installed. At the time of writing this, the instructions are given at
+`<https://github.com/neo4j-labs/neosemantics#2--importing-rdf-data>`_.
+
+.. note::
+
+   Make sure to use the correct function calls for importing RDF data (NOT
+   ontology data, as this will only import the class hierarchy).
 
 Testing ComptoxAI
 -----------------

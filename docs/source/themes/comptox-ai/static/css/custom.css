@@ -68,6 +68,7 @@ div.admonition {
     padding: 7px;
     background-color: #ffc;
     border: 1px solid #ff6;
+    font-size: 11pt;
 }
 
 div.highlight {

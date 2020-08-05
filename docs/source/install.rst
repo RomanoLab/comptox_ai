@@ -151,7 +151,7 @@ working on our desktop, we did roughly the following:
 #. Back in Neo4j Desktop, click the "Settings" tab, and add a line to the bottom containing the following::
    ``dbms.unmanaged_extension_classes=semantics.extension=/rdf``
 #. Go back to the Project page and restart the server.
-#. Create an index/constraint on ``Resource`` nodes by, e.g., running::
+#. Create an index/constraint on ``Resource`` nodes by, e.g., running:
    ``CREATE CONSTRAINT n10s_unique_uri ON (r:Resource) ASSERT r.uri IS UNIQUE``
 
 Building the database and populating Neo4j
@@ -175,7 +175,7 @@ Import the RDF file into Neo4j using neosemantics
    While importing the data, you may encounter errors related to null values
    (represented as the string ``None`` in the RDF file). The best way to handle
    these are by simply filtering out all lines in the file that contain the
-   string ``None``, e.g., by running ``sed``::
+   string ``None``, e.g., by running ``sed``:
    ``sed '/None/d' COMPTOX_FULL.rdf > COMPTOX_FULL_TRIMMED.rdf``
 
 Since neosemantics is under active development, the correct syntax for 
@@ -188,6 +188,13 @@ installed. At the time of writing this, the instructions are given at
 
    Make sure to use the correct function calls for importing RDF data (NOT
    ontology data, as this will only import the class hierarchy).
+
+.. note::
+
+   Neosemantics has somewhat fragmented documentation, particularly for Windows
+   users. To specify a local RDF file on Windows within a neosemantics import
+   command, the path should look something like:
+   ``'file:///D:\\Data\\comptox_ai\\comptox_full.rdf'``
 
 Testing ComptoxAI
 -----------------

@@ -11,6 +11,7 @@ info_message()
 }
 
 INPUT_FNAME = $1
+OUTPUT_FNAME = $2
 
 check_filetype()
 {
@@ -29,7 +30,7 @@ check_filetype()
 
 if check_filetype INPUT_FNAME
 then
-    sed -i '/None/d' INPUT_FNAME
+    sed '/None/d' INPUT_FNAME > OUTPUT_FNAME
 else
     echo "Provided filename does not end in .rdf - aborting."
 fi

@@ -42,3 +42,4 @@ __version__ = '0.1.dev0'
 ## ^^ Will be in dev on master branch until 0.1a is ready to go
 
 from .graph import Graph
+#from .db import GraphDB

@@ -9,6 +9,17 @@ provided by ComptoxAI's Python package. For a narrative introduction to
 important concepts and usage patterns for ComptoxAI, please refer to the
 :ref:`User Guide <user_guide>`.
 
+:mod:`comptox_ai.db`: ComptoxAI databases
+=========================================
+.. currentmodule:: comptox_ai
+
+.. autosummary::
+   :toctree: generated/
+   :template: class.rst
+
+   db.GraphDB
+   db.FeatureDB
+
 :mod:`comptox_ai.graph`: Graphs
 ===============================
 .. currentmodule:: comptox_ai

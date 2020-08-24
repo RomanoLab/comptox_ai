@@ -71,6 +71,10 @@ div.admonition {
     font-size: 11pt;
 }
 
+div.body div.math p {
+    text-align: center;
+}
+
 div.highlight {
     padding: 0.2rem 0.5rem;
     border: 1px solid #ddd;
@@ -187,6 +191,15 @@ header {
     padding-bottom: 50px;
     text-align: left;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+img {
+    max-width: 100%;
+    width: auto\9;
+    height: auto;
+    vertical-align: middle;
+    border: 0;
+    -ms-interpolation-mode: bicubic;
 }
 
 p {

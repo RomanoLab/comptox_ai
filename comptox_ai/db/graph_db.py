@@ -1,4 +1,5 @@
-"""
+"""Neo4j graph database interface.
+
 comptox_ai/db/graph_db.py
 
 Copyright (c) 2020 by Joseph D. Romano
@@ -120,7 +121,7 @@ class GraphDB(object):
     Parameters
     ----------
     field : str
-        A property label 
+        A property label.
     what : {'both', 'nodes', edges'}
         The type of objects to fetch from the graph database. Note that this
         functions independently from any subgraph registered in Neo4j during

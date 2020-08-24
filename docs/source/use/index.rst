@@ -11,6 +11,7 @@ ComptoxAI from a more narrative perspective than the :ref:`API documentation
 .. toctree::
    :maxdepth: 1
 
+   db_queries
    graph_db
    graph_concepts
    entity_types

@@ -11,7 +11,9 @@ import os
 import glob
 import configparser
 from pathlib import Path
+
 from neo4j import GraphDatabase
+from neo4j.exceptions import ClientError
 
 def _get_default_config_file():
   root_dir = Path(__file__).resolve().parents[2]
@@ -251,7 +253,7 @@ class GraphDB(object):
     return res
 
   def build_graph_cypher_projection(self, graph_name, node_query,
-                                    relationship_query, config_dict):
+                                    relationship_query, config_dict=None):
     """
     Create a new graph in the Neo4j Graph Catalog via a Cypher projection.
 
@@ -263,19 +265,18 @@ class GraphDB(object):
     """
     
     create_graph_query_template = """
-    CALL gds.graph.create.cypher(
-      graphName: {0},
-      nodeQuery: {1},
-      relationshipQuery: {2},
-      configuration: {3}
-    )
+    CALL gds.graph.create.cypher({0},{1},{2}{3})
     YIELD graphName, nodeCount, relationshipCount, createMillis;
     """[1:-1]
-    
+
     graph_name_str = "'{0}'".format(graph_name)
     node_query_str = "'{0}'".format(node_query)
     relationship_query_str = "'{0}'".format(relationship_query)
-    config_dict_str = str(config_dict)
+
+    if config_dict is None:
+      config_dict_str = ""
+    else:
+      config_dict_str = ", configuration: {0}".format(str(config_dict))
 
     create_graph_query = create_graph_query_template.format(
       graph_name_str,
@@ -283,6 +284,9 @@ class GraphDB(object):
       relationship_query_str,
       config_dict_str
     )
+
+    if self.verbose:
+      print(create_graph_query)
 
     res = self.run_cypher(create_graph_query)
 
@@ -312,6 +316,76 @@ class GraphDB(object):
     Fetch edges (relationships) from the Neo4j graph database.
     """
     pass
+
+  def list_existing_graphs(self):
+    """
+    Fetch a list of projected subgraphs stored in the GDS graph catalog.
+
+    Returns
+    -------
+    list
+      A list of graphs in the GDS graph catalog. If no graphs exist, this will
+      be the empty list ``[]``.
+    """
+    graphs = self.run_cypher("CALL gds.graph.list();")
+    if self.verbose:
+      if len(graphs) == 0:
+        print("Graph catalog is currently empty.")
+      else:
+        print("Number of graphs currently in GDS graph catalog: {0}".format(len(graphs)))
+    return graphs
+
+  def drop_existing_graph(self, graph_name):
+    """
+    Delete a single graph from the GDS graph catalog by graph name.
+
+    Parameters
+    ----------
+    graph_name : str
+      A name of a graph, corresponding to the `'graphName'` field in the
+      graph's entry within the GDS graph catalog.
+    
+    Returns
+    -------
+    dict
+      A dict object describing the graph that was dropped as a result of
+      calling this method. The dict follows the same format as one of the list
+      elements returned by calling `list_current_graphs()`.
+    """
+    try:
+      res = self.run_cypher(
+        "CALL gds.graph.drop(\"{0}\")".format(graph_name)
+      )
+      return res[0]
+    except ClientError:
+      if self.verbose:
+        print("Error: Graph {0} does not exist.".format(graph_name))
+      return None
+
+  def drop_all_existing_graphs(self):
+    """
+    Delete all graphs currently stored in the GDS graph catalog.
+
+    Returns
+    -------
+    list
+      A list of dicts describing the graphs that were dropped as a result of
+      calling this method. The dicts  follow the same format as one of the list
+      elements returned by calling `list_current_graphs()`.
+    """
+    current_graphs = self.list_existing_graphs()
+
+    deleted_graphs = list()
+
+    if current_graphs is None:
+      if self.verbose:
+        print("Warning - the graph catalog is already empty.")
+    else:
+      for cg in current_graphs:
+        deleted_graph = self.drop_existing_graph(cg['graphName'])
+        deleted_graphs.append(deleted_graph)
+
+    return deleted_graphs
 
   def get_features(self, graph):
     """

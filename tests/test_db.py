@@ -2,15 +2,24 @@ import comptox_ai
 from comptox_ai.db import GraphDB, FeatureDB
 
 import pytest
+import warnings
 
 @pytest.fixture
 def G():
   G = GraphDB(verbose=True)
   return G
 
-class TestDB(object):
+@pytest.fixture
+def DB():
+  DB = FeatureDB(verbose=True)
+  return DB
+
+class TestGraphDB(object):
   def test_neo4j_connection_does_exist(self, G):
-    assert G._driver.verify_connectivity() is not None
+    with warnings.catch_warnings():
+      # Supress the ExperimentalWarning for now
+      warnings.simplefilter("ignore")
+      assert G._driver.verify_connectivity() is not None
 
   def test_cypher_query_does_run(self, G):
     x = G.run_cypher("RETURN 'hello';")
@@ -53,3 +62,7 @@ class TestDB(object):
     # Note: this test will fail if the previous test fails
     x = G.drop_existing_graph("testgraph2")
     assert x['graphName'] == "testgraph2"
+
+class TestFeatureDB(object):
+  def test_mongodb_connection_does_exist(self, DB):
+    assert DB.is_connected()

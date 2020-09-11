@@ -57,8 +57,8 @@ class FeatureDB(object):
 
     unm = cnf['mongodb']['username']
     pwd = cnf['mongodb']['password']
-    username = urllib.parse.quote_plus(un) if unm else ''
-    password = urllib.parse.quote_plus(pw) if pwd else ''
+    username = urllib.parse.quote_plus(unm) if unm else ''
+    password = urllib.parse.quote_plus(pwd) if pwd else ''
     
     if (len(username) > 0) and (len(password) > 0):
       uri = "mongodb://{0}:{1}@127.0.0.1".format(username, password)

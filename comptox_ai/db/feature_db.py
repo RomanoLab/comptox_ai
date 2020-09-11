@@ -9,14 +9,15 @@ import glob
 import configparser
 import urllib.parse
 from pathlib import Path
+from yaml import load, Loader
 
 from pymongo import MongoClient
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
-if os.path.exists(os.path.join(ROOT_DIR, 'CONFIG.cfg')):
-  DEFAULT_CONFIG_FILE = os.path.join(ROOT_DIR, 'CONFIG.cfg')
+if os.path.exists(os.path.join(ROOT_DIR, 'CONFIG.yaml')):
+  DEFAULT_CONFIG_FILE = os.path.join(ROOT_DIR, 'CONFIG.yaml')
 else:
-  DEFAULT_CONFIG_FILE = os.path.join(ROOT_DIR, 'CONFIG-default.cfg')
+  DEFAULT_CONFIG_FILE = os.path.join(ROOT_DIR, 'CONFIG-default.yaml')
 
 class FeatureDB(object):
   """
@@ -49,11 +50,15 @@ class FeatureDB(object):
   def _connect(self):
     assert self.config_file is not None
 
-    cnf = configparser.ConfigParser()
-    cnf.read(self.config_file)
-    
-    username = urllib.parse.quote_plus(cnf["MONGODB"]["Username"])
-    password = urllib.parse.quote_plus(cnf["MONGODB"]["Password"])
+    # cnf = configparser.ConfigParser()
+    # cnf.read(self.config_file)
+    with open(self.config_file, 'r') as fp:
+      cnf = load(fp, Loader=Loader)
+
+    unm = cnf['mongodb']['username']
+    pwd = cnf['mongodb']['password']
+    username = urllib.parse.quote_plus(un) if unm else ''
+    password = urllib.parse.quote_plus(pw) if pwd else ''
     
     if (len(username) > 0) and (len(password) > 0):
       uri = "mongodb://{0}:{1}@127.0.0.1".format(username, password)
@@ -61,6 +66,25 @@ class FeatureDB(object):
       uri = "mongodb://127.0.0.1"
 
     self._client = MongoClient(uri)
+
+  def is_connected(self):
+    """
+    Return True if the connection to MongoDB is active and valid.
+
+    Returns
+    -------
+    bool
+      `True` if there is an active connection to MongoDB, otherwise `False`.
+
+    Notes
+    -----
+    This performs a pretty crude test at the moment - basically, if the client
+    can see any databases, the check passes. A more robust approach might be
+    good to implement in the future.
+    """
+    if isinstance(self._client.list_database_names(), list):
+      return len(self._client.list_database_names()) > 0
+    return False
 
   def fetch(self):
     pass

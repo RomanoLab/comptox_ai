@@ -1,0 +1,32 @@
+{
+  "name": "comptox_ai",
+  "version": "1.0.0",
+  "description": "Web services for ComptoxAI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JDRomano2/comptox_ai.git"
+  },
+  "keywords": [
+    "ai",
+    "toxicology",
+    "graph",
+    "ml"
+  ],
+  "author": "Joseph D. Romano",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JDRomano2/comptox_ai/issues"
+  },
+  "homepage": "http://comptox.ai",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mocha": "^8.3.0",
+    "morgan": "^1.10.0",
+    "neo4j-driver": "^4.2.2",
+    "swagger-jsdoc": "^6.0.6"
+  }
+}

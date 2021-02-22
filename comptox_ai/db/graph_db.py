@@ -11,16 +11,17 @@ import os
 import glob
 import configparser
 from pathlib import Path
+from yaml import load, Loader
 
 from neo4j import GraphDatabase
 from neo4j.exceptions import ClientError
 
 def _get_default_config_file():
   root_dir = Path(__file__).resolve().parents[2]
-  if os.path.exists(os.path.join(root_dir, 'CONFIG.cfg')):
-    default_config_file = os.path.join(root_dir, 'CONFIG.cfg')
+  if os.path.exists(os.path.join(root_dir, 'CONFIG.yaml')):
+    default_config_file = os.path.join(root_dir, 'CONFIG.yaml')
   else:
-    default_config_file = os.path.join(root_dir, 'CONFIG-default.cfg')
+    default_config_file = os.path.join(root_dir, 'CONFIG-default.yaml')
   return default_config_file
 
 class Graph(object):
@@ -73,11 +74,14 @@ class GraphDB(object):
   def _connect(self):
     assert self.config_file is not None
 
-    cnf = configparser.ConfigParser()
-    cnf.read(self.config_file)
+    # cnf = configparser.ConfigParser()
+    # cnf.read(self.config_file)
+    with open(self.config_file, 'r') as fp:
+      cnf = load(fp, Loader=Loader)
 
-    username = cnf["NEO4J"]["Username"]
-    password = cnf["NEO4J"]["Password"]
+    username = cnf['neo4j']['username']
+    password = cnf['neo4j']['password']
+    
     uri = "bolt://localhost:7687"
 
     self._driver = GraphDatabase.driver(uri, auth=(username, password))

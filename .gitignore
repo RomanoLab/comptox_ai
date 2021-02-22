@@ -99,4 +99,5 @@ Icon
 /bin/
 NEO4J_CONFIG.cfg
 CONFIG.cfg
+CONFIG.yaml
 catalog-*.xml

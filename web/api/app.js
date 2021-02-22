@@ -1,6 +1,6 @@
 const express = require('express');
 
-const conf = require('./config');
+const nconf = require('./config');
 const routes = require('./routes');
 const neo4jSessionCleanup = require("./middleware/neo4jSessionCleanup");
 
@@ -35,13 +35,13 @@ var swaggerOpts = {
 var swaggerSpec = swaggerJSDoc(swaggerOpts);
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.set("port", conf.get("PORT"));
+app.set("port", nconf.get("PORT"));
 
-api.use(bodyParser.json());
-api.use(methodOverride());
+app.use(bodyParser.json());
+app.use(methodOverride());
 
 // CORS: Important for Open API and other things
-api.use(function (req, res, next) {
+app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Credentials", "true");
     res.header(
@@ -55,7 +55,7 @@ api.use(function (req, res, next) {
     next();
 });
 
-api.use(neo4jSessionCleanup);
+app.use(neo4jSessionCleanup);
 
 /**
  * @openapi
@@ -71,11 +71,15 @@ app.get('/', (req, res) => {
 })
 
 // main API routes
-api.post("/listNodeTypes", routes.nodes.listNodeTypes);
-api.post("/listRelationshipTypes", routes.relationships.listRelationshipTypes);
+app.get("/listNodeTypes", routes.nodes.listNodeTypes);
+app.get("/listNodeTypeProperties/:type", routes.nodes.listNodeTypeProperties);
+app.get("/node/:type/:id", routes.nodes.findNodeById);
+app.get("/node/:type/search?", routes.nodes.findNodeByQuery);
+app.get("/listRelationshipTypes", routes.relationships.listRelationshipTypes);
+//app.get("/listRelationshipTypeProperties/:type", routes.relationships.listRelationshipTypeProperties);
 
 // handle errors
-api.use(function (err, req, res, next) {
+app.use(function (err, req, res, next) {
     if (err && err.status) {
         WritableStreamDefaultController(res, err);
     } else next(err);

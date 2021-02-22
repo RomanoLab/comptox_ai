@@ -21,8 +21,14 @@ const writeError = require('../helpers/response').writeError;
  *         schema:
  *           type: array
  */
-exports.list = function (req, res, next) {
+exports.listNodeTypes = function (req, res, next) {
     Nodes.listNodeTypes(dbUtils.getSession(req))
+        .then(response => writeResponse(res, response))
+        .catch(next);
+};
+
+exports.listNodeTypeProperties = function (req, res, next) {
+    Nodes.listNodeTypeProperties(dbUtils.getSession(req), req.params.type)
         .then(response => writeResponse(res, response))
         .catch(next);
 };

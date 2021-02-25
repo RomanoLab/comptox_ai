@@ -4,7 +4,7 @@
   "description": "Web services for ComptoxAI",
   "main": "index.js",
   "scripts": {
-    "dev": "node ./api/app",
+    "dev": "nodemon ./api/app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -35,5 +35,8 @@
     "neo4j-driver": "^4.2.2",
     "swagger-jsdoc": "^6.0.6",
     "swagger-ui-express": "^4.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }

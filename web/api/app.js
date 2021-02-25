@@ -3,6 +3,7 @@ const express = require('express');
 const nconf = require('./config');
 const routes = require('./routes');
 const neo4jSessionCleanup = require("./middleware/neo4jSessionCleanup");
+const writeError = require("./helpers/response").writeError;
 
 const app = express();
 const swaggerJSDoc = require('swagger-jsdoc');
@@ -20,20 +21,30 @@ const port = 3000
 // 
 
 var swaggerOpts = {
-    swaggerDefinition: {
+    definition: {
+        openapi: '3.0.3',
         info: {
             title: "ComptoxAI REST API",
             version: "1.0.0-alpha",
             description: "REST API serving ComptoxAI data to support cheminformatics applications",
         },
+        servers: [
+            {
+                url: "http://localhost:3000",
+                description: "Default URL when run as a local development environment"
+            },
+            {
+                url: "http://comptox.ai/api",
+                description: "Eventual public-facing instance of ComptoxAI's API"
+            }
+        ],
         host: "localhost:3000",
-        basePath: "/",
     },
-    apis: ["./routes/*.js"],
+    apis: ["api/routes/*.js", "api/*.js"],
 };
 
+// Make swagger/openapi documentation
 var swaggerSpec = swaggerJSDoc(swaggerOpts);
-
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.set("port", nconf.get("PORT"));
 
@@ -52,6 +63,8 @@ app.use(function (req, res, next) {
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept, Authorization"
     );
+    // Make everything be returned as JSON
+    res.header("Content-Type", 'application/json');
     next();
 });
 
@@ -73,15 +86,15 @@ app.get('/', (req, res) => {
 // main API routes
 app.get("/listNodeTypes", routes.nodes.listNodeTypes);
 app.get("/listNodeTypeProperties/:type", routes.nodes.listNodeTypeProperties);
-app.get("/node/:type/:id", routes.nodes.findNodeById);
-app.get("/node/:type/search?", routes.nodes.findNodeByQuery);
+//app.get("/node/:type/:id", routes.nodes.findNodeById); // TODO: What qualifies as an ID?
+app.get("/node/:type/search?", routes.nodes.findNode);
 app.get("/listRelationshipTypes", routes.relationships.listRelationshipTypes);
 //app.get("/listRelationshipTypeProperties/:type", routes.relationships.listRelationshipTypeProperties);
 
 // handle errors
 app.use(function (err, req, res, next) {
     if (err && err.status) {
-        WritableStreamDefaultController(res, err);
+        writeError(res, err);
     } else next(err);
 });
 

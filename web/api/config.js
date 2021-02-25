@@ -29,7 +29,7 @@ nconf.env(['PORT', 'NODE_ENV']).argv({
     'neo4j': 'local',
     'neo4j-local': process.env.COMPTOX_AI_DATABASE_URL || 'bolt://localhost:7687',
     'base_url': 'http://localhost:3000',
-    'api_path': '/api/v0',
+    'api_path': '/api',
 });
 
 module.exports = nconf;

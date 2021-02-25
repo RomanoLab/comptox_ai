@@ -51,7 +51,31 @@ const listNodeTypeProperties = function (session, nodeTypeLabel) {
     });
 };
 
+const findNodeByQuery = function (session, type, field, value) {
+    const query = [
+        `MATCH (n:${type} {${field}: $value})`,
+        `RETURN n;`
+    ].join(' ');
+
+    // Convert the value to an int if it looks like an int
+    const intValue = parseInt(value);
+    const safeCastValue = (isNaN(intValue)) ? value : intValue;
+    
+    console.log(safeCastValue);
+
+    return session.readTransaction(txc =>
+        txc.run(query, {value: safeCastValue})
+    ) .then(result => {
+        if (!_.isEmpty(result.records)) {
+            return result.records;
+        } else {
+            throw {message: 'No results found for user query', query: query, result: result, status: 404}
+        }
+    });
+};
+
 module.exports = {
     listNodeTypes: listNodeTypes,
     listNodeTypeProperties: listNodeTypeProperties,
+    findNodeByQuery: findNodeByQuery,
 };

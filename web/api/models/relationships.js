@@ -14,6 +14,13 @@ const listRelationshipTypes = function (session) {
     );
 };
 
+// const listRelationshipTypeProperties = function (session) {
+//     return session.readTransaction(txc => (
+//         txc.run()
+//     ))
+// };
+
 module.exports = {
     listRelationshipTypes: listRelationshipTypes,
+    // listRelationshipTypeProperties: listRelationshipTypeProperties,
 };

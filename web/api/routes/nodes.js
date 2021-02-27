@@ -15,7 +15,7 @@ const writeError = require('../helpers/response').writeError;
 
 /**
  * @openapi
- * /listNodeTypes:
+ * /nodes/listNodeTypes:
  *   get:
  *     tags:
  *     - nodes
@@ -39,7 +39,7 @@ exports.listNodeTypes = function (req, res, next) {
 
 /**
  * @openapi
- * /listNodeTypeProperties/{type}:
+ * /nodes/listNodeTypeProperties/{type}:
  *   get:
  *     tags:
  *     - nodes
@@ -72,7 +72,7 @@ exports.listNodeTypeProperties = function (req, res, next) {
 
 /**
  * @openapi
- * /node/{type}/search:
+ * /nodes/{type}/search:
  *   get:
  *     tags:
  *     - nodes
@@ -80,13 +80,32 @@ exports.listNodeTypeProperties = function (req, res, next) {
  *     summary: 
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: type
+ *         in: path
+ *         description: Node type to be queried
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: field
+ *         in: query
+ *         description: Name of a node property against which to run the query
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: value
+ *         in: query
+ *         description: Value to match
+ *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description:
  *         schema:
  *           type: array
  *           items:
- *             $ref: '#/components/schema/Node'
+ *             $ref: '#/components/schemas/Node'
  */
 exports.findNode = function (req, res, next) {
     Nodes.findNodeByQuery(dbUtils.getSession(req), req.params.type, req.query.field, req.query.value)

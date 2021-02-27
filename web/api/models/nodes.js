@@ -1,9 +1,15 @@
 const _ = require('lodash');
 const NodeType = require('./neo4j/nodetype');
+const Node = require('./neo4j/node')
 
 function parseNodeLabels(neo4jResult, namespace_filter = 'ns0') {
     const all_records = neo4jResult.records.map(r => new NodeType(r.toObject()));
     return all_records.filter(ar => ar['namespace'] === namespace_filter).map(r => r['label']);
+}
+
+function parseNodes(neo4jResult, namespace_filter = 'ns0') {
+    const all_records = neo4jResult.records.map(r => new Node(r.toObject()));
+    return all_records.filter(ar => ar['namespace'] === namespace_filter);
 }
 
 // Get a list of node types in ComptoxAI
@@ -67,7 +73,7 @@ const findNodeByQuery = function (session, type, field, value) {
         txc.run(query, {value: safeCastValue})
     ) .then(result => {
         if (!_.isEmpty(result.records)) {
-            return result.records;
+            return parseNodes(result);
         } else {
             throw {message: 'No results found for user query', query: query, result: result, status: 404}
         }

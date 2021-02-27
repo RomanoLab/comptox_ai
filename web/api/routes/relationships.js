@@ -15,7 +15,7 @@ const writeError = require('../helpers/response').writeError;
 
 /**
  * @openapi
- * /listRelationshipTypes:
+ * /relationships/listRelationshipTypes:
  *   get:
  *     tags:
  *     - relationships
@@ -36,3 +36,13 @@ exports.listRelationshipTypes = function (req, res, next) {
         .then(response => writeResponse(res, response))
         .catch(next);
 };
+
+/**
+ * @openapi
+ * /relationships/listRelationshipTypeProperties/{type}
+ */
+// exports.listRelationshipTypeProperties = function (req, res, next) {
+//     Relationships.listRelationshipTypeProperties(dbUtils.getSession(req), req.params.type)
+//         .then(response => writeResponse(res, response))
+//         .catch(next);
+// };

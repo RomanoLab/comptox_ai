@@ -35,7 +35,7 @@ var swaggerOpts = {
             },
             {
                 url: "http://comptox.ai/api",
-                description: "Eventual public-facing instance of ComptoxAI's API"
+                description: "Public-facing instance of ComptoxAI's API"
             }
         ],
         host: "localhost:3000",
@@ -74,21 +74,24 @@ app.use(neo4jSessionCleanup);
  * @openapi
  * /:
  *   get:
- *     description: Welcome to ComptoxAI's REST API
+ *     description: Return a string 
  *     responses:
  *       200:
- *         description: Returns the string 'Hello, World!'
+ *         description: Returns a welcome message if the API is available
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
  */
 app.get('/', (req, res) => {
-    res.send('Hello, World!')
+    res.send('Welcome to ComptoxAI\'s web API! Please read the documentation at http://comptox.ai/api/docs for available operations.')
 })
 
-// main API routes
-app.get("/listNodeTypes", routes.nodes.listNodeTypes);
-app.get("/listNodeTypeProperties/:type", routes.nodes.listNodeTypeProperties);
-//app.get("/node/:type/:id", routes.nodes.findNodeById); // TODO: What qualifies as an ID?
-app.get("/node/:type/search?", routes.nodes.findNode);
-app.get("/listRelationshipTypes", routes.relationships.listRelationshipTypes);
+app.get("/nodes/listNodeTypes", routes.nodes.listNodeTypes);
+app.get("/nodes/listNodeTypeProperties/:type", routes.nodes.listNodeTypeProperties);
+app.get("/nodes/:type/search?", routes.nodes.findNode);
+
+// app.get("/relationships/listRelationshipTypes", routes.relationships.listRelationshipTypes);
 //app.get("/listRelationshipTypeProperties/:type", routes.relationships.listRelationshipTypeProperties);
 
 // handle errors

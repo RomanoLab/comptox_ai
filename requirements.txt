@@ -60,3 +60,6 @@ urllib3==1.24.3           # via py2neo, requests
 watchdog==0.10.2          # via ablog
 wcwidth==0.1.9            # via blessed, prompt-toolkit
 werkzeug==0.16.1          # via ablog
+
+# Manual additions:
+pyyaml==5.1.2

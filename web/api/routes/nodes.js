@@ -11,6 +11,13 @@ const writeError = require('../helpers/response').writeError;
  *   schemas:
  *     Node:
  *       type: object
+ *       properties:
+ *         uri:
+ *           type: string
+ *         node_labels:
+ *           type: object
+ *         node_features:
+ *           type: object
  */
 
 /**

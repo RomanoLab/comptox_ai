@@ -63,3 +63,4 @@ werkzeug==0.16.1          # via ablog
 
 # Manual additions:
 pyyaml==5.1.2
+pymongo==3.11.3

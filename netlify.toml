@@ -1,6 +1,0 @@
-[[redirects]]
-  from = "/api"
-  to = "http://3.235.225.44:3000/docs"
-  status = 200
-  force = true
-  headers = {X-From = "Netlify"}

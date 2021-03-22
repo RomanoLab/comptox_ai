@@ -1,1 +1,2 @@
-/api/*                        http://3.235.225.44:3000/:splat      200
+/api/v0                       http://3.235.225.44:3000/docs      200
+/api/                         www.google.com                    

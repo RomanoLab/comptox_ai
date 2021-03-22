@@ -9,7 +9,8 @@ function parseNodeLabels(neo4jResult, namespace_filter = 'ns0') {
 
 function parseNodes(neo4jResult, namespace_filter = 'ns0') {
     const all_records = neo4jResult.records.map(r => new Node(r.toObject()));
-    return all_records.filter(ar => ar['namespace'] === namespace_filter);
+    return all_records;
+    //return all_records.filter(ar => ar['namespace'] === namespace_filter);
 }
 
 // Get a list of node types in ComptoxAI
@@ -22,8 +23,6 @@ const listNodeTypes = function (session) {
 };
 
 function _makePropertiesList(labelSchemaData) {
-    //console.log(labelSchemaData);
-    //console.log(labelSchemaData[0].toObject());
     const labelSchemaDataObjects = labelSchemaData.map(r => r.toObject());
     const propsList = labelSchemaDataObjects.map(r => ({
         property: r['property'],
@@ -67,8 +66,6 @@ const findNodeByQuery = function (session, type, field, value) {
     const intValue = parseInt(value);
     const safeCastValue = (isNaN(intValue)) ? value : intValue;
     
-    console.log(safeCastValue);
-
     return session.readTransaction(txc =>
         txc.run(query, {value: safeCastValue})
     ) .then(result => {

@@ -1,13 +1,13 @@
 [[redirects]]
-  from = "/api/docs/"
-  to = "http://3.235.225.44:3000/docs"
+  from = "/api"
+  to = "http://3.235.225.44:3000/"
   status = 200
   force = true
   headers = {X-From = "Netlify"}
-  
+
 [[redirects]]
-  from = "/api"
-  to = "http://3.235.225.44:3000/"
+  from = "/api/docs/"
+  to = "http://3.235.225.44:3000/docs"
   status = 200
   force = true
   headers = {X-From = "Netlify"}

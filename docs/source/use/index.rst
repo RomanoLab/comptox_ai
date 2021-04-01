@@ -6,7 +6,7 @@ User Guide
 
 These documents outline specific topics describing the structure and use of 
 ComptoxAI from a more narrative perspective than the :ref:`API documentation
-<api>`.
+<docs>`.
 
 .. toctree::
    :maxdepth: 1

@@ -45,7 +45,7 @@ var swaggerOpts = {
 
 // Make swagger/openapi documentation
 var swaggerSpec = swaggerJSDoc(swaggerOpts);
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/help', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.set("port", nconf.get("PORT"));
 
 app.use(bodyParser.json());

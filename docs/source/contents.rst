@@ -9,4 +9,4 @@ Table of Contents
     install
     use/index
     comptox/index
-    api/index
+    docs/index

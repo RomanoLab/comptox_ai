@@ -1,4 +1,4 @@
-.. _api:
+.. _docs:
 
 *************
 API Reference

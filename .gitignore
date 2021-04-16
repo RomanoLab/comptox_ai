@@ -17,7 +17,6 @@
 *.tmp
 *.vim
 tags
-.vscode/
 
 # Packages and archives #
 #########################

@@ -1,56 +1,68 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
 import './App.css';
+
+class SearchNode extends React.Component {
+  render() {
+    return(
+      <div>
+        <h2>Search for a node</h2>
+        <p>
+          <i>A node is an individual entity in ComptoxAI's graph database. For example, individual genes, diseases, and chemicals are all represented as nodes in the graph database.</i>
+        </p>
+      </div>
+    );
+  }
+}
+
+class SearchRelationship extends React.Component {
+  render() {
+    return(
+      <div>
+        <h2>Search for a relationship</h2>
+        <p>
+          <i>Relationships are associations or other conceptual links between any two entities in the graph database. For example, a relationship may represent a chemical interacting with a gene, or a symptom manifesting a disease.</i>
+        </p>
+      </div>
+    );
+  }
+}
+
+class SearchPath extends React.Component {
+  render() {
+    return(
+      <div>
+        <h2>Search for a path</h2>
+        <p>
+          <i>Paths are chains of two or more nodes in the graph database along with the relationships that link them.</i>
+        </p>
+      </div>
+    );
+  }
+}
+
+class FetchBatch extends React.Component {
+  render() {
+    return(
+      <div>
+        <h2>Bulk data fetch</h2>
+        <p>
+          This tool is used to retrieve node and/or relationship properties for many nodes or relationships simultaneously.
+        </p>
+      </div>
+    );
+  }
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <body>
+        <h1>ComptoxAI interactive data portal</h1>
+        <SearchNode />
+        <SearchRelationship />
+        <SearchPath />
+        <FetchBatch />
+      </body>
     </div>
   );
 }

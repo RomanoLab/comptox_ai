@@ -1,0 +1,8 @@
+{
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact"
+    },
+    "python.pythonPath": "/Users/jdr2160/anaconda3/envs/comptox_ai/bin/python",
+    "restructuredtext.confPath": "${workspaceFolder}/docs/source",
+    "restructuredtext.languageServer.disabled": true
+}

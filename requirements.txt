@@ -62,5 +62,5 @@ wcwidth==0.1.9            # via blessed, prompt-toolkit
 werkzeug==0.16.1          # via ablog
 
 # Manual additions:
-pyyaml==5.1.2
+pyyaml==5.4
 pymongo==3.11.3

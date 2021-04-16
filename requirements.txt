@@ -19,7 +19,7 @@ ipython-genutils==0.2.0   # via traitlets
 ipython==7.13.0           # via ipdb
 isodate==0.6.0            # via rdflib
 jedi==0.16.0              # via ipython
-jinja2==2.11.1            # via numpydoc, sphinx
+jinja2==2.11.3            # via numpydoc, sphinx
 jinxed==1.0.0             # via blessed
 markupsafe==1.1.1         # via jinja2
 neo4j==1.7.6              # via comptox_ai (setup.py)

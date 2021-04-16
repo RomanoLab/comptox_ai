@@ -1,15 +1,30 @@
 module.exports = {
-  apps : [{
-    name: "api-app",
-    script: 'api/app.js',
-    watch: '.',
-    env: {
-      "NODE_ENV": "development",
+  apps : [
+    {
+      name: "api-app",
+      script: 'packages/api/app.js',
+      cwd: 'packages/api/',
+      watch: true,
+      env: {
+        "NODE_ENV": "development",
+      },
+      env_production: {
+        "NODE_ENV": "production",
+      }
     },
-    env_production: {
-      "NODE_ENV": "production",
+    {
+      name: "app",
+      script: "packages/app/app.js",
+      cwd: 'packages/app/',
+      watch: true,
+      env: {
+        "NODE_ENV": "development",
+      },
+      env_production: {
+        "NODE_ENV": "production",
+      }
     }
-  }],
+  ],
 
   deploy : {
     production : {

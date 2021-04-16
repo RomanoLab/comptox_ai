@@ -36,7 +36,7 @@ pathtools==0.1.2          # via watchdog
 pickleshare==0.7.5        # via ipython
 prompt-toolkit==2.0.10    # via ipython, py2neo
 py2neo==4.3.0             # via comptox_ai (setup.py)
-pygments==2.3.1           # via py2neo, sphinx
+pygments==2.7.4           # via py2neo, sphinx
 pyparsing==2.4.7          # via packaging
 pytest==5.3.1
 pytest-cov==2.8.1

@@ -13,12 +13,32 @@ ComptoxAI is developed by [Joseph D. Romano, PhD](http://jdr.bio), who is curren
 
 - - -
 
+## Table of Contents
+- [`ComptoxAI`](#comptoxai)
+  - [Table of Contents](#table-of-contents)
+  - [Main components of ComptoxAI](#main-components-of-comptoxai)
+    - [Comptox Ontology](#comptox-ontology)
+    - [ComptoxAI graph database](#comptoxai-graph-database)
+    - [Adverse Outcome Pathway toolbox (PLANNED)](#adverse-outcome-pathway-toolbox-planned)
+    - [Machine learning model library (PLANNED)](#machine-learning-model-library-planned)
+    - [Web learning resources and interactive tools (PLANNED)](#web-learning-resources-and-interactive-tools-planned)
+  - [Code Structure](#code-structure)
+  - [Installing ComptoxAI](#installing-comptoxai)
+      - [Installing using Conda](#installing-using-conda)
+      - [Neo4j and plugins](#neo4j-and-plugins)
+  - [Running tests](#running-tests)
+  - [Planned features (an incomplete list)](#planned-features-an-incomplete-list)
+  - [External data sources](#external-data-sources)
+  - [Example Neo4j queries](#example-neo4j-queries)
+
+- - -
+
 ## Main components of ComptoxAI
 
 ### Comptox Ontology
 
-![Class hierarchy of Comptox Ontology and graph database individual counts](./docs/images/ontology.png)
-_(Counts current as of September 23, 2019)_
+![Class hierarchy of Comptox Ontology and graph database individual counts](./docs/source/_static/img/ontology.png)
+_(Counts may be incomplete)_
 
 The Comptox Ontology provides a formal description of a wide array of conceptual entities involved in computational toxicology. Specifically, it is meant to support translational research in computational toxicology by defining and enumerating the relationships that occur between these entities.
 
@@ -53,6 +73,22 @@ One of the ultimate goals of ComptoxAI is to enable training advanced machine le
 ### Web learning resources and interactive tools (PLANNED)
 
 In the future, we hope to create interactive visualizations and discovery tools that make it easier for toxicologists to interact with the data in ComptoxAI and the hypotheses that it enables.
+
+- - -
+
+## Code Structure
+
+ComptoxAI is developed as a *monorepository*, meaning that all of its components (the graph database, website, documentation, and other tools) are stored in a single location. This allows us to ensure that everything functions as a single, cohesive data ecosystem, rather than a set of loosely connected tools.
+
+Each major component can be found in the following locations:
+
+- `comptox_ai/`: Code for building/interacting with the graph database (Python)
+- `data/`: Auxiliary data files, including the unpopulated OWL ontology used to implement the graph database
+- `docs/`: Documentation, including static website pages (Python / Sphinx)
+- `scripts/`: Miscellaneous scripts and utility features
+- `tests/`: Tests for the Python code (not yet implemented)
+- `web/packages/api`: REST API implementation (Node.js / Express)
+- `web/packages/app`: Interactive data portal web application (Node.js / React / Redux)
 
 - - -
 
@@ -93,6 +129,7 @@ It should take a while for the entire database to import, but you will receive a
 
 - - -
 
+<a name="tests"/>
 ## Running tests
 
 Unit tests can be run using the following command, issued from the root directory of the source repository:
@@ -101,6 +138,7 @@ Unit tests can be run using the following command, issued from the root director
 
 - - -
 
+<a name="features"/>
 ## Planned features (an incomplete list)
 
 - Simple import/export integration between Neo4j and OWL
@@ -108,6 +146,7 @@ Unit tests can be run using the following command, issued from the root director
 
 - - -
 
+<a name="sources"/>
 ## External data sources
 
 When data types are defined multiple times below, I try to merge them in the best way possible. At some point I will clearly enumerate the procedures used to merge equivalent data elements from multiple sources.
@@ -138,6 +177,7 @@ When data types are defined multiple times below, I try to merge them in the bes
 
 - - -
 
+<a name="queries"/>
 ## Example Neo4j queries
 
 We aim to keep adding Pythonic implementations of useful graph database queries.

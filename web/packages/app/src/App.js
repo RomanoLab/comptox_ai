@@ -41,7 +41,7 @@ class SearchNode extends React.Component {
               {option.type}
             </React.Fragment>
           )}
-          style={{ width: 500 }}
+          style={{ width: 500, paddingBottom: 8 }}
           renderInput={(params) => (
             <TextField {...params} variant="outlined" label="Node Types" placeholder="Types" />
           )}
@@ -50,8 +50,9 @@ class SearchNode extends React.Component {
           id="nodeIdValue"
           label="Value"
           variant="outlined"
-          style={{ width: 500 }}
+          style={{ width: 500, paddingBottom: 8 }}
         />
+        <br/>
         <Button variant="contained" color="primary">Search</Button>
       </div>
     );

@@ -1,5 +1,7 @@
 import React from 'react';
+import Container from '@material-ui/core/Container';
 
+import HowToUse from './HowToUse';
 import NodeSearch from './NodeSearch';
 import RelationshipSearch from './RelationshipSearch';
 import PathSearch from './PathSearch';
@@ -11,11 +13,14 @@ function App() {
   return (
     <div className="App">
       <body>
-        <h1>ComptoxAI interactive data portal</h1>
-        <NodeSearch />
-        <RelationshipSearch />
-        <PathSearch />
-        <BatchQuery />
+        <Container>
+          <h1>ComptoxAI interactive data portal</h1>
+          <HowToUse />
+          <NodeSearch />
+          <RelationshipSearch />
+          <PathSearch />
+          <BatchQuery />
+        </Container>
       </body>
     </div>
   );

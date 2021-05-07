@@ -154,8 +154,8 @@ However you choose to install Neo4j, perform the following steps once the databa
 6. Open the Neo4j browser (or a cypher shell, if you prefer)
 7. Run the following two cypher commands to import the populated ontology:
     1. `CREATE CONSTRAINT n10s_unique_uri ON (r:Resource) ASSERT r.uri IS UNIQUE;`
-	2. `CALL n10s.graphconfig.init();`
-	3. `CALL n10s.rdf.import.fetch("file:///path/to/comptox_ai/data/comptox_populated.rdf", "RDF/XML");`
+    2. `CALL n10s.graphconfig.init();`
+    3. `CALL n10s.rdf.import.fetch("file:///path/to/comptox_ai/data/comptox_populated.rdf", "RDF/XML");`
 
 It should take a while for the entire database to import, but you will receive a response that
 indicates the import was successful (or, possibly, unsuccessful).

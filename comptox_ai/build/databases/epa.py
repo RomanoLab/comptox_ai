@@ -11,6 +11,7 @@ import pandas as pd
 import owlready2
 from tqdm import tqdm
 
+
 import ipdb
 
 class EPA(Database):
@@ -47,7 +48,7 @@ class EPA(Database):
         del(dsstox_inchi_map)
         del(pubchem_dtxsid_map)
 
-        cas_map = pd.read_excel(cas_map_file)
+        cas_map = pd.read_excel(cas_map_file, engine='openpyxl')
         self.epa_map = self.epa_map.merge(cas_map, how='outer', left_on='DTXSID', right_on='dsstox_substance_id')
         del(cas_map)
         self.epa_map.drop(columns='dsstox_substance_id', inplace=True)

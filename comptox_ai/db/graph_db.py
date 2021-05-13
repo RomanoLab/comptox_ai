@@ -94,7 +94,7 @@ class GraphDB(object):
     result = tx.run(query)
     return result.data()
 
-  def run_cypher(self, qry_str):
+  def run_cypher(self, qry_str, verbose=False):
     """
     Evaluate a Cypher query on the Neo4j graph database.
 
@@ -116,6 +116,8 @@ class GraphDB(object):
     [{'num_chems': 719599}]
     """
     with self._driver.session() as session:
+      if self.verbose:
+        print(f"Writing Cypher transaction: \n  {qry_str}")
       res = session.write_transaction(self._run_transaction, qry_str)
       return res
 

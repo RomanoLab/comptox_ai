@@ -13,26 +13,24 @@ from blessed import (
     Terminal,
 )  # blessed is a fork of blessings, which is a replacement for curses
 import os, sys
-import glob
 from enum import Enum, unique
-import configparser
+import yaml
 from dataclasses import dataclass
 
-import ipdb
 
 import comptox_ai.build.databases
 from comptox_ai.build import databases
 
 
-CONFIG_FILE = "../../CONFIG.cfg"
+CONFIG_FILE = "../../CONFIG.yaml"
 
 OWL_RDF_FILE = "https://www.w3.org/2002/07/owl.rdf"
 
-cnf = configparser.ConfigParser()
-cnf.read(CONFIG_FILE)
-DATA_PREFIX = cnf["DATA"]["prefix"]
-DATA_TEMPDIR = cnf["DATA"]["tempdir"]
-DATA_LOCKFILE = cnf["DATA"]["lockfile"]
+with open(CONFIG_FILE, 'r') as fp:
+    cnf = yaml.load(fp)
+DATA_PREFIX = cnf["data"]["prefix"]
+DATA_TEMPDIR = cnf["data"]["tempdir"]
+DATA_LOCKFILE = cnf["data"]["lockfile"]
 
 ONTOLOGY_FNAME = os.path.join(DATA_PREFIX, "comptox_ai", "comptox.rdf")
 ONTOLOGY_CHECKPOINT_FNAME = os.path.join(

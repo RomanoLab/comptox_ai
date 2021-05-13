@@ -26,11 +26,11 @@ neo4j==1.7.6              # via comptox_ai (setup.py)
 neobolt==1.7.16           # via neo4j, py2neo
 neotime==1.7.4            # via neo4j, py2neo
 networkx==2.4             # via comptox_ai (setup.py)
-numpy==1.18.2             # via comptox_ai (setup.py), pandas, scipy
+numpy==1.20.3             # via comptox_ai (setup.py), pandas, scipy
 numpydoc==0.9.2           # via comptox_ai (setup.py)
 owlready2==0.23           # via comptox_ai (setup.py)
 packaging==20.3           # via sphinx
-pandas==1.0.3             # via comptox_ai (setup.py)
+pandas==1.2.4             # via comptox_ai (setup.py)
 parso==0.6.2              # via jedi
 pathtools==0.1.2          # via watchdog
 pickleshare==0.7.5        # via ipython

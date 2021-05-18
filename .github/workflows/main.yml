@@ -17,6 +17,16 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     runs-on: ubuntu-latest
+    
+    services:
+      neo4j:
+        image: neo4j:4.2.5
+        env:
+          NEO4JLABS_PLUGINS: '["graph-data-science"]'
+          NEO4J_AUTH: neo4j/${{ secrets.NEO4J_PASSWORD }}
+          NEO4J_dbms_connector_bolt_advertised__address: localhost:7687
+        ports:
+          - 7687:7687
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -29,12 +39,6 @@ jobs:
           python-version: 3.7.5
           conda-channels: anaconda, conda-forge
           
-      - name: setup neo4j
-        uses: garethlau/Setup-Neo4j@v1.0.7
-        with:
-          tag: 4.2.5  # version of neo4j to use
-          password: ci
-          
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
           
@@ -43,11 +47,3 @@ jobs:
         
       - name: install python package
         run: yes | pip3 install .
-
-  build-python:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Install pip dependencies
-        run: pip3 install -r requirements.txt
-

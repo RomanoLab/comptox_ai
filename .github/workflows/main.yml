@@ -1,0 +1,53 @@
+name: Python/Database CI
+
+on:
+  push:
+    branches:
+    - master
+    - release/*
+  pull_request:
+    branches:
+    - master
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: setup conda
+        uses: s-weigand/setup-conda@v1.0.5
+        with:
+          activate-conda: true
+          python-version: 3.7.5
+          conda-channels: anaconda, conda-forge
+          
+      - name: setup neo4j
+        uses: garethlau/Setup-Neo4j@v1.0.7
+        with:
+          tag: 4.2.5  # version of neo4j to use
+          password: ci
+          
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+          
+      - name: install pip dependencies
+        run: yes | pip3 install -r requirements.txt
+        
+      - name: install python package
+        run: yes | pip3 install .
+
+  build-python:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Install pip dependencies
+        run: pip3 install -r requirements.txt
+

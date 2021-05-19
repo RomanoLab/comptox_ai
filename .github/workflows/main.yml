@@ -24,7 +24,9 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Set up neo4j user
-        run: sudo addgroup --gid 7474 --system neo4j && adduser --uid 7474 --system --no-create-home --home "${{ env.NEO4J_HOME }}" --ingroup neo4j neo4j
+        run: |
+          sudo addgroup --gid 7474 --system neo4j
+          sudo adduser --uid 7474 --system --no-create-home --home "${{ env.NEO4J_HOME }}" --ingroup neo4j neo4j
       
       - name: Install prereqs
         run: |

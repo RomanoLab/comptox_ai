@@ -23,11 +23,44 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
+      - name: Set up neo4j user
+        run: sudo addgroup --gid 7474 --system neo4j && adduser --uid 7474 --system --no-create-home --home "${{ env.NEO4J_HOME }}" --ingroup neo4j neo4j
+      
       - name: Install prereqs
         run: |
           sudo apt update
           sudo apt install -y curl wget gosu jq
         # pick up here from https://github.com/neo4j/docker-neo4j-publish/blob/d22293f2e465b63ee5a63f0a2b8f817717a64a8b/4.2.5/community/Dockerfile
+        
+      - name: Install Neo4j
+        run: |
+          curl --fail --silent --show-error --location --remote-name https://dist.neo4j.org/${{ env.NEO4J_TARBALL }}
+          echo "${{ env.NEO4J_SHA256 }}  ${{ env.NEO4J_TARBALL }}" | sha256sum -c --strict --quiet
+          tar --extract --file ${{ env.NEO4J_TARBALL }} --directory /var/lib
+          mv /var/lib/neo4j-* ${{ env.NEO4J_HOME }}
+          rm ${{ env.NEO4J_TARBALL }}
+          mv ${{ env.NEO4J_HOME }}/data /data
+          mv ${{ env.NEO4J_HOME }}/logs /logs
+          chown -R neo4j:neo4j /data
+          chmod -R 777 /data
+          chown -R neo4j:neo4j /logs
+          chmod -R 777 /logs
+          chown -R neo4j:neo4j ${{ env.NEO4J_HOME }}
+          chmod -R 777 ${{ env.NEO4J_HOME }}
+          ln -s /data ${{ env.NEO4J_HOME }}/data
+          ln -s /logs ${{ env.NEO4J_HOME }}/logs
+          mv /tmp/neo4jlabs-plugins.json /neo4jlabs-plugins.json
+          
+      - name: Add neo4j bin directory to PATH
+        run: echo ${{ env.NEO4J_HOME }}/bin:$PATH >> $GITHUB_PATH
+        
+      - name: Check the PATH to make sure neo4j-admin is there
+        run: echo "$PATH"
+          
+      - name: Clean some stuff up
+        run: |
+          rm -rf /tmp/*
+          rm -rf /var/lib/apt/lists/*
       
       - name: Set up conda with Python 3.7.5
         uses: s-weigand/setup-conda@v1.0.5

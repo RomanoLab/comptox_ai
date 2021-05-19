@@ -43,15 +43,15 @@ jobs:
           sudo rm ${{ env.NEO4J_TARBALL }}
           sudo mv ${{ env.NEO4J_HOME }}/data /data
           sudo mv ${{ env.NEO4J_HOME }}/logs /logs
-          chown -R neo4j:neo4j /data
-          chmod -R 777 /data
-          chown -R neo4j:neo4j /logs
-          chmod -R 777 /logs
-          chown -R neo4j:neo4j ${{ env.NEO4J_HOME }}
-          chmod -R 777 ${{ env.NEO4J_HOME }}
-          ln -s /data ${{ env.NEO4J_HOME }}/data
-          ln -s /logs ${{ env.NEO4J_HOME }}/logs
-          mv /tmp/neo4jlabs-plugins.json /neo4jlabs-plugins.json
+          sudo chown -R neo4j:neo4j /data
+          sudo chmod -R 777 /data
+          sudo chown -R neo4j:neo4j /logs
+          sudo chmod -R 777 /logs
+          sudo chown -R neo4j:neo4j ${{ env.NEO4J_HOME }}
+          sudo chmod -R 777 ${{ env.NEO4J_HOME }}
+          sudo ln -s /data ${{ env.NEO4J_HOME }}/data
+          sudo ln -s /logs ${{ env.NEO4J_HOME }}/logs
+          sudo mv /tmp/neo4jlabs-plugins.json /neo4jlabs-plugins.json
           
       - name: Add neo4j bin directory to PATH
         run: echo ${{ env.NEO4J_HOME }}/bin:$PATH >> $GITHUB_PATH

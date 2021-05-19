@@ -59,11 +59,6 @@ jobs:
         
       - name: Check the PATH to make sure neo4j-admin is there
         run: echo "$PATH"
-          
-      - name: Clean some stuff up
-        run: |
-          rm -rf /tmp/*
-          rm -rf /var/lib/apt/lists/*
       
       - name: Set up conda with Python 3.7.5
         uses: s-weigand/setup-conda@v1.0.5

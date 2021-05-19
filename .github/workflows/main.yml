@@ -3,44 +3,38 @@ name: Python/Database CI
 on:
   push:
     branches:
-    - master
-    - release/*
+      - master
   pull_request:
     branches:
-    - master
+      - master
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
     runs-on: ubuntu-latest
     
-    services:
-      neo4j:
-        image: neo4j:4.2.5
-        env:
-          NEO4JLABS_PLUGINS: '["graph-data-science"]'
-          NEO4J_AUTH: neo4j/${{ secrets.NEO4J_PASSWORD }}
-          NEO4J_dbms_connector_bolt_advertised__address: localhost:7687
-        ports:
-          - 7687:7687
+    env:
+      NEO4J_SHA256: 6d9bb8e21a4b80f8edefff89d6fe592812ae26eaf105cbc967bce88b62290bfd
+      NEO4J_TARBALL: neo4j-community-4.2.5-unix.tar.gz
+      NEO4J_EDITION: community
+      NEO4J_HOME: /var/lib/neo4j
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
       
-      - name: setup conda
+      - name: Install prereqs
+        run: |
+          apt update
+          apt install -y curl wget gosu jq
+        # pick up here from https://github.com/neo4j/docker-neo4j-publish/blob/d22293f2e465b63ee5a63f0a2b8f817717a64a8b/4.2.5/community/Dockerfile
+      
+      - name: Set up conda with Python 3.7.5
         uses: s-weigand/setup-conda@v1.0.5
         with:
           activate-conda: true
           python-version: 3.7.5
           conda-channels: anaconda, conda-forge
-          
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
           
       - name: install pip dependencies
         run: yes | pip3 install -r requirements.txt

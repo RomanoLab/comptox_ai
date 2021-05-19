@@ -25,8 +25,8 @@ jobs:
       
       - name: Install prereqs
         run: |
-          apt update
-          apt install -y curl wget gosu jq
+          sudo apt update
+          sudo apt install -y curl wget gosu jq
         # pick up here from https://github.com/neo4j/docker-neo4j-publish/blob/d22293f2e465b63ee5a63f0a2b8f817717a64a8b/4.2.5/community/Dockerfile
       
       - name: Set up conda with Python 3.7.5

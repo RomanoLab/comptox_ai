@@ -38,11 +38,11 @@ jobs:
         run: |
           curl --fail --silent --show-error --location --remote-name https://dist.neo4j.org/${{ env.NEO4J_TARBALL }}
           echo "${{ env.NEO4J_SHA256 }}  ${{ env.NEO4J_TARBALL }}" | sha256sum -c --strict --quiet
-          tar --extract --file ${{ env.NEO4J_TARBALL }} --directory /var/lib
-          mv /var/lib/neo4j-* ${{ env.NEO4J_HOME }}
-          rm ${{ env.NEO4J_TARBALL }}
-          mv ${{ env.NEO4J_HOME }}/data /data
-          mv ${{ env.NEO4J_HOME }}/logs /logs
+          sudo tar --extract --file ${{ env.NEO4J_TARBALL }} --directory /var/lib
+          sudo mv /var/lib/neo4j-* ${{ env.NEO4J_HOME }}
+          sudo rm ${{ env.NEO4J_TARBALL }}
+          sudo mv ${{ env.NEO4J_HOME }}/data /data
+          sudo mv ${{ env.NEO4J_HOME }}/logs /logs
           chown -R neo4j:neo4j /data
           chmod -R 777 /data
           chown -R neo4j:neo4j /logs

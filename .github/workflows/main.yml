@@ -51,7 +51,8 @@ jobs:
           sudo chmod -R 777 ${{ env.NEO4J_HOME }}
           sudo ln -s /data ${{ env.NEO4J_HOME }}/data
           sudo ln -s /logs ${{ env.NEO4J_HOME }}/logs
-          sudo mv /tmp/neo4jlabs-plugins.json /neo4jlabs-plugins.json
+        #  sudo mv /tmp/neo4jlabs-plugins.json /neo4jlabs-plugins.json
+        #  ^ come back to this once the rest works...
           
       - name: Add neo4j bin directory to PATH
         run: echo ${{ env.NEO4J_HOME }}/bin:$PATH >> $GITHUB_PATH

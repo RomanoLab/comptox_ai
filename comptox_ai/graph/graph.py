@@ -15,7 +15,7 @@ import scipy.sparse
 import networkx as nx
 from networkx.readwrite import json_graph
 from collections import defaultdict
-from py2neo import Database
+from py2neo import Graph
 
 from abc import abstractmethod
 from typing import List, Iterable, Union
@@ -52,7 +52,7 @@ def _convert(data: GraphDataMixin, from_fmt: str, to_fmt: str, safe: bool=True):
     if to_fmt == 'neo4j':
         # TODO: Only compatible with default config file for now
         uri, username, password = _load_neo4j_config()
-        db = Database(uri, auth=(username, password))
+        db = Graph(uri, auth=(username, password))
         new_data = Neo4jData(db)
     elif to_fmt == 'networkx':
         new_data = NetworkXData()
@@ -242,7 +242,7 @@ class Graph(object):
 
         if verbose:
             print("Creating database connection via py2neo...")
-        database = Database(uri, auth=(username, password))
+        database = Graph(uri, auth=(username, password))
         if verbose:
             print("Connected to database, now reading contents")
         neo4j_data = Neo4jData(database = database)

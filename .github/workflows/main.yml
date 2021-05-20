@@ -36,8 +36,5 @@ jobs:
           python-version: 3.7.5
           conda-channels: anaconda, conda-forge
           
-      - name: install pip dependencies
-        run: yes | pip3 install -r requirements.txt
-        
       - name: install python package
         run: yes | pip3 install .

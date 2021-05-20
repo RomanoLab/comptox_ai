@@ -9,7 +9,7 @@ A modern biocomputing infrastructure for computational toxicology.
 ComptoxAI is a collection of resources made to enable a diverse range of artificial intelligence applications
 for computational toxicology data.
 
-ComptoxAI is developed by [Joseph D. Romano, PhD](http://jdr.bio), who is currently a member of the
+ComptoxAI is maintained by [Joseph D. Romano, PhD](http://jdr.bio), who is currently a member of the
 [Computational Genetics Laboratory](http://epistasis.org) at the University of Pennsylvania, as well
 as a postdoctoral fellow in the [Center for Excellence in Environmental Toxicology](http://ceet.upenn.edu/).
 

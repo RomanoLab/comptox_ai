@@ -21,7 +21,7 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 import neo4j
-from py2neo import Database, Graph, Subgraph, Node, Relationship
+from py2neo import Graph, Subgraph, Node, Relationship
 from json import JSONEncoder, dump
 from networkx.readwrite.json_graph import node_link_data
 
@@ -224,7 +224,7 @@ class Neo4jData(GraphDataMixin):
 
     format = 'neo4j'
 
-    def __init__(self, database: Database, verbose: bool = False):
+    def __init__(self, database: Graph, verbose: bool = False):
         self._graph = database.default_graph
 
         n_size = len(self._graph.nodes)

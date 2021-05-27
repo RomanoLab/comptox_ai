@@ -1,6 +1,6 @@
 # `ComptoxAI`
 
-[![Coverage Status](https://coveralls.io/repos/github/JDRomano2/comptox_ai/badge.svg?branch=master)](https://coveralls.io/github/JDRomano2/comptox_ai?branch=master)
+![Build](https://github.com/jdromano2/comptox_ai/actions/workflows/main.yml/badge.svg)
 
 A modern biocomputing infrastructure for computational toxicology.
 
@@ -9,7 +9,7 @@ A modern biocomputing infrastructure for computational toxicology.
 ComptoxAI is a collection of resources made to enable a diverse range of artificial intelligence applications
 for computational toxicology data.
 
-ComptoxAI is developed by [Joseph D. Romano, PhD](http://jdr.bio), who is currently a member of the
+ComptoxAI is maintained by [Joseph D. Romano, PhD](http://jdr.bio), who is currently a member of the
 [Computational Genetics Laboratory](http://epistasis.org) at the University of Pennsylvania, as well
 as a postdoctoral fellow in the [Center for Excellence in Environmental Toxicology](http://ceet.upenn.edu/).
 

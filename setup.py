@@ -14,7 +14,7 @@ with open("README.md", 'r') as fp:
 package_src_dir = Path(__file__).parent
 
 MAJOR      = 0
-MINOR      = 01
+MINOR      = 1
 MICRO      = 0
 ISRELEASED = False
 VERSION    = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
@@ -44,20 +44,15 @@ setuptools.setup(
     python_requires='>=3.7',
     include_package_data=True,
     install_requires=[
-        'py2neo',
-        'owlready2',
-        'numpy',
-        'pandas',
-        'scipy',
-        'networkx',
-        'ablog',
-        'Sphinx',
-        'blessed',
-        'neo4j',
-        'numpydoc',
-        'docutils',
-        'ipdb',
-        'rdflib'
+        'numpy==1.20.3',
+        'scipy==1.6.3',
+        'pandas==1.2.4',
+        'neo4j==4.2.1',
+        'networkx==2.5.1',
+        'py2neo==2021.1',
+        'rdflib==5.0.0',
+        'PyYAML==5.4.1',
+        'pymongo==3.11.4'  # prefer to deprecate - see comptox_ai/db/feature_db.py
     ],
     extras_require={
         "testing": ["pytest"],

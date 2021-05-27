@@ -42,7 +42,10 @@
         <Class IRI="#AnimalBiotoxin"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#Biotoxin"/>
+        <Class IRI="#Assay"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#BiologicalToxin"/>
     </Declaration>
     <Declaration>
         <Class IRI="#CellType"/>
@@ -51,10 +54,13 @@
         <Class IRI="#Chemical"/>
     </Declaration>
     <Declaration>
+        <Class IRI="#ChemicalConcept"/>
+    </Declaration>
+    <Declaration>
         <Class IRI="#ChemicalEffect"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#CopyNumberVariant"/>
+        <Class IRI="#ClinicalPhenotype"/>
     </Declaration>
     <Declaration>
         <Class IRI="#Database"/>
@@ -67,9 +73,6 @@
     </Declaration>
     <Declaration>
         <Class IRI="#ExposureEvent"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#Finding"/>
     </Declaration>
     <Declaration>
         <Class IRI="#FungalBiotoxin"/>
@@ -129,6 +132,9 @@
         <Class IRI="#Mutation"/>
     </Declaration>
     <Declaration>
+        <Class IRI="#NonBiologicalToxin"/>
+    </Declaration>
+    <Declaration>
         <Class IRI="#Organ"/>
     </Declaration>
     <Declaration>
@@ -141,16 +147,19 @@
         <Class IRI="#PharmaceuticalPreparation"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#Phenotype"/>
-    </Declaration>
-    <Declaration>
         <Class IRI="#PlantBiotoxin"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#Publication"/>
+        <Class IRI="#ResearchConcept"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#ResearchEntity"/>
+        <Class IRI="#ResearchFinding"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ResearchPublication"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ResearchStudy"/>
     </Declaration>
     <Declaration>
         <Class IRI="#RiskFactor"/>
@@ -171,10 +180,7 @@
         <Class IRI="#StructuralEntity"/>
     </Declaration>
     <Declaration>
-        <Class IRI="#Study"/>
-    </Declaration>
-    <Declaration>
-        <Class IRI="#SyntheticToxin"/>
+        <Class IRI="#StructuralVariation"/>
     </Declaration>
     <Declaration>
         <Class IRI="#TherapeuticEffect"/>
@@ -228,9 +234,6 @@
         <ObjectProperty IRI="#expressesProtein"/>
     </Declaration>
     <Declaration>
-        <ObjectProperty IRI="#fromSpecies"/>
-    </Declaration>
-    <Declaration>
         <ObjectProperty IRI="#hasAssociatedStudy"/>
     </Declaration>
     <Declaration>
@@ -243,16 +246,28 @@
         <ObjectProperty IRI="#hasProteinProduct"/>
     </Declaration>
     <Declaration>
+        <ObjectProperty IRI="#includesKeyEvent"/>
+    </Declaration>
+    <Declaration>
         <ObjectProperty IRI="#includesMetabolite"/>
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="#includesProtein"/>
     </Declaration>
     <Declaration>
+        <ObjectProperty IRI="#partOfAOP"/>
+    </Declaration>
+    <Declaration>
         <ObjectProperty IRI="#pathwayRegulatesGene"/>
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="#phenotypeManifestationOfDisease"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#producedBySpecies"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#producesToxin"/>
     </Declaration>
     <Declaration>
         <ObjectProperty IRI="#riskGoverenedByExposure"/>
@@ -268,33 +283,6 @@
     </Declaration>
     <Declaration>
         <DataProperty IRI="#isXenobioticChemical"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#ChemIDplus"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#Comparative_Toxicogenomics_Database"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#DrugBank"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#Hazardous_Substances_Data_Bank"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#OSHA_Occupational_Chemical_Database"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#PubChem"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#TOXLINE"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#TRI"/>
-    </Declaration>
-    <Declaration>
-        <NamedIndividual IRI="#ToxCast"/>
     </Declaration>
     <Declaration>
         <AnnotationProperty IRI="#fundedBy"/>
@@ -372,10 +360,14 @@
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#AnimalBiotoxin"/>
-        <Class IRI="#Biotoxin"/>
+        <Class IRI="#BiologicalToxin"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="#Biotoxin"/>
+        <Class IRI="#Assay"/>
+        <Class IRI="#ResearchConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#BiologicalToxin"/>
         <Class IRI="#Toxin"/>
     </SubClassOf>
     <SubClassOf>
@@ -391,6 +383,10 @@
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Chemical"/>
+        <Class IRI="#ChemicalConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Chemical"/>
         <ObjectSomeValuesFrom>
             <ObjectProperty IRI="#chemicalCausesEffect"/>
             <Class IRI="#ChemicalEffect"/>
@@ -398,21 +394,28 @@
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#ChemicalEffect"/>
-        <Class IRI="#Phenotype"/>
+        <Class IRI="#ClinicalPhenotype"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="#CopyNumberVariant"/>
-        <Class IRI="#Variant"/>
+        <Class IRI="#ClinicalPhenotype"/>
+        <Class IRI="#HumanConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ClinicalPhenotype"/>
+        <ObjectMinCardinality cardinality="0">
+            <ObjectProperty IRI="#phenotypeManifestationOfDisease"/>
+            <Class IRI="#Disease"/>
+        </ObjectMinCardinality>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Database"/>
-        <Class IRI="#ResearchEntity"/>
+        <Class IRI="#ResearchConcept"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Database"/>
         <ObjectSomeValuesFrom>
             <ObjectProperty IRI="#describedInPublication"/>
-            <Class IRI="#Publication"/>
+            <Class IRI="#ResearchPublication"/>
         </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
@@ -430,7 +433,7 @@
         <Class IRI="#Disease"/>
         <ObjectSomeValuesFrom>
             <ObjectProperty IRI="#diseaseManifestedAsPhenotype"/>
-            <Class IRI="#Phenotype"/>
+            <Class IRI="#ClinicalPhenotype"/>
         </ObjectSomeValuesFrom>
     </SubClassOf>
     <SubClassOf>
@@ -463,12 +466,8 @@
         <Class IRI="#HumanConcept"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="#Finding"/>
-        <Class IRI="#ResearchEntity"/>
-    </SubClassOf>
-    <SubClassOf>
         <Class IRI="#FungalBiotoxin"/>
-        <Class IRI="#Biotoxin"/>
+        <Class IRI="#BiologicalToxin"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#GainOfFunctionMutation"/>
@@ -543,7 +542,7 @@
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#MicrobialBiotoxin"/>
-        <Class IRI="#Biotoxin"/>
+        <Class IRI="#BiologicalToxin"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#ModeOfAction"/>
@@ -552,6 +551,10 @@
     <SubClassOf>
         <Class IRI="#Mutation"/>
         <Class IRI="#GeneticEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#NonBiologicalToxin"/>
+        <Class IRI="#Toxin"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Organ"/>
@@ -581,36 +584,30 @@
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#PharmaceuticalPreparation"/>
+        <Class IRI="#ChemicalConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#PharmaceuticalPreparation"/>
         <ObjectMinCardinality cardinality="1">
             <ObjectProperty IRI="#hasIngredient"/>
             <Class IRI="#Chemical"/>
         </ObjectMinCardinality>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="#Phenotype"/>
-        <Class IRI="#HumanConcept"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#Phenotype"/>
-        <ObjectMinCardinality cardinality="0">
-            <ObjectProperty IRI="#phenotypeManifestationOfDisease"/>
-            <Class IRI="#Disease"/>
-        </ObjectMinCardinality>
-    </SubClassOf>
-    <SubClassOf>
         <Class IRI="#PlantBiotoxin"/>
-        <Class IRI="#Biotoxin"/>
+        <Class IRI="#BiologicalToxin"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="#Publication"/>
-        <Class IRI="#ResearchEntity"/>
+        <Class IRI="#ResearchFinding"/>
+        <Class IRI="#ResearchConcept"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="#ResearchEntity"/>
-        <ObjectMinCardinality cardinality="0">
-            <ObjectProperty IRI="#hasAssociatedStudy"/>
-            <Class IRI="#Study"/>
-        </ObjectMinCardinality>
+        <Class IRI="#ResearchPublication"/>
+        <Class IRI="#ResearchConcept"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ResearchStudy"/>
+        <Class IRI="#ResearchConcept"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#RiskFactor"/>
@@ -637,12 +634,8 @@
         <Class IRI="#HumanConcept"/>
     </SubClassOf>
     <SubClassOf>
-        <Class IRI="#Study"/>
-        <Class IRI="#ResearchEntity"/>
-    </SubClassOf>
-    <SubClassOf>
-        <Class IRI="#SyntheticToxin"/>
-        <Class IRI="#Toxin"/>
+        <Class IRI="#StructuralVariation"/>
+        <Class IRI="#Variant"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#TherapeuticEffect"/>
@@ -651,6 +644,10 @@
     <SubClassOf>
         <Class IRI="#Toxin"/>
         <Class IRI="#Chemical"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ToxinAttribute"/>
+        <Class IRI="#ChemicalConcept"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#ToxinClass"/>
@@ -670,37 +667,14 @@
         <Class IRI="#KeyEvent"/>
     </DisjointClasses>
     <DisjointClasses>
-        <Class IRI="#AOPConcept"/>
-        <Class IRI="#Chemical"/>
-        <Class IRI="#HumanConcept"/>
-        <Class IRI="#PharmaceuticalPreparation"/>
-        <Class IRI="#ResearchEntity"/>
-        <Class IRI="#ToxinAttribute"/>
-    </DisjointClasses>
-    <DisjointClasses>
-        <Class IRI="#AOPConcept"/>
-        <Class IRI="#HumanConcept"/>
-        <Class IRI="#PharmaceuticalPreparation"/>
-        <Class IRI="#ResearchEntity"/>
-        <Class IRI="#Toxin"/>
-        <Class IRI="#ToxinAttribute"/>
-    </DisjointClasses>
-    <DisjointClasses>
-        <Class IRI="#AOPConcept"/>
-        <Class IRI="#HumanConcept"/>
-        <Class IRI="#ResearchEntity"/>
-        <Class IRI="#Toxin"/>
-        <Class IRI="#ToxinAttribute"/>
-    </DisjointClasses>
-    <DisjointClasses>
         <Class IRI="#AnimalBiotoxin"/>
         <Class IRI="#FungalBiotoxin"/>
         <Class IRI="#MicrobialBiotoxin"/>
         <Class IRI="#PlantBiotoxin"/>
     </DisjointClasses>
     <DisjointClasses>
-        <Class IRI="#Biotoxin"/>
-        <Class IRI="#SyntheticToxin"/>
+        <Class IRI="#BiologicalToxin"/>
+        <Class IRI="#NonBiologicalToxin"/>
     </DisjointClasses>
     <DisjointClasses>
         <Class IRI="#CellType"/>
@@ -710,9 +684,9 @@
     </DisjointClasses>
     <DisjointClasses>
         <Class IRI="#Database"/>
-        <Class IRI="#Finding"/>
-        <Class IRI="#Publication"/>
-        <Class IRI="#Study"/>
+        <Class IRI="#ResearchFinding"/>
+        <Class IRI="#ResearchPublication"/>
+        <Class IRI="#ResearchStudy"/>
     </DisjointClasses>
     <DisjointClasses>
         <Class IRI="#Disease"/>
@@ -736,42 +710,6 @@
         <Class IRI="#Source"/>
         <Class IRI="#ToxinClass"/>
     </DisjointClasses>
-    <ClassAssertion>
-        <Class IRI="#Database"/>
-        <NamedIndividual IRI="#ChemIDplus"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#Database"/>
-        <NamedIndividual IRI="#Comparative_Toxicogenomics_Database"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#Database"/>
-        <NamedIndividual IRI="#DrugBank"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#Database"/>
-        <NamedIndividual IRI="#Hazardous_Substances_Data_Bank"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#Database"/>
-        <NamedIndividual IRI="#OSHA_Occupational_Chemical_Database"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#Database"/>
-        <NamedIndividual IRI="#PubChem"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#Database"/>
-        <NamedIndividual IRI="#TOXLINE"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#Database"/>
-        <NamedIndividual IRI="#TRI"/>
-    </ClassAssertion>
-    <ClassAssertion>
-        <Class IRI="#Database"/>
-        <NamedIndividual IRI="#ToxCast"/>
-    </ClassAssertion>
     <SubObjectPropertyOf>
         <ObjectProperty IRI="#hasIngredient"/>
         <ObjectProperty abbreviatedIRI="owl:topObjectProperty"/>
@@ -784,6 +722,16 @@
         <ObjectProperty IRI="#expressedInCellType"/>
         <ObjectProperty IRI="#expressesProtein"/>
     </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#producedBySpecies"/>
+        <ObjectProperty IRI="#producesToxin"/>
+    </InverseObjectProperties>
+    <FunctionalObjectProperty>
+        <ObjectProperty IRI="#producedBySpecies"/>
+    </FunctionalObjectProperty>
+    <InverseFunctionalObjectProperty>
+        <ObjectProperty IRI="#producesToxin"/>
+    </InverseFunctionalObjectProperty>
     <ObjectPropertyDomain>
         <ObjectProperty IRI="#altersBiologicalState"/>
         <Class IRI="#KeyEvent"/>
@@ -799,15 +747,6 @@
     <ObjectPropertyDomain>
         <ObjectProperty IRI="#containsOrgan"/>
         <Class IRI="#OrganSystem"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty IRI="#describedInPublication"/>
-        <ObjectIntersectionOf>
-            <Class IRI="#ResearchEntity"/>
-            <ObjectComplementOf>
-                <Class IRI="#Publication"/>
-            </ObjectComplementOf>
-        </ObjectIntersectionOf>
     </ObjectPropertyDomain>
     <ObjectPropertyDomain>
         <ObjectProperty IRI="#diseaseDownregulatesGene"/>
@@ -834,14 +773,6 @@
         <Class IRI="#CellType"/>
     </ObjectPropertyDomain>
     <ObjectPropertyDomain>
-        <ObjectProperty IRI="#fromSpecies"/>
-        <Class IRI="#Biotoxin"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
-        <ObjectProperty IRI="#hasAssociatedStudy"/>
-        <Class IRI="#ResearchEntity"/>
-    </ObjectPropertyDomain>
-    <ObjectPropertyDomain>
         <ObjectProperty IRI="#hasEtiology"/>
         <Class IRI="#Disease"/>
     </ObjectPropertyDomain>
@@ -854,6 +785,10 @@
         <Class IRI="#Gene"/>
     </ObjectPropertyDomain>
     <ObjectPropertyDomain>
+        <ObjectProperty IRI="#includesKeyEvent"/>
+        <Class IRI="#AOP"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
         <ObjectProperty IRI="#includesMetabolite"/>
         <Class IRI="#Pathway"/>
     </ObjectPropertyDomain>
@@ -862,12 +797,24 @@
         <Class IRI="#Pathway"/>
     </ObjectPropertyDomain>
     <ObjectPropertyDomain>
+        <ObjectProperty IRI="#partOfAOP"/>
+        <Class IRI="#KeyEvent"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
         <ObjectProperty IRI="#pathwayRegulatesGene"/>
         <Class IRI="#GeneticPathway"/>
     </ObjectPropertyDomain>
     <ObjectPropertyDomain>
         <ObjectProperty IRI="#phenotypeManifestationOfDisease"/>
-        <Class IRI="#Phenotype"/>
+        <Class IRI="#ClinicalPhenotype"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#producedBySpecies"/>
+        <Class IRI="#BiologicalToxin"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#producesToxin"/>
+        <Class IRI="#Species"/>
     </ObjectPropertyDomain>
     <ObjectPropertyDomain>
         <ObjectProperty IRI="#riskGoverenedByExposure"/>
@@ -899,7 +846,7 @@
     </ObjectPropertyRange>
     <ObjectPropertyRange>
         <ObjectProperty IRI="#describedInPublication"/>
-        <Class IRI="#Publication"/>
+        <Class IRI="#ResearchPublication"/>
     </ObjectPropertyRange>
     <ObjectPropertyRange>
         <ObjectProperty IRI="#diseaseDownregulatesGene"/>
@@ -911,7 +858,7 @@
     </ObjectPropertyRange>
     <ObjectPropertyRange>
         <ObjectProperty IRI="#diseaseManifestedAsPhenotype"/>
-        <Class IRI="#Phenotype"/>
+        <Class IRI="#ClinicalPhenotype"/>
     </ObjectPropertyRange>
     <ObjectPropertyRange>
         <ObjectProperty IRI="#diseaseRegulatesGeneOther"/>
@@ -930,12 +877,8 @@
         <Class IRI="#HumanProtein"/>
     </ObjectPropertyRange>
     <ObjectPropertyRange>
-        <ObjectProperty IRI="#fromSpecies"/>
-        <Class IRI="#Species"/>
-    </ObjectPropertyRange>
-    <ObjectPropertyRange>
         <ObjectProperty IRI="#hasAssociatedStudy"/>
-        <Class IRI="#Study"/>
+        <Class IRI="#ResearchStudy"/>
     </ObjectPropertyRange>
     <ObjectPropertyRange>
         <ObjectProperty IRI="#hasIngredient"/>
@@ -946,6 +889,10 @@
         <Class IRI="#HumanProtein"/>
     </ObjectPropertyRange>
     <ObjectPropertyRange>
+        <ObjectProperty IRI="#includesKeyEvent"/>
+        <Class IRI="#KeyEvent"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
         <ObjectProperty IRI="#includesMetabolite"/>
         <Class IRI="#Chemical"/>
     </ObjectPropertyRange>
@@ -954,12 +901,24 @@
         <Class IRI="#HumanProtein"/>
     </ObjectPropertyRange>
     <ObjectPropertyRange>
+        <ObjectProperty IRI="#partOfAOP"/>
+        <Class IRI="#AOP"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
         <ObjectProperty IRI="#pathwayRegulatesGene"/>
         <Class IRI="#Gene"/>
     </ObjectPropertyRange>
     <ObjectPropertyRange>
         <ObjectProperty IRI="#phenotypeManifestationOfDisease"/>
         <Class IRI="#Disease"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#producedBySpecies"/>
+        <Class IRI="#Species"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#producesToxin"/>
+        <Class IRI="#BiologicalToxin"/>
     </ObjectPropertyRange>
     <ObjectPropertyRange>
         <ObjectProperty IRI="#riskGoverenedByExposure"/>
@@ -990,34 +949,14 @@
         <Datatype abbreviatedIRI="xsd:boolean"/>
     </DataPropertyRange>
     <AnnotationAssertion>
-        <AnnotationProperty IRI="#includesConceptClasses"/>
-        <IRI>#Comparative_Toxicogenomics_Database</IRI>
-        <IRI>#Chemical</IRI>
-    </AnnotationAssertion>
-    <AnnotationAssertion>
-        <AnnotationProperty IRI="#includesConceptClasses"/>
-        <IRI>#Comparative_Toxicogenomics_Database</IRI>
-        <IRI>#Disease</IRI>
-    </AnnotationAssertion>
-    <AnnotationAssertion>
-        <AnnotationProperty IRI="#includesConceptClasses"/>
-        <IRI>#Comparative_Toxicogenomics_Database</IRI>
-        <IRI>#ExposureEvent</IRI>
-    </AnnotationAssertion>
-    <AnnotationAssertion>
-        <AnnotationProperty IRI="#includesConceptClasses"/>
-        <IRI>#Comparative_Toxicogenomics_Database</IRI>
-        <IRI>#Gene</IRI>
-    </AnnotationAssertion>
-    <AnnotationAssertion>
-        <AnnotationProperty IRI="#includesConceptClasses"/>
-        <IRI>#Comparative_Toxicogenomics_Database</IRI>
-        <IRI>#Pathway</IRI>
-    </AnnotationAssertion>
-    <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
         <IRI>#Database</IRI>
         <Literal>Any database that is relevant to computational toxicology (not necessarily intended to be used primarily for toxicology - e.g., PubChem).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#StructuralVariation</IRI>
+        <Literal xml:lang="en">Includes deletions, inversions, insertions, duplications, and copy number variations</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:comment"/>

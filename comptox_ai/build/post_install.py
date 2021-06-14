@@ -19,12 +19,21 @@ def yes_or_no(question):
       if reply[0] == 'n':
           return False
 
-cont = yes_or_no("This script cleans unnecessary junk out of the ComptoxAI graph database. Do you want to continue? WARNING: This is a destructive operation! If you aren't sure, quit now!")
+print("This script cleans unnecessary junk out of the ComptoxAI graph database (mainly artifacts from the OWL2 specification).")
+cont = yes_or_no("Do you want to continue? WARNING: This is a destructive operation! If you aren't sure, quit now!")
 if not cont:
   raise SystemExit
 
 # Keep an eye out for config file loading issues here.
 db = GraphDB()
+
+# Note: This is the config for n10s before import:
+# CALL n10s.graphconfig.init({
+# 	handleVocabUris: 'IGNORE',
+# 	handleMultival: 'ARRAY',
+# 	handleRDFTypes: 'LABELS',
+# 	applyNeo4jNaming: true
+# })
 
 # Remove useless node labels
 db.run_cypher("MATCH (n:Resource) REMOVE n:Resource;", verbose=True)

@@ -5,6 +5,7 @@ comptox_ai/db/graph_db.py
 Copyright (c) 2020 by Joseph D. Romano
 """
 
+from numpy.lib.arraysetops import ediff1d
 import ipdb
 
 import os
@@ -15,6 +16,13 @@ from yaml import load, Loader
 
 from neo4j import GraphDatabase
 from neo4j.exceptions import ClientError
+
+import torch
+import pandas as pd
+from torch_geometric.data import Data, DataLoader
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+import numpy as np
+
 
 def _get_default_config_file():
   root_dir = Path(__file__).resolve().parents[2]
@@ -235,8 +243,8 @@ class GraphDB(object):
 
     node_proj_str = self._make_node_projection_str(node_proj)
 
-    relationship_proj_str = "'{0}'".format(relationship_proj)
-    #relationship_proj_str = self._make_rel_projection_str(relationship_proj)
+    # relationship_proj_str = "'{0}'".format(relationship_proj)
+    relationship_proj_str = self._make_node_projection_str(relationship_proj)
 
     #config_dict_str = str(config_dict)
     if config_dict is None:
@@ -398,3 +406,83 @@ class GraphDB(object):
     Fetch arrays of features corresponding to entities in a graph from MongoDB.
     """
     pass
+
+  def export_graph(self, graph_name):
+    """
+    Export a graph stored in the GDS graph catalog to a set of CSV files.
+
+    Parameters
+    ----------
+    graph_name : str
+      A name of a graph, corresponding to the `'graphName'` field in the
+      graph's entry within the GDS graph catalog.
+    """
+    res = self.run_cypher(f"CALL gds.beta.graph.export.csv('{graph_name}', {{exportName: '{graph_name}'}})")
+    return res
+
+  def to_pytorch(self, graph_name, node_list):
+    """
+    Construct dataset from exported graph to be used by PyTorch Geometric.
+
+    Parameters
+    ----------
+    graph_name : str
+      A name of a graph, corresponding to the `'graphName'` field in the
+      graph's entry within the GDS graph catalog.
+    """
+    dir_abspath = os.path.join(os.getcwd(), 'comptox_ai/db/exports', f"{graph_name}")
+
+    ## create dataframe containing all nodes
+    node_df = pd.DataFrame()
+    for node in node_list:
+      node_files = glob.glob(f"{dir_abspath}/nodes_{node}_[0-9].csv")
+      curr_df = pd.concat([pd.read_csv(fp, names=['id'], index_col=False) for fp in node_files])
+      curr_df.insert(loc=1, column='type', value=f"{node}")
+      node_df = pd.concat([node_df, curr_df])
+
+    ## map node IDs to indices
+    node_indices = dict(zip(node_df['id'].to_list(), range(len(node_df['id']))))
+    node_df['index'] = node_df['id'].map(node_indices)
+    # node_df = node_df.loc[(node_df['index'] > 500000) & (node_df['index'] < 742868)]
+
+    ## convert node type to one hot encoded values
+    node_df['type_encoded'] = LabelEncoder().fit_transform(node_df['type'])
+    ohe = OneHotEncoder(sparse=False).fit_transform(node_df['type_encoded'].values.reshape(len(node_df), 1))
+    x = torch.LongTensor(ohe)
+    x = x.type(torch.LongTensor)
+
+    ## debugging purposes: nodes
+    # print(f"node_df length = {len(node_df)}")
+    node_df.to_csv(os.path.join(dir_abspath, 'node_df.csv'), sep="\t", index=False)
+
+    ## create dataframe containing all edges
+    edge_files = glob.glob(f"{dir_abspath}/relationships_*_[0-9].csv")
+    edge_df = pd.concat([pd.read_csv(fp, names=['start_id', 'end_id'], index_col=False) for fp in edge_files])
+
+    ## map edges to indices
+    edge_df['start_index'] = edge_df['start_id'].map(node_indices)
+    edge_df['end_index'] = edge_df['end_id'].map(node_indices)
+    
+    # edge_df = edge_df.loc[
+    #   edge_df['start_index'].isin(node_df['index'].tolist()) &
+    #   edge_df['end_index'].isin(node_df['index'].tolist())
+    # ]
+    # print(f"edge_df length = {len(edge_df)}")
+
+    edge_index = torch.tensor([edge_df['start_index'].to_numpy(), edge_df['end_index'].to_numpy()], dtype=torch.long)
+
+    ## debugging purposes: edges
+    edge_df.to_csv(os.path.join(dir_abspath, 'edge_df.csv'), sep="\t", index=False)
+    # print(f"edge_index.max = {int(edge_index.max()) + 1}")
+
+    ## create torch_geometric data object
+    data = Data(x=x, edge_index=edge_index)
+    data.train_mask = data.val_mask = data.test_mask = data.y = None
+
+    # --- DataLoader ---
+    # data_list = [Data(...), ..., Data(...)]
+    # loader = DataLoader(data_list, batch_size=32)
+
+    return data
+
+    

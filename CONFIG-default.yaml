@@ -16,16 +16,5 @@ mongodb:
 data:
   prefix: D:\data\
   tempdir: D:\data\comptox_ai\
-  lockfile: D:\data\comptox_ai\progress-lock.json
-
-comptoxai:
-  # Miscellaneous configuration related to the structure of ComptoxAI
-  # You probably don't need to edit this section directly unless
-  # adding new features or tinkering with existing features.
-  type_mappings:
-    # Map from Neo4j node types to their corresponding colleciton
-    # names in MongoDB.
-    Chemical: toxcast.chemicals
-    Assay: toxcast.assays
 
 ...

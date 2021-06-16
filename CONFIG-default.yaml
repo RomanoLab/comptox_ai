@@ -7,11 +7,10 @@ neo4j:
   protocol: bolt
   port: 7687
 
-mongodb:
-  username: 
-  password:
-  hostname: 127.0.0.1
-  port: 27017
+mysql:
+  user:
+  passwd:
+  host:
 
 data:
   prefix: D:\data\

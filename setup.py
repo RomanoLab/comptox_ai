@@ -14,7 +14,7 @@ with open("README.md", 'r') as fp:
 package_src_dir = Path(__file__).parent
 
 MAJOR      = 0
-MINOR      = 1
+MINOR      = 2
 MICRO      = 0
 ISRELEASED = False
 VERSION    = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
@@ -52,7 +52,7 @@ setuptools.setup(
         'py2neo==2021.1',
         'rdflib==5.0.0',
         'openpyxl==3.0.7',
-        'PyYAML==5.4.1',
+        'PyYAML>=5.3.1',
         'pymongo==3.11.4'  # prefer to deprecate - see comptox_ai/db/feature_db.py
     ],
     extras_require={

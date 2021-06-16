@@ -47,6 +47,7 @@ setuptools.setup(
         'numpy==1.20.3',
         'scipy==1.6.3',
         'pandas==1.2.4',
+        'mysqlclient==2.0.3',
         'neo4j==4.2.1',
         'networkx==2.5.1',
         'py2neo==2021.1',

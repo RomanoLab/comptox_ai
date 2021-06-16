@@ -660,9 +660,6 @@ if __name__ == "__main__":
     mysql_config["user"] = cnf["mysql"]["user"]
     mysql_config["passwd"] = cnf["mysql"]["passwd"]
 
-    # Connect to MySQL
-    mysql_config = 
-
     #print("INITIAL ONTOLOGY STATISTICS:")
     #print_ontology_stats(onto)
 

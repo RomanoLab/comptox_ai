@@ -649,12 +649,12 @@ def print_ontology_stats(ont: owlready2.namespace.Ontology):
 
 
 if __name__ == "__main__":
-    #onto = owlready2.get_ontology("file://D:\\projects\\comptox_ai\\comptox.rdf").load()
-    onto = owlready2.get_ontology("file://D:\\projects\\comptox_ai\\comptox_mid.rdf").load()
-
+    repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+    onto = owlready2.get_ontology("file://{}".format(os.path.join(repo_root, "comptox.rdf"))).load()
+    
     # open config file:
     with open("../../CONFIG.yaml", 'r') as fp:
-        cnf = yaml.load(fp)
+        cnf = load(fp)
     mysql_config = dict()
     mysql_config["host"] = cnf["mysql"]["host"]
     mysql_config["user"] = cnf["mysql"]["user"]
@@ -665,7 +665,6 @@ if __name__ == "__main__":
 
     epa = FlatFileDatabaseParser("epa", onto)
     ncbigene = FlatFileDatabaseParser("ncbigene", onto)
-    #ctd = FlatFileDatabaseParser("ctd", onto)
     drugbank = FlatFileDatabaseParser("drugbank", onto)
     hetionet = FlatFileDatabaseParser("hetionet", onto)
     aopdb = MySQLDatabaseParser("aopdb", onto, mysql_config)
@@ -689,7 +688,7 @@ if __name__ == "__main__":
             },
         },
         merge=False,
-        skip=True,
+        skip=False
     )
     epa.parse_node_type(
         node_type="Chemical",
@@ -709,36 +708,8 @@ if __name__ == "__main__":
             },
         },
         merge=True,
-        skip=True,
+        skip=False
     )
-
-    # ipdb.set_trace()
-    # #############
-    # # CTD NODES #
-    # #############
-    # ctd.parse_node_type(
-    #     node_type="Chemical",
-    #     source_filename="CTD_chemicals.csv",
-    #     fmt="csv",
-    #     parse_config={
-    #         "iri_column_name": "CasRN",
-    #         "headers": ["ChemicalName", "ChemicalID", "CasRN", "Definition", "ParentIDs", "TreeNumbers", "ParentTreeNumbers", "Synonyms"],
-    #         "skip_n_lines": 29,
-    #         "data_property_map": {
-    #             "CasRN": onto.xrefCasRN,
-    #             "ChemicalID": onto.xrefMeSHUI,
-    #         },
-    #         "merge_column": {
-    #             "source_column_name": "CasRN",
-    #             "data_property": onto.xrefCasRN
-    #         },
-    #         "data_transforms": {
-    #             "ChemicalID": lambda x: x.split(":")[-1]
-    #         }
-    #     },
-    #     merge=True,
-    #     skip=False
-    # )
 
     ##################
     # DRUGBANK NODES #
@@ -760,7 +731,7 @@ if __name__ == "__main__":
             },
         },
         merge=True,
-        skip=True
+        skip=False
     )
 
     ###################
@@ -787,7 +758,7 @@ if __name__ == "__main__":
             },
         },
         merge=False,
-        skip=True,
+        skip=False,
     )
 
     ################
@@ -804,7 +775,7 @@ if __name__ == "__main__":
             },
         },
         merge=False,
-        skip=True,
+        skip=False,
     )
     aopdb.parse_node_type(
         node_type="KeyEvent",
@@ -820,7 +791,7 @@ if __name__ == "__main__":
             },
         },
         merge=False,
-        skip=True,
+        skip=False,
     )
     aopdb.parse_node_type(
         node_type="MolecularInitiatingEvent",
@@ -838,7 +809,7 @@ if __name__ == "__main__":
         merge=True,
         append_class=True,
         existing_class="KeyEvent",
-        skip=True,
+        skip=False
     )
     aopdb.parse_node_type(
         node_type="AdverseOutcome",
@@ -856,7 +827,7 @@ if __name__ == "__main__":
         merge=True,
         append_class=True,
         existing_class="KeyEvent",
-        skip=True,
+        skip=False
     )
     # To denote something as a stressor we just add the stressor ID to a
     # Chemical node. 
@@ -873,7 +844,7 @@ if __name__ == "__main__":
             },
         },
         merge=True,
-        skip=True
+        skip=False
     )
     aopdb.parse_node_type(
         node_type="Pathway",
@@ -888,7 +859,7 @@ if __name__ == "__main__":
             "custom_sql_query": "SELECT DISTINCT path_id, path_name, ext_source FROM aopdb.pathway_gene WHERE tax_id = 9606;"
         },
         merge=False,
-        skip=True
+        skip=False
     )
 
     # with open("D:\\projects\\comptox_ai\\comptox_mid.rdf", "wb") as fp:
@@ -961,50 +932,6 @@ if __name__ == "__main__":
         merge=False,
         skip=False
     )
-
-    #####################
-    # CTD RELATIONSHIPS #
-    #####################
-    # ctd.parse_relationship_type(
-    #     relationship_type=onto.chemicalIncreasesExpression,
-    #     source_filename="CTD_chem_gene_ixns.csv",
-    #     fmt="csv",
-    #     parse_config = {
-    #         "subject_node_type": onto.Chemical,
-    #         "subject_column_name": "ChemicalID",
-    #         "subject_match_property": onto.xrefMeSHUI,
-    #         "object_node_type": onto.Gene,
-    #         "object_column_name": "GeneID",
-    #         "object_match_property": onto.xrefNcbiGene,
-    #         "source_filename": "CTD_chem_gene_ixns.csv",
-    #         "headers": ["ChemicalName","ChemicalID","CasRN","GeneSymbol","GeneID","GeneForms","Organism","OrganismID","Interaction","InteractionActions","PubMedIDs"],
-    #         "skip_n_lines": 29,
-    #         "filter_column": "InteractionActions",
-    #         "filter_value": "increases^expression",
-    #     },
-    #     merge=False,
-    #     skip=False
-    # )
-    # ctd.parse_relationship_type(
-    #     relationship_type=onto.chemicalDecreasesExpression,
-    #     source_filename="CTD_chem_gene_ixns.csv",
-    #     fmt="csv",
-    #     parse_config = {
-    #         "subject_node_type": onto.Chemical,
-    #         "subject_column_name": "ChemicalID",
-    #         "subject_match_property": onto.xrefMeSHUI,
-    #         "object_node_type": onto.Gene,
-    #         "object_column_name": "GeneID",
-    #         "object_match_property": onto.xrefNcbiGene,
-    #         "source_filename": "CTD_chem_gene_ixns.csv",
-    #         "headers": ["ChemicalName","ChemicalID","CasRN","GeneSymbol","GeneID","GeneForms","Organism","OrganismID","Interaction","InteractionActions","PubMedIDs"],
-    #         "skip_n_lines": 29,
-    #         "filter_column": "InteractionActions",
-    #         "filter_value": "decreases^expression",
-    #     },
-    #     merge=False,
-    #     skip=False
-    # )
 
     ##########################
     # HETIONET RELATIONSHIPS #

@@ -53,6 +53,7 @@ setuptools.setup(
         'py2neo==2021.1',
         'rdflib==5.0.0',
         'openpyxl==3.0.7',
+        'owlready2==0.33',
         'PyYAML>=5.3.1',
         'pymongo==3.11.4'  # prefer to deprecate - see comptox_ai/db/feature_db.py
     ],

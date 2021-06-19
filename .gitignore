@@ -100,3 +100,4 @@ NEO4J_CONFIG.cfg
 CONFIG.cfg
 CONFIG.yaml
 catalog-*.xml
+comptox_*.rdf

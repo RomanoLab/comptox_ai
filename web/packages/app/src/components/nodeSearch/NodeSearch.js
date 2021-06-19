@@ -6,6 +6,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
+import NodeResult from './NodeResult';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -13,10 +14,22 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 const nodeTypes = [
   { type: 'Chemical' },
   { type: 'Gene' },
-  { type: 'Disease' }
+  { type: 'Disease' },
+  { type: 'Adverse Outcome Pathway' },
+  { type: 'Key Event' },
+  { type: 'Molecular Initiating Event' }
 ];
 
 class NodeSearch extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      // nodeData: this.props.nodeData
+      nodeData: this.props.nodeResults
+    }
+  }
+  
   render() {
     return(
       <div>
@@ -25,7 +38,7 @@ class NodeSearch extends React.Component {
           <i>A node is an individual entity in ComptoxAI's graph database. For example, individual genes, diseases, and chemicals are all represented as nodes in the graph database.</i>
         </p>
         <Autocomplete
-          multiple
+          // multiple
           id="node-types-tags"
           options={nodeTypes}
           disableCloseOnSelect
@@ -47,13 +60,27 @@ class NodeSearch extends React.Component {
           )}
         />
         <TextField
-          id="nodeIdValue"
+          id="nodeField"
+          label="Search field"
+          variant="outlined"
+          style={{ width: 500, paddingBottom: 8 }}
+        />
+        <TextField
+          id="nodeValue"
           label="Value"
           variant="outlined"
           style={{ width: 500, paddingBottom: 8 }}
         />
         <br/>
         <Button variant="contained" color="primary">Search</Button>
+        {!(this.state.nodeData === undefined) &&
+        <NodeResult
+          nodeType={this.state.nodeData[0].nodeType}
+          nodeName={this.state.nodeData[0].commonName}
+          nodeIDs={this.state.nodeData[0].identifiers}
+          nodeURI={this.state.nodeData[0].ontologyURI}
+        />
+        }
       </div>
     );
   }

@@ -12,17 +12,17 @@ node labels).
 from comptox_ai.db.graph_db import GraphDB
 
 def yes_or_no(question):
-  while "the answer is invalid":
-      reply = str(input(question+' (y/n): ')).lower().strip()
-      if reply[0] == 'y':
-          return True
-      if reply[0] == 'n':
-          return False
+    while "the answer is invalid":
+        reply = str(input(question+' (y/n): ')).lower().strip()
+        if reply[0] == 'y':
+            return True
+        if reply[0] == 'n':
+            return False
 
 print("This script cleans unnecessary junk out of the ComptoxAI graph database (mainly artifacts from the OWL2 specification).")
 cont = yes_or_no("Do you want to continue? WARNING: This is a destructive operation! If you aren't sure, quit now!")
 if not cont:
-  raise SystemExit
+    raise SystemExit
 
 # Keep an eye out for config file loading issues here.
 db = GraphDB()
@@ -54,12 +54,12 @@ db.run_cypher("MATCH (n) WHERE size(labels(n)) = 0 DETACH DELETE n;", verbose=Tr
 
 # Export a test database to use for CI
 db.build_graph_native_projection(
-  graph_name="ci_graph",
-  node_proj=[
-    "KeyEvent",
-    "MolecularInitiatingEvent",
-    "AdverseOutcome",
-    "AOP"
-  ],
-  relationship_proj="*"  # Keep all relationships
+    graph_name="ci_graph",
+    node_proj=[
+        "KeyEvent",
+        "MolecularInitiatingEvent",
+        "AdverseOutcome",
+        "AOP"
+    ],
+    relationship_proj="*"  # Keep all relationships
 )

@@ -48,3 +48,11 @@ h2 {
   margin-bottom: 1rem;
   word-wrap: break-word;
 }
+
+.node-detail {
+  border: 1px solid gray;
+  border-radius: 4px;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 5px;
+  margin: 6px;
+}

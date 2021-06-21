@@ -1,11 +1,5 @@
 const _ = require('lodash');
-const NodeType = require('./neo4j/nodetype');
 const Node = require('./neo4j/node')
-
-function parseNodeLabels(neo4jResult, namespace_filter = 'ns0') {
-    const all_records = neo4jResult.records.map(r => new NodeType(r.toObject()));
-    return all_records.filter(ar => ar['namespace'] === namespace_filter).map(r => r['label']);
-}
 
 function parseNodes(neo4jResult, namespace_filter = 'ns0') {
     const all_records = neo4jResult.records.map(r => new Node(r.toObject()));
@@ -16,9 +10,10 @@ function parseNodes(neo4jResult, namespace_filter = 'ns0') {
 // Get a list of node types in ComptoxAI
 const listNodeTypes = function (session) {
     return session.readTransaction(txc => (
-        txc.run('call db.labels()')
+        txc.run('call db.labels();')
     )).then(
-        r => parseNodeLabels(r)
+        // r => parseNodeLabels(r)
+        r => r.records.map(rec => rec.toObject()["label"])
     );
 };
 
@@ -61,6 +56,8 @@ const findNodeByQuery = function (session, type, field, value) {
         `MATCH (n:${type} {${field}: $value})`,
         `RETURN n;`
     ].join(' ');
+
+    console.log(query);
 
     // Convert the value to an int if it looks like an int
     const intValue = parseInt(value);

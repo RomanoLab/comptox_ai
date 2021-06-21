@@ -11,7 +11,7 @@ class NodeResult extends React.Component {
       nodeType: props.nodeType,
       nodeName: props.nodeName,
       nodeIDs: props.nodeIDs,
-      nodeURI: props.nodeURI
+      nodeIRI: props.nodeIRI
     }
   }
 
@@ -19,25 +19,28 @@ class NodeResult extends React.Component {
     return(
       <div className="node-detail">
         <p>Data type(s): {this.state.nodeType}</p>
-        <p>Name: {this.state.nodeName}</p>
-        <p id="uri-text">URI: <tt>{this.state.nodeURI}</tt></p>
+        <p>Name: <span class="node-name">{this.state.nodeName}</span></p>
         <IsEmpty
           value={this.state.nodeIDs}
-          yes={"No external IDs found"}
+          yes="No external IDs found"
           no={() => (
             <div>
               <p>External Identifiers:</p>
               <ul>
-                <Map collection={this.state.nodeIDs} iteratee={i => <li key={i}>{i}</li>} />
+                <Map
+                  collection={this.state.nodeIDs}
+                  iteratee={i => <li key={i}>{i}</li>}
+                />
               </ul>
             </div>
           )}
         />
-        <p>Send result to relationship search:</p>
+        {/* <p>Send result to relationship search:</p>
         <ButtonGroup color="primary" size="small" aria-label="small outlined button group">
           <Button>Start node</Button>
           <Button>End node</Button>
-        </ButtonGroup>
+        </ButtonGroup> */}
+        <p id="uri-text">Ontology IRI: <tt>{this.state.nodeIRI}</tt></p>
         <p>Send result to path search:</p>
         <ButtonGroup color="primary" size="small" aria-label="small outlined button group">
           <Button>Start node</Button>

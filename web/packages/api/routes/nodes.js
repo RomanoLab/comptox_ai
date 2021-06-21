@@ -39,6 +39,7 @@ const writeError = require('../helpers/response').writeError;
  *             type: string
  */
 exports.listNodeTypes = function (req, res, next) {
+    debugger;
     Nodes.listNodeTypes(dbUtils.getSession(req))
         .then(response => writeResponse(res, response))
         .catch(next);

@@ -1,62 +1,49 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import { IsEmpty, Map } from 'react-lodash';
 
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
-
-const relTypes = [
-  { type: 'CHEMICAL_BINDS_GENE' },
-];
 
 class RelationshipSearch extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      relSubject: props.relationshipResults.startNode,
+      relObjects: props.relationshipResults.endNodes
+    }
+  }
+  
   render() {
     return(
-      <div>
-        <h2>Search for a relationship</h2>
+      <div id="rel-search">
+        <h2>Search for relationships</h2>
         <p>
-          <i>Relationships are associations or other conceptual links between any two entities in the graph database. For example, a relationship may represent a chemical interacting with a gene, or a symptom manifesting a disease.</i>
+          Search for a node in the box above and click "Send to relationship search" to see all linked nodes.
         </p>
-        <TextField
-          id="startNodeValue"
-          label="Start node"
-          variant="outlined"
-          style={{ width: 500, paddingBottom: 8 }}
-        />
-        <Autocomplete
-          multiple
-          id="relationship-types-tags"
-          options={relTypes}
-          disableCloseOnSelect
-          getOptionLabel={(option) => option.type}
-          renderOption={(option, { selected }) => (
-            <React.Fragment>
-              <Checkbox
-                icon={icon}
-                checkedIcon={checkedIcon}
-                style={{ marginRight: 8 }}
-                checked={selected}
-              />
-              {option.type}
-            </React.Fragment>
-          )}
-          style={{ width: 500, paddingBottom: 8 }}
-          renderInput={(params) => (
-            <TextField {...params} variant="outlined" label="Relationship Type" placeholder="Type" />
-          )}
-        />
-        <TextField
-          id="endNodeValue"
-          label="End node"
-          variant="outlined"
-          style={{ width: 500, paddingBottom: 8 }}
-        />
-        <br/>
-        <Button variant="contained" color="primary">Search</Button>
+        {/* Show start node (main information only) */}
+        <div id="rel-start-node">
+
+        </div>
+        {/* Show a list of all linked nodes */}
+        <div id="rel-end-node-list">
+          <IsEmpty
+            value={this.state.relObjects}
+            yes="No relationships found for selected node! This usually means the node is understudied or incorrectly annotated in source databases."
+            no={() => (
+              <div id="rel-objects">
+                <Map
+                  collection={this.state.relObjects}
+                  iteratee= {i => (
+                    <div className="rel-result">
+                      <p >Start node: <span className="node-name">{this.state.relSubject.commonName}</span></p>
+                      <p className="rel-type">Relationship Type: <span class="tt">{i.relationshipType}</span></p>
+                      <p>End node: <span className="node-name">{i.node.commonName}</span></p>
+                    </div>
+                  )}
+                />
+              </div>
+            )}
+          />
+        </div>
       </div>
     );
   }

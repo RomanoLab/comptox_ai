@@ -48,6 +48,8 @@ var swaggerSpec = swaggerJSDoc(swaggerOpts);
 app.use('/help', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.set("port", nconf.get("PORT"));
 
+app.use(require('./neo4j'));
+
 app.use(bodyParser.json());
 app.use(methodOverride());
 

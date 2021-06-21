@@ -32,7 +32,7 @@ class NodeSearch extends React.Component {
   
   render() {
     return(
-      <div>
+      <div class="node-search">
         <h2>Search for a node</h2>
         <p>
           <i>A node is an individual entity in ComptoxAI's graph database. For example, individual genes, diseases, and chemicals are all represented as nodes in the graph database.</i>
@@ -55,6 +55,7 @@ class NodeSearch extends React.Component {
             </React.Fragment>
           )}
           style={{ width: 500, paddingBottom: 8 }}
+          size="small"
           renderInput={(params) => (
             <TextField {...params} variant="outlined" label="Node Types" placeholder="Types" />
           )}
@@ -63,12 +64,14 @@ class NodeSearch extends React.Component {
           id="nodeField"
           label="Search field"
           variant="outlined"
+          size="small"
           style={{ width: 500, paddingBottom: 8 }}
         />
         <TextField
           id="nodeValue"
           label="Value"
           variant="outlined"
+          size="small"
           style={{ width: 500, paddingBottom: 8 }}
         />
         <br/>
@@ -78,7 +81,7 @@ class NodeSearch extends React.Component {
           nodeType={this.state.nodeData[0].nodeType}
           nodeName={this.state.nodeData[0].commonName}
           nodeIDs={this.state.nodeData[0].identifiers}
-          nodeURI={this.state.nodeData[0].ontologyURI}
+          nodeIRI={this.state.nodeData[0].ontologyIRI}
         />
         }
       </div>

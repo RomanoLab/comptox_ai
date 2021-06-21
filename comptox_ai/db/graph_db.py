@@ -443,17 +443,11 @@ class GraphDB(object):
     ## map node IDs to indices
     node_indices = dict(zip(node_df['id'].to_list(), range(len(node_df['id']))))
     node_df['index'] = node_df['id'].map(node_indices)
-    # node_df = node_df.loc[(node_df['index'] > 500000) & (node_df['index'] < 742868)]
 
     ## convert node type to one hot encoded values
     node_df['type_encoded'] = LabelEncoder().fit_transform(node_df['type'])
     ohe = OneHotEncoder(sparse=False).fit_transform(node_df['type_encoded'].values.reshape(len(node_df), 1))
     x = torch.LongTensor(ohe)
-    x = x.type(torch.LongTensor)
-
-    ## debugging purposes: nodes
-    # print(f"node_df length = {len(node_df)}")
-    node_df.to_csv(os.path.join(dir_abspath, 'node_df.csv'), sep="\t", index=False)
 
     ## create dataframe containing all edges
     edge_files = glob.glob(f"{dir_abspath}/relationships_*_[0-9].csv")
@@ -462,26 +456,11 @@ class GraphDB(object):
     ## map edges to indices
     edge_df['start_index'] = edge_df['start_id'].map(node_indices)
     edge_df['end_index'] = edge_df['end_id'].map(node_indices)
-    
-    # edge_df = edge_df.loc[
-    #   edge_df['start_index'].isin(node_df['index'].tolist()) &
-    #   edge_df['end_index'].isin(node_df['index'].tolist())
-    # ]
-    # print(f"edge_df length = {len(edge_df)}")
-
     edge_index = torch.tensor([edge_df['start_index'].to_numpy(), edge_df['end_index'].to_numpy()], dtype=torch.long)
-
-    ## debugging purposes: edges
-    edge_df.to_csv(os.path.join(dir_abspath, 'edge_df.csv'), sep="\t", index=False)
-    # print(f"edge_index.max = {int(edge_index.max()) + 1}")
 
     ## create torch_geometric data object
     data = Data(x=x, edge_index=edge_index)
     data.train_mask = data.val_mask = data.test_mask = data.y = None
-
-    # --- DataLoader ---
-    # data_list = [Data(...), ..., Data(...)]
-    # loader = DataLoader(data_list, batch_size=32)
 
     return data
 

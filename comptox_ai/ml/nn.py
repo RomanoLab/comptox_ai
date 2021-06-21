@@ -27,7 +27,6 @@ from torch_geometric.nn import GCNConv
 from comptox_ai.ml.train_test_split_edges import train_test_split_edges
 
 
-#----------------------------------------------
 class NeuralNetwork(object):
     def __init__(self, **kwargs):
         arg_opts = {
@@ -44,10 +43,9 @@ class NeuralNetwork(object):
         self.data = None
         self.model = None
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        # model = Net(dataset.num_features, 64).to(device)
-        # data = data.to(device)
-        # optimizer = torch.optim.Adam(params=model.parameters(), lr=0.01)
 
+    ## link prediction model - code doesn't work from here on down, will prob need to delete!
+    ## - erica
     class Net(torch.nn.Module):
         def __init__(self, name, in_channels, out_channels):
             super(Net, self).__init__()
@@ -93,7 +91,6 @@ class NeuralNetwork(object):
         print(f"data.edge_index:\n\t{data.edge_index}")
 
         ## train test split data
-        print("Train test split beginning..")
         data = train_test_split_edges(data)
         self.data = data.to(self.device)
 

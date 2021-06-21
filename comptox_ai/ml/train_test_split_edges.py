@@ -1,7 +1,12 @@
+"""
+Copy of torch_geometric.utils.train_test_split_edges. 
+Slightly altered to work with dataset for link prediction model.
+Probably won't be necessary anymore since code for link pred model
+isn't working anyway.  
+-Erica
+"""
 import math
-
 import torch
-
 from torch_geometric.utils import to_undirected
 
 

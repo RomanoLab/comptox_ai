@@ -1,27 +1,105 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
+import { Graph } from "react-d3-graph";
+
+const iriPrefixRe = /^.*#(.+)$/;
+const nameSplitRe = /^([^_]+)_(.+)$/;
+
+const graphConfig = {
+  directed: true,
+  initialZoom: 2,
+  node: {
+    color: "#216a05",
+  }
+};
+
+/**
+ * Extract a node class and (hopefully) unique identifier from a node, given
+ * its ontology IRI.
+ * @param {string} full_iri 
+ * @returns 
+ */
+function processOntologyNodeIRI(full_iri) {
+  const stripPrefixMatch = full_iri.match(iriPrefixRe);
+  const fullName = stripPrefixMatch[1];
+
+  const fullNameSplit = fullName.match(nameSplitRe);
+
+  return {
+    nodeClass: fullNameSplit[1],
+    nodeId: fullNameSplit[2],
+  }
+}
+
+function parseNodeToVertex(node) {
+  const parsedNodeIRI = processOntologyNodeIRI(node.ontologyIRI);
+  
+  const nodeLabel = parsedNodeIRI.nodeClass;
+  const nodeName = parsedNodeIRI.nodeId;
+
+  return {
+    id: nodeName,
+    nodeLabel: nodeLabel
+  }
+};
+
+function parseRelationshipToEdge(relationship) {
+  const parsedSourceIRI = processOntologyNodeIRI(relationship.fromIRI);
+  const parsedTargetIRI = processOntologyNodeIRI(relationship.toIRI);
+  
+  return {
+    source: parsedSourceIRI.nodeId,
+    target: parsedTargetIRI.nodeId,
+    relType: relationship.relType,
+  }
+}
 
 class PathSearch extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      startNode: props.pathResults.startNode,
+      midNodes: props.pathResults.midNodes,
+      endNode: props.pathResults.endNode,
+      relationships: props.pathResults.relationships,
+    }
+
+    this.graphData = {
+      nodes: this.getNodes(),
+      links: this.getRelationships(),
+    }
+  }
+
+  getNodes() {
+    var nodes = [];
+
+    // Do start node;
+    nodes.push(parseNodeToVertex(this.state.startNode));
+    nodes.push(parseNodeToVertex(this.state.endNode));
+
+    return nodes;
+  }
+
+  getRelationships() {
+    var rels = [];
+
+    this.state.relationships.forEach(r => {
+      rels.push(parseRelationshipToEdge(r));
+    });
+
+    return rels;
+  }
+  
   render() {
+    console.log(this.graphData);
     return(
-      <div>
+      <div id="path-search">
         <h2>Search for a path</h2>
-        <p>
-          <i>Paths are chains of two or more nodes in the graph database along with the relationships that link them.</i>
-        </p>
-        <TextField
-          id="startNodeValue"
-          label="Start node"
-          variant="outlined"
-          style={{ width: 500, paddingBottom: 8 }}
+        <Graph
+          id="path-search-result"
+          data={this.graphData}
+          config={graphConfig}
         />
-        <TextField
-          id="endNodeValue"
-          label="End node"
-          variant="outlined"
-          style={{ width: 500, paddingBottom: 8 }}
-        />
-        
       </div>
     );
   }

@@ -91,6 +91,7 @@ app.get('/', (req, res) => {
 
 app.get("/nodes/listNodeTypes", routes.nodes.listNodeTypes);
 app.get("/nodes/listNodeTypeProperties/:type", routes.nodes.listNodeTypeProperties);
+// example: http://localhost:3000/nodes/Chemical/search?field=xrefDTXSID&value=DTXSID30857908
 app.get("/nodes/:type/search?", routes.nodes.findNode);
 
 // app.get("/relationships/listRelationshipTypes", routes.relationships.listRelationshipTypes);

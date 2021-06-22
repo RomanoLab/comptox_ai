@@ -1,11 +1,26 @@
+const neo4j = require('neo4j-driver');
+
 const _ = require('lodash');
 
 const Node = module.exports = function(_node, nodeData) {
     _.extend(this, _node.properties);
 
-    this.uri = _node['n'].properties.uri;
-    this.node_features = _node['n'].properties;
-    
-    this.node_labels = _node['n']['labels'];
+    const node_features = _node['n'].properties;
+    const node_labels = _node['n']['labels'];
 
+    const identifiers = Object.keys(node_features).reduce(function(xrefs, nf) {
+        if (nf.startsWith("xref")) {
+            xrefs.push({
+                idType: nf.replace(/^(xref\.)/, ""),
+                idValue: node_features[nf]
+            });
+        }
+        return xrefs;
+    }, []);
+
+    this.nodeId = _node['id(n)'].toNumber();
+    this.nodeType = node_labels[0];
+    this.commonName = node_features.commonName;
+    this.identifiers = identifiers;
+    this.ontologyIRI = node_features.uri;
 };

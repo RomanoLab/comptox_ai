@@ -1,10 +1,55 @@
 const _ = require('lodash');
 const Node = require('./neo4j/node')
 
+// Example node:
+// const testNode = {
+//     nodeType: 'Chemical',
+//     commonName: "3-Fluoro-4-(1-methyl-5,6-dihydro-1,2,4-triazin-4(1H)-yl)aniline",
+//     ontologyIRI: 'http://jdr.bio/ontologies/comptox.owl#chemical_dtxsid9085',
+//     identifiers: [
+//         {
+//             idType: "PubchemSID",
+//             idValue: "316386667",
+//         },
+//         {
+//             idType: "DTXSID",
+//             idValue: "DTXSID90857126"
+//         },
+//         {
+//             idType: "PubchemCID",
+//             idValue: "71741499"
+//         },
+//         {
+//             idType: "CasRN",
+//             idValue: "1334167-69-9"
+//         }
+//     ],
+// };
+
 function parseNodes(neo4jResult, namespace_filter = 'ns0') {
     const all_records = neo4jResult.records.map(r => new Node(r.toObject()));
-    return all_records;
-    //return all_records.filter(ar => ar['namespace'] === namespace_filter);
+    
+    const nodes = all_records.map(record => {
+        console.log(Object.keys(record.node_features));
+        const identifiers = Object.keys(record.node_features).reduce(function(xrefs, nf) {
+            if (nf.startsWith("xref")) {
+                xrefs.push({
+                    idType: nf.replace(/^(xref\.)/, ""),
+                    idValue: record.node_features[nf]
+                });
+            }
+            return xrefs;
+        }, []);
+
+        return {
+            nodeType: record.node_labels[0],
+            commonName: record.node_features.commonName,
+            identifiers: identifiers,
+            ontologyIRI: record.node_features.uri,
+        }
+    });
+
+    return nodes;
 }
 
 // Get a list of node types in ComptoxAI

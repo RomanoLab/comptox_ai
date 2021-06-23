@@ -46,3 +46,9 @@ exports.listRelationshipTypes = function (req, res, next) {
 //         .then(response => writeResponse(res, response))
 //         .catch(next);
 // };
+
+exports.findRelationshipsByNode = function(req, res, next) {
+    Relationships.findRelationshipsByNode(dbUtils.getSession(req), req.params.id)
+        .then(response => writeResponse(res, response))
+        .catch(next);
+};

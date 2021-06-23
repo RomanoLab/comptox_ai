@@ -3,12 +3,11 @@ const Node = require('./neo4j/node')
 
 
 function parseNodes(neo4jResult) {
-    const nodes = neo4jResult.records.map(r => new Node(r.toObject()));
+    const nodes = neo4jResult.records.map(r => new Node(r.toObject()['n']));
 
     return nodes;
 }
 
-// Get a list of node types in ComptoxAI
 const listNodeTypes = function (session) {
     return session.readTransaction(txc => (
         txc.run('call db.labels();')
@@ -56,8 +55,6 @@ const findNodeByQuery = function (session, type, field, value) {
         `MATCH (n:${type} {${field}: $value})`,
         `RETURN n, id(n);`
     ].join(' ');
-
-    console.log(query);
 
     // Convert the value to an int if it looks like an int
     const intValue = parseInt(value);

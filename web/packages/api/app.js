@@ -96,6 +96,7 @@ app.get("/nodes/:type/search?", routes.nodes.findNode);
 
 // app.get("/relationships/listRelationshipTypes", routes.relationships.listRelationshipTypes);
 //app.get("/listRelationshipTypeProperties/:type", routes.relationships.listRelationshipTypeProperties);
+app.get("/relationships/fromStartNodeId/:id", routes.relationships.findRelationshipsByNode);
 
 // handle errors
 app.use(function (err, req, res, next) {

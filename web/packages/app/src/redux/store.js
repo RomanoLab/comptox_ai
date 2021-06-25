@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import nodeSearchSlice from '../components/nodeSearch/nodeSearchSlice';
+import nodeSlice from '../features/nodes/nodeSlice';
 
 export const store = configureStore({
   reducer: {
-    nodeSearchResults: nodeSearchSlice,
+    node: nodeSlice
     // relSearchResults: relSearchReducer,
     // pathSearchResults: pathSearchReducer,
     // bulkDataRequest: bulkDataReducer,

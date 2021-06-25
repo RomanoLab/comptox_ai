@@ -2,7 +2,7 @@ module.exports = {
   apps : [
     {
       name: "api-app",
-      script: 'packages/api/app.js',
+      script: 'app.js',
       cwd: 'packages/api/',
       watch: true,
       env: {
@@ -14,7 +14,7 @@ module.exports = {
     },
     {
       name: "app",
-      script: "packages/app/app.js",
+      script: "app.js",
       cwd: 'packages/app/',
       watch: true,
       env: {

@@ -10,6 +10,7 @@ const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+const path = require('path');
 
 const port = 3000
 
@@ -87,6 +88,10 @@ app.use(neo4jSessionCleanup);
  */
 app.get('/', (req, res) => {
     res.send('Welcome to ComptoxAI\'s web API! Please read the documentation at http://comptox.ai/api/docs for available operations.')
+})
+
+app.get('/config', (req, res) => {
+    res.sendFile(path.join(__dirname, 'assets', 'data.json'));
 })
 
 app.get("/nodes/listNodeTypes", routes.nodes.listNodeTypes);

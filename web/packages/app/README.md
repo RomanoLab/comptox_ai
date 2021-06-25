@@ -19,13 +19,17 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+_NOTE: This doesn't run the standard `create-react-app` build script! We've customized it._
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Builds the app to a single `main.js` and `main.css`. Our process is as follows:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Run `npm run build` to build the app to `build/static/`.
+- Copy `main.js` and `main.css` to the static resources directory of ComptoxAI's Sphinx website sources.
+- Create a new html page `browse.html` that lives in the same directory as the `index.html` file for the website, and include the JS and CSS from the directory they were copied to.
+- Add `browse.html` to `conf.py`'s `html_additional_pages` so Sphinx will know to build it.
+- Done!
+
+At the time of writing, this process isn't automated, but we will add it to CI when we get to that stage of development.
 
 ### `npm run eject`
 

@@ -1,5 +1,4 @@
 const _ = require('lodash');
-//const { Relationship } = require('neo4j-driver');
 const RelationshipType = require('./neo4j/relationshiptype');
 const Node = require('./neo4j/node');
 const Relationship = require('./neo4j/relationship');
@@ -16,12 +15,6 @@ const listRelationshipTypes = function (session) {
         r => parseRelationshipLabels(r)
     );
 };
-
-// const listRelationshipTypeProperties = function (session) {
-//     return session.readTransaction(txc => (
-//         txc.run()
-//     ))
-// };
 
 function parseRelationships(neo4jResult) {
     const relationships = neo4jResult.records.map(r => new Relationship(r.toObject()));
@@ -50,5 +43,4 @@ const findRelationshipsByNode = function (session, nodeId) {
 module.exports = {
     listRelationshipTypes: listRelationshipTypes,
     findRelationshipsByNode: findRelationshipsByNode,
-    // listRelationshipTypeProperties: listRelationshipTypeProperties,
 };

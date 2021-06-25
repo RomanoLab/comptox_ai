@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% set title = 'ComptoxAI: A modern toolkit for AI research in computational toxicology' %}
+{% block content %}
+<div class="container pt-3" id="page-wrapper" role="main">
+
+  <section>
+    <div id="root" class="section"></div>
+  </section>
+
+  <script src="_static/js/main.js"></script>
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="_static/css/main.css"
+  />
+
+  {% include "footer.html" %}
+</div>
+{% endblock %}

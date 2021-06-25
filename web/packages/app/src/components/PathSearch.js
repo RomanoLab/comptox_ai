@@ -64,18 +64,23 @@ class PathSearch extends React.Component {
       relationships: props.pathResults.relationships,
     }
 
-    this.graphData = {
-      nodes: this.getNodes(),
-      links: this.getRelationships(),
-    }
+
+    // this.graphData = {
+    //   nodes: this.getNodes(),
+    //   links: this.getRelationships(),
+    // }
   }
 
   getNodes() {
     var nodes = [];
 
     // Do start node;
-    nodes.push(parseNodeToVertex(this.state.startNode));
-    nodes.push(parseNodeToVertex(this.state.endNode));
+    if (typeof this.state.startNode !== undefined) {
+      nodes.push(parseNodeToVertex(this.state.startNode));
+    }
+    if (typeof this.state.endNode !== undefined) {
+      nodes.push(parseNodeToVertex(this.state.endNode));
+    }
 
     return nodes;
   }
@@ -91,15 +96,16 @@ class PathSearch extends React.Component {
   }
   
   render() {
-    console.log(this.graphData);
     return(
       <div id="path-search">
-        <h2>Search for a path</h2>
+        <h2>Paths</h2>
+        {!(this.state.pathResults === undefined) &&
         <Graph
           id="path-search-result"
           data={this.graphData}
           config={graphConfig}
         />
+        }
       </div>
     );
   }

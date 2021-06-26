@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer } from 'react';
 import { Map } from 'react-lodash';
 
 import Button from '@material-ui/core/Button';
@@ -13,25 +13,36 @@ import { useSearchNodesQuery } from '../features/comptoxApi/comptoxApiSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 
 const formReducer = (state, event) => {
-  console.log(event);
   return {
     ...state,
     [event.name]: event.value
   }
 }
 
+const submitReducer = (state, event) => {
+  return {
+    label: event.label,
+    field: event.field,
+    value: event.value
+  }
+}
+
 // See: https://www.digitalocean.com/community/tutorials/how-to-build-forms-in-react
 function NodeSearchForm(props) {
   const { config } = props;
+  
   const [formData, setFormData] = useReducer(formReducer, {});
-  const [submitting, setSubmitting] = useState(false);
+  const [submitData, setSubmitData] = useReducer(submitReducer, {});
+  
+  const { data = [], isFetching } = useSearchNodesQuery([submitData.label, submitData.field, submitData.value]);
 
   const handleSubmit = event => {
     event.preventDefault();
-    setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-    }, 2000)
+    setSubmitData({
+      label: formData.nodeType,
+      field: formData.nodeField,
+      value: formData.nodeValue
+    })
   }
 
   const handleChange = event => {
@@ -48,19 +59,12 @@ function NodeSearchForm(props) {
       return config.nodeConfig.nodeLabelProperties[selectedNodeLabel]
     }
   } 
+
+  console.log(data);
   
   return(
     <div className="formWrapper">
-      {submitting && 
-        <div>
-          You are submitting the following:
-          <ul>
-            {Object.entries(formData).map(([name, value]) => (
-              <li key={name}><strong>{name}</strong>:{value.toString()}</li>
-            ))}
-          </ul>
-        </div>
-      }
+
       <form onSubmit={handleSubmit}>
         <FormControl variant="outlined" size="small" style={{ width: 500, paddingBottom: 8 }}>
           <InputLabel id="select-outlined-label-type">Node Type</InputLabel>

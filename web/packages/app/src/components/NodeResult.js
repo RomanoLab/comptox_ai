@@ -4,8 +4,6 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 
 function NodeResult(props) {
-  console.log(props);
-  
   return(
     <div className="node-detail">
       <p>Data type(s): {props.nodeType}</p>

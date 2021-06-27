@@ -9,9 +9,7 @@ export const comptoxApiSlice = createApi({
     }),
     searchNodes: builder.query({
       // query: (label, field, value) => `/nodes/${label}/search?field=${field}&value=${value}`,
-      query: function(label) {
-        return `/nodes/${label[0]}/search?field=${label[1]}&value=${label[2]}`
-      }
+      query: (label) => `/nodes/${label[0]}/search?field=${label[1]}&value=${label[2]}`
       // query: (fields) => `/nodes/${fields}`,
     }),
   })

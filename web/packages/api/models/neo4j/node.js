@@ -8,10 +8,17 @@ const Node = module.exports = function(_node, nodeData) {
 
     const identifiers = Object.keys(node_features).reduce(function(xrefs, nf) {
         if (nf.startsWith("xref")) {
-            xrefs.push({
-                idType: nf.replace(/^(xref\.)/, ""),
-                idValue: node_features[nf]
-            });
+            if (typeof node_features[nf] === "object") {
+                xrefs.push({
+                    idType: nf.replace(/^(xref\.)/, ""),
+                    idValue: node_features[nf].toNumber()
+                });
+            } else {
+                xrefs.push({
+                    idType: nf.replace(/^(xref\.)/, ""),
+                    idValue: node_features[nf]
+                });
+            }
         }
         return xrefs;
     }, []);

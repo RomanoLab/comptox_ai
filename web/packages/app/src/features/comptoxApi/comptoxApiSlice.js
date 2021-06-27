@@ -12,7 +12,10 @@ export const comptoxApiSlice = createApi({
       query: (label) => `/nodes/${label[0]}/search?field=${label[1]}&value=${label[2]}`
       // query: (fields) => `/nodes/${fields}`,
     }),
+    fetchRelationshipsByNodeId: builder.query({
+      query: (nodeId) => `/relationships/fromStartNodeId/${nodeId}`
+    })
   })
 });
 
-export const { useFetchConfigQuery, useSearchNodesQuery } = comptoxApiSlice;
+export const { useFetchConfigQuery, useSearchNodesQuery, useFetchRelationshipsByNodeIdQuery } = comptoxApiSlice;

@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import { Map } from 'react-lodash';
 
 import Button from '@material-ui/core/Button';
@@ -9,14 +9,20 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 
 import NodeResult from './NodeResult';
-import { readSearchResults } from '../features/nodes/nodeSlice';
 import { useSearchNodesQuery } from '../features/comptoxApi/comptoxApiSlice';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
 
 const formReducer = (state, event) => {
   return {
     ...state,
     [event.name]: event.value
+  }
+}
+
+const formResetReducer = () => {
+  return {
+    nodeType: null,
+    nodeField: null,
+    nodeValue: null
   }
 }
 
@@ -29,24 +35,27 @@ const submitReducer = (state, event) => {
 }
 
 // See: https://www.digitalocean.com/community/tutorials/how-to-build-forms-in-react
-function NodeSearch(props) {
+const NodeSearch = (props) => {
   const { config } = props;
   
   const [formData, setFormData] = useReducer(formReducer, {});
   const [submitData, setSubmitData] = useReducer(submitReducer, {});
+  // eslint-disable-next-line
+  const [resetData, setResetData] = useReducer(formResetReducer, {});
+  const [skip, setSkip] = useState(true); // Don't render search results until we've hit "search" at least once
   
-  const { data = [], isFetching } = useSearchNodesQuery([submitData.label, submitData.field, submitData.value]);
-
-  const dispatch = useAppDispatch();
+  const { data = [] } = useSearchNodesQuery([submitData.label, submitData.field, submitData.value], {
+    skip,
+  });
 
   const handleSubmit = event => {
     event.preventDefault();
+    setSkip(false);
     setSubmitData({
       label: formData.nodeType,
       field: formData.nodeField,
       value: formData.nodeValue
     })
-    dispatch(readSearchResults(data))
   }
 
   const handleChange = event => {
@@ -54,6 +63,13 @@ function NodeSearch(props) {
       name: event.target.name,
       value: event.target.value,
     });
+  }
+
+  const handleReset = () => {
+    setResetData({});
+
+    console.log("handleReset:")
+    console.log(formData);
   }
 
   const fetchNodeFields = selectedNodeLabel => {
@@ -97,8 +113,8 @@ function NodeSearch(props) {
               onChange={handleChange}
               value={formData.nodeField || ''}
             >
-              {fetchNodeFields(formData.nodeType).map((nodeField) => (
-                <MenuItem value={nodeField.property}>{nodeField.display}</MenuItem>
+              {fetchNodeFields(formData.nodeType).map((nf) => (
+                <MenuItem value={nf.property}>{nf.display}</MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -115,6 +131,7 @@ function NodeSearch(props) {
           
           <br/>
           <Button variant="contained" color="primary" type="submit">Search</Button>
+          <Button variant="contained" color="primary" onClick={handleReset}>Reset</Button>
         </form>
       </div>
 
@@ -128,6 +145,7 @@ function NodeSearch(props) {
               nodeName={r.commonName}
               nodeIDs={r.identifiers}
               nodeIRI={r.ontologyIRI}
+              nodeNeo4jID={r.nodeId}
             />
           )}
         />

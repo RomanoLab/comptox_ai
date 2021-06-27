@@ -99,6 +99,9 @@ class PathSearch extends React.Component {
     return(
       <div id="path-search">
         <h2>Paths</h2>
+        <p>
+          <i>Load a "start node" and "end node" by clicking the corresponding button on node search results.</i>
+        </p>
         {!(this.state.pathResults === undefined) &&
         <Graph
           id="path-search-result"

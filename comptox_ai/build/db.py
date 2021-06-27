@@ -50,6 +50,7 @@ def safe_add_property(entity, prop, value):
     """
     if value is None:
         return
+    value = str(value)
     if _OWL.FunctionalProperty in prop.is_a:
         setattr(entity, prop._python_name, value)
     else:
@@ -132,7 +133,11 @@ class DatabaseParser:
         # kwargs approach is necessary because keywords are only known at compile time...
         match = self.ont.search(**{merge_prop_name: fields[merge_col]})
 
-        assert len(match) <= 1
+        try:
+            assert len(match) <= 1
+        except AssertionError:
+            # TODO: See Github issue 9
+            match = [match[0]]
 
         # Only create a new individual if we didn't find a match
         if len(match) == 0:
@@ -650,7 +655,8 @@ def print_ontology_stats(ont: owlready2.namespace.Ontology):
 
 if __name__ == "__main__":
     repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-    onto = owlready2.get_ontology("file://{}".format(os.path.join(repo_root, "comptox.rdf"))).load()
+    # onto = owlready2.get_ontology("file://{}".format(os.path.join(repo_root, "comptox.rdf"))).load()
+    onto = owlready2.get_ontology("file://{}".format(os.path.join(repo_root, "comptox_mid.rdf"))).load()
     
     # open config file:
     with open("../../CONFIG.yaml", 'r') as fp:
@@ -688,7 +694,7 @@ if __name__ == "__main__":
             },
         },
         merge=False,
-        skip=False
+        skip=True
     )
     epa.parse_node_type(
         node_type="Chemical",
@@ -708,7 +714,29 @@ if __name__ == "__main__":
             },
         },
         merge=True,
-        skip=False
+        skip=True
+    )
+    # with open("D:\\projects\\comptox_ai\\comptox_mid.rdf", "wb") as fp:
+    #     onto.save(file=fp, format="rdfxml")
+    # ipdb.set_trace()
+    epa.parse_node_type(
+        node_type="Chemical",
+        source_filename="CUSTOM_cid_maccs.tsv",
+        fmt="tsv",
+        parse_config={
+            "iri_column_name": "CID",
+            "headers": True,
+            "data_property_map": {
+                "CID": onto.xrefPubchemCID,
+                "MACCS": onto.maccs
+            },
+            "merge_column": {
+                "source_column_name": "CID",
+                "data_property": onto.xrefPubchemCID
+            },
+        },
+        merge=True,
+        skip=False,
     )
 
     ##################
@@ -862,9 +890,7 @@ if __name__ == "__main__":
         skip=False
     )
 
-    # with open("D:\\projects\\comptox_ai\\comptox_mid.rdf", "wb") as fp:
-    #     onto.save(file=fp, format="rdfxml")
-    #ipdb.set_trace()
+    
 
     # Add relationships and relationship properties
     # Options for "source_type":

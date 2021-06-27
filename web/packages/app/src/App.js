@@ -4,7 +4,6 @@ import Container from '@material-ui/core/Container';
 import NodeSearch from './components/NodeSearch';
 import RelationshipSearch from './components/RelationshipSearch';
 import PathSearch from './components/PathSearch';
-import BatchQuery from './BatchQuery';
 
 import './App.css';
 
@@ -39,7 +38,7 @@ class App extends React.Component {
           <PathSearch
             pathResults={this.state.pathResults}
           />
-          <BatchQuery />
+          {/* <BatchQuery /> */}
         </Container>
       </div>
     );

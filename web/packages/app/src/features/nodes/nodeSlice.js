@@ -58,9 +58,14 @@ export const nodeSlice = createSlice({
     selectNode: (state, action) => {
       state.selectedNode = action.payload
     },
+    readSearchResults: (state, action) => {
+      console.log("readSearchResults action:");
+      console.log(action);
+      state.searchResults = action.payload
+    }
   },
 })
 
-export const { selectNode } = nodeSlice.actions
+export const { selectNode, readSearchResults } = nodeSlice.actions
 
 export default nodeSlice.reducer

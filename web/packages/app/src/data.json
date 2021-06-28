@@ -9,6 +9,15 @@
       "MolecularInitiatingEvent",
       "Pathway"
     ],
+    "nodeLabelColors": {
+      "AOP": "#F78888",
+      "AdverseOutcome": "#F3D250",
+      "Chemical": "#90CCF4",
+      "Gene": "#A16E83",
+      "KeyEvent": "#B19F9E",
+      "MolecularInitiatingEvent": "#CEBC81",
+      "Pathway": "#97AABD"
+    },
     "nodeLabelProperties": {
       "AOP": [
         {
@@ -136,6 +145,18 @@
           "display": "Ontology URI"
         }
       ]
+    },
+    "translateIdType": {
+      "xrefPubchemSID": "PubChem Substance ID",
+      "xrefPubchemCID": "PubChem Compound ID",
+      "xrefDTXSID": "DSSTOX ID",
+      "xrefCasRN": "CAS Registry Number",
+      "xrefAOPWikiKEID": "AOP Wiki Key Event ID",
+      "xrefAOPWikiAOPID": "AOP Wiki AOP ID",
+      "xrefOMIM": "OMIM ID",
+      "xrefNcbiGene": "NCBI Gene ID",
+      "xrefHGNC": "HGNC ID",
+      "xrefEnsembl": "Ensembl ID"
     }
   }
 }

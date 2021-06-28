@@ -60,8 +60,9 @@ h2 {
 .rel-result {
   border-left: 3px solid green;
   margin-left: 4px;
+  margin-right: 4px;
   padding-left: 5px;
-  padding: 8px 0 4px 6px;
+  padding: 8px 6px 4px 6px;
   margin-bottom: 8px;
   background-color: lightgray;
 }

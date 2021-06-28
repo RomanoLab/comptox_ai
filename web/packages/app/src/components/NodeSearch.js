@@ -1,12 +1,17 @@
 import React, { useReducer, useState } from 'react';
 import { Map } from 'react-lodash';
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
+import {
+  makeStyles,
+  Button,
+  Checkbox,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  FormControlLabel,
+  InputLabel
+} from '@material-ui/core';
 
 import NodeResult from './NodeResult';
 import { useSearchNodesQuery } from '../features/comptoxApi/comptoxApiSlice';
@@ -18,14 +23,6 @@ const formReducer = (state, event) => {
   }
 }
 
-const formResetReducer = () => {
-  return {
-    nodeType: null,
-    nodeField: null,
-    nodeValue: null
-  }
-}
-
 const submitReducer = (state, event) => {
   return {
     label: event.label,
@@ -34,6 +31,14 @@ const submitReducer = (state, event) => {
   }
 }
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+}));
+
 // See: https://www.digitalocean.com/community/tutorials/how-to-build-forms-in-react
 const NodeSearch = (props) => {
   const { config } = props;
@@ -41,12 +46,13 @@ const NodeSearch = (props) => {
   const [formData, setFormData] = useReducer(formReducer, {});
   const [submitData, setSubmitData] = useReducer(submitReducer, {});
   // eslint-disable-next-line
-  const [resetData, setResetData] = useReducer(formResetReducer, {});
   const [skip, setSkip] = useState(true); // Don't render search results until we've hit "search" at least once
   
   const { data = [] } = useSearchNodesQuery([submitData.label, submitData.field, submitData.value], {
     skip,
   });
+
+  const classes = useStyles()
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -66,7 +72,18 @@ const NodeSearch = (props) => {
   }
 
   const handleReset = () => {
-    setResetData({});
+    setFormData({
+      name: 'nodeType',
+      value: ''
+    })
+    // setFormData({
+    //   name: 'nodeField',
+    //   value: ''
+    // })
+    setFormData({
+      name: 'nodeValue',
+      value: ''
+    })
 
     console.log("handleReset:")
     console.log(formData);
@@ -130,8 +147,18 @@ const NodeSearch = (props) => {
           />
           
           <br/>
-          <Button variant="contained" color="primary" type="submit">Search</Button>
-          <Button variant="contained" color="primary" onClick={handleReset}>Reset</Button>
+          <div className={classes.root}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="exactMatchCheckbox"
+                />
+              }
+              label="Exact matches only"
+            />
+            <Button variant="contained" color="primary" type="submit">Search</Button>
+            <Button variant="contained" color="primary" onClick={handleReset}>Reset</Button>
+          </div>
         </form>
       </div>
 

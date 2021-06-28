@@ -12,6 +12,6 @@ export const relationshipSlice = createSlice({
   },
 })
 
-export const { setRelStartNode } = relationshipSlice.actions
+export const { setRelStartNode } = relationshipSlice.actions;
 
-export default relationshipSlice.reducer
+export default relationshipSlice.reducer;

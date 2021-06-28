@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 
 import NodeResult from './NodeResult';
-import { useSearchNodesQuery } from '../features/comptoxApi/comptoxApiSlice';
+import { useSearchNodesQuery } from '../features/comptoxApiSlice';
 
 const formReducer = (state, event) => {
   return {
@@ -76,10 +76,6 @@ const NodeSearch = (props) => {
       name: 'nodeType',
       value: ''
     })
-    // setFormData({
-    //   name: 'nodeField',
-    //   value: ''
-    // })
     setFormData({
       name: 'nodeValue',
       value: ''
@@ -97,8 +93,6 @@ const NodeSearch = (props) => {
     }
   } 
 
-  console.log(data);
-  
   return(
     <div className="node-search">
       <h2>Nodes</h2>
@@ -173,6 +167,7 @@ const NodeSearch = (props) => {
               nodeIDs={r.identifiers}
               nodeIRI={r.ontologyIRI}
               nodeNeo4jID={r.nodeId}
+              config={config}
             />
           )}
         />

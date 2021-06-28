@@ -1,139 +1,153 @@
-"nodeConfig": {
-  "nodeLabels": [
-    "AOP",
-    "AdverseOutcome",
-    "Chemical",
-    "Gene",
-    "KeyEvent",
-    "MolecularInitiatingEvent",
-    "Pathway"
-  ],
-  "nodeLabelProperties": {
-    "AOP": [
-      {
-        "property": "commonName",
-        "display": "AOP Name"
-      },
-      {
-        "property": "uri",
-        "display": "Ontology URI"
-      },
-      {
-        "property": "xrefAOPWikiAOPID",
-        "display": "AOPWiki AOP ID"
-      }
+{
+  "nodeConfig": {
+    "nodeLabels": [
+      "AOP",
+      "AdverseOutcome",
+      "Chemical",
+      "Gene",
+      "KeyEvent",
+      "MolecularInitiatingEvent",
+      "Pathway"
     ],
-    "AdverseOutcome": [
-      {
-        "property": "xrefAOPWikiKEID",
-        "display": "AOPWiki Key Event ID"
-      },
-      {
-        "property": "uri",
-        "display": "Ontology URI"
-      },
-      {
-        "property": "commonName",
-        "display": "Adverse Outcome Name"
-      },
-    ],
-    "Chemical": [
-      {
-        "property": "commonName",
-        "display": "Chemical Name"
-      },
-      {
-        "property": "uri",
-        "display": "Ontology URI"
-      },
-      {
-        "property": "xrefCasRN",
-        "display": "CAS Registry Number"
-      },
-      {
-        "property": "xrefDTXSID",
-        "display": "DSSTOX ID"
-      },
-      {
-        "property": "xrefPubchemCID",
-        "display": "PubChem CID"
-      },
-      {
-        "property": "xrefPubchemSID",
-        "display": "PubChem SID"
-      },
-    ],
-    "Gene": [
-      {
-        "property": "geneSymbol",
-        "display": "Gene Symbol"
-      },
-      {
-        "property": "typeOfGene",
-        "display": "Gene Type"
-      },
-      {
-        "property": "uri",
-        "display": "Ontology URI"
-      },
-      {
-        "property": "xrefEnsembl",
-        "display": "Ensembl ID"
-      },
-      {
-        "property": "xrefHGNC",
-        "display": "HGNC ID"
-      },
-      {
-        "property": "xrefNcbiGene",
-        "display": "NCBI Gene ID"
-      },
-      {
-        "property": "xrefOMIM",
-        "display": "OMIM ID"
-      }
-    ],
-    "KeyEvent": [
-      {
-        "property": "keyEventName",
-        "display": "Key Event Name"
-      },
-      {
-        "property": "uri",
-        "display": "Ontology URI"
-      },
-      {
-        "property": "xrefAOPWikiKEID",
-        "display": "AOP Wiki KE ID"
-      }
-    ],
-    "MolecularInitiatingEvent": [
-      {
-        "property": "xrefAOPWikiKEID",
-        "display": "AOPWiki Key Event ID"
-      },
-      {
-        "property": "uri",
-        "display": "Ontology URI"
-      },
-      {
-        "property": "commonName",
-        "display": "Adverse Outcome Name"
-      },
-    ],
-    "Pathway": [
-      {
-        "property": "commonName",
-        "display": "Pathway Name"
-      },
-      {
-        "property": "pathwayId",
-        "display": "Pathway ID"
-      },
-      {
-        "property": "uri",
-        "display": "Ontology URI"
-      },
-    ]
+    "nodeLabelProperties": {
+      "AOP": [
+        {
+          "property": "commonName",
+          "display": "AOP Name"
+        },
+        {
+          "property": "uri",
+          "display": "Ontology URI"
+        },
+        {
+          "property": "xrefAOPWikiAOPID",
+          "display": "AOPWiki AOP ID"
+        }
+      ],
+      "AdverseOutcome": [
+        {
+          "property": "xrefAOPWikiKEID",
+          "display": "AOPWiki Key Event ID"
+        },
+        {
+          "property": "uri",
+          "display": "Ontology URI"
+        },
+        {
+          "property": "commonName",
+          "display": "Adverse Outcome Name"
+        }
+      ],
+      "Chemical": [
+        {
+          "property": "commonName",
+          "display": "Chemical Name"
+        },
+        {
+          "property": "uri",
+          "display": "Ontology URI"
+        },
+        {
+          "property": "xrefCasRN",
+          "display": "CAS Registry Number"
+        },
+        {
+          "property": "xrefDTXSID",
+          "display": "DSSTOX ID"
+        },
+        {
+          "property": "xrefPubchemCID",
+          "display": "PubChem CID"
+        },
+        {
+          "property": "xrefPubchemSID",
+          "display": "PubChem SID"
+        }
+      ],
+      "Gene": [
+        {
+          "property": "geneSymbol",
+          "display": "Gene Symbol"
+        },
+        {
+          "property": "typeOfGene",
+          "display": "Gene Type"
+        },
+        {
+          "property": "uri",
+          "display": "Ontology URI"
+        },
+        {
+          "property": "xrefEnsembl",
+          "display": "Ensembl ID"
+        },
+        {
+          "property": "xrefHGNC",
+          "display": "HGNC ID"
+        },
+        {
+          "property": "xrefNcbiGene",
+          "display": "NCBI Gene ID"
+        },
+        {
+          "property": "xrefOMIM",
+          "display": "OMIM ID"
+        }
+      ],
+      "KeyEvent": [
+        {
+          "property": "keyEventName",
+          "display": "Key Event Name"
+        },
+        {
+          "property": "uri",
+          "display": "Ontology URI"
+        },
+        {
+          "property": "xrefAOPWikiKEID",
+          "display": "AOP Wiki KE ID"
+        }
+      ],
+      "MolecularInitiatingEvent": [
+        {
+          "property": "xrefAOPWikiKEID",
+          "display": "AOPWiki Key Event ID"
+        },
+        {
+          "property": "uri",
+          "display": "Ontology URI"
+        },
+        {
+          "property": "commonName",
+          "display": "Adverse Outcome Name"
+        }
+      ],
+      "Pathway": [
+        {
+          "property": "commonName",
+          "display": "Pathway Name"
+        },
+        {
+          "property": "pathwayId",
+          "display": "Pathway ID"
+        },
+        {
+          "property": "uri",
+          "display": "Ontology URI"
+        }
+      ]
+    },
+    "translateIdType": {
+      "xrefPubchemSID": "PubChem Substance ID",
+      "xrefPubchemCID": "PubChem Compound ID",
+      "xrefDTXSID": "DSSTOX ID",
+      "xrefCasRN": "CAS Registry Number",
+      "xrefAOPWikiKEID": "AOP Wiki Key Event ID",
+      "xrefAOPWikiAOPID": "AOP Wiki AOP ID",
+      "xrefOMIM": "OMIM ID",
+      "xrefNcbiGene": "NCBI Gene ID",
+      "xrefHGNC": "HGNC ID",
+      "xrefEnsembl": "Ensembl ID"
+    }
   }
 }

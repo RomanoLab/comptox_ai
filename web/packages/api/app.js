@@ -5,6 +5,8 @@ const routes = require('./routes');
 const neo4jSessionCleanup = require("./middleware/neo4jSessionCleanup");
 const writeError = require("./helpers/response").writeError;
 
+const dataConfigJson = require('./assets/data.json');
+
 const app = express();
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
@@ -91,7 +93,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/config', (req, res) => {
-    res.sendFile(path.join(__dirname, 'assets', 'data.json'));
+    res.send(dataConfigJson);
 })
 
 app.get("/nodes/listNodeTypes", routes.nodes.listNodeTypes);

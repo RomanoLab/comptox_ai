@@ -81,6 +81,10 @@ h2 {
 }
 
 .node-name {
+  font-weight: bold;
+}
+
+.node-label {
   border: 1px solid cyan;
   border-radius: 8pt;
   background-color: cyan;

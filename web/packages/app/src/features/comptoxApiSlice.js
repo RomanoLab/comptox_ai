@@ -8,9 +8,7 @@ export const comptoxApiSlice = createApi({
       query: () => `/config`,
     }),
     searchNodes: builder.query({
-      // query: (label, field, value) => `/nodes/${label}/search?field=${field}&value=${value}`,
       query: (label) => `/nodes/${label[0]}/search?field=${label[1]}&value=${label[2]}`
-      // query: (fields) => `/nodes/${fields}`,
     }),
     fetchRelationshipsByNodeId: builder.query({
       query: (nodeId) => `/relationships/fromStartNodeId/${nodeId}`

@@ -53,13 +53,13 @@ db.run_cypher("MATCH (n:Class) REMOVE n:Class;", verbose=True)
 db.run_cypher("MATCH (n) WHERE size(labels(n)) = 0 DETACH DELETE n;", verbose=True)
 
 # Export a test database to use for CI
-db.build_graph_native_projection(
-    graph_name="ci_graph",
-    node_proj=[
-        "KeyEvent",
-        "MolecularInitiatingEvent",
-        "AdverseOutcome",
-        "AOP"
-    ],
-    relationship_proj="*"  # Keep all relationships
-)
+# db.build_graph_native_projection(
+#     graph_name="ci_graph",
+#     node_proj=[
+#         "KeyEvent",
+#         "MolecularInitiatingEvent",
+#         "AdverseOutcome",
+#         "AOP"
+#     ],
+#     relationship_proj="*"  # Keep all relationships
+# )

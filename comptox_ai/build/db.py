@@ -50,7 +50,6 @@ def safe_add_property(entity, prop, value):
     """
     if value is None:
         return
-    value = str(value)
     if _OWL.FunctionalProperty in prop.is_a:
         setattr(entity, prop._python_name, value)
     else:
@@ -207,6 +206,8 @@ class FlatFileDatabaseParser(DatabaseParser):
         if skip:
             return
 
+        no_rel_added = True
+
         print("PARSING RELATIONSHIP TYPE: {0}".format(relationship_type))
         print("FROM SOURCE DATABASE: {0}".format(self.name))
 
@@ -291,6 +292,8 @@ class FlatFileDatabaseParser(DatabaseParser):
             if type(obj_ids) is not list:
                 obj_ids = [obj_ids]
 
+            
+
             for sid in subj_ids:
                 for oid in obj_ids:
                     subject_match = self.ont.search(**{sub_match_prop_name: sid})
@@ -311,9 +314,15 @@ class FlatFileDatabaseParser(DatabaseParser):
                         ipdb.set_trace()
                         print()
 
+                    if no_rel_added:
+                        no_rel_added = False
+                    
                     safe_add_property(subject_match[0], relationship_type, object_match[0])
                     if inverse_relationship_type:
                         safe_add_property(object_match[0], inverse_relationship_type, subject_match[0])
+
+        if no_rel_added:
+            print("WARNING: NO RELATIONSHIPS ADDED TO ONTOLOGY")
 
     def parse_node_type(
         self,
@@ -341,6 +350,8 @@ class FlatFileDatabaseParser(DatabaseParser):
     """
         if skip:
             return
+
+        no_node_added = True
 
         print("PARSING NODE TYPE: {0}".format(node_type))
         print("FROM SOURCE DATABASE: {0}".format(self.name))
@@ -459,6 +470,9 @@ class FlatFileDatabaseParser(DatabaseParser):
                 for dt in data_transforms:
                     fields[dt] = parse_config["data_transforms"][dt](fields[dt])
 
+            if no_node_added:
+                no_node_added = False
+
             if merge:
                 self._merge_node(
                     fields,
@@ -478,6 +492,9 @@ class FlatFileDatabaseParser(DatabaseParser):
 
         fp.close()
 
+        if no_node_added:
+            print("WARNING: NO NODES/PROPERTIES ADDED TO ONTOLOGY")
+
 
 class MySQLDatabaseParser(DatabaseParser):
     def __init__(
@@ -493,6 +510,11 @@ class MySQLDatabaseParser(DatabaseParser):
         )
 
     def parse_relationship_type(self, relationship_type, parse_config: dict, inverse_relationship_type = None, merge: bool = False, skip: bool = False):
+        if skip:
+            return
+        
+        no_rel_added = True
+
         print("PARSING RELATIONSHIP TYPE: {0}".format(relationship_type))
         print("FROM SOURCE DATABASE: {0}".format(self.name))
         
@@ -559,11 +581,17 @@ class MySQLDatabaseParser(DatabaseParser):
                         ipdb.set_trace()
                         print()
 
+                    if no_rel_added:
+                        no_rel_added=False
+
                     safe_add_property(subject_match[0], relationship_type, object_match[0])
                     if inverse_relationship_type:
                         safe_add_property(object_match[0], inverse_relationship_type, subject_match[0])
 
         c.close()
+
+        if no_rel_added:
+            print("WARNING: NO RELATIONSHIPS ADDED TO ONTOLOGY")
 
     def parse_node_type(
         self,
@@ -577,6 +605,8 @@ class MySQLDatabaseParser(DatabaseParser):
     ):
         if skip:
             return
+
+        no_node_added = True
 
         print("PARSING NODE TYPE: {0}".format(node_type))
         print("FROM SOURCE DATABASE: {0}".format(self.name))
@@ -614,6 +644,9 @@ class MySQLDatabaseParser(DatabaseParser):
                 ):
                     continue
 
+            if no_node_added:
+                no_node_added = False
+
             if merge:
                 self._merge_node(
                     fields=fields,
@@ -632,6 +665,9 @@ class MySQLDatabaseParser(DatabaseParser):
                 )
 
         c.close()
+
+        if no_node_added:
+            print("WARNING: NO NODES/PROPERTIES ADDED TO ONTOLOGY")
 
 
 def print_ontology_stats(ont: owlready2.namespace.Ontology):
@@ -655,8 +691,8 @@ def print_ontology_stats(ont: owlready2.namespace.Ontology):
 
 if __name__ == "__main__":
     repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-    # onto = owlready2.get_ontology("file://{}".format(os.path.join(repo_root, "comptox.rdf"))).load()
-    onto = owlready2.get_ontology("file://{}".format(os.path.join(repo_root, "comptox_mid.rdf"))).load()
+    onto = owlready2.get_ontology("file://{}".format(os.path.join(repo_root, "comptox.rdf"))).load()
+    #onto = owlready2.get_ontology("file://{}".format(os.path.join(repo_root, "comptox_populated.rdf"))).load()
     
     # open config file:
     with open("../../CONFIG.yaml", 'r') as fp:
@@ -674,6 +710,7 @@ if __name__ == "__main__":
     drugbank = FlatFileDatabaseParser("drugbank", onto)
     hetionet = FlatFileDatabaseParser("hetionet", onto)
     aopdb = MySQLDatabaseParser("aopdb", onto, mysql_config)
+    aopwiki = FlatFileDatabaseParser("aopwiki", onto)
 
     # Add nodes and node properties in a carefully specified order
 
@@ -694,7 +731,7 @@ if __name__ == "__main__":
             },
         },
         merge=False,
-        skip=True
+        skip=False
     )
     epa.parse_node_type(
         node_type="Chemical",
@@ -714,7 +751,7 @@ if __name__ == "__main__":
             },
         },
         merge=True,
-        skip=True
+        skip=False
     )
     # with open("D:\\projects\\comptox_ai\\comptox_mid.rdf", "wb") as fp:
     #     onto.save(file=fp, format="rdfxml")
@@ -736,7 +773,7 @@ if __name__ == "__main__":
             },
         },
         merge=True,
-        skip=False,
+        skip=False
     )
 
     ##################
@@ -779,6 +816,7 @@ if __name__ == "__main__":
                 "GeneID": onto.xrefNcbiGene,
                 "Symbol": onto.geneSymbol,
                 "type_of_gene": onto.typeOfGene,
+                "Full_name_from_nomenclature_authority": onto.commonName,
                 "MIM": onto.xrefOMIM,
                 "HGNC": onto.xrefHGNC,
                 "Ensembl": onto.xrefEnsembl,
@@ -786,7 +824,7 @@ if __name__ == "__main__":
             },
         },
         merge=False,
-        skip=False,
+        skip=False
     )
 
     ################
@@ -798,12 +836,12 @@ if __name__ == "__main__":
         parse_config={
             "iri_column_name": "AOP_id",
             "data_property_map": {
-                "AOP_name": onto.aopName,
+                "AOP_name": onto.commonName,
                 "AOP_id": onto.xrefAOPWikiAOPID,
             },
         },
         merge=False,
-        skip=False,
+        skip=False
     )
     aopdb.parse_node_type(
         node_type="KeyEvent",
@@ -811,7 +849,7 @@ if __name__ == "__main__":
         parse_config={
             "iri_column_name": "event_id",
             "data_property_map": {
-                "event_name": onto.keyEventName,
+                "event_name": onto.commonName,
                 "event_id": onto.xrefAOPWikiKEID,
             },
             "data_transforms": {
@@ -819,7 +857,7 @@ if __name__ == "__main__":
             },
         },
         merge=False,
-        skip=False,
+        skip=False
     )
     aopdb.parse_node_type(
         node_type="MolecularInitiatingEvent",
@@ -1043,9 +1081,40 @@ if __name__ == "__main__":
             "filter_value": "GiG",
             "headers": True,
             "data_transforms": {
-                "source": lambda x: x.split("::")[-1],
+                "source": lambda x: int(x.split("::")[-1]),
                 "target": lambda x: int(x.split("::")[-1])  # I foresee this causing problems in the future - should all IDs be cast to str?
             },
+        },
+        merge=False,
+        skip=False
+    )
+
+    # ipdb.set_trace()
+
+    # # Save the ontology to a new file
+    # with open("D:\\projects\\comptox_ai\\comptox_mid.rdf", "wb") as fp:
+    #     onto.save(file=fp, format="rdfxml")
+
+    # ipdb.set_trace()
+
+    aopwiki.parse_relationship_type(
+        relationship_type=onto.keyEventTriggers,
+        source_filename="aop_ke_ker.tsv",
+        fmt="tsv",
+        parse_config={
+            "subject_node_type": onto.KeyEvent,
+            "subject_column_name": "upstream_event_id",
+            "subject_match_property": onto.xrefAOPWikiKEID,
+            "object_node_type": onto.KeyEvent,
+            "object_column_name": "downstream_event_id",
+            "object_match_property": onto.xrefAOPWikiKEID,
+            "filter_column": "direct_or_indirect",
+            "filter_value": "adjacent",
+            "headers": True,
+            "data_transforms": {
+                "upstream_event_id": lambda x: int(x.split(":")[-1]),
+                "downstream_event_id": lambda x: int(x.split(":")[-1])
+            }
         },
         merge=False,
         skip=False

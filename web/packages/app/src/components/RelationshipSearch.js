@@ -1,12 +1,19 @@
 import React from 'react';
-import { Map } from 'react-lodash';
+import { Map, IsEmpty } from 'react-lodash';
 
-import { useFetchRelationshipsByNodeIdQuery } from '../features/comptoxApi/comptoxApiSlice';
+import { useFetchRelationshipsByNodeIdQuery } from '../features/comptoxApiSlice';
 import { useAppSelector } from '../redux/hooks';
 
 const RelationshipSearch = (props) => {
   const selectedRel = useAppSelector((state) => state.relationship.relStartNode)
-  const { data = [] } = useFetchRelationshipsByNodeIdQuery(selectedRel);
+
+  const skip = () => {
+    
+  }
+  
+  const { data = [] } = useFetchRelationshipsByNodeIdQuery(selectedRel, {
+    skip,
+  });
 
   return(
     <div id="rel-search">

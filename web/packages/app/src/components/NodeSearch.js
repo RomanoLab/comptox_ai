@@ -163,9 +163,11 @@ const NodeSearch = (props) => {
       <h3>Search Results</h3>
       {/* {!(data.length === 0) && */}
       {error ? (
-        <>Oh no, there was an error</>
+        <>Error - the requested node was not found. Please try again with a new query.</>
+      ) : isUninitialized ? (
+        <>Please enter a search query and click "Search" to find nodes.</>
       ) : isLoading ? (
-        <>loading...</>
+        <>Loading...</>
       ) : data ? (
         <Map
           collection={data}

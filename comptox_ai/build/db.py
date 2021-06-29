@@ -93,7 +93,11 @@ def safe_make_individual_name(
     Whitespaces are replaced with underscores, the class name is prepended, and
     everything is converted to lowercase.
     """
-    cl = indiv_class.name.lower()
+    try:
+        cl = indiv_class.name.lower()
+    except AttributeError:
+        ipdb.set_trace()
+        print()
     if type(indiv_name) == str:
         nm = indiv_name.strip().replace(" ", "_").lower()
     else:
@@ -299,27 +303,29 @@ class FlatFileDatabaseParser(DatabaseParser):
                     subject_match = self.ont.search(**{sub_match_prop_name: sid})
                     if len(subject_match) == 0:
                         continue
-                    try:
-                        assert len(subject_match) == 1
-                    except AssertionError:
-                        ipdb.set_trace()
-                        print()
+                    # try:
+                    #     assert len(subject_match) == 1
+                    # except AssertionError:
+                    #     ipdb.set_trace()
+                    #     print()
                     
                     object_match = self.ont.search(**{obj_match_prop_name: oid})
                     if len(object_match) == 0:
                         continue
-                    try:
-                        assert len(object_match) == 1
-                    except AssertionError:
-                        ipdb.set_trace()
-                        print()
+                    # try:
+                    #     assert len(object_match) == 1
+                    # except AssertionError:
+                    #     ipdb.set_trace()
+                    #     print()
 
                     if no_rel_added:
                         no_rel_added = False
                     
-                    safe_add_property(subject_match[0], relationship_type, object_match[0])
-                    if inverse_relationship_type:
-                        safe_add_property(object_match[0], inverse_relationship_type, subject_match[0])
+                    for sm in subject_match:
+                        for om in object_match:
+                            safe_add_property(sm, relationship_type, om)
+                            if inverse_relationship_type:
+                                safe_add_property(om, inverse_relationship_type, sm)
 
         if no_rel_added:
             print("WARNING: NO RELATIONSHIPS ADDED TO ONTOLOGY")
@@ -692,7 +698,7 @@ def print_ontology_stats(ont: owlready2.namespace.Ontology):
 if __name__ == "__main__":
     repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
     onto = owlready2.get_ontology("file://{}".format(os.path.join(repo_root, "comptox.rdf"))).load()
-    #onto = owlready2.get_ontology("file://{}".format(os.path.join(repo_root, "comptox_populated.rdf"))).load()
+    #onto = owlready2.get_ontology("file://{}".format(os.path.join(repo_root, "comptox_mid.rdf"))).load()
     
     # open config file:
     with open("../../CONFIG.yaml", 'r') as fp:
@@ -711,6 +717,7 @@ if __name__ == "__main__":
     hetionet = FlatFileDatabaseParser("hetionet", onto)
     aopdb = MySQLDatabaseParser("aopdb", onto, mysql_config)
     aopwiki = FlatFileDatabaseParser("aopwiki", onto)
+    tox21 = FlatFileDatabaseParser("tox21", onto)
 
     # Add nodes and node properties in a carefully specified order
 
@@ -1114,6 +1121,69 @@ if __name__ == "__main__":
             "data_transforms": {
                 "upstream_event_id": lambda x: int(x.split(":")[-1]),
                 "downstream_event_id": lambda x: int(x.split(":")[-1])
+            }
+        },
+        merge=False,
+        skip=False
+    )
+
+    tox21.parse_node_type(
+        node_type="Assay",
+        source_filename="tox21_assay_info.tsv",
+        fmt="tsv",
+        parse_config={
+            "iri_column_name": "protocol_name",
+            "headers": True,
+            "data_property_map": {
+                "protocol_name": onto.commonName,
+                "assay_target": onto.assayTarget,
+                "target_category": onto.targetCategory,
+                "cell_line": onto.cellLine,
+                "cell_type": onto.cellType
+            }
+        },
+        merge=False,
+        skip=False
+    )
+
+    tox21.parse_relationship_type(
+        relationship_type=onto.chemicalHasActiveAssay,
+        source_filename="tox21_assay_samples_all.tsv",
+        fmt="tsv",
+        parse_config={
+            "subject_node_type": onto.Chemical,
+            "subject_column_name": "compound_pubchem_cid",
+            "subject_match_property": onto.xrefPubchemCID,
+            "object_node_type": onto.Assay,
+            "object_column_name": "assay_name",
+            "object_match_property": onto.commonName,
+            "filter_column": "assay_outcome",
+            "filter_value": "1",
+            "headers": True,
+            "data_transforms": {
+                "compound_pubchem_cid": lambda x: x.split("_")[-1]
+            }
+        },
+        merge=False,
+        skip=False
+    )
+
+    tox21.parse_relationship_type(
+        relationship_type=onto.chemicalHasInactiveAssay,
+        source_filename="tox21_assay_samples_all.tsv",
+        fmt="tsv",
+        parse_config={
+            "subject_node_type": onto.Chemical,
+            "subject_column_name": "compound_pubchem_cid",
+            "subject_match_property": onto.xrefPubchemCID,
+            "object_node_type": onto.Assay,
+            "object_column_name": "assay_name",
+            "object_match_property": onto.commonName,
+            "filter_column": "assay_outcome",
+            "filter_value": "0",
+            "headers": True,
+            "data_transforms": {
+                "compound_pubchem_cid": lambda x: x.split("_")[-1]
             }
         },
         merge=False,

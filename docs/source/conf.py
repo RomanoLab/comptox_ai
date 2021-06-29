@@ -58,7 +58,8 @@ html_static_path = ['_static', '_static/img']
 
 html_additional_pages = {
     'index': 'index.html',
-    'browse': 'browse.html'
+    'browse': 'browse.html',
+    'data': 'data.html'
 }
 
 html_extra_path = [

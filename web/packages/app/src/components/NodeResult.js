@@ -10,20 +10,25 @@ import NodeLabel from './NodeLabel';
 import { Box, createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import { List, ListItem, ListItemText } from '@material-ui/core';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
-const theme = createMuiTheme({
+const nodeResultTheme = createMuiTheme({
   typography: {
     fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
+      // '-apple-system',
+      // 'BlinkMacSystemFont',
+      // '"Segoe UI"',
+      // 'Roboto',
+      // '"Helvetica Neue"',
+      // 'Arial',
+      // 'sans-serif',
+      // '"Apple Color Emoji"',
+      // '"Segoe UI Emoji"',
+      // '"Segoe UI Symbol"',
       'Roboto',
       '"Helvetica Neue"',
       'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
+      'sans-serif'
     ].join(','),
   },
 });
@@ -65,14 +70,21 @@ const NodeResult = (props) => {
   }
 
   return(
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={nodeResultTheme}>
       <Box
         border={2}
         borderRadius="4px"
         borderColor="grey.500"
         p={1}
       >
-        <span style={{textAlign: 'left'}}>Node details:</span><Button onClick={handleCopyJson} style={{float: 'right'}}>Copy JSON</Button>
+        <span style={{textAlign: 'left'}}>Node details:</span>
+        <Button
+          onClick={handleCopyJson}
+          style={{float: 'right'}}
+          variant="outlined"
+        >
+          <FileCopyIcon color="action"/>{'\u00A0'}Copy JSON
+        </Button>
         <Dialog
           open={popupOpen}
           onClose={handleClose}
@@ -80,11 +92,11 @@ const NodeResult = (props) => {
           aria-describedby="json data copied to clipboard"
         >
           <DialogContent>
-            <DialogContentText>JSON data for the selected node has been copied to the clipboard.</DialogContentText>
+            <DialogContentText>Node data copied to the clipboard.</DialogContentText>
           </DialogContent>
         </Dialog>
         
-        <p>Data type(s): <NodeLabel nodeType={nodeType}/> Name: <span className="node-name">{nodeName}</span></p>
+        <p><NodeLabel nodeType={nodeType}/><span className="node-name">{nodeName}</span></p>
 
         <IsEmpty
           value={nodeIDs}
@@ -112,11 +124,11 @@ const NodeResult = (props) => {
 
         <ButtonGroup color="primary" size="small" aria-label="small outlined button group">
           <Button onClick={handleRelSearch}>
-            View relationships
+            Load relationships
           </Button>
         </ButtonGroup>
 
-        <ButtonGroup color="primary" size="small">
+        <ButtonGroup color="primary" size="small" style={{marginLeft: '12px'}}>
           <Button>Path start node</Button>
           <Button>Path end node</Button>
         </ButtonGroup>

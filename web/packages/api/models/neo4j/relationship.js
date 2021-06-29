@@ -1,11 +1,6 @@
-const neo4j = require('neo4j-driver');
-const _ = require('lodash');
-
 const Node = require('./node');
 
 const Relationship = module.exports = function(_relationship, relData) {
-    console.log(_relationship.r);
-
     const rel = _relationship['r'];
 
     this.fromNode = new Node(_relationship['n']);

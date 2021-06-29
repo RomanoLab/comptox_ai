@@ -19,6 +19,7 @@
       "Pathway": "#97AABD"
     },
     "nodeLabelProperties": {
+      "": [],
       "AOP": [
         {
           "property": "commonName",
@@ -156,7 +157,8 @@
       "xrefOMIM": "OMIM ID",
       "xrefNcbiGene": "NCBI Gene ID",
       "xrefHGNC": "HGNC ID",
-      "xrefEnsembl": "Ensembl ID"
+      "xrefEnsembl": "Ensembl ID",
+      "xrefDrugbank": "Drugbank ID"
     }
   }
 }

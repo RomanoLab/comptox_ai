@@ -1,4 +1,5 @@
 import { 
+  Button,
   makeStyles,
   Paper,
   Table,
@@ -15,15 +16,15 @@ import { useFetchRelationshipsByNodeIdQuery } from '../features/comptoxApiSlice'
 import { useAppSelector } from '../redux/hooks';
 
 const columns = [
-  { id: 'start', label: 'Start Node' },
-  { id: 'relType', label: 'Relationship Type' },
-  { id: 'end', label: 'End Node'}
+  { id: 'start', label: 'Start Node', align: 'center' },
+  { id: 'relType', label: 'Relationship Type', align: 'center'},
+  { id: 'end', label: 'End Node', align: 'center' }
 ];
 
 const useStyles = makeStyles({
   container: {
     maxHeight: 440,
-  },
+  },  
 });
 
 const RelationshipTable = (props) => {
@@ -62,8 +63,15 @@ const RelationshipTable = (props) => {
                   {columns.map((column) => {
                     const value = row[column.id];
                     return (
-                      <TableCell>
-                        {value}
+                      <TableCell align='center'>
+                        {
+                          (column.id === 'start') ? (
+                            <Button style={{justifyContent: "flex-start"}}>{value}</Button>
+                          ) : (column.id === 'end') ? (
+                            <Button>{value}</Button>
+                          ) : value
+                        }
+                        {/* {value} */}
                       </TableCell>
                     )
                   })}
@@ -85,7 +93,7 @@ const RelationshipSearch = (props) => {
   console.log(skip);
   console.log(selectedRel);
   
-  const { data = [] } = useFetchRelationshipsByNodeIdQuery(selectedRel, {
+  const { data = [], error, isLoading, isUninitialized } = useFetchRelationshipsByNodeIdQuery(selectedRel, {
     skip,
   });
 
@@ -94,10 +102,20 @@ const RelationshipSearch = (props) => {
   return(
     <div id="rel-search">
       <h2>Relationships</h2>
-      <p>
-        <i>Search for a node in the box above and click "See relationships" to show all linked nodes.</i>
-      </p>
-      <RelationshipTable data={data}/>
+      {error ? (
+        <></>
+      ) : isUninitialized ? (
+        <p><i>Search for a node in the box above and click "Load relationships" to show all linked nodes.</i></p>
+      ) : isLoading ? (
+        <>Loading relationships...</>
+      ) : data ? (
+        <div>
+          <p><i>Click a Start Node or End Node to view its data in "Node Results".</i></p>
+          <RelationshipTable data={data}/>
+        </div>
+      ) : null}
+      
+      {/* <RelationshipTable data={data}/> */}
     </div>
   );
 }

@@ -276,6 +276,10 @@ thead {
     align-items: center;
 }
 
+.browse-option {
+    margin-bottom: 36px;
+}
+
 .class > dt, .function > dt, .method > dt {
     padding: 0.5rem;
     background-color: #f8f8f8;

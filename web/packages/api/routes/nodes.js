@@ -120,3 +120,9 @@ exports.findNode = function (req, res, next) {
         .then(response => writeResponse(res, response))
         .catch(next);
 };
+
+exports.fetchById = function (req, res, next) {
+    Nodes.fetchById(dbUtils.getSession(req), req.params.id)
+        .then(response => writeResponse(res, response))
+        .catch(next);
+};

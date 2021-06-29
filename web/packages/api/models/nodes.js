@@ -71,8 +71,46 @@ const findNodeByQuery = function (session, type, field, value) {
     });
 };
 
+const findNodeByQueryContains = function (session, type, field, value) {
+    const query = [
+        `MATCH (n:${type})`,
+        `WHERE n.${field} CONTAINS $value`,
+        `RETURN n, id(n);`
+    ].join(' ');
+
+    // Convert the value to an int if it looks like an int
+    const intValue = parseInt(value);
+    const safeCastValue = (isNaN(intValue)) ? value : intValue;
+    
+    return session.readTransaction(txc =>
+        txc.run(query, {value: safeCastValue})
+    ) .then(result => {
+        if (!_.isEmpty(result.records)) {
+            return parseNodes(result);
+        } else {
+            throw {message: 'No results found for user query', query: query, result: result, status: 404}
+        }
+    });
+};
+
+const fetchById = function (session, id) {
+    const query = `MATCH (n) WHERE id(n) = ${id} RETURN n;`
+
+    return session.readTransaction(txc =>
+        txc.run(query)
+    ).then(result => {
+        if (!_.isEmpty(result.records)) {
+            return parseNodes(result);
+        } else {
+            throw {message: `No nodes found for id ${id}`, query: query, result: result, status: 404}
+        }
+    });
+};
+
 module.exports = {
     listNodeTypes: listNodeTypes,
     listNodeTypeProperties: listNodeTypeProperties,
     findNodeByQuery: findNodeByQuery,
+    findNodeByQueryContains: findNodeByQueryContains,
+    fetchById: fetchById,
 };

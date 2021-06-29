@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const RelationshipType = require('./neo4j/relationshiptype');
-const Node = require('./neo4j/node');
 const Relationship = require('./neo4j/relationship');
 
 function parseRelationshipLabels(neo4jResult, namespace_filter = 'ns0') {

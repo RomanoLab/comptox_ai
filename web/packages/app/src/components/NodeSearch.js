@@ -48,7 +48,7 @@ const NodeSearch = (props) => {
   // eslint-disable-next-line
   const [skip, setSkip] = useState(true); // Don't render search results until we've hit "search" at least once
   
-  const { data = [] } = useSearchNodesQuery([submitData.label, submitData.field, submitData.value], {
+  const { data = [], error, isLoading, isUninitialized } = useSearchNodesQuery([submitData.label, submitData.field, submitData.value], {
     skip,
   });
 
@@ -74,6 +74,10 @@ const NodeSearch = (props) => {
   const handleReset = () => {
     setFormData({
       name: 'nodeType',
+      value: ''
+    })
+    setFormData({
+      name: 'nodeField',
       value: ''
     })
     setFormData({
@@ -122,7 +126,7 @@ const NodeSearch = (props) => {
               label="Search field"
               labelId="select-outlined-label-field"
               onChange={handleChange}
-              value={formData.nodeField || ''}
+              value={formData.nodeField || []}
             >
               {fetchNodeFields(formData.nodeType).map((nf) => (
                 <MenuItem value={nf.property}>{nf.display}</MenuItem>
@@ -157,7 +161,12 @@ const NodeSearch = (props) => {
       </div>
 
       <h3>Search Results</h3>
-      {!(data.length === 0) &&
+      {/* {!(data.length === 0) && */}
+      {error ? (
+        <>Oh no, there was an error</>
+      ) : isLoading ? (
+        <>loading...</>
+      ) : data ? (
         <Map
           collection={data}
           iteratee={r => (
@@ -171,7 +180,8 @@ const NodeSearch = (props) => {
             />
           )}
         />
-      }
+      ) : null}
+      {/* } */}
     </div>
   )
 }

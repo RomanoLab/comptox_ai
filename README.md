@@ -2,16 +2,15 @@
 
 ![Build](https://github.com/jdromano2/comptox_ai/actions/workflows/main.yml/badge.svg)
 
-A modern biocomputing infrastructure for computational toxicology.
+A modern data infrastructure for computational toxicology.
 
 - - -
 
-ComptoxAI is a collection of resources made to enable a diverse range of artificial intelligence applications
-for computational toxicology data.
+ComptoxAI is a collection of resources made to enable a diverse range of artificial intelligence applications for computational toxicology data. This monorepo contains all of the code and data that comprises the overall ComptoxAI project, including code related to the database, website, REST API, graph machine learning toolkit, and other miscellaneous utilities.
 
-ComptoxAI is maintained by [Joseph D. Romano, PhD](http://jdr.bio), who is currently a member of the
-[Computational Genetics Laboratory](http://epistasis.org) at the University of Pennsylvania, as well
-as a postdoctoral fellow in the [Center for Excellence in Environmental Toxicology](http://ceet.upenn.edu/).
+ComptoxAI is maintained by [Joseph D. Romano, PhD](http://jdr.bio), who is a member of the [Computational Genetics Laboratory](http://epistasis.org) at the University of Pennsylvania, as well as a postdoctoral fellow in the [Center for Excellence in Environmental Toxicology](http://ceet.upenn.edu/). ComptoxAI is supported by grant funding from the US National Institutes of Health, including R01-LM010098 (PI: Jason Moore), R01-LM012601 (PI: Jason Moore), and T32-ES019851 (PI: Trevor Penning).
+
+We welcome collaborations and contributions from third-party developers. Please refer to `CONTRIBUTING.md` for further information.
 
 - - -
 
@@ -40,7 +39,7 @@ as a postdoctoral fellow in the [Center for Excellence in Environmental Toxicolo
 ### Comptox Ontology
 
 ![Class hierarchy of Comptox Ontology and graph database individual counts](./docs/source/_static/img/ontology.png)
-_(Counts may be incomplete)_
+_(Counts may be out of date - refer to the graph database for up-to-date information)_
 
 The Comptox Ontology provides a formal description of a wide array of conceptual entities involved in
 computational toxicology. Specifically, it is meant to support translational research in computational

@@ -10,7 +10,6 @@ import {
   TableRow
 } from '@material-ui/core';
 import React from 'react';
-import { Map } from 'react-lodash';
 
 import { useFetchRelationshipsByNodeIdQuery } from '../features/comptoxApiSlice';
 import { useAppSelector } from '../redux/hooks';

@@ -27,7 +27,7 @@ nconf.env(['PORT', 'NODE_ENV']).argv({
     'USERNAME': process.env.COMPTOX_AI_DATABASE_USERNAME,
     'PASSWORD': process.env.COMPTOX_AI_DATABASE_PASSWORD,
     'neo4j': 'local',
-    'neo4j-local': process.env.COMPTOX_AI_DATABASE_URL || 'bolt://localhost:7687',
+    'neo4j-local': process.env.COMPTOX_AI_DATABASE_URL || 'bolt://165.123.13.192:7687',
     'base_url': 'http://localhost:3000',
     'api_path': '/api',
 });

@@ -17,7 +17,7 @@
     <p><i>Level of usability</i>: Beginner</p>
     <a role="button" class="btn btn-primary btn-lg" href="{{ pathto('data') }}">Launch data portal</a>
 
-    <p>
+    <p class="mt-3">
       The interactive data portal is a simplified interface for ComptoxAI's graph database. Users can interactively search for nodes (entities) in the database by specifying a node type (e.g., "Chemical", or "Disease") and querying properties that are defined for that node type. When you select a node, you can then load all relationships that the node has with other nodes in the graph database.
     </p>
 
@@ -35,11 +35,11 @@
     <a role="button" class="btn btn-primary btn-lg" href="http://neo4j.comptox.ai/" target="_blank">Launch Neo4j browser</a>
     <br/><span style="color:red;">Note: Users do not need to authenticate to access the database. Click "Connect" on the authentication form using the default options to access the database in read-only mode.</span><br/>
 
-    <div class="row" style="margin:0;">
+    <div class="row mt-3" style="margin:0;">
       <img src="_static/img/neo_aop.png" alt="ComptoxAI in Protege" id="protege-screenshot" style="margin-right:24px;margin-bottom:8px;"/>
     </div>
 
-    <p>
+    <p class="mt-3">
       ComptoxAI's graph database is implemented using the Neo4j graph database management system. The Neo4j browser is an interface that allows users to graphically interact with nodes and relationships in the database by either randomly sampling node or relationship types, or by executing database queries in the Cypher query language (which is analogous to SQL, but designed for use with graph databases rather than relational databases).
     </p>
 
@@ -57,7 +57,7 @@
     <a role="button" class="btn btn-primary btn-lg" href="https://comptox.ai/api/help/" target="_blank">Visit Web API documentation</a>
     <a role="button" class="btn btn-primary btn-lg" href="https://comptox.ai/api" target="_blank">Visit API's root URL</a>
 
-    <p>
+    <p class="mt-3">
       ComptoxAI's REST Web API allows programmatic access to the graph database. The base URL for the API is:
     </p>
 
@@ -90,9 +90,10 @@
     <h2>ComptoxAI OWL2 Ontology</h2>
     <p><i>Level of usability</i>: Advanced</p>
 
-    <a role="button" class="btn btn-primary btn-lg" href="{{ pathto('data') }}">Download OWL2 ontology file</a>
+    <a role="button" class="btn btn-primary btn-lg" href="https://upenn.box.com/s/luks9kco64f3yox58s0a43j1q2p60m9r">Download ontology without individuals (103 KB)</a>
+    <a role="button" class="btn btn-primary btn-lg" href="https://upenn.box.com/s/ti2abhdd1a6hdck5la35wre4k7foy21z">Download fully-populated ontology (598 MB)</a>
 
-    <p>
+    <p class="mt-3">
       The contents of ComptoxAI's graph database are extracted from a large, fully-featured OWL2 ontology that defines the semantic meaning of each entity and relationship in the database, as well as each of the data properties attached to each node.
     </p>
 

@@ -53,25 +53,8 @@ function parseRelationshipToEdge(relationship) {
   }
 }
 
-class PathSearch extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      startNode: props.pathResults.startNode,
-      midNodes: props.pathResults.midNodes,
-      endNode: props.pathResults.endNode,
-      relationships: props.pathResults.relationships,
-    }
-
-
-    // this.graphData = {
-    //   nodes: this.getNodes(),
-    //   links: this.getRelationships(),
-    // }
-  }
-
-  getNodes() {
+const PathSearch = (props) => {
+  const getNodes = () => {
     var nodes = [];
 
     // Do start node;
@@ -85,7 +68,7 @@ class PathSearch extends React.Component {
     return nodes;
   }
 
-  getRelationships() {
+  const getRelationships = () => {
     var rels = [];
 
     this.state.relationships.forEach(r => {
@@ -95,23 +78,21 @@ class PathSearch extends React.Component {
     return rels;
   }
   
-  render() {
-    return(
-      <div id="path-search">
-        <h2>Paths</h2>
-        <p>
-          <i>Load a "start node" and "end node" by clicking the corresponding button on node search results.</i>
-        </p>
-        {!(this.state.pathResults === undefined) &&
-        <Graph
-          id="path-search-result"
-          data={this.graphData}
-          config={graphConfig}
-        />
-        }
-      </div>
-    );
-  }
+  return(
+    <div id="path-search">
+      <h2>Paths</h2>
+      <p>
+        <i>Load a "start node" and "end node" by clicking the corresponding button on node search results.</i>
+      </p>
+      {!(this.state.pathResults === undefined) &&
+      <Graph
+        id="path-search-result"
+        data={this.graphData}
+        config={graphConfig}
+      />
+      }
+    </div>
+  );
 }
 
 export default PathSearch;

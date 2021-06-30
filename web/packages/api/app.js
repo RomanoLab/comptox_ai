@@ -104,6 +104,8 @@ app.get("/nodes/fetchById/:id", routes.nodes.fetchById);
 
 app.get("/relationships/fromStartNodeId/:id", routes.relationships.findRelationshipsByNode);
 
+app.get("/paths/findByIds?", routes.paths.findByIds)
+
 // handle errors
 app.use(function (err, req, res, next) {
     if (err && err.status) {

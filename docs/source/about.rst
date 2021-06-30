@@ -28,6 +28,22 @@ if you would like to use ComptoxAI for research purposes (you don't need our
 permission, we'd just like to make sure you're aware of which work is evaluated
 and which isn't at this point)!
 
+Contact Us
+----------
+
+This wesite is maintained by Joseph D. Romano, PhD. He can be reached via email
+at **joseph.romano [at] pennmedicine.upenn.edu**.
+
+If you believe you've found a bug, would like to request a new feature, or are
+interested in contributing to the continued development of ComptoxAI, please
+see `CONTRIBUTING.md
+<https://github.com/jdromano2/comptox_ai/blob/master/CONTRIBUTING.md>`_ on
+GitHub.
+
+Similar projects can be found at `his personal website
+<http://jdr.bio>`_, or at the University of Pennsylvania's `Computational
+Genetics Lab home page <http://epistasis.org>`_.
+
 Funding and Acknowledgements
 ----------------------------
 

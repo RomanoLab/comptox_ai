@@ -12,8 +12,16 @@ export const comptoxApiSlice = createApi({
     }),
     fetchRelationshipsByNodeId: builder.query({
       query: (nodeId) => `/relationships/fromStartNodeId/${nodeId}`
-    })
+    }),
+    findPathByNodeIds: builder.query({
+      query: (nodeIds) => `/paths/findByIds?fromId=${nodeIds[0]}&toId=${nodeIds[1]}`
+    }),
   })
 });
 
-export const { useFetchConfigQuery, useSearchNodesQuery, useFetchRelationshipsByNodeIdQuery } = comptoxApiSlice;
+export const {
+  useFetchConfigQuery,
+  useSearchNodesQuery,
+  useFetchRelationshipsByNodeIdQuery,
+  useFindPathByNodeIdsQuery
+} = comptoxApiSlice;

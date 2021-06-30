@@ -45,12 +45,12 @@ The Comptox Ontology provides a formal description of a wide array of conceptual
 computational toxicology. Specifically, it is meant to support translational research in computational
 toxicology by defining and enumerating the relationships that occur between these entities.
 
-Two ontologies are included in the repository:
+Two ontologies are available for download:
 
 - `comptox.rdf`: The core ontology, consisting of a class polyhierarchy and a definition of object/data
-properties and their domains/ranges.
+properties and their domains/ranges. This is also included in the root directory of this repository.
 
-- `comptox_populated.rdf`: The same ontology, but populated with individuals for all currently supported classes.
+- `comptox_populated.rdf`: The same ontology, but populated with individuals for all currently supported classes. Since the file is very large (currently approaching 600 MB), it must be downloaded from an external server. The most recent version can be found at https://upenn.box.com/s/ti2abhdd1a6hdck5la35wre4k7foy21z.
 
 `comptox.rdf` was created by manually building a class hierarchy and properties in the Protégé ontology editor.
 `comptox_populated.rdf` was created by running the Python scripts in `comptox_ai/scripts/build/`, which parse

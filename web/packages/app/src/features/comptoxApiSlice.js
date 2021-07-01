@@ -10,6 +10,15 @@ export const comptoxApiSlice = createApi({
     searchNodes: builder.query({
       query: (label) => `/nodes/${label[0]}/search?field=${label[1]}&value=${label[2]}`
     }),
+    searchNodesContains: builder.query({
+      query: (label, contains) => {
+        if (contains) {
+          return `/nodes/${label[0]}/searchFuzzy?field=${label[1]}&value=${label[2]}`
+        } else {
+          return `/nodes/${label[0]}/search?field=${label[1]}&value=${label[2]}`
+        }
+      }
+    }),
     fetchRelationshipsByNodeId: builder.query({
       query: (nodeId) => `/relationships/fromStartNodeId/${nodeId}`
     }),
@@ -22,6 +31,7 @@ export const comptoxApiSlice = createApi({
 export const {
   useFetchConfigQuery,
   useSearchNodesQuery,
+  useSearchNodesContainsQuery,
   useFetchRelationshipsByNodeIdQuery,
   useFindPathByNodeIdsQuery
 } = comptoxApiSlice;

@@ -10,7 +10,8 @@ import {
   MenuItem,
   FormControl,
   FormControlLabel,
-  InputLabel
+  InputLabel,
+  Paper
 } from '@material-ui/core';
 
 import NodeResult from './NodeResult';
@@ -27,7 +28,7 @@ const submitReducer = (state, event) => {
   return {
     label: event.label,
     field: event.field,
-    value: event.value
+    value: event.value,
   }
 }
 
@@ -53,9 +54,6 @@ const NodeSearch = (props) => {
     skip,
   });
 
-  console.log("NODE DATA:")
-  console.log(data);
-
   const classes = useStyles()
 
   const handleSubmit = event => {
@@ -64,7 +62,7 @@ const NodeSearch = (props) => {
     setSubmitData({
       label: formData.nodeType,
       field: formData.nodeField,
-      value: formData.nodeValue
+      value: formData.nodeValue,
     })
   }
 
@@ -88,7 +86,7 @@ const NodeSearch = (props) => {
       name: 'nodeValue',
       value: ''
     })
-
+    
     console.log("handleReset:")
     console.log(formData);
   }
@@ -96,15 +94,15 @@ const NodeSearch = (props) => {
   const handleLoadExampleQuery = event => {
     setFormData({
       name: 'nodeType',
-      value: 'Chemical'
+      value: 'Gene'
     });
     setFormData({
       name: 'nodeField',
-      value: 'commonName'
+      value: 'geneSymbol'
     });
     setFormData({
       name: 'nodeValue',
-      value: 'Cyproheptadine'
+      value: 'CYP2E1'
     });
   }
 
@@ -115,6 +113,16 @@ const NodeSearch = (props) => {
       return config.nodeConfig.nodeLabelProperties[selectedNodeLabel]
     }
   } 
+
+  const handleResetNodeSearch = () => {
+    handleReset(); // resets the form
+    setSkip(true); // prevents error message from rendering
+    setSubmitData({ // clears the results
+      label: '',
+      field: '',
+      value: ''
+    })
+  }
 
   return(
     <div className="node-search">
@@ -175,7 +183,7 @@ const NodeSearch = (props) => {
           
           <br/>
           <div className={classes.root}>
-            <FormControlLabel
+            {/* <FormControlLabel
               control={
                 <Checkbox
                   name="exactMatchCheckbox"
@@ -183,7 +191,7 @@ const NodeSearch = (props) => {
               }
               label="Exact matches only"
               style={{marginRight:'18px'}}
-            />
+            /> */}
             <Button variant="contained" color="primary" type="submit">Search</Button>
             <Button variant="contained" color="primary" onClick={handleReset}>Clear Form</Button>
           </div>
@@ -198,20 +206,31 @@ const NodeSearch = (props) => {
       ) : isLoading ? (
         <>Loading...</>
       ) : data ? (
-        <Map
-          collection={data}
-          iteratee={r => (
-            <NodeResult
-              nodeType={r.nodeType}
-              nodeName={r.commonName}
-              nodeIDs={r.identifiers}
-              nodeIRI={r.ontologyIRI}
-              nodeNeo4jID={r.nodeId}
-              nodeFeatures={r.nodeFeatures}
-              config={config}
+        <div>
+          <Button 
+            onClick={handleResetNodeSearch}
+            variant="outlined"
+            style={{marginBottom:'6px'}}
+          >
+            Clear node search results
+          </Button>
+          <Paper>
+            <Map
+              collection={data}
+              iteratee={r => (
+                <NodeResult
+                  nodeType={r.nodeType}
+                  nodeName={r.commonName}
+                  nodeIDs={r.identifiers}
+                  nodeIRI={r.ontologyIRI}
+                  nodeNeo4jID={r.nodeId}
+                  nodeFeatures={r.nodeFeatures}
+                  config={config}
+                />
+              )}
             />
-          )}
-        />
+          </Paper>
+        </div>
       ) : null}
       {/* } */}
     </div>

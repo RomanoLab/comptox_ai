@@ -12,11 +12,12 @@ export const comptoxApiSlice = createApi({
     }),
     searchNodesContains: builder.query({
       query: (label, contains) => {
-        if (contains) {
-          return `/nodes/${label[0]}/searchFuzzy?field=${label[1]}&value=${label[2]}`
-        } else {
-          return `/nodes/${label[0]}/search?field=${label[1]}&value=${label[2]}`
-        }
+        // if (contains) {
+        //   return `/nodes/${label[0]}/searchFuzzy?field=${label[1]}&value=${label[2]}`
+        // } else {
+        //   return `/nodes/${label[0]}/search?field=${label[1]}&value=${label[2]}`
+        // }
+        return `/nodes/${label[0]}/search?field=${label[1]}&value=${label[2]}`
       }
     }),
     fetchRelationshipsByNodeId: builder.query({

@@ -13,10 +13,10 @@ with open("README.md", 'r') as fp:
 
 package_src_dir = Path(__file__).parent
 
-MAJOR      = 0
-MINOR      = 2
+MAJOR      = 1
+MINOR      = 0
 MICRO      = 0
-ISRELEASED = False
+ISRELEASED = True
 VERSION    = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
 
 def get_docs_url():

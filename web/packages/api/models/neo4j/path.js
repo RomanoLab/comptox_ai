@@ -8,13 +8,14 @@ const Path = module.exports = function(_path, pathData) {
     labels: _path.start.labels,
     name: _path.start.properties.commonName
   }];
-  nodes.push(_path.segments.map(seg => {
+  const rest = _path.segments.map(seg => {
     return {
       id: seg.end.identity.toNumber(),
       labels: seg.end.labels,
-      name: seg.end.commonName
+      name: seg.end.properties.commonName
     }
-  }));
+  })
+  nodes.push(...rest);
 
   const relationships = _path.segments.map(seg => {
     return {

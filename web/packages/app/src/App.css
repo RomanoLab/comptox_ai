@@ -22,7 +22,7 @@
 }
 
 .App {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   margin-top: 116px;
   margin-bottom: 24px;
@@ -89,4 +89,16 @@ h2 {
   border-radius: 8pt;
   background-color: cyan;
   padding: 1px 5px 1px 5px;
+}
+
+.search-header {
+  display: flex;
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.search-header .search-text {
+  font-size: 1.17em;
+  font-weight: bold;
+  margin-right: 24px;
 }

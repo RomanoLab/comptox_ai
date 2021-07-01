@@ -45,12 +45,16 @@ const NodeSearch = (props) => {
   
   const [formData, setFormData] = useReducer(formReducer, {});
   const [submitData, setSubmitData] = useReducer(submitReducer, {});
+  
   // eslint-disable-next-line
   const [skip, setSkip] = useState(true); // Don't render search results until we've hit "search" at least once
   
   const { data = [], error, isLoading, isUninitialized } = useSearchNodesQuery([submitData.label, submitData.field, submitData.value], {
     skip,
   });
+
+  console.log("NODE DATA:")
+  console.log(data);
 
   const classes = useStyles()
 
@@ -89,6 +93,21 @@ const NodeSearch = (props) => {
     console.log(formData);
   }
 
+  const handleLoadExampleQuery = event => {
+    setFormData({
+      name: 'nodeType',
+      value: 'Chemical'
+    });
+    setFormData({
+      name: 'nodeField',
+      value: 'commonName'
+    });
+    setFormData({
+      name: 'nodeValue',
+      value: 'Cyproheptadine'
+    });
+  }
+
   const fetchNodeFields = selectedNodeLabel => {
     if (selectedNodeLabel === undefined) {
       return []
@@ -100,7 +119,17 @@ const NodeSearch = (props) => {
   return(
     <div className="node-search">
       <h2>Nodes</h2>
-      <h3>Search</h3>
+      <div className="search-header">
+        <span className="search-text">Search</span>
+        <Button
+          variant="outlined"
+          color="primary"
+          size="small"
+          onClick={handleLoadExampleQuery}
+        >
+          Load example query
+        </Button>
+      </div>
       <div className="formWrapper">
 
         <form onSubmit={handleSubmit}>
@@ -153,15 +182,15 @@ const NodeSearch = (props) => {
                 />
               }
               label="Exact matches only"
+              style={{marginRight:'18px'}}
             />
             <Button variant="contained" color="primary" type="submit">Search</Button>
-            <Button variant="contained" color="primary" onClick={handleReset}>Reset</Button>
+            <Button variant="contained" color="primary" onClick={handleReset}>Clear Form</Button>
           </div>
         </form>
       </div>
 
       <h3>Search Results</h3>
-      {/* {!(data.length === 0) && */}
       {error ? (
         <>Error - the requested node was not found. Please try again with a new query.</>
       ) : isUninitialized ? (
@@ -178,6 +207,7 @@ const NodeSearch = (props) => {
               nodeIDs={r.identifiers}
               nodeIRI={r.ontologyIRI}
               nodeNeo4jID={r.nodeId}
+              nodeFeatures={r.nodeFeatures}
               config={config}
             />
           )}

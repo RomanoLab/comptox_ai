@@ -11,8 +11,9 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 
+import { setRelStartNode } from '../features/relationshipSlice';
 import { useFetchRelationshipsByNodeIdQuery } from '../features/comptoxApiSlice';
-import { useAppSelector } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 
 const columns = [
   { id: 'start', label: 'Start Node', align: 'center' },
@@ -48,7 +49,7 @@ const RelationshipTable = (props) => {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{ minWidth:column.minWidth, fontWeight:'bold' }}
                 >
                   {column.label}
                 </TableCell>
@@ -86,6 +87,7 @@ const RelationshipTable = (props) => {
 
 const RelationshipSearch = (props) => {
   const selectedRel = useAppSelector((state) => state.relationship.relStartNode)
+  const dispatch = useAppDispatch();
 
   const skip = (selectedRel) ? false : true;
   
@@ -97,6 +99,9 @@ const RelationshipSearch = (props) => {
   });
 
 
+  const handleResetRelSearch = () => {
+    dispatch(setRelStartNode(null));
+  }
   
   return(
     <div id="rel-search">
@@ -110,6 +115,13 @@ const RelationshipSearch = (props) => {
       ) : data ? (
         <div>
           <p><i>Click a Start Node or End Node to view its data in "Node Results".</i></p>
+          <Button 
+            onClick={handleResetRelSearch}
+            variant="outlined"
+            style={{marginBottom:'6px'}}
+          >
+            Clear reationship results
+          </Button>
           <RelationshipTable data={data}/>
         </div>
       ) : null}

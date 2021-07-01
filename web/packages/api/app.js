@@ -96,6 +96,7 @@ app.get("/nodes/listNodeTypes", routes.nodes.listNodeTypes);
 app.get("/nodes/listNodeTypeProperties/:type", routes.nodes.listNodeTypeProperties);
 // example: http://localhost:3000/nodes/Chemical/search?field=xrefDTXSID&value=DTXSID30857908
 app.get("/nodes/:type/search?", routes.nodes.findNode);
+app.get("/nodes/:type/searchContains?", routes.nodes.findNodeContains);
 app.get("/nodes/fetchById/:id", routes.nodes.fetchById);
 
 app.get("/relationships/fromStartNodeId/:id", routes.relationships.findRelationshipsByNode);

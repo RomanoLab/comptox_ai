@@ -10,12 +10,18 @@ export const pathSlice = createSlice({
     setPathStartNodeId: (state, action) => {
       state.pathStartNodeId = action.payload
     },
+    setPathStartNodeName: (state, action) => {
+      state.pathStartNodeName = action.payload
+    },
     setPathEndNodeId: (state, action) => {
       state.pathEndNodeId = action.payload
+    },
+    setPathEndNodeName: (state, action) => {
+      state.pathEndNodeName = action.payload
     }
   }
 })
 
-export const { setPathStartNodeId, setPathEndNodeId } = pathSlice.actions;
+export const { setPathStartNodeId, setPathStartNodeName, setPathEndNodeId, setPathEndNodeName } = pathSlice.actions;
 
 export default pathSlice.reducer;

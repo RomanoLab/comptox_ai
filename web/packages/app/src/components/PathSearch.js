@@ -1,9 +1,10 @@
 import React from 'react';
 import { Graph } from "react-d3-graph";
-import { Box } from "@material-ui/core";
+import { Box, Button, Typography } from "@material-ui/core";
 
-import { useAppSelector } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useFindPathByNodeIdsQuery } from '../features/comptoxApiSlice';
+import { setPathEndNodeId, setPathEndNodeName, setPathStartNodeName, setPathStartNodeId } from '../features/pathSlice';
 
 const graphConfig = {
   directed: true,
@@ -27,12 +28,13 @@ const colorMap = {
 
 const PathSearch = (props) => {
   const pathStartId = useAppSelector((state) => state.path.pathStartNodeId);
+  const pathStartName = useAppSelector((state) => state.path.pathStartNodeName);
   const pathEndId = useAppSelector((state) => state.path.pathEndNodeId);
+  const pathEndName = useAppSelector((state) => state.path.pathEndNodeName);
+
+  const dispatch = useAppDispatch();
 
   const skip = ((!pathStartId) || (!pathEndId)) ? true : false;
-  
-  console.log("skip path query?");
-  console.log(skip);
   
   const { data = [], error, isLoading, isUninitialized } = useFindPathByNodeIdsQuery([pathStartId, pathEndId], {
     skip,
@@ -40,9 +42,6 @@ const PathSearch = (props) => {
 
   const nodes = data.nodes ? data.nodes : [];
   const relationships = data.relationships ? data.relationships : [];
-
-  console.log("DATA:")
-  console.log(data);
 
   const nodes_parsed = nodes.map(n => ({
     id: n.id,
@@ -61,79 +60,64 @@ const PathSearch = (props) => {
     links: links_parsed
   };
 
-  console.log("PARSED DATA:")
-  console.log(parsed_data);
-  
+  const handleClearPathSearch = () => {
+    dispatch(setPathStartNodeId(null))
+    dispatch(setPathEndNodeId(null))
+    dispatch(setPathStartNodeName(''))
+    dispatch(setPathEndNodeName(''))
+  }
+
+  const handleLoadExamplePath = () => {
+    dispatch(setPathStartNodeId(660070))
+    dispatch(setPathEndNodeId(723548))
+    dispatch(setPathStartNodeName("cytochrome P450 family 2 subfamily E member 1"))
+    dispatch(setPathEndNodeName("Capsaicin"))
+  }
+
   return(
     <div id="path-search">
       <h2>Paths</h2>
-      <p>
-        Start node: {pathStartId}
-      </p>
-      <p>
-        End node: {pathEndId}
-      </p>
+      {pathStartId &&
+      <Typography variant='h6'>
+        Start node: {pathStartName}
+      </Typography>
+      }
+      {pathEndId &&
+      <Typography variant='h6'>
+        End node: {pathEndName}
+      </Typography>
+      }
+      <Button variant="outlined" onClick={handleLoadExamplePath}>
+        Load example path
+      </Button>
+      <Button variant="outlined" style={{margin:'4px'}} onClick={handleClearPathSearch}>
+        Clear path search
+      </Button>
+      <hr/>
       {error ? (
         <>Error: No path can be found between the two nodes!</>
       ) : isUninitialized ? (
-        <>Uninitialized</>
+        <i>Set start and end nodes using the Node Search interface above to search for a shortest path between the two nodes.</i>
       ) : isLoading ? (
         <>Loading</>
       ) : data ? (
-        <Box
-          border={2}
-          borderRadius="3px"
-        >
-          <Graph
-            id="path-search-result"
-            data={parsed_data}
-            config={graphConfig}
-          />
-        </Box>
+        <>
+          <Box
+            border={2}
+            borderRadius="3px"
+          >
+            <Graph
+              id="path-search-result"
+              data={parsed_data}
+              config={graphConfig}
+            />
+            
+          </Box>
+          <i>Zoom, pan, and scroll via mouse controls.</i>
+        </>
       ) : null }
-      {/* <p>
-        <i>Load a "start node" and "end node" by clicking the corresponding button on node search results.</i>
-      </p> */}
-      {/* {!(this.state.pathResults === undefined) &&
-      <Graph
-        id="path-search-result"
-        data={this.graphData}
-        config={graphConfig}
-      />
-      } */}
     </div>
   );
 }
 
 export default PathSearch;
-
-
- // const selectedPath = useAppSelector((state) => {
-  //   // return {
-  //   //   startId: state.pathStartNodeId,
-  //   //   endId: state.pathEndNodeId
-  //   // }
-  //   return [
-  //     state.pathStartNodeId,
-  //     state.pathEndNodeId
-  //   ]
-  // });
- 
-// const getNodes = () => {
-//   // var nodes = [];
-//   // if (typeof this.state.startNode !== undefined) {
-//   //   nodes.push(parseNodeToVertex(this.state.startNode));
-//   // }
-//   // if (typeof this.state.endNode !== undefined) {
-//   //   nodes.push(parseNodeToVertex(this.state.endNode));
-//   // }
-//   // return nodes;
-// }
-
-// const getRelationships = () => {
-//   var rels = [];
-//   this.state.relationships.forEach(r => {
-//     rels.push(parseRelationshipToEdge(r));
-//   });
-//   return rels;
-// }

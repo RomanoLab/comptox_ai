@@ -39,7 +39,7 @@ var swaggerOpts = {
         ],
         host: "localhost:3000",
     },
-    apis: ["api/routes/*.js", "api/*.js"],
+    apis: ["./routes/*.js", "./*.js"],
 };
 
 // Make swagger/openapi documentation

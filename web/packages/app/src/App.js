@@ -26,7 +26,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="App" style={{marginTop:'24px'}}>
         <ThemeProvider theme={theme}>
           <Container>
             <h1>ComptoxAI interactive data portal</h1>

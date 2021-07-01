@@ -114,7 +114,6 @@ const RelationshipSearch = (props) => {
         <>Loading relationships...</>
       ) : data ? (
         <div>
-          <p><i>Click a Start Node or End Node to view its data in "Node Results".</i></p>
           <Button 
             onClick={handleResetRelSearch}
             variant="outlined"

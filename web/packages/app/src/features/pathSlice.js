@@ -3,15 +3,19 @@ import { createSlice } from '@reduxjs/toolkit';
 export const pathSlice = createSlice({
   name: 'path',
   initialState: {
-    path: {},
+    pathStartNodeId: null,
+    pathEndNodeId: null,
   },
   reducers: {
-    setPathData: (state, action) => {
-      state.path = action.payload
+    setPathStartNodeId: (state, action) => {
+      state.pathStartNodeId = action.payload
+    },
+    setPathEndNodeId: (state, action) => {
+      state.pathEndNodeId = action.payload
     }
   }
 })
 
-export const { setPathData } = pathSlice.actions;
+export const { setPathStartNodeId, setPathEndNodeId } = pathSlice.actions;
 
 export default pathSlice.reducer;

@@ -34,7 +34,7 @@ class App extends React.Component {
               From this page, you can search for individual entities (nodes) in ComptoxAI's graph database. When you select a query result, adjacent nodes (related data elements) are loaded and displayed below.
             </p>
             <p>
-              For detailed usage instructions, please see <b>here</b>.
+              For detailed usage instructions, please see <a href="https://comptox.ai/browse.html">this page</a>.
             </p>
             {/* <HowToUse /> */}
             <NodeSearch config={config.default}/>

@@ -7,7 +7,7 @@ const parsePath = (neo4jResult) => {
   
   const path = neo4jResult.records.map(r => new Path(r.toObject()['p']));
 
-  return path;
+  return path[0];
 };
 
 const findPathByIds = function(session, fromId, toId) {

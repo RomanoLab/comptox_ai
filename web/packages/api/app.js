@@ -33,12 +33,8 @@ var swaggerOpts = {
         },
         servers: [
             {
-                url: "http://localhost:3000",
-                description: "Default URL when run as a local development environment"
-            },
-            {
                 url: "http://comptox.ai/api",
-                description: "Public-facing instance of ComptoxAI's API"
+                description: "ComptoxAI's public REST API"
             }
         ],
         host: "localhost:3000",

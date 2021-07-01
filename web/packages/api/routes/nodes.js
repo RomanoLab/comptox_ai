@@ -120,6 +120,12 @@ exports.findNode = function (req, res, next) {
         .catch(next);
 };
 
+exports.findNodeContains = function (req, res, next) {
+    Nodes.findNodeByQueryContains(dbUtils.getSession(req), req.params.type, req.query.field, req.query.value)
+        .then(response => writeResponse(res, response))
+        .catch(next);
+};
+
 exports.fetchById = function (req, res, next) {
     Nodes.fetchById(dbUtils.getSession(req), req.params.id)
         .then(response => writeResponse(res, response))

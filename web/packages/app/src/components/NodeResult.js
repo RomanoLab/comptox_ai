@@ -18,7 +18,7 @@ import {
 
 import { useAppDispatch } from '../redux/hooks';
 import { setRelStartNode } from '../features/relationshipSlice';
-import { setPathStartNodeId, setPathEndNodeId } from '../features/pathSlice';
+import { setPathStartNodeId, setPathEndNodeId, setPathStartNodeName, setPathEndNodeName } from '../features/pathSlice';
 import NodeLabel from './NodeLabel';
 import { Box, createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
@@ -58,11 +58,13 @@ const NodeResult = (props) => {
   }
 
   const handleSetPathStartNode = () => {
-    dispatch(setPathStartNodeId(nodeNeo4jID))
+    dispatch(setPathStartNodeId(nodeNeo4jID));
+    dispatch(setPathStartNodeName(nodeName));
   }
 
   const handleSetPathEndNode = () => {
-    dispatch(setPathEndNodeId(nodeNeo4jID))
+    dispatch(setPathEndNodeId(nodeNeo4jID));
+    dispatch(setPathEndNodeName(nodeName));
   }
 
   const handleCopyJson = () => {

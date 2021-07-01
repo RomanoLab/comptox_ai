@@ -44,7 +44,7 @@ var swaggerOpts = {
 
 // Make swagger/openapi documentation
 var swaggerSpec = swaggerJSDoc(swaggerOpts);
-app.use('/help', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.set("port", nconf.get("PORT"));
 
 app.use(require('./neo4j'));
@@ -84,9 +84,9 @@ app.use(neo4jSessionCleanup);
  *             schema:
  *               type: string
  */
-app.get('/', (req, res) => {
-    res.send('Welcome to ComptoxAI\'s web API! Please read the documentation at http://comptox.ai/api/docs for available operations.')
-})
+// app.get('/', (req, res) => {
+//     res.send('Welcome to ComptoxAI\'s web API! Please read the documentation at http://comptox.ai/api/help/ for available operations.')
+// })
 
 app.get('/config', (req, res) => {
     res.send(dataConfigJson);

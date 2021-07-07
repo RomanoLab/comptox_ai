@@ -16,24 +16,17 @@ const path = require('path');
 
 const port = 3000
 
-// Planned routes:
-// /info
-// /about
-// /stats
-// /listTables
-// 
-
 var swaggerOpts = {
     definition: {
         openapi: '3.0.3',
         info: {
             title: "ComptoxAI REST API",
-            version: "1.0.0-alpha",
-            description: "REST API serving ComptoxAI data to support cheminformatics applications",
+            version: "1.0.0",
+            description: "A REST Web API providing programmatic access to ComptoxAI's graph database.",
         },
         servers: [
             {
-                url: "http://comptox.ai/api",
+                url: "https://comptox.ai/api",
                 description: "ComptoxAI's public REST API"
             }
         ],
@@ -76,6 +69,7 @@ app.use(neo4jSessionCleanup);
  * /:
  *   get:
  *     description: Return a string 
+ *     summary: Display a welcome message
  *     responses:
  *       200:
  *         description: Returns a welcome message if the API is available
@@ -88,6 +82,20 @@ app.get('/', (req, res) => {
     res.send('Welcome to ComptoxAI\'s web API! Please read the documentation at http://comptox.ai/api/help/ for available operations.')
 })
 
+/**
+ * @openapi
+ * /config:
+ *   get:
+ *     description: Return basic database configuration metadata
+ *     summary: Fetch metadata describing the API's internal configuration
+ *     responses:
+ *       200:
+ *         description: Returns config metadata
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ */
 app.get('/config', (req, res) => {
     res.send(dataConfigJson);
 })

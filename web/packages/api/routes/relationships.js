@@ -11,6 +11,19 @@ const writeError = require('../helpers/response').writeError;
  *   schemas:
  *     Relationship:
  *       type: object
+ *       properties:
+ *         fromNode:
+ *           $ref: '#/components/schemas/Node'
+ *         toNode:
+ *           $ref: '#/components/schemas/Node'
+ *         fromId:
+ *           type: integer
+ *         toId:
+ *           type: integer
+ *         relId:
+ *           type: integer
+ *         relType:
+ *           type: string
  */
 
 /**
@@ -36,16 +49,6 @@ exports.listRelationshipTypes = function (req, res, next) {
         .then(response => writeResponse(res, response))
         .catch(next);
 };
-
-/**
- * @openapi
- * /relationships/listRelationshipTypeProperties/{type}
- */
-// exports.listRelationshipTypeProperties = function (req, res, next) {
-//     Relationships.listRelationshipTypeProperties(dbUtils.getSession(req), req.params.type)
-//         .then(response => writeResponse(res, response))
-//         .catch(next);
-// };
 
 exports.findRelationshipsByNode = function(req, res, next) {
     Relationships.findRelationshipsByNode(dbUtils.getSession(req), req.params.id)

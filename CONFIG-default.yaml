@@ -2,7 +2,7 @@
 # Default configuration for ComptoxAI
 neo4j:
   username: neo4j
-  password: hello
+  password: neo4j
   hostname: localhost
   protocol: bolt
   port: 7687

@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const comptoxApiSlice = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://comptox.ai/api' }),
   endpoints: (builder) => ({
     fetchConfig: builder.query({
       query: () => `/config`,
@@ -11,7 +11,7 @@ export const comptoxApiSlice = createApi({
       query: (label) => `/nodes/${label[0]}/search?field=${label[1]}&value=${label[2]}`
     }),
     searchNodesContains: builder.query({
-      query: (label, contains) => {
+      query: (label) => {
         // if (contains) {
         //   return `/nodes/${label[0]}/searchFuzzy?field=${label[1]}&value=${label[2]}`
         // } else {

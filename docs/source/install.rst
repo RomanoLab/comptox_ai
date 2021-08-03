@@ -21,24 +21,185 @@ database; we will update this guide accordingly when this is implemented.
 Installing the ``comptox_ai`` Python package
 --------------------------------------------
 
-For now, the easiest way to install the ``comptox_ai`` package is by cloning
-the repository from GitHub and running the ``setup.py`` script from the
-repository's root directory::
+The most reliable method for installing the ComptoxAI python package currently
+is using a combination of ``conda`` and setuptools.
 
-   $ git clone https://github.com/JDRomano2/comptox_ai
-   $ cd comptox_ai
-   $ python setup.py
+If you don't already have Anaconda or Miniconda installed, you can do so by
+selecting the appropriate installer file `here <https://docs.conda.io/en/latest/miniconda.html>`_. We recommend a 64-bit version of Miniconda 3.
 
-Rather than running the ``setup.py`` script directly, you can also install
-using ``pip``::
+Then, you can create a new ``conda`` environment that will be used for 
+ComptoxAI::
 
-   $ git clone https://github.com/JDRomano2/comptox_ai
+   $ conda create -n comptox_ai python=3.7.5
+
+Now, we can install PyTorch and PyTorch Geometric using ``conda``::
+
+   $ conda activate comptox_ai
+   $ conda install pytorch torchvision torchaudio cudatoolkit=10.2 -c pytorch
+   $ conda install pytorch-geometric -c rusty1s -c conda-forge
+
+Next, clone the GitHub repository for ComptoxAI, and install the remaining
+dependencies via ``setuptools``::
+
+   $ git clone https://github.com/JDRomano2/comptox_ai.git
    $ cd comptox_ai
    $ pip install .
 
-If you run into errors with package dependencies, you can force ``pip`` to install the prerequisites by navigating to the repository's root and running::
+Installing Neo4j and importing the ComptoxAI graph database
+-----------------------------------------------------------
 
-   $ pip install -r requirements.txt
+Install Neo4j
+^^^^^^^^^^^^^
+
+For most users, `Neo4j Desktop <https://neo4j.com/download/>`_ is the
+preferred method of installation. Neo4j Desktop does an excellent job managing
+one or more graph databases concurrently, and makes installing plugins almost
+trivially easy. It also comes with a built-in developer license for Neo4j
+Enterprise, which includes the excellent `Neo4j Bloom 
+<https://neo4j.com/product/bloom/>`_ visualization tool. If you prefer to
+install Neo4j Server (e.g., if you want to host the complete graph database on
+a web server, or if you just like having full control over your data
+ecosystem), it is totally possible to do so, but you may need to troubleshoot a
+bit.
+
+Any modern version of Neo4j Desktop should work fine, but we have tested it
+mainly on Version 1.4.7. Download the application and install it following the
+prompts; the default setting should be sufficient for most users.
+
+Create an empty graph database
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You're now ready to create an empty graph database that will hold ComptoxAI.
+Make a new Project, and change the name to ComptoxAI (or whatever else you
+prefer), by hovering over the "Project" label in the main window and clicking
+the edit icon immediately to its right. On the right side of this window, 
+click the "Add" dropdown button, and select "Local DBMS". In this form, set
+Name to anything you'd like (we use "ComptoxAI DBMS"), and set the password to
+something you will remember. After you install the Python package, this
+password will need to go into your ``CONFIG.yaml`` file. Next, choose version
+4.2.8 from the Version dropdown menu - this is the newest version of the DBMS
+that is compatible with the plugins we will be using. Finally, click "Create"
+to finish the process.
+
+Install plugins and configure the database
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Click the name of the DBMS ("ComptoxAI DBMS", if you are following our lead),
+but don't start the database just yet. A new panel should appear to the right.
+In this panel, click the "Plugins" tab. Install the following 3 plugins by
+expanding their name and clicking "Install":
+
+- APOC
+- Graph Data Science Library
+- Neosemantics (n10s)
+
+Next, open the DBMS' configuration file (hover over the DBMS name, click the
+ellipses icon on the right side, and select "Settings..."), and set the
+following configuration options by changing the corresponding line to match:
+
+- ``dbms.memory.heap.initial_size=2G``
+- ``dbms.memory.heap.max_size=8G``
+- ``dbms.memory.pagecache.size=2G``
+- ``dbms.security.procedures.unrestricted=jwt.security.*,n10s.*,apoc.*,gds.*``
+
+Then, add a new line at the end of the file with a configuration option that 
+specifies the directory to which graphs will be exported when you want to 
+analyze them in 3rd party software (such as PyTorch Geometric, for example). 
+This should be changed to a local directory that makes sense on your computer, 
+and where you have read/write permissions:
+
+- ``gds.export.location=/home/username/data/comptox_ai/subgraphs``
+
+.. important::
+
+   This is one step where Windows users need to be careful. You need to escape
+   each backslash in the export path with another backslash. It might look
+   something like this::
+   
+   gds.export.location=C:\\data\\comptox_ai\\subgraphs
+
+Download the ontology RDF file
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The full RDF representation of the graph database / ontology is very large -
+currently almost 600 MB. Visit the `data download page
+<https://comptox.ai/browse.html>`_ and click the "Download fully-populated
+ontology" button to be redirected to a page where you can download the file.
+Save it to a location that you'll remember in the next step.
+
+Import the RDF data into the DBMS
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We now use ``n10s`` to import the RDF file into the (currently empty) graph
+database.
+
+In Neo4j Desktop, hover over your DBMS name, and click "Start" to start the
+database. When the icon next to the DBMS name turns green and reads "Active",
+click the "Graph Apps" tab on the far left side of Neo4j Desktop, then select
+"Neosemantics". A new window will open with the ``n10s``/Neosemantics logo.
+In the "Project" dropdown, select the project you created for ComptoxAI, and
+then in "Graph" select the name of the DBMS, and click "Connect". You'll be
+asked if you want to run a command to create a new constraint on the graph,
+which you should do.
+
+We now set a few configuration settings in ``n10s``. Click the "Config" tab on
+the left, and set the following options:
+
+- ``handleVocabUris``: ``IGNORE``
+- ``handleMultival``: ``OVERWRITE``
+- ``handleRDFTypes``: ``LABELS``
+- ``applyNeo4jNaming``: Click the slider to activate
+
+Click "Create Config" to save the config options.
+
+Now, click on the "Import" tab, and set the following options:
+
+- RDF Source: Fetch from URL (this should be selected already)
+- Input Format: ``RDF/XML``
+- URL: Location of the RDF file you downloaded in the previous step - see the note below for details
+
+.. important::
+
+   Specifying the RDF file's location is a bit finicky. Basically, you need to
+   prepend the local path with ``file:///``. So, on a Unix system, it may look
+   like ``file:///home/username/data/comptox_populated.rdf``. On Windows, you
+   need to escape backslashes, so it may look like ``file:///C:\\data\\comptox_populated.rdf``.
+
+   Also, note that you currently can't just use the "Upload" option for RDF
+   Source, at least not on all operating systems. In our tests, trying to
+   import the RDF data this way results in the app crashing.
+
+Finally, click "Import Data". It should take a little while to complete the
+import, but a success message will eventually show up indicating the number of
+nodes and relationships imported into the database.
+
+Finish tidying up
+^^^^^^^^^^^^^^^^^
+
+The process we use for building the database - which involves populating an
+OWL2 ontology and then importing that ontology as RDF data into Neo4j - leaves
+behind some extra junk that we don't need in the database. The code repository
+includes a Python script that automates the process of clearing these out.
+
+.. important::
+
+   If you didn't increase the memory limits in your DBMS as outlined above,
+   this script will probably crash. We need to remove many unnecessary node
+   labels from the database, and this is a very memory-intensive operation.
+
+Assuming you followed the instructions above for installing the ComptoxAI
+Python package, navigate to the cloned source code repository's root directory,
+and then run the script, e.g.::
+
+   $ cd comptox_ai/build/
+   $ python post_install.py
+
+Since this cleaning is an irreversible process, you need to confirm that you
+want to proceed.
+
+After the script finishes running, you should be all set up and good to go!
+
+
 
 Downloading the source data files
 ---------------------------------

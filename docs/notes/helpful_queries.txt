@@ -1,0 +1,15 @@
+Export Chemicals with MACCS properties to a CSV file via APOC:
+
+MATCH (chemical:Chemical)
+WITH collect(chemical) as chemicals,
+"file:/E:/Data/comptoxai/chemicals.csv" AS my_csv
+CALL apoc.export.csv.data(
+    chemicals,
+    [],
+    my_csv,
+    {}
+)
+YIELD file, source, format, nodes, properties, rows, batchSize, batches, done, data
+RETURN file, source, format, nodes, properties, rows, batchSize, batches, done, data;
+
+(notice special absolute path syntax)

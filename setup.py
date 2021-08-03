@@ -56,10 +56,11 @@ setuptools.setup(
         'openpyxl==3.0.7',
         'owlready2==0.33',
         'PyYAML>=5.3.1',
-        'pymongo==3.11.4'  # prefer to deprecate - see comptox_ai/db/feature_db.py
+        'pymongo==3.11.4',  # prefer to deprecate - see comptox_ai/db/feature_db.py
     ],
     extras_require={
         "testing": ["pytest"],
-        "coverage": ["pytest-cov", "codecov"]
+        "coverage": ["pytest-cov", "codecov"],
+        "docs": ["numpydoc"]
     }
 )

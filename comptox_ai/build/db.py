@@ -121,6 +121,7 @@ class DatabaseParser:
         node_properties: dict,
         merge_column: dict,
         existing_class: str = None,
+        skip_create_new_node: bool = False
     ):
         if not existing_class:
             cl = get_onto_class_by_node_type(self.ont, node_type)
@@ -144,6 +145,8 @@ class DatabaseParser:
 
         # Only create a new individual if we didn't find a match
         if len(match) == 0:
+            if skip_create_new_node:
+                return
             individual_name = fields[source_node_label]
             new_or_matched_individual = cl(safe_make_individual_name(individual_name, cl))
         else:
@@ -339,6 +342,7 @@ class FlatFileDatabaseParser(DatabaseParser):
         merge: bool = True,
         append_class: bool = False,
         existing_class: str = None,
+        skip_create_new_node: bool = False,
         skip: bool = False,
     ):
         """
@@ -487,6 +491,7 @@ class FlatFileDatabaseParser(DatabaseParser):
                     parse_config["data_property_map"],
                     merge_column,
                     existing_class_label,
+                    skip_create_new_node,
                 )
             else:
                 self._write_new_node(
@@ -780,6 +785,7 @@ if __name__ == "__main__":
             },
         },
         merge=True,
+        skip_create_new_node=True,  # Don't create an empty chemical node with just a MACCS property if the CID isn't already in the ontology
         skip=False
     )
 

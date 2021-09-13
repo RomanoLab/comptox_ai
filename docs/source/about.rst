@@ -15,9 +15,18 @@ We're creating ComptoxAI in order to change this.
 Authors
 -------
 
-ComptoxAI is developed and maintained by Joseph D. Romano, who is currently a
+ComptoxAI is developed and maintained by `Joseph D. Romano <https://jdr.bio>`_, who is a
 postdoctoral researcher at the University of Pennsylvania in the Computational
 Genetics Lab.
+
+Other important contributors include:
+
+- `Jason Moore <https://www.med.upenn.edu/apps/faculty/index.php/g275/p8803452>`_ (Penn)
+- `Trevor Penning <https://www.med.upenn.edu/apps/faculty/index.php/g275/p12620>`_ (Penn)
+- Yun Hao (Penn)
+- Holly Mortensen (US EPA)
+- Jonathan Senn (US EPA)
+- Mei Liang (US EPA)
 
 Citing ComptoxAI
 ----------------
@@ -27,6 +36,25 @@ preprint citation when we have one written. In the meantime, please contact us
 if you would like to use ComptoxAI for research purposes (you don't need our
 permission, we'd just like to make sure you're aware of which work is evaluated
 and which isn't at this point)!
+
+Source databases
+----------------
+
+ComptoxAI consists of data integrated from a wide range of third-party, open
+access databases (many of which are relational databases rather than graph
+databases). These include:
+
+- AOP-DB
+- AOP-Wiki
+- Drugbank
+- DSSTox
+- Hetionet
+- NCBI Gene
+- NCBI OMIM
+- PubChem
+- Tox21
+
+See :ref:`guide_databases` for complete details on each of these.
 
 Contact Us
 ----------
@@ -48,5 +76,12 @@ Funding and Acknowledgements
 ----------------------------
 
 ComptoxAI is supported by grant funding from the US National Institutes of
-Health, including R01-LM010098 (PI: Moore), R01-LM012601 (PI: Moore), and
-T32-ES019851 (PI: Penning).
+Health, including ``K99-LM013646`` (PI: Romano), ``R01-LM010098`` (PI: Moore), 
+``R01-LM012601`` (PI: Moore), and ``T32-ES019851`` (PI: Penning).
+
+ComptoxAI would also not be possible without essential contributions from
+researchers at the US Environmental Protection Agency (EPA), including Dr.
+Holly Mortensen, Jonathan Senn, and Mei Liang, who have contributed essential data from the `AOP-DB project <https://www.nature.com/articles/s41597-021-00962-3>`_.
+We also would like to acknowledge Daniel Himmelstein's
+`hetionet <https://het.io>`_ resource, which is used to derive many of the
+graph relationships between different classes of biological entities.

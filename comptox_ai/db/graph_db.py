@@ -170,7 +170,7 @@ class GraphDB(object):
     # Return results to user
 
   def build_graph_native_projection(self, graph_name, node_proj,
-                                    relationship_proj, config_dict=None):
+                                    relationship_proj, config_dict={'nodeProperties': '*'}):
     """
     Create a new graph in the Neo4j Graph Catalog via a native projection.
 
@@ -250,7 +250,7 @@ class GraphDB(object):
     if config_dict is None:
       config_dict_str = ""
     else:
-      config_dict_str = ", configuration: {0}".format(str(config_dict))
+      config_dict_str = ", {0}".format(str(config_dict))
 
     create_graph_query = create_graph_query_template.format(
       graph_name_str,
@@ -419,6 +419,17 @@ class GraphDB(object):
     """
     res = self.run_cypher(f"CALL gds.beta.graph.export.csv('{graph_name}', {{exportName: '{graph_name}'}})")
     return res
+
+  def stream_named_graph(self, graph_name):
+    """
+    Stream a named GDS graph into Python for further processing.
+
+    Parameters
+    ----------
+    graph_name : str
+      A name of a graph in the GDS catalog.
+    """
+    node_props = self.run_cypher(f"CALL gds.graph.streamNodeProperties('{graph_name}', ")
 
   def to_pytorch(self, graph_name, node_list):
     """

@@ -6,7 +6,6 @@ Copyright (c) 2020 by Joseph D. Romano
 """
 
 from numpy.lib.arraysetops import ediff1d
-import ipdb
 
 import os
 import glob

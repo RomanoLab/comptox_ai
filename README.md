@@ -114,13 +114,28 @@ Each major component can be found in the following locations:
 
 ## Installing ComptoxAI
 
-Eventually, ComptoxAI will be posted to the Python Package Index and made available for remote
-installation with `pip`. For now, download the code (either through an official release on the
-Releases page, or by cloning the entire repository) and install via:
+#### Installing with GPU support
 
-`pip install /path/to/comptox_ai -r /path/to/comptox_ai/requirements.txt`
+See below ("Installing without GPU Support") if you can't install CUDA v10.1 (e.g., if you are using MacOS) or don't have a [compatible GPU](https://developer.nvidia.com/cuda-gpus).
 
-This should install ComptoxAI along with all required dependencies.
+We use Conda to manage dependencies for the full, GPU-enabled version of ComptoxAI
+
+```{python}
+$ git clone https://github.com/JDRomano2/comptox_ai
+$ cd comptox_ai
+$ conda env create -f environment.yml
+$ pip install .
+```
+
+#### Installing without GPU support
+
+If you cannot (or don't want to) run ComptoxAI with GPU support, your installation process is a little bit easier, since you don't need to worry about the additional GPU computing dependencies. Note that Conda is not needed.
+
+```{python}
+$ git clone https://github.com/JDRomano2/comptox_ai
+$ cd comptox_ai
+$ pip install .
+```
 
 #### Installing using Conda
 

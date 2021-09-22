@@ -12,6 +12,10 @@ import glob
 import configparser
 from pathlib import Path
 from yaml import load, Loader
+from dataclasses import dataclass
+from typing import List, Dict
+
+import ipdb
 
 from neo4j import GraphDatabase
 from neo4j.exceptions import ClientError
@@ -30,6 +34,31 @@ def _get_default_config_file():
   else:
     default_config_file = os.path.join(root_dir, 'CONFIG-default.yaml')
   return default_config_file
+
+@dataclass
+class Metagraph:
+  """
+  A metagraph showing the node types and relationship types (and their
+  connectivity) in the overall graph database.
+
+  Parameters
+  ----------
+  node_labels : list of str
+    A list of node labels in the graph database.
+  node_label_counts : dict of int
+    A mapping from all node labels in `node_labels` to the corresponding number
+    of nodes of that type in the graph database.
+  relationship_types : list of str
+    A list of relationship types in the graph database.
+  relationship_path_schema : dict of list
+    A mapping from each relationship type present in the graph database to a
+    list describing valid (subject, object) pairs (in other words, all existing
+    'from' node types and 'to' node types linked by the given relationship).
+  """
+  node_labels: List[str]
+  node_label_counts: Dict[str, int]
+  relationship_types: List[str]
+  relationship_path_schema: Dict[str, Dict[str, int]]
 
 class Graph(object):
   """
@@ -318,17 +347,66 @@ class GraphDB(object):
   def _make_rel_projection_str(self, rel_proj_arg):
     pass
 
-  def fetch_nodes(self, nodes):
+  def fetch_nodes(self, node_label):
     """
     Fetch nodes from the Neo4j graph database.
-    """
-    pass
 
-  def fetch_edges(self, edges):
+    Returns
+    -------
+    generator of dict
+
+    """
+    
+    res = self.run_cypher(f"MATCH (n:{node_label}) RETURN n;")
+
+    return (r['n'] for r in res)
+
+
+  def fetch_relationships(self, relationship_type, from_label, to_label):
     """
     Fetch edges (relationships) from the Neo4j graph database.
     """
-    pass
+    
+    res = self.run_cypher(f"MATCH (s:{from_label})-[r:{relationship_type}]->(o:{to_label}) RETURN s, r, o;")
+
+    return ((r['r'][0]['uri'], r['r'][1], r['r'][2]['uri']) for r in res)
+
+  def get_metagraph(self):
+    """
+    Examine the graph and construct a metagraph, which describes all of the
+    node types and relationship types in the overall graph database.
+
+    Notes
+    -----
+    We currently don't run this upon GraphDB instantiation, but it may be
+    prudent to start doing that at some point in the future. It's not an
+    extremely quick operation, but it's also not prohibitively slow.
+    """
+  
+    meta = self.run_cypher("CALL apoc.meta.graph();")[0]
+    node_labels = [n['name'] for n in meta['nodes']]
+    node_label_counts = dict([(n['name'], n['count']) for n in meta['nodes']])
+
+    rel_types = []
+    rel_path_schema = dict()
+    for r in meta['relationships']:
+      if r[1] not in rel_types:
+        rel_types.append(r[1])
+        rel_path_schema[r[1]] = []
+      
+      rel_path_schema[r[1]].append({
+        'from': r[0]['name'],
+        'to': r[2]['name']
+      })
+
+    metagraph = Metagraph(
+      node_labels=node_labels,
+      node_label_counts=node_label_counts,
+      relationship_types=rel_types,
+      relationship_path_schema=rel_path_schema
+    )
+    
+    return metagraph
 
   def list_existing_graphs(self):
     """

@@ -15,8 +15,6 @@ from yaml import load, Loader
 from dataclasses import dataclass
 from typing import List, Dict
 
-import ipdb
-
 from neo4j import GraphDatabase
 from neo4j.exceptions import ClientError
 

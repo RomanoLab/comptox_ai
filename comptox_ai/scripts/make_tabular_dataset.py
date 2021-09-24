@@ -24,8 +24,33 @@ then call a routine to stream the graph into local Python data structures.
 
 from comptox_ai.db.graph_db import Graph, GraphDB
 
+from yaml import load, Loader
+from pathlib import Path
 import pandas as pd
 import ipdb
+import os
+import datetime as dt
+
+
+def _get_default_config_file():
+  root_dir = Path(__file__).resolve().parents[2]
+  if os.path.exists(os.path.join(root_dir, 'CONFIG.yaml')):
+    default_config_file = os.path.join(root_dir, 'CONFIG.yaml')
+  else:
+    default_config_file = os.path.join(root_dir, 'CONFIG-default.yaml')
+  return default_config_file
+
+def _make_timestamped_output_directory(parent_dir, prefixes=['subgraph', 'tsv'], suffixes=None):
+  ts = dt.datetime.now().strftime('%Y%m%d_%H%M%S')
+  pre = f"{'-'.join(prefixes)}_" if prefixes else ""
+  post = f"_{'-'.join(suffixes)}" if suffixes else ""
+
+  dirname = f"{pre}{ts}{post}"
+  full_path = os.path.join(parent_dir, dirname)
+
+  os.makedirs(full_path)
+
+  return full_path
 
 
 def make_node_table(db, node_label, node_properties = None):
@@ -78,29 +103,72 @@ NODE_LABELS = [
   'Assay'
 ]
 
+OUTPUT_TYPE = 'tsv'
+
 # Instead of what we described above, we will instead let Python do much of the
 # heavy lifting. First we get the meta structure of the graph using APOC, we
 # then determine the minimum spanning subtree over the metagraph, and then
 # export all of the node types and relationship types contained in that tree.
 metagraph = db.get_metagraph()
 
+node_tables = dict()
+rel_tables = dict()
 
 # get node data
 for nl in metagraph.node_labels:
   if nl in NODE_LABELS:
-    print(f"Loading {nl} nodes...")
+    # print(f"Loading {nl} nodes...")
     node_table = make_node_table(db, nl)
+    print(f"    Adding node table: {nl}")
+    node_tables[nl] = node_table
 
 # get relationship data
 for rt in metagraph.relationship_types:
+  
+  this_rel_table = pd.DataFrame(columns=['s', 'r', 'o'])
+
   for rt_s in metagraph.relationship_path_schema[rt]:
     from_label = rt_s['from']
     to_label = rt_s['to']
     
+    # The induced subgraph only includes edges where both the subject and the
+    # object of the relationship are members of NODE_LABELS
     if (from_label in NODE_LABELS) and (to_label in NODE_LABELS):
-      print(f"Loading relationships for rel type {rt}...")
+      print(f"    Loading relationships for rel type {rt}...")
       rel_table = make_relationship_table(db, rt, from_label, to_label)
 
+      # Note that we need to make a copy of the data and then reassign. Pandas
+      # doesn't have decent support for large-scale in-place operations. A
+      # possible solution is to somehow use HDFStore tables during the process.
+      this_rel_table = this_rel_table.append(rel_table, ignore_index=True)
 
-ipdb.set_trace()
+  # Only hold onto the dataframe if it contains rows
+  if this_rel_table.shape[0] > 0:
+    print("Adding relationship table: {from_label}-[{rt}]->{to_label}")
+    rel_tables[rt] = this_rel_table
+  else:
+    del(this_rel_table)
 
+
+print()
+print("Finished parsing nodes and relationships; now writing to disk...")
+
+# export the results
+config_file_path = _get_default_config_file()
+with open(config_file_path, 'r') as fp:
+  cnf = load(fp, Loader=Loader)
+
+output_directory = cnf['data']['output_dir']
+
+if OUTPUT_TYPE == 'tsv':
+  output_dir = _make_timestamped_output_directory(output_directory)
+  
+  for k_node, v_node in node_tables.items():
+    node_fname = os.path.join(output_dir, f"node_{k_node}.tsv")
+    v_node.to_csv(node_fname, sep="\t", index=None)
+    print(f"Wrote node file: {node_fname}")
+
+  for k_rel, v_rel in rel_tables.items():
+    rel_fname = os.path.join(output_dir, f"edge_{k_rel}.tsv")
+    v_rel.to_csv(rel_fname, sep="\t", index=None)
+    print(f"Wrote edge file: {rel_fname}")

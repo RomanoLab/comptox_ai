@@ -156,16 +156,16 @@ setting up the graph database server (the old preferred method), unless you are 
 However you choose to install Neo4j, perform the following steps once the database server is running:
 
 1. (If using Neo4j desktop) Create a new project, with a name like "ComptoxAI"
-2. Make sure security authorization is enabled, and set a username and password that you will remember
-3. Access the configuration/settings file, and comment out the line that says `dbms.directories.import=import`
-4. Install the required plugins (from the project's main detail page, if using Neo4j Desktop):
+2. Click "Add" and select "Local DBMS". Make sure security authorization is enabled, and set a username and password that you will remember
+3. Click the 3 dots next to Start/Open buttons on the DBMS and access the configuration/settings file, and comment out the line that says `dbms.directories.import=import`
+4. Click on the DMBS to expand the details/plugins/upgrade panel. Here, toggle to "Plugins" and install the required plugins (from the project's main detail page, if using Neo4j Desktop):
     - APOC
     - Graph Data Science Library
     - [Neosemantics (n10s)](https://github.com/neo4j-labs/neosemantics): make sure to modify the
 	configuration/settings file as instructed
 5. Restart Neo4j
-6. Open the Neo4j browser (or a cypher shell, if you prefer)
-7. Run the following two cypher commands to import the populated ontology:
+6. Open the Neo4j browser by activating the ComptoxAI DBMS, then click "Open --> Neo4j Browser" (or a cypher shell, if you prefer)
+7. Run the following cypher commands to import the populated ontology:
     1. `CREATE CONSTRAINT n10s_unique_uri ON (r:Resource) ASSERT r.uri IS UNIQUE;`
     2. `CALL n10s.graphconfig.init();`
     3. `CALL n10s.rdf.import.fetch("file:///path/to/comptox_ai/data/comptox_populated.rdf", "RDF/XML");`

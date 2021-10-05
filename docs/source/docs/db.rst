@@ -18,7 +18,7 @@ storing large quantities of numerical data for each entity, while relational
 and NoSQL databases (like MongoDB) don't provide easy interaction with complex
 network structures.
 
-The ``comptox_ai.db.GraphDB`` and ``comptox_ai.db.FeatureDB`` classes aim to
+The ``comptox_ai.db.GraphDB``  class aims to
 make interacting with the two relatively painless. For example, you can extract
 a graph from the graph database, and in a single command, fetch the feature
 data corresponding to the entities in that graph.

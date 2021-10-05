@@ -11,6 +11,8 @@ node labels).
 
 from comptox_ai.db.graph_db import GraphDB
 
+from neo4j.exceptions import ClientError
+
 def yes_or_no(question):
     while "the answer is invalid":
         reply = str(input(question+' (y/n): ')).lower().strip()
@@ -52,14 +54,11 @@ db.run_cypher("MATCH (n:Class) REMOVE n:Class;", verbose=True)
 # Now, delete any nodes that have no labels
 db.run_cypher("MATCH (n) WHERE size(labels(n)) = 0 DETACH DELETE n;", verbose=True)
 
-# Export a test database to use for CI
-# db.build_graph_native_projection(
-#     graph_name="ci_graph",
-#     node_proj=[
-#         "KeyEvent",
-#         "MolecularInitiatingEvent",
-#         "AdverseOutcome",
-#         "AOP"
-#     ],
-#     relationship_proj="*"  # Keep all relationships
-# )
+# Create indexes
+meta = db.get_metagraph()
+for nt in meta.node_labels:
+    try:
+        db.run_cypher(f"CREATE INDEX {nt.lower()}_uri_index FOR (n:{nt}) ON (n.uri);", verbose=True)
+    except ClientError:
+        print(f"Node index on {nt} already exists - skipping.")
+        continue

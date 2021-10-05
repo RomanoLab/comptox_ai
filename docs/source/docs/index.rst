@@ -18,7 +18,6 @@ important concepts and usage patterns for ComptoxAI, please refer to the
    :template: class.rst
 
    db.GraphDB
-   db.FeatureDB
 
 :mod:`comptox_ai.graph`: Graphs
 ===============================

@@ -1,5 +1,5 @@
 import comptox_ai
-from comptox_ai.db import GraphDB, FeatureDB
+from comptox_ai.db import GraphDB
 
 import pytest
 import warnings
@@ -8,11 +8,6 @@ import warnings
 def G():
   G = GraphDB(verbose=True)
   return G
-
-@pytest.fixture
-def DB():
-  DB = FeatureDB(verbose=True)
-  return DB
 
 class TestGraphDB(object):
   def test_neo4j_connection_does_exist(self, G):
@@ -62,7 +57,3 @@ class TestGraphDB(object):
     # Note: this test will fail if the previous test fails
     x = G.drop_existing_graph("testgraph2")
     assert x['graphName'] == "testgraph2"
-
-class TestFeatureDB(object):
-  def test_mongodb_connection_does_exist(self, DB):
-    assert DB.is_connected()

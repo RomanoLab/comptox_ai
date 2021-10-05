@@ -2,7 +2,30 @@ from rdflib import Graph as RDFGraph
 from rdflib.extras.external_graph_libs import rdflib_to_networkx_graph
 import networkx as nx
 
+import os
+from pathlib import Path
 import statistics
+
+
+def _get_default_config_file():
+  root_dir = Path(__file__).resolve().parents[2]
+  if os.path.exists(os.path.join(root_dir, 'CONFIG.yaml')):
+    default_config_file = os.path.join(root_dir, 'CONFIG.yaml')
+  else:
+    default_config_file = os.path.join(root_dir, 'CONFIG-default.yaml')
+  return default_config_file
+
+def _make_timestamped_output_directory(parent_dir, prefixes=['subgraph', 'tsv'], suffixes=None):
+  ts = dt.datetime.now().strftime('%Y%m%d_%H%M%S')
+  pre = f"{'-'.join(prefixes)}_" if prefixes else ""
+  post = f"_{'-'.join(suffixes)}" if suffixes else ""
+
+  dirname = f"{pre}{ts}{post}"
+  full_path = os.path.join(parent_dir, dirname)
+
+  os.makedirs(full_path)
+
+  return full_path
 
 def execute_cypher_transaction(tx, query, **kwargs):
     """Given a Bolt transaction object and a cypher query, execute the

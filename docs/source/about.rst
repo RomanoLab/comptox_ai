@@ -15,14 +15,16 @@ We're creating ComptoxAI in order to change this.
 Authors
 -------
 
-ComptoxAI is developed and maintained by `Joseph D. Romano <https://jdr.bio>`_, who is a
-postdoctoral researcher at the University of Pennsylvania in the Computational
-Genetics Lab.
+ComptoxAI is developed and maintained by `Joseph D. Romano <https://jdr.bio>`_,
+who is a postdoctoral researcher at the University of Pennsylvania in the
+Computational Genetics Lab.
 
 Other important contributors include:
 
-- `Jason Moore <https://www.med.upenn.edu/apps/faculty/index.php/g275/p8803452>`_ (Penn)
-- `Trevor Penning <https://www.med.upenn.edu/apps/faculty/index.php/g275/p12620>`_ (Penn)
+- `Jason Moore
+  <https://www.med.upenn.edu/apps/faculty/index.php/g275/p8803452>`_ (Penn)
+- `Trevor Penning
+  <https://www.med.upenn.edu/apps/faculty/index.php/g275/p12620>`_ (Penn)
 - Yun Hao (Penn)
 - Holly Mortensen (US EPA)
 - Jonathan Senn (US EPA)
@@ -52,6 +54,7 @@ databases). These include:
 - NCBI Gene
 - NCBI OMIM
 - PubChem
+- Reactome
 - Tox21
 
 See :ref:`guide_databases` for complete details on each of these.
@@ -60,7 +63,9 @@ Contact Us
 ----------
 
 This wesite is maintained by Joseph D. Romano, PhD. He can be reached via email
-at **joseph.romano [at] pennmedicine.upenn.edu**.
+at:: 
+
+   joseph.romano [at] pennmedicine.upenn.edu
 
 If you believe you've found a bug, would like to request a new feature, or are
 interested in contributing to the continued development of ComptoxAI, please
@@ -76,12 +81,18 @@ Funding and Acknowledgements
 ----------------------------
 
 ComptoxAI is supported by grant funding from the US National Institutes of
-Health, including ``K99-LM013646`` (PI: Romano), ``R01-LM010098`` (PI: Moore), 
-``R01-LM012601`` (PI: Moore), and ``T32-ES019851`` (PI: Penning).
+Health, including: 
+
+- `K99-LM013646 <https://reporter.nih.gov/project-details/10371656>`_ (PI: Romano)
+- `R01-LM010098 <https://reporter.nih.gov/project-details/10126058>`_ (PI: Moore)
+- `R01-LM012601 <https://reporter.nih.gov/project-details/9999032>`_ (PI: Moore)
+- `T32-ES019851 <https://reporter.nih.gov/project-details/10176487>`_ (PI: Penning)
 
 ComptoxAI would also not be possible without essential contributions from
 researchers at the US Environmental Protection Agency (EPA), including Dr.
-Holly Mortensen, Jonathan Senn, and Mei Liang, who have contributed essential data from the `AOP-DB project <https://www.nature.com/articles/s41597-021-00962-3>`_.
-We also would like to acknowledge Daniel Himmelstein's
-`hetionet <https://het.io>`_ resource, which is used to derive many of the
-graph relationships between different classes of biological entities.
+Holly Mortensen, Jonathan Senn, and Mei Liang, who have contributed essential
+data from the `AOP-DB project
+<https://www.nature.com/articles/s41597-021-00962-3>`_. We also would like to
+acknowledge Daniel Himmelstein's `hetionet <https://het.io>`_ resource, which is
+used to derive many of the graph relationships between different classes of
+biological entities.

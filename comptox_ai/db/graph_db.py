@@ -8,8 +8,6 @@ Copyright (c) 2020 by Joseph D. Romano
 from numpy.lib.arraysetops import ediff1d
 
 import os
-import glob
-import configparser
 from pathlib import Path
 from yaml import load, Loader
 from dataclasses import dataclass
@@ -18,10 +16,8 @@ from typing import List, Dict
 from neo4j import GraphDatabase
 from neo4j.exceptions import ClientError
 
-import torch
 import pandas as pd
-from torch_geometric.data import Data, DataLoader
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+#from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 import numpy as np
 
 
@@ -506,48 +502,49 @@ class GraphDB(object):
     """
     node_props = self.run_cypher(f"CALL gds.graph.streamNodeProperties('{graph_name}', ")
 
-  def to_pytorch(self, graph_name, node_list):
-    """
-    Construct dataset from exported graph to be used by PyTorch Geometric.
+  # TODO: Recycle this code to send graphs to DGL instead of Pytorch Geometric
+  # def to_pytorch(self, graph_name, node_list):
+  #   """
+  #   Construct dataset from exported graph to be used by PyTorch Geometric.
 
-    Parameters
-    ----------
-    graph_name : str
-      A name of a graph, corresponding to the `'graphName'` field in the
-      graph's entry within the GDS graph catalog.
-    """
-    dir_abspath = os.path.join(os.getcwd(), 'comptox_ai/db/exports', f"{graph_name}")
+  #   Parameters
+  #   ----------
+  #   graph_name : str
+  #     A name of a graph, corresponding to the `'graphName'` field in the
+  #     graph's entry within the GDS graph catalog.
+  #   """
+  #   dir_abspath = os.path.join(os.getcwd(), 'comptox_ai/db/exports', f"{graph_name}")
 
-    ## create dataframe containing all nodes
-    node_df = pd.DataFrame()
-    for node in node_list:
-      node_files = glob.glob(f"{dir_abspath}/nodes_{node}_[0-9].csv")
-      curr_df = pd.concat([pd.read_csv(fp, names=['id'], index_col=False) for fp in node_files])
-      curr_df.insert(loc=1, column='type', value=f"{node}")
-      node_df = pd.concat([node_df, curr_df])
+  #   ## create dataframe containing all nodes
+  #   node_df = pd.DataFrame()
+  #   for node in node_list:
+  #     node_files = glob.glob(f"{dir_abspath}/nodes_{node}_[0-9].csv")
+  #     curr_df = pd.concat([pd.read_csv(fp, names=['id'], index_col=False) for fp in node_files])
+  #     curr_df.insert(loc=1, column='type', value=f"{node}")
+  #     node_df = pd.concat([node_df, curr_df])
 
-    ## map node IDs to indices
-    node_indices = dict(zip(node_df['id'].to_list(), range(len(node_df['id']))))
-    node_df['index'] = node_df['id'].map(node_indices)
+  #   ## map node IDs to indices
+  #   node_indices = dict(zip(node_df['id'].to_list(), range(len(node_df['id']))))
+  #   node_df['index'] = node_df['id'].map(node_indices)
 
-    ## convert node type to one hot encoded values
-    node_df['type_encoded'] = LabelEncoder().fit_transform(node_df['type'])
-    ohe = OneHotEncoder(sparse=False).fit_transform(node_df['type_encoded'].values.reshape(len(node_df), 1))
-    x = torch.LongTensor(ohe)
+  #   ## convert node type to one hot encoded values
+  #   node_df['type_encoded'] = LabelEncoder().fit_transform(node_df['type'])
+  #   ohe = OneHotEncoder(sparse=False).fit_transform(node_df['type_encoded'].values.reshape(len(node_df), 1))
+  #   x = torch.LongTensor(ohe)
 
-    ## create dataframe containing all edges
-    edge_files = glob.glob(f"{dir_abspath}/relationships_*_[0-9].csv")
-    edge_df = pd.concat([pd.read_csv(fp, names=['start_id', 'end_id'], index_col=False) for fp in edge_files])
+  #   ## create dataframe containing all edges
+  #   edge_files = glob.glob(f"{dir_abspath}/relationships_*_[0-9].csv")
+  #   edge_df = pd.concat([pd.read_csv(fp, names=['start_id', 'end_id'], index_col=False) for fp in edge_files])
 
-    ## map edges to indices
-    edge_df['start_index'] = edge_df['start_id'].map(node_indices)
-    edge_df['end_index'] = edge_df['end_id'].map(node_indices)
-    edge_index = torch.tensor([edge_df['start_index'].to_numpy(), edge_df['end_index'].to_numpy()], dtype=torch.long)
+  #   ## map edges to indices
+  #   edge_df['start_index'] = edge_df['start_id'].map(node_indices)
+  #   edge_df['end_index'] = edge_df['end_id'].map(node_indices)
+  #   edge_index = torch.tensor([edge_df['start_index'].to_numpy(), edge_df['end_index'].to_numpy()], dtype=torch.long)
 
-    ## create torch_geometric data object
-    data = Data(x=x, edge_index=edge_index)
-    data.train_mask = data.val_mask = data.test_mask = data.y = None
+  #   ## create torch_geometric data object
+  #   data = Data(x=x, edge_index=edge_index)
+  #   data.train_mask = data.val_mask = data.test_mask = data.y = None
 
-    return data
+  #   return data
 
     

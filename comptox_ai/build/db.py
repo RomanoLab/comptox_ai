@@ -513,12 +513,21 @@ class MySQLDatabaseParser(DatabaseParser):
     ):
         super().__init__(name, destination)
 
-        self.conn = MySQLdb.Connection(
-            host=config_dict["host"],
-            user=config_dict["user"],
-            passwd=config_dict["passwd"],
-            db=name,
-        )
+        if config_dict["socket"]:
+            self.conn = MySQLdb.Connection(
+                host=config_dict["host"],
+                user=config_dict["user"],
+                passwd=config_dict["passwd"],
+                db=name,
+                unix_socket=config_dict["socket"]
+            )
+        else:
+            self.conn = MySQLdb.Connection(
+                host=config_dict["host"],
+                user=config_dict["user"],
+                passwd=config_dict["passwd"],
+                db=name,
+            )
 
     def parse_relationship_type(self, relationship_type, parse_config: dict, inverse_relationship_type = None, merge: bool = False, skip: bool = False):
         if skip:
@@ -712,6 +721,8 @@ if __name__ == "__main__":
     mysql_config["host"] = cnf["mysql"]["host"]
     mysql_config["user"] = cnf["mysql"]["user"]
     mysql_config["passwd"] = cnf["mysql"]["passwd"]
+    if cnf["mysql"]["socket"]:
+        mysql_config["socket"] = cnf["mysql"]["socket"]
 
     #print("INITIAL ONTOLOGY STATISTICS:")
     #print_ontology_stats(onto)
@@ -1199,5 +1210,9 @@ if __name__ == "__main__":
     ipdb.set_trace()
 
     # Save the ontology to a new file
-    with open("D:\\projects\\comptox_ai\\comptox_populated.rdf", "wb") as fp:
-        onto.save(file=fp, format="rdfxml")
+    if os.name == 'nt':
+        with open("D:\\projects\\comptox_ai\\comptox_populated.rdf", "wb") as fp:
+            onto.save(file=fp, format="rdfxml")
+    else:
+        with open(cnf["data"]["output_file"], 'wb') as fp:
+            onto.save(file=fp, format="rdfxml")

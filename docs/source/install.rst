@@ -1,25 +1,53 @@
 .. _install:
 
-=======================
+#######################
 Installing and Building
-=======================
+#######################
 
-This guide is meant to get new users up and running with a complete
-installation of ComptoxAI, including the Python package and the graph database
-populated from the original data sources.
+ComptoxAI is a complete data ecosystem for AI research in computational
+toxicology, meaning it consists of a number of different tools that work
+together to accomplish various goals. This installation guide is meant to teach
+you how to get each of those tools/components up and running from scratch.
 
-Users also have the option to install a "slimmed down" version of ComptoxAI
-without the graph database. It's important to keep in mind, however, that many
-features won't be available without the database installed and running. A
-future release will include the option to connect to a remote version of the
-database; we will update this guide accordingly when this is implemented.
+We've also prepared a brief guide on what to install based on the task you're 
+trying to accomplish:
+
+*****************************************
+What parts of ComptoxAI should I install?
+*****************************************
+
+"I just want to explore the data and/or the graph database"
+===========================================================
+
+Good news - you don't need to install anything! Most likely, this website has 
+everything you need already on it. For examples of ways to browse the database,
+please refer to `Browse Data <browse.html>`_.
+
+"I need to run some Cypher queries on the graph database"
+=========================================================
+
+Like above, you probably don't need to install anything. The `Neo4j database
+browser <https://neo4j.comptox.ai>`_ lets you explore a full copy of the graph
+database and run Cypher queries right from your web browser.
+
+"I want to perform machine learning using data from ComptoxAI"
+==============================================================
+
+In this case, it depends. If you want to export one (or a few) subgraphs from
+the graph database and train some traditional- or graph-ML models, you may have
+an easier time just using the `bulk dataset generator <data.html>`_. However,
+if you need to run many dataset queries it might be better to do it using a
+local copy of the graph database and the Python package for actually extracting
+the datasets. In this case you should install **the Python package** and the
+full **Neo4j graph database**.
 
 .. important::
 
    The examples on this page are roughly compatible with most modern UNIX (or UNIX-like) command line applications. If you are installing ComptoxAI on Windows (or something else), you should modify the examples accordingly.
 
+********************************************
 Installing the ``comptox_ai`` Python package
---------------------------------------------
+********************************************
 
 The most reliable method for installing the ComptoxAI python package currently
 is using a combination of ``conda`` and setuptools.
@@ -45,11 +73,12 @@ dependencies via ``setuptools``::
    $ cd comptox_ai
    $ pip install .
 
+***********************************************************
 Installing Neo4j and importing the ComptoxAI graph database
------------------------------------------------------------
+***********************************************************
 
 Install Neo4j
-^^^^^^^^^^^^^
+=============
 
 For most users, `Neo4j Desktop <https://neo4j.com/download/>`_ is the
 preferred method of installation. Neo4j Desktop does an excellent job managing
@@ -67,7 +96,7 @@ mainly on Version 1.4.7. Download the application and install it following the
 prompts; the default setting should be sufficient for most users.
 
 Create an empty graph database
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==============================
 
 You're now ready to create an empty graph database that will hold ComptoxAI.
 Make a new Project, and change the name to ComptoxAI (or whatever else you
@@ -82,7 +111,7 @@ that is compatible with the plugins we will be using. Finally, click "Create"
 to finish the process.
 
 Install plugins and configure the database
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==========================================
 
 Click the name of the DBMS ("ComptoxAI DBMS", if you are following our lead),
 but don't start the database just yet. A new panel should appear to the right.
@@ -119,16 +148,16 @@ and where you have read/write permissions:
    gds.export.location=C:\\data\\comptox_ai\\subgraphs
 
 Download the ontology RDF file
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==============================
 
 The full RDF representation of the graph database / ontology is very large -
-currently almost 600 MB. Visit the `data download page
+currently almost 600 MB. Visit the `data browsing page
 <https://comptox.ai/browse.html>`_ and click the "Download fully-populated
 ontology" button to be redirected to a page where you can download the file.
 Save it to a location that you'll remember in the next step.
 
 Import the RDF data into the DBMS
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=================================
 
 We now use ``n10s`` to import the RDF file into the (currently empty) graph
 database.
@@ -174,7 +203,7 @@ import, but a success message will eventually show up indicating the number of
 nodes and relationships imported into the database.
 
 Finish tidying up
-^^^^^^^^^^^^^^^^^
+=================
 
 The process we use for building the database - which involves populating an
 OWL2 ontology and then importing that ontology as RDF data into Neo4j - leaves

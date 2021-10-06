@@ -29,3 +29,4 @@ dependencies:
   - pyyaml=5.4.1
   - rdflib=5.0.0
   - scipy=1.7.1
+  - tqdm=4.62.2

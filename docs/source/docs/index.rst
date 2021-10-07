@@ -30,18 +30,21 @@ important concepts and usage patterns for ComptoxAI, please refer to the
    graph.Graph
    graph.io
 
-:mod:`comptox_ai.algorithm`: Graph algorithms
-=============================================
-.. currentmodule:: comptox_ai
+..
+   :mod:`comptox_ai.algorithm`: Graph algorithms
+   =============================================
+   .. currentmodule:: comptox_ai
 
 :mod:`comptox_ai.ml`: Machine learning models
 =============================================
 .. currentmodule:: comptox_ai
 
-:mod:`comptox_ai.ontology`: Ontology tools
-==========================================
-.. currentmodule:: comptox_ai
+..
+   :mod:`comptox_ai.ontology`: Ontology tools
+   ==========================================
+   .. currentmodule:: comptox_ai
 
-Miscellaneous
-=============
-.. currentmodule:: comptox_ai
+..
+   Miscellaneous
+   =============
+   .. currentmodule:: comptox_ai

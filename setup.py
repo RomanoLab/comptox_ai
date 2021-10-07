@@ -60,6 +60,6 @@ setuptools.setup(
     extras_require={
         "testing": ["pytest"],
         "coverage": ["pytest-cov", "codecov"],
-        "docs": ["numpydoc"]
+        "docs": ["numpydoc", "sphinxext-opengraph"]
     }
 )

@@ -30,7 +30,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.imgmath',
     'numpydoc',
-    'ablog'
+    'ablog',
+    'sphinxext.opengraph'
 ]
 
 imgmath_image_format = 'svg'
@@ -50,6 +51,10 @@ blog_title = 'ComptoxAI\'s blog'
 # a list of builtin themes.
 html_theme = 'comptox-ai'
 html_theme_path = ['themes']
+
+html_copy_source = True
+
+html_context = {}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -79,3 +84,9 @@ html_theme_options = {
 
 # pngmath_use_preview = True
 # pngmath_dvipng_args = ['-gamma', '1.5', '-D', '96', '-bg', 'Transparent']
+
+# For sphinxext.opengraph
+ogp_site_url = "http://comptox.ai/"
+ogp_image = "http://comptox.ai/_images/ComptoxAI_logo_type.png"
+ogp_use_first_image = True
+ogp_site_name = "comptox-ai"

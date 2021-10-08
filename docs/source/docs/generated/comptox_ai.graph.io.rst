@@ -1,6 +1,8 @@
-﻿comptox\_ai.graph.io
-====================
+﻿:mod:`comptox_ai.graph`.io
+=================================
 
 .. currentmodule:: comptox_ai.graph
 
-.. automodule:: io
+.. autoclass:: io
+
+.. include:: comptox_ai.graph.io.examples

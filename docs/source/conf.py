@@ -6,8 +6,10 @@
 
 # -- Project information -----------------------------------------------------
 
+from datetime import datetime
+
 project = 'ComptoxAI'
-copyright = '2020, Joseph D. Romano'
+copyright = f'(c) {datetime.now().year} by Joseph D. Romano (MIT License)'
 author = 'Joseph D. Romano'
 
 # The full version, including alpha/beta/rc tags
@@ -29,6 +31,7 @@ import ablog
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.imgmath',
+    'sphinx.ext.autosummary',
     'numpydoc',
     'ablog',
     'sphinxext.opengraph'
@@ -36,14 +39,22 @@ extensions = [
 
 imgmath_image_format = 'svg'
 
+autodoc_default_options = {"members": True, "inherited-members": True}
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['templates', ablog.get_html_templates_path()]
+
+autosummary_generate = True
 
 source_suffix = '.rst'
 
 master_doc = 'contents'
 
 blog_title = 'ComptoxAI\'s blog'
+
+exclude_patterns = ["build", "templates", "themes"]
+
+pygments_style = "sphinx"
 
 # -- Options for HTML output -------------------------------------------------
 

@@ -1,3 +1,5 @@
+:globalsidebartoc: True
+
 =================
 Table of Contents
 =================

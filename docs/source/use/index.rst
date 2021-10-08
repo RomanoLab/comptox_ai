@@ -4,12 +4,12 @@
 User Guide
 **********
 
-These documents outline specific topics describing the structure and use of 
-ComptoxAI from a more narrative perspective than the :ref:`API documentation
-<docs>`.
+These pages give a high-level overview of ComptoxAI, computational toxicology,
+and graph machine learning. For documentation of specific modules, classes,
+methods, and functions, please refer to the :ref:`API documentation <docs>`.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    db_queries
    graph_db

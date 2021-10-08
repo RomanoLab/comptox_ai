@@ -33,11 +33,19 @@ Other important contributors include:
 Citing ComptoxAI
 ----------------
 
-ComptoxAI is still under development, but we will update this page with a
-preprint citation when we have one written. In the meantime, please contact us
-if you would like to use ComptoxAI for research purposes (you don't need our
-permission, we'd just like to make sure you're aware of which work is evaluated
-and which isn't at this point)!
+ComptoxAI is still under development, but until our first paper has been
+published we would appreciate citations:
+
+ComptoxAI: A toolkit for AI research in computational toxicology, Romano *et al*, `<https://comptox.ai>`_, 2021.
+
+BibTeX entry::
+
+  @misc{comptoxai,
+    title = "ComptoxAI: A toolkit for AI research in computational toxicology",
+    author = "Joseph D. Romano",
+    howpublished = "\url{https://comptox.ai}",
+    year = 2021
+  }
 
 Source databases
 ----------------

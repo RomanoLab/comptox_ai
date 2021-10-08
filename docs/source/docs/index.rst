@@ -4,10 +4,12 @@
 API Reference
 *************
 
-This is a comprehensive reference for the main modules, classes, and functions
-provided by ComptoxAI's Python package. For a narrative introduction to
-important concepts and usage patterns for ComptoxAI, please refer to the
-:ref:`User Guide <user_guide>`.
+This is a reference guide for the modules, classes, and functions in 
+ComptoxAI's Python interface. For a more general overview of ComptoxAI,
+computational toxicology, and graph databases, please refer to the :ref:`User
+Guide <user_guide>`.
+
+.. _db_ref:
 
 :mod:`comptox_ai.db`: ComptoxAI databases
 =========================================
@@ -18,6 +20,8 @@ important concepts and usage patterns for ComptoxAI, please refer to the
    :template: class.rst
 
    db.GraphDB
+
+.. _graph_ref:
 
 :mod:`comptox_ai.graph`: Graphs
 ===============================
@@ -34,6 +38,8 @@ important concepts and usage patterns for ComptoxAI, please refer to the
    :mod:`comptox_ai.algorithm`: Graph algorithms
    =============================================
    .. currentmodule:: comptox_ai
+
+.. _ml_ref::
 
 :mod:`comptox_ai.ml`: Machine learning models
 =============================================

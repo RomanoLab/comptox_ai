@@ -5,6 +5,12 @@ comptox_ai/db/graph_db.py
 Copyright (c) 2020 by Joseph D. Romano
 """
 
+# Authors: Joseph D. Romano <joseph.romano@pennmedicine.upenn.edu>
+#
+# Copyright: (c) 2021 by Joseph D. Romano
+#
+# License: MIT License
+
 from numpy.lib.arraysetops import ediff1d
 
 import os

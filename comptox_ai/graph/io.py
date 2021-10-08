@@ -14,6 +14,12 @@ types. In the future, we may modify this to a more complex architecture that is
 more sustainable.
 """
 
+# Authors: Joseph D. Romano <joseph.romano@pennmedicine.upenn.edu>
+#
+# Copyright: (c) 2021 by Joseph D. Romano
+#
+# License: MIT License
+
 from abc import abstractmethod
 from typing import Iterable, List, Tuple, Union
 

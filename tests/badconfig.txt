@@ -1,0 +1,2 @@
+ComptoxAI should return a RuntimeError and print an intelligible information
+message when you try to use this file as config.

@@ -1,8 +1,9 @@
-"""Neo4j graph database interface.
+"""ComptoxAI's main interface with Neo4j.
 
-comptox_ai/db/graph_db.py
+This class and its methods maintain a connection to either a local or remote
+instance of the ComptoxAI graph database, and provide convenient access to the
+database's contents.
 
-Copyright (c) 2020 by Joseph D. Romano
 """
 
 # Authors: Joseph D. Romano <joseph.romano@pennmedicine.upenn.edu>
@@ -11,20 +12,16 @@ Copyright (c) 2020 by Joseph D. Romano
 #
 # License: MIT License
 
-from numpy.lib.arraysetops import ediff1d
-
+from logging import warn
 import os
+import warnings
 from pathlib import Path
 from yaml import load, Loader
 from dataclasses import dataclass
 from typing import List, Dict
 
 from neo4j import GraphDatabase
-from neo4j.exceptions import ClientError
-
-import pandas as pd
-#from sklearn.preprocessing import LabelEncoder, OneHotEncoder
-import numpy as np
+from neo4j.exceptions import ClientError, AuthError
 
 
 def _get_default_config_file():
@@ -38,7 +35,7 @@ def _get_default_config_file():
 @dataclass
 class Metagraph:
   """
-  A metagraph showing the node types and relationship types (and their
+  A metagraph containing the node types and relationship types (and their
   connectivity) in the overall graph database.
 
   Parameters
@@ -80,6 +77,26 @@ class Graph(object):
     self._db = parent_db
     self.name = name
 
+
+def _validate_config_file_contents(conf):
+  """Validate the contents of a ComptoxAI config file.
+
+  If anything doesn't pass the validations, a warning is displayed and this
+  function returns False. Otherwise, no warning is given and the function
+  returns True.
+  """
+  if 'neo4j' not in conf:
+    warnings.warn("Warning: No `neo4j` block found in config file")
+    return False
+
+  for val in ['username', 'password', 'hostname', 'port']:
+    if (val not in conf['neo4j']):
+      warnings.warn("Warning: No value given for `{0}`".format(val))
+      return False
+
+  return True
+
+
 class GraphDB(object):
   """
   A Neo4j graph database containing ComptoxAI graph data.
@@ -112,15 +129,29 @@ class GraphDB(object):
 
     # cnf = configparser.ConfigParser()
     # cnf.read(self.config_file)
-    with open(self.config_file, 'r') as fp:
-      cnf = load(fp, Loader=Loader)
+    try:
+      with open(self.config_file, 'r') as fp:
+        cnf = load(fp, Loader=Loader)
+    except FileNotFoundError as e:
+      warnings.warn("Warning: Config file not found at the specified location - using default configuration", RuntimeWarning)
 
+      # load default config:
+      self.config_file = _get_default_config_file()
+      with open(self.config_file, 'r') as fp:
+        cnf = load(fp, Loader=Loader)
+
+    if not _validate_config_file_contents(cnf):
+      raise RuntimeError("Error: Config file has an invalid format. Please see `CONFIG-default.yaml`.")
+      
     username = cnf['neo4j']['username']
     password = cnf['neo4j']['password']
     
     uri = "bolt://localhost:7687"
 
-    self._driver = GraphDatabase.driver(uri, auth=(username, password))
+    try:
+      self._driver = GraphDatabase.driver(uri, auth=(username, password))
+    except AuthError as e:
+      raise RuntimeError("Error: Could not find a database using the configuration provided.")
 
   def _disconnect(self):
     self._driver.close()
@@ -196,6 +227,24 @@ class GraphDB(object):
     # (optionally) build Graph object
 
     # Return results to user
+
+  def find_node(self, name=None, properties=None):
+    """
+    Find a single node either by name or by property filter(s).
+    """
+    pass
+
+  def find_nodes(self, properties, node_types=[]):
+    """
+    Find multiple nodes by node properties and/or labels.
+    """
+    pass
+
+  def find_relationships(self):
+    """
+    Find relationships by subject/object nodes and/or relationship type.
+    """
+    pass
 
   def build_graph_native_projection(self, graph_name, node_proj,
                                     relationship_proj, config_dict={'nodeProperties': '*'}):

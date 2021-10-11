@@ -8,7 +8,8 @@ Table of Contents
     :maxdepth: 2
 
     about
+    browse
     install
     use/index
-    comptox/index
-    docs/index
+    api/index
+    

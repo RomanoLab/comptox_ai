@@ -4,20 +4,21 @@ About ComptoxAI
 ===============
 
 ComptoxAI is a toolkit designed to enable AI and data science research in
-computational toxicology. Like many areas in biomedicine, environmental
-toxicology is facing a deluge of valuable data being generated in a wide array
-of modalities and levels of biological organization. However, the tools for
-interacting with these data are - at best - inconsistent, outdated, and fail to
-leverage state-of-the-art computational methods.
+computational toxicology.
 
-We're creating ComptoxAI in order to change this.
+Like many areas in biomedicine, environmental toxicology is facing a deluge of
+valuable data being generated in a wide array of modalities and levels of
+biological organization. However, the tools for interacting with these data are
+- at best - inconsistent, outdated, and fail to use state-of-the-art
+computational methods.
+
+.. _authors:
 
 Authors
 -------
 
 ComptoxAI is developed and maintained by `Joseph D. Romano <https://jdr.bio>`_,
-who is a postdoctoral researcher at the University of Pennsylvania in the
-Computational Genetics Lab.
+who is a postdoctoral researcher at the University of Pennsylvania.
 
 Other important contributors include:
 
@@ -30,22 +31,26 @@ Other important contributors include:
 - Jonathan Senn (US EPA)
 - Mei Liang (US EPA)
 
+.. _citing:
+
 Citing ComptoxAI
 ----------------
 
-ComptoxAI is still under development, but until our first paper has been
-published we would appreciate citations:
+ComptoxAI is still under development, but we would still appreciate citations
+of the following form until we have our first preprints/papers published:
 
-ComptoxAI: A toolkit for AI research in computational toxicology, Romano *et al*, `<https://comptox.ai>`_, 2021.
+| ComptoxAI: A toolkit for AI research in computational toxicology, Romano *et al*, `<https://comptox.ai>`_, 2021
 
 BibTeX entry::
 
   @misc{comptoxai,
     title = "ComptoxAI: A toolkit for AI research in computational toxicology",
-    author = "Joseph D. Romano",
+    author = "Joseph~D.~Romano",
     howpublished = "\url{https://comptox.ai}",
     year = 2021
   }
+
+.. _source_dbs:
 
 Source databases
 ----------------
@@ -67,6 +72,8 @@ databases). These include:
 
 See :ref:`guide_databases` for complete details on each of these.
 
+.. _contact_us:
+
 Contact Us
 ----------
 
@@ -75,15 +82,22 @@ at::
 
    joseph.romano [at] pennmedicine.upenn.edu
 
+Similar projects can be found at `his personal website
+<http://jdr.bio>`_, or at the University of Pennsylvania's `Computational
+Genetics Lab home page <http://epistasis.org>`_.
+
+.. _contributing:
+
+Contributing
+------------
+
 If you believe you've found a bug, would like to request a new feature, or are
 interested in contributing to the continued development of ComptoxAI, please
 see `CONTRIBUTING.md
 <https://github.com/jdromano2/comptox_ai/blob/master/CONTRIBUTING.md>`_ on
 GitHub.
 
-Similar projects can be found at `his personal website
-<http://jdr.bio>`_, or at the University of Pennsylvania's `Computational
-Genetics Lab home page <http://epistasis.org>`_.
+.. _funding:
 
 Funding and Acknowledgements
 ----------------------------

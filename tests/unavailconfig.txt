@@ -1,0 +1,19 @@
+---
+# Default config with invalid IP address
+neo4j:
+  username: neo4j
+  password: neo4j
+  hostname: 192.0.2.1
+  protocol: bolt
+  port: 7687
+
+mysql:
+  user:
+  passwd:
+  host:
+
+data:
+  prefix: D:\data\
+  tempdir: D:\data\comptox_ai\
+
+...

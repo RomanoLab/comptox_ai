@@ -25,13 +25,67 @@ import comptox_ai
 
 import ablog
 
+#############################################
+# Custom Autosummary that shows class members
+#############################################
+from sphinx.ext.autosummary import Autosummary, get_documenter
+from docutils.parsers.rst import directives
+from sphinx.util.inspect import safe_getattr
+import re
+
+# see: https://stackoverflow.com/a/30783465/1730417
+class AutoClassSummary(Autosummary):
+    option_spec = {
+        'methods': directives.unchanged,
+        'attributes': directives.unchanged
+    }
+
+    required_arguments = 1
+
+    @staticmethod
+    def get_members(obj, typ, include_public=None):
+        if not include_public:
+            include_public = []
+        items = []
+        for name in dir(obj):
+            try:
+                documenter = get_documenter(safe_getattr(obj, name), obj)
+            except AttributeError:
+                continue
+            if documenter.objtype == typ:
+                items.append(name)
+        public = [x for x in items if x in include_public or not x.startswith('_')]
+        return public, items
+
+    def run(self):
+        clss = str(self.arguments[0])
+        try:
+            (module_name, class_name) = clss.rsplit('.', 1)
+            m = __import__(module_name, globals(), locals(), [class_name])
+            c = getattr(m, class_name)
+            if 'methods' in self.options:
+                _, methods = self.get_members(c, 'method', ['__init__'])
+                self.content = ["~%s.%s" % (clss, method) for method in methods if not method.startswith('_')]
+            if 'attributes' in self.options:
+                _, attribs = self.get_members(c, 'attribute')
+                self.content = ["~%s.%s" % (clss, attrib) for attrib in attribs if not attrib.startswith('_')]
+        finally:
+            return super(AutoClassSummary, self).run()
+
+def setup(app):
+    app.add_directive('autoclasssummary', AutoClassSummary)
+
+########################
+# End custom autosummary
+########################
+
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.imgmath',
-    'sphinx.ext.autosummary',
+    'sphinx.ext.autosummary',  # note: automatically loaded by numpydoc
     'numpydoc',
     'ablog',
     'sphinxext.opengraph'

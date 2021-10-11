@@ -4,7 +4,8 @@ import pytest
 import numpy as np
 
 import comptox_ai
-from comptox_ai.graph_algorithm import PageRank, ShortestPath
+#from comptox_ai.graph_algorithm import PageRank, ShortestPath
+from comptox_ai.graph_algorithm import ShortestPath
 
 if os.path.exists('CONFIG.cfg'):
     CONFIG_FILE = 'CONFIG.cfg'
@@ -23,25 +24,25 @@ def _validate_pr_result_format(pr_results):
     
 
 class TestGraphAlgorithm:
-    def test_page_rank_does_instantiate(self):
-        try:
-            c = comptox_ai.ComptoxAI(config_file=CONFIG_FILE)
+    # def test_page_rank_does_instantiate(self):
+    #     try:
+    #         c = comptox_ai.ComptoxAI(config_file=CONFIG_FILE)
             
-            pr = PageRank()
+    #         pr = PageRank()
 
-            assert ((c is not None) and (pr is not None))
-        except:
-            print("Uh oh")
-            assert False
+    #         assert ((c is not None) and (pr is not None))
+    #     except:
+    #         print("Uh oh")
+    #         assert False
 
-    def test_page_rank_does_run_mwe(self):
-        c = comptox_ai.ComptoxAI(config_file=CONFIG_FILE)
+    # def test_page_rank_does_run_mwe(self):
+    #     c = comptox_ai.ComptoxAI(config_file=CONFIG_FILE)
 
-        # Run PageRank on entire graph with no filtering
-        pr = PageRank()
-        pr.run(c.graph)
+    #     # Run PageRank on entire graph with no filtering
+    #     pr = PageRank()
+    #     pr.run(c.graph)
 
-        assert _validate_pr_result_format(pr.algorithm_results)
+    #     assert _validate_pr_result_format(pr.algorithm_results)
 
     def test_shortest_path_returns_path(self):
         c = comptox_ai.ComptoxAI(config_file=CONFIG_FILE)

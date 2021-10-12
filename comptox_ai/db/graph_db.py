@@ -127,8 +127,6 @@ class GraphDB(object):
   def _connect(self):
     assert self.config_file is not None
 
-    # cnf = configparser.ConfigParser()
-    # cnf.read(self.config_file)
     try:
       with open(self.config_file, 'r') as fp:
         cnf = load(fp, Loader=Loader)
@@ -163,7 +161,7 @@ class GraphDB(object):
 
   def run_cypher(self, qry_str, verbose=False):
     """
-    Evaluate a Cypher query on the Neo4j graph database.
+    Execute a Cypher query on the Neo4j graph database.
 
     Parameters
     ----------
@@ -193,6 +191,11 @@ class GraphDB(object):
     """
     Create and execute a query to retrieve nodes, edges, or both.
 
+    Warnings
+    --------
+    This function is incomplete and should not be used until we can fix its
+    behavior. Specifically, 
+
     Parameters
     ----------
     field : str
@@ -215,6 +218,8 @@ class GraphDB(object):
         information, as well as https://neo4j.com/docs/graph-data-science/current/management-ops/graph-catalog-ops/#catalog-graph-create.
     """
 
+    raise NotImplementedError("Error: GraphDB.fetch() not yet implemented - see documentation notes.")
+
     if query_type == 'cypher':
       new_graph = self.build_graph_cypher_projection()
     elif query_type == 'native':
@@ -232,13 +237,93 @@ class GraphDB(object):
     """
     Find a single node either by name or by property filter(s).
     """
-    pass
+    if name:
+      # search by name
+      query = "MATCH (n {{ commonName: \"{0}\" }}) RETURN n LIMIT 1;".format(name)
 
-  def find_nodes(self, properties, node_types=[]):
+    else:
+      if not properties:
+        raise ValueError("Error: Must provide a value for `name` or `properties`.")
+
+      # search by properties
+      # first, separate out properties with special meaning (e.g., `id`)
+
+      # then, construct a MATCH clause suing the remaining properties
+      # strings should be enclosed in 
+      prop_string = ", ".join([f"{k}: '{v}'" if type(v) == str else f"{k}: {v}" for k, v in properties.items()])
+      match_clause = f"MATCH (n {{ {prop_string} }})"
+      # assemble the complete query
+
+      query = f"{match_clause} RETURN n;"
+
+    node_response = self.run_cypher(query)
+
+    if len(node_response) < 1:
+      warnings.warn("Warning: No node found matching the query you provided.")
+      return False
+    elif len(node_response) > 1:
+      warnings.warn("Warning: Multiple nodes found for query - only returning one (see `find_nodes` if you want all results).")
+    
+    return node_response[0]['n']
+
+
+  def find_nodes(self, properties={}, node_types=[]):
     """
     Find multiple nodes by node properties and/or labels.
+
+    Parameters
+    ----------
+    properties : dict
+      Dict of property values to match in the database query. Each key of
+      `properties` should be a (case-sensitive) node property, and each value
+      should be the value of that property (case- and type-sensitive).
+    node_types : list of str
+      Case sensitive list of strings representing node labels (node types) to
+      include in the results. Two or more node types in a single query may
+      significantly increase runtime. When multiple node labels are given, the
+      results will be the union of all property queries when applied
+
+    Returns
+    -------
+    generator of dict
+      A generator containing dict representations of nodes matching the given
+      query.
+
+    Notes
+    -----
+    The value returned in the event of a successful query can be extremely
+    large. To improve performance, the results are returned as a generator
+    rather than a list.
     """
-    pass
+    if (not properties) and (len(node_types) == 0):
+      raise ValueError("Error: Query must contain at least one node property or node type.")
+
+    if not properties:
+      warnings.warn("Warning: No property filters given - the query result may be very large!")
+
+    prop_string = ", ".join([f"{k}: '{v}'" if type(v) == str else f"{k}: {v}" for k, v in properties.items()])
+
+    # Use a WHERE clause when multiple node types are given
+    if len(node_types) == 1:
+      # Only 1 node label - include it in the MATCH clause
+      match_clause = f"MATCH (n:{node_types[0]} {{ {prop_string} }})"
+      where_clause = ""
+    elif len(node_types) > 1:
+      # Multiple node labels - include them in the WHERE clause
+      match_clause = f"MATCH (n {{ {prop_string} }})"
+      where_clause = " WHERE n:"+" OR n:".join(node_types)
+    else:
+      # No node labels - just use bare MATCH clause and no WHERE clause
+      match_clause = f"MATCH (n {{ {prop_string} }})"
+      where_clause = ""
+
+    query = match_clause + where_clause + " RETURN n;"
+
+    print(query)
+
+    nodes_response = self.run_cypher(query)
+
+    return (n['n'] for n in nodes_response)
 
   def find_relationships(self):
     """

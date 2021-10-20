@@ -55,7 +55,7 @@ setuptools.setup(
         'rdflib==5.0.0',
         'openpyxl==3.0.7',
         'owlready2==0.34',
-        'PyYAML==5.3.1',
+        'PyYAML==5.4',
     ],
     extras_require={
         "testing": ["pytest"],

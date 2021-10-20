@@ -16,12 +16,13 @@ from logging import warn
 import os
 import warnings
 from pathlib import Path
+from neo4j.api import Version
 from yaml import load, Loader
 from dataclasses import dataclass
 from typing import List, Dict
 
 from neo4j import GraphDatabase
-from neo4j.exceptions import ClientError, AuthError
+from neo4j.exceptions import ClientError, AuthError, ServiceUnavailable
 
 
 def _get_default_config_file():
@@ -113,43 +114,71 @@ class GraphDB(object):
     Sets verbosity to on or off. If True, status information will be returned
     to the user occasionally.
   """
-  def __init__(self, config_file=None, verbose=True):
+  def __init__(self, config_file=None, verbose=True, username=None, password=None, hostname=None):
     self.is_connected = False
     self.verbose = verbose
 
     if not config_file:
-      self.config_file = _get_default_config_file()
+      if all([username, password, hostname]):
+        self.config_file = None
+        self.username = username
+        self.password = password
+        self.hostname = hostname
+      else:
+        self.config_file = _get_default_config_file()
     else:
       self.config_file = config_file
 
     self._connect()
 
   def _connect(self):
-    assert self.config_file is not None
+    if self.config_file is not None:
+      try:
+        with open(self.config_file, 'r') as fp:
+          cnf = load(fp, Loader=Loader)
+      except FileNotFoundError as e:
+        warnings.warn("Config file not found at the specified location - using default configuration", RuntimeWarning)
 
-    try:
-      with open(self.config_file, 'r') as fp:
-        cnf = load(fp, Loader=Loader)
-    except FileNotFoundError as e:
-      warnings.warn("Warning: Config file not found at the specified location - using default configuration", RuntimeWarning)
+        # load default config:
+        self.config_file = _get_default_config_file()
+        with open(self.config_file, 'r') as fp:
+          cnf = load(fp, Loader=Loader)
 
-      # load default config:
-      self.config_file = _get_default_config_file()
-      with open(self.config_file, 'r') as fp:
-        cnf = load(fp, Loader=Loader)
-
-    if not _validate_config_file_contents(cnf):
-      raise RuntimeError("Error: Config file has an invalid format. Please see `CONFIG-default.yaml`.")
+      if not _validate_config_file_contents(cnf):
+        raise RuntimeError("Config file has an invalid format. Please see `CONFIG-default.yaml`.")
+        
+      username = cnf['neo4j']['username']
+      password = cnf['neo4j']['password']
+      hostname = cnf['neo4j']['password']
       
-    username = cnf['neo4j']['username']
-    password = cnf['neo4j']['password']
-    
-    uri = "bolt://localhost:7687"
+    else:
+      username = self.username
+      password = self.password
+      hostname = self.hostname
 
+    if hostname == 'localhost':
+      uri = "bolt://localhost:7687"
+    else:
+      uri = f"neo4j://{hostname}"
+
+    # Create the graph database driver
     try:
-      self._driver = GraphDatabase.driver(uri, auth=(username, password))
+      if (username is None) and (password is None):
+        self._driver = GraphDatabase.driver(uri)
+      else:
+        self._driver = GraphDatabase.driver(uri, auth=(username, password))
     except AuthError as e:
-      raise RuntimeError("Error: Could not find a database using the configuration provided.")
+      raise RuntimeError("Could not find a database using the configuration provided.")
+
+    # Test the connection to make sure we are connected to a database
+    try:
+      with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", "The configuration may change in the future.")
+        conn_result = self._driver.verify_connectivity()
+    except ServiceUnavailable:
+      raise RuntimeError("Neo4j driver created but we couldn't connect to any routing servers. You might be using an invalid hostname.")
+    if (conn_result is None):
+      raise RuntimeError("Neo4j driver created but a valid connection hasn't been established. You might be using an invalid hostname.")
 
   def _disconnect(self):
     self._driver.close()

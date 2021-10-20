@@ -53,9 +53,9 @@ setuptools.setup(
         'networkx==2.6.3',
         'py2neo==2021.1.5',
         'rdflib==5.0.0',
-        'openpyxl==3.0.8',
+        'openpyxl==3.0.7',
         'owlready2==0.34',
-        'PyYAML==5.4.1',
+        'PyYAML==5.3.1',
     ],
     extras_require={
         "testing": ["pytest"],

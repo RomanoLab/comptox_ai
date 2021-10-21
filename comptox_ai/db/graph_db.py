@@ -119,7 +119,7 @@ class GraphDB(object):
     self.verbose = verbose
 
     if not config_file:
-      if all([username, password, hostname]):
+      if hostname:
         self.config_file = None
         self.username = username
         self.password = password
@@ -171,6 +171,9 @@ class GraphDB(object):
       raise RuntimeError("Could not find a database using the configuration provided.")
 
     # Test the connection to make sure we are connected to a database
+    print("Username: ", username)
+    print("Password: ", password)
+    print("Hostname: ", hostname)
     try:
       with warnings.catch_warnings():
         warnings.filterwarnings("ignore", "The configuration may change in the future.")
@@ -223,7 +226,8 @@ class GraphDB(object):
     Warnings
     --------
     This function is incomplete and should not be used until we can fix its
-    behavior. Specifically, 
+    behavior. Specifically, Neo4j's GDS library does not support non-numeric
+    node or edge properties in any of its graph catalog-related subroutines.
 
     Parameters
     ----------

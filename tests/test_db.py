@@ -7,18 +7,19 @@ import os
 TEST_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
-@pytest.fixture
+# Module-level scope so we don't keep reconnecting with every test
+@pytest.fixture(scope="module")
 def G():
-  G = GraphDB(verbose=True)
+  G = GraphDB(verbose=True, hostname="165.123.13.192")
   return G
 
 class TestGraphDB(object):
   
-  def test_warn_when_config_file_not_found(self):
-    with pytest.warns(RuntimeWarning) as w_info:
+  def test_raise_when_config_file_not_found(self):
+    with pytest.raises(RuntimeError) as e_info:
       G_pre = GraphDB(config_file="/dev/null")
 
-  def test_error_when_bad_config_given(self):
+  def test_raise_when_bad_config_given(self):
     bad_config_file = os.path.join(TEST_DIR, 'badconfig.txt')
     with pytest.raises(RuntimeError) as e_info:
       G_pre = GraphDB(config_file=bad_config_file)

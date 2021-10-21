@@ -137,12 +137,7 @@ class GraphDB(object):
         with open(self.config_file, 'r') as fp:
           cnf = load(fp, Loader=Loader)
       except FileNotFoundError as e:
-        warnings.warn("Config file not found at the specified location - using default configuration", RuntimeWarning)
-
-        # load default config:
-        self.config_file = _get_default_config_file()
-        with open(self.config_file, 'r') as fp:
-          cnf = load(fp, Loader=Loader)
+        raise RuntimeError("Config file not found at the specified location - using default configuration")
 
       if not _validate_config_file_contents(cnf):
         raise RuntimeError("Config file has an invalid format. Please see `CONFIG-default.yaml`.")
@@ -171,15 +166,15 @@ class GraphDB(object):
       raise RuntimeError("Could not find a database using the configuration provided.")
 
     # Test the connection to make sure we are connected to a database
-    print("Username: ", username)
-    print("Password: ", password)
-    print("Hostname: ", hostname)
     try:
       with warnings.catch_warnings():
         warnings.filterwarnings("ignore", "The configuration may change in the future.")
         conn_result = self._driver.verify_connectivity()
     except ServiceUnavailable:
       raise RuntimeError("Neo4j driver created but we couldn't connect to any routing servers. You might be using an invalid hostname.")
+    except ValueError:
+      raise RuntimeError("Neo4j driver created but the host address couldn't be resolved. Check your hostname, port, and/or protocol.")
+    
     if (conn_result is None):
       raise RuntimeError("Neo4j driver created but a valid connection hasn't been established. You might be using an invalid hostname.")
 

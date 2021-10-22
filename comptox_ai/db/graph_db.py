@@ -20,6 +20,9 @@ from neo4j.api import Version
 from yaml import load, Loader
 from dataclasses import dataclass
 from typing import List, Dict
+from textwrap import dedent
+
+import ipdb
 
 from neo4j import GraphDatabase
 from neo4j.exceptions import ClientError, AuthError, ServiceUnavailable
@@ -131,6 +134,23 @@ class GraphDB(object):
 
     self._connect()
 
+  def __repr__(self):
+    return(
+      dedent(f"""\
+        ------------------------
+        ComptoxAI graph database
+        ------------------------
+        Hostname: {self.hostname}
+        Username: {self.username}
+        
+        Statistics
+        ----------
+        Node count:       {self.graph_stats['nodeCount']}
+        Edge count:       {self.graph_stats['relCount']}
+        Node type count:  {self.graph_stats['labelCount']}
+        Edge type count:  {self.graph_stats['relTypeCount']}""")
+    )
+
   def _connect(self):
     if self.config_file is not None:
       try:
@@ -178,6 +198,8 @@ class GraphDB(object):
     if (conn_result is None):
       raise RuntimeError("Neo4j driver created but a valid connection hasn't been established. You might be using an invalid hostname.")
 
+    self.graph_stats = self.get_graph_statistics()
+
   def _disconnect(self):
     self._driver.close()
 
@@ -212,6 +234,32 @@ class GraphDB(object):
         print(f"Writing Cypher transaction: \n  {qry_str}")
       res = session.write_transaction(self._run_transaction, qry_str)
       return res
+
+  def get_graph_statistics(self):
+    """Fetch statistics for the connected graph database.
+
+    This method essentially calls APOC.meta.stats(); and formats the output.
+
+    Returns
+    -------
+    dict
+      Dict of statistics describing the graph database.
+
+    Raises
+    ------
+    RuntimeError
+      If not currently connected to a graph database or the APOC.meta
+      procedures are not installed/available.
+    """
+    qry = "CALL apoc.meta.stats();"
+    response = self.run_cypher(qry)
+    assert len(response) == 1
+
+    response = response[0]
+
+    stats = {k:response[k] for k in ('nodeCount', 'relCount', 'labelCount', 'relTypeCount') if k in response}
+    
+    return stats
 
   def fetch(self, field, operator, value, what='both', register_graph=True,
             negate=False, query_type='cypher', **kwargs):

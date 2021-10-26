@@ -25,7 +25,7 @@ from textwrap import dedent
 import ipdb
 
 from neo4j import GraphDatabase
-from neo4j.exceptions import ClientError, AuthError, ServiceUnavailable
+from neo4j.exceptions import ClientError, AuthError, CypherSyntaxError, ServiceUnavailable
 
 
 def _get_default_config_file():
@@ -117,7 +117,7 @@ class GraphDB(object):
     Sets verbosity to on or off. If True, status information will be returned
     to the user occasionally.
   """
-  def __init__(self, config_file=None, verbose=True, username=None, password=None, hostname=None):
+  def __init__(self, config_file=None, verbose=False, username=None, password=None, hostname=None):
     self.is_connected = False
     self.verbose = verbose
 
@@ -212,6 +212,8 @@ class GraphDB(object):
     """
     Execute a Cypher query on the Neo4j graph database.
 
+    The 
+
     Parameters
     ----------
     qry_str : str
@@ -230,9 +232,13 @@ class GraphDB(object):
     [{'num_chems': 719599}]
     """
     with self._driver.session() as session:
-      if self.verbose:
+      if self.verbose or verbose:
         print(f"Writing Cypher transaction: \n  {qry_str}")
-      res = session.write_transaction(self._run_transaction, qry_str)
+      try:
+        res = session.write_transaction(self._run_transaction, qry_str)
+      except CypherSyntaxError:
+        warnings.warn("Neo4j returned a Cypher syntax error. Please check your query and try again.")
+        return None
       return res
 
   def get_graph_statistics(self):

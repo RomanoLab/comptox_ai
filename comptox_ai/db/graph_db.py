@@ -208,7 +208,7 @@ class GraphDB(object):
     result = tx.run(query)
     return result.data()
 
-  def run_cypher(self, qry_str, verbose=False):
+  def run_cypher(self, qry_str, verbose=True):
     """
     Execute a Cypher query on the Neo4j graph database.
 
@@ -413,8 +413,8 @@ class GraphDB(object):
     """
     pass
 
-  def build_graph_native_projection(self, graph_name, node_proj,
-                                    relationship_proj, config_dict={'nodeProperties': '*'}):
+  def build_graph_native_projection(self, graph_name, node_types,
+                                    relationship_types="all", config_dict=None):
     """
     Create a new graph in the Neo4j Graph Catalog via a native projection.
 
@@ -485,10 +485,10 @@ class GraphDB(object):
 
     graph_name_str = "'{0}'".format(graph_name)
 
-    node_proj_str = self._make_node_projection_str(node_proj)
+    node_proj_str = self._make_node_projection_str(node_types)
 
     # relationship_proj_str = "'{0}'".format(relationship_proj)
-    relationship_proj_str = self._make_node_projection_str(relationship_proj)
+    relationship_proj_str = self._make_node_projection_str(relationship_types)
 
     #config_dict_str = str(config_dict)
     if config_dict is None:
@@ -552,8 +552,11 @@ class GraphDB(object):
 
   def _make_node_projection_str(self, node_proj_arg):
     if isinstance(node_proj_arg, str):
+      # We need to wrap any string in double quotes
+      if node_proj_arg == 'all':
+        return '"*"'
       # e.g., 'Chemical'
-      return node_proj_arg
+      return f'"{node_proj_arg}"'
     elif isinstance(node_proj_arg, list):
       # e.g., ['Chemical', 'Disease']
       return '{0}'.format(str(node_proj_arg))

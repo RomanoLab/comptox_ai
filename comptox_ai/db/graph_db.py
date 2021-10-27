@@ -236,8 +236,9 @@ class GraphDB(object):
         print(f"Writing Cypher transaction: \n  {qry_str}")
       try:
         res = session.write_transaction(self._run_transaction, qry_str)
-      except CypherSyntaxError:
+      except CypherSyntaxError as e:
         warnings.warn("Neo4j returned a Cypher syntax error. Please check your query and try again.")
+        print(f"\nThe original error returned by Neo4j is:\n\n {e}")
         return None
       return res
 
@@ -697,13 +698,7 @@ class GraphDB(object):
 
     return deleted_graphs
 
-  def get_features(self, graph):
-    """
-    Fetch arrays of features corresponding to entities in a graph from MongoDB.
-    """
-    pass
-
-  def export_graph(self, graph_name):
+  def export_graph(self, graph_name, to='db'):
     """
     Export a graph stored in the GDS graph catalog to a set of CSV files.
 
@@ -713,7 +708,10 @@ class GraphDB(object):
       A name of a graph, corresponding to the `'graphName'` field in the
       graph's entry within the GDS graph catalog.
     """
-    res = self.run_cypher(f"CALL gds.beta.graph.export.csv('{graph_name}', {{exportName: '{graph_name}'}})")
+    if to == 'csv':
+      res = self.run_cypher(f"CALL gds.beta.graph.export('{graph_name}', {{exportName: '{graph_name}'}})")
+    elif to == 'db':
+      res = self.run_cypher(f"CALL gds.graph.export('{graph_name}', {{dbName: '{graph_name}'}});")
     return res
 
   def stream_named_graph(self, graph_name):
@@ -725,7 +723,8 @@ class GraphDB(object):
     graph_name : str
       A name of a graph in the GDS catalog.
     """
-    node_props = self.run_cypher(f"CALL gds.graph.streamNodeProperties('{graph_name}', ")
+    stream_graph_query = f"CALL gds.graph.streamNodeProperties('{graph_name}', "
+    node_props = self.run_cypher(stream_graph_query)
 
   # TODO: Recycle this code to send graphs to DGL instead of Pytorch Geometric
   # def to_pytorch(self, graph_name, node_list):

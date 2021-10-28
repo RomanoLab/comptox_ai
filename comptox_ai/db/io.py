@@ -5,7 +5,7 @@ io.py
 Copyright (c) 2021 by Joseph D. Romano
 """
 
-from comptox_ai.db import GraphDB
+
 
 from yaml import load, Loader
 from operator import itemgetter
@@ -31,7 +31,7 @@ class DbExporter():
   Users shouldn't usually try to interact with this class directly. They should
   instead call the appropriate `GraphDB` method (e.g., `db.export()`).
   """
-  def __init__(self, db: GraphDB):
+  def __init__(self, db):
     self.db = db
     self.metagraph = db.get_metagraph()
 
@@ -45,6 +45,8 @@ class GraphExporter(DbExporter):
   Users shouldn't usually try to interact with this class directly. They should
   instead call the appropriate `GraphDB` method (e.g., `db.export()`).
   """
+  from comptox_ai.db import GraphDB
+
   def __init__(self, db: GraphDB, verbose=True):
     super().__init__(db)
     self.verbose = verbose
@@ -127,5 +129,7 @@ class TabularExporter(DbExporter):
   Users shouldn't usually try to interact with this class directly. They should
   instead call the appropriate `GraphDB` method (e.g., `db.export()`).
   """
+  from comptox_ai.db import GraphDB
+  
   def __init__(self, db: GraphDB):
     super().__init__(db)

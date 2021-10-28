@@ -27,6 +27,8 @@ import ipdb
 from neo4j import GraphDatabase
 from neo4j.exceptions import ClientError, AuthError, CypherSyntaxError, ServiceUnavailable
 
+import comptox_ai.db
+
 
 def _get_default_config_file():
   root_dir = Path(__file__).resolve().parents[2]
@@ -133,6 +135,8 @@ class GraphDB(object):
       self.config_file = config_file
 
     self._connect()
+
+    self.exporter = comptox_ai.db.GraphExporter(self)
 
   def __repr__(self):
     return(

@@ -513,7 +513,7 @@ class MySQLDatabaseParser(DatabaseParser):
     ):
         super().__init__(name, destination)
 
-        if config_dict["socket"]:
+        if "socket" in config_dict:
             self.conn = MySQLdb.Connection(
                 host=config_dict["host"],
                 user=config_dict["user"],
@@ -721,7 +721,7 @@ if __name__ == "__main__":
     mysql_config["host"] = cnf["mysql"]["host"]
     mysql_config["user"] = cnf["mysql"]["user"]
     mysql_config["passwd"] = cnf["mysql"]["passwd"]
-    if cnf["mysql"]["socket"]:
+    if "socket" in cnf["mysql"]:
         mysql_config["socket"] = cnf["mysql"]["socket"]
 
     #print("INITIAL ONTOLOGY STATISTICS:")
@@ -732,6 +732,7 @@ if __name__ == "__main__":
     drugbank = FlatFileDatabaseParser("drugbank", onto)
     hetionet = FlatFileDatabaseParser("hetionet", onto)
     aopdb = MySQLDatabaseParser("aopdb", onto, mysql_config)
+    invitrodb = MySQLDatabaseParser("invitrodb", onto, mysql_config)
     aopwiki = FlatFileDatabaseParser("aopwiki", onto)
     tox21 = FlatFileDatabaseParser("tox21", onto)
 
@@ -952,7 +953,25 @@ if __name__ == "__main__":
         skip=False
     )
 
-    
+    ###################
+    # INVITRODB NODES #
+    ###################
+    invitrodb.parse_node_type(
+        node_type="Chemical",
+        source_table="chemical",
+        parse_config={
+            "iri_column_name": "dsstox_substance_id",
+            "data_property_map": {
+                "chid": onto.xrefGSID
+            },
+            "merge_column":{
+                "source_column_name": "dsstox_substance_id",
+                "data_property": onto.xrefDTXSID,
+            }
+        },
+        merge=True,
+        skip=False
+    )
 
     # Add relationships and relationship properties
     # Options for "source_type":

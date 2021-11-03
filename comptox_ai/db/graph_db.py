@@ -608,6 +608,10 @@ class GraphDB(object):
     """
   
     meta = self.run_cypher("CALL apoc.meta.graph();")[0]
+    node_labels = []
+    for n in meta['nodes']:
+      node_labels.append(n['name'])
+      
     node_labels = [n['name'] for n in meta['nodes']]
     node_label_counts = dict([(n['name'], n['count']) for n in meta['nodes']])
 
@@ -727,8 +731,7 @@ class GraphDB(object):
     graph_name : str
       A name of a graph in the GDS catalog.
     """
-    stream_graph_query = f"CALL gds.graph.streamNodeProperties('{graph_name}', "
-    node_props = self.run_cypher(stream_graph_query)
+    self.exporter.stream_subgraph
 
   # TODO: Recycle this code to send graphs to DGL instead of Pytorch Geometric
   # def to_pytorch(self, graph_name, node_list):

@@ -77,8 +77,6 @@ class GraphExporter(DbExporter):
     if self.uuid.hex in [x['graphName'] for x in graphs]:
       self.db.drop_existing_graph(self.temp_graph_name)
 
-    
-    
   def stream_subgraph(self, node_types, relationship_types='all'):
     """Extract a subgraph from the graph database and return it as a Python
     dictionary object.

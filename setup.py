@@ -61,5 +61,10 @@ setuptools.setup(
         "testing": ["pytest"],
         "coverage": ["pytest-cov", "codecov"],
         "docs": ["numpydoc", "sphinxext-opengraph"]
+    },
+    entry_points={
+        'console_scripts': [
+            'make_qsar=comptox_ai.scripts.make_qsar:main'
+        ]
     }
 )

@@ -732,7 +732,7 @@ if __name__ == "__main__":
     drugbank = FlatFileDatabaseParser("drugbank", onto)
     hetionet = FlatFileDatabaseParser("hetionet", onto)
     aopdb = MySQLDatabaseParser("aopdb", onto, mysql_config)
-    invitrodb = MySQLDatabaseParser("invitrodb", onto, mysql_config)
+    # invitrodb = MySQLDatabaseParser("invitrodb", onto, mysql_config)
     aopwiki = FlatFileDatabaseParser("aopwiki", onto)
     tox21 = FlatFileDatabaseParser("tox21", onto)
 
@@ -780,24 +780,67 @@ if __name__ == "__main__":
     # with open("D:\\projects\\comptox_ai\\comptox_mid.rdf", "wb") as fp:
     #     onto.save(file=fp, format="rdfxml")
     # ipdb.set_trace()
+    # epa.parse_node_type(
+    #     node_type="Chemical",
+    #     source_filename="CUSTOM_cid_maccs.tsv",
+    #     fmt="tsv",
+    #     parse_config={
+    #         "iri_column_name": "CID",
+    #         "headers": True,
+    #         "data_property_map": {
+    #             "CID": onto.xrefPubchemCID,
+    #             "MACCS": onto.maccs
+    #         },
+    #         "merge_column": {
+    #             "source_column_name": "CID",
+    #             "data_property": onto.xrefPubchemCID
+    #         },
+    #     },
+    #     merge=True,
+    #     skip_create_new_node=True,  # Don't create an empty chemical node with just a MACCS property if the CID isn't already in the ontology
+    #     skip=False
+    # )
     epa.parse_node_type(
         node_type="Chemical",
-        source_filename="CUSTOM_cid_maccs.tsv",
+        source_filename="CUSTOM/chemical_maccs_fingerprints.tsv",
         fmt="tsv",
         parse_config={
-            "iri_column_name": "CID",
+            "iri_column_name": "DTXSID",
             "headers": True,
             "data_property_map": {
-                "CID": onto.xrefPubchemCID,
+                "DTXSID": onto.xrefDTXSID,
                 "MACCS": onto.maccs
             },
             "merge_column": {
-                "source_column_name": "CID",
-                "data_property": onto.xrefPubchemCID
-            },
+                "source_column_name": "DTXSID",
+                "data_property": onto.xrefDTXSID
+            }
         },
         merge=True,
         skip_create_new_node=True,  # Don't create an empty chemical node with just a MACCS property if the CID isn't already in the ontology
+        skip=False
+    )
+
+    ##################
+    # CHEMICAL LISTS #
+    ##################
+    epa.parse_node_type(
+        node_type="ChemicalList",
+        source_filename="CUSTOM/Chemical Lists.tsv",
+        fmt="tsv",
+        parse_config={
+            "iri_column_name": "LIST_ACRONYM",
+            "headers": True,
+            "data_property_map": {
+                "LIST_ACRONYM": onto.listAcronym,
+                "LIST_NAME": onto.commonName,
+                "LIST_DESCRIPTION": onto.listDescription
+            },
+            "data_transforms": {
+                "LIST_ACRONYM": lambda x: x.split('/')[-1]
+            }
+        },
+        merge=False,
         skip=False
     )
 
@@ -956,22 +999,22 @@ if __name__ == "__main__":
     ###################
     # INVITRODB NODES #
     ###################
-    invitrodb.parse_node_type(
-        node_type="Chemical",
-        source_table="chemical",
-        parse_config={
-            "iri_column_name": "dsstox_substance_id",
-            "data_property_map": {
-                "chid": onto.xrefGSID
-            },
-            "merge_column":{
-                "source_column_name": "dsstox_substance_id",
-                "data_property": onto.xrefDTXSID,
-            }
-        },
-        merge=True,
-        skip=False
-    )
+    # invitrodb.parse_node_type(
+    #     node_type="Chemical",
+    #     source_table="chemical",
+    #     parse_config={
+    #         "iri_column_name": "dsstox_substance_id",
+    #         "data_property_map": {
+    #             "chid": onto.xrefGSID
+    #         },
+    #         "merge_column":{
+    #             "source_column_name": "dsstox_substance_id",
+    #             "data_property": onto.xrefDTXSID,
+    #         }
+    #     },
+    #     merge=True,
+    #     skip=False
+    # )
 
     # Add relationships and relationship properties
     # Options for "source_type":
@@ -1153,7 +1196,10 @@ if __name__ == "__main__":
             "object_match_property": onto.xrefAOPWikiKEID,
             "filter_column": "direct_or_indirect",
             "filter_value": "adjacent",
-            "headers": True,
+            "headers": ["aop_id", "upstream_event_id", "downstream_event_id",
+                "relationship_id", "direct_or_indirect",
+                "evidence_for_relationship",
+                "quantitative_understanding_for_relationship"],
             "data_transforms": {
                 "upstream_event_id": lambda x: int(x.split(":")[-1]),
                 "downstream_event_id": lambda x: int(x.split(":")[-1])

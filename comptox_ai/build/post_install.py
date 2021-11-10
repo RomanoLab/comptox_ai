@@ -62,3 +62,8 @@ for nt in meta.node_labels:
     except ClientError:
         print(f"Node index on {nt} already exists - skipping.")
         continue
+
+# Run this cypher to update maccs to integer arrays:
+# MATCH (n:Chemical) WHERE EXISTS(n.maccs)
+# WITH n, toIntegerList(split(n.maccs, "")) AS new_n
+# SET n.maccs = new_n;

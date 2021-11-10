@@ -30,9 +30,9 @@ DATA_DIR = CONFIG["data"]["prefix"]
 with open(os.path.join(DATA_DIR, 'epa', 'CUSTOM', 'chemical_lists_data.json'), 'r') as fp:
     chemical_lists = json.load(fp)
 
-# Get DSSTOX IDs
-all_gsids = list(set(itertools.chain.from_iterable([x['gsids'] for x in chemical_lists])))
-ipdb.set_trace()
+# # Get DSSTOX IDs
+# all_gsids = list(set(itertools.chain.from_iterable([x['gsids'] for x in chemical_lists])))
+# ipdb.set_trace()
 
 # Make relationships linking chemical lists to specific chemicals (by DSSTOX ID)
 chemical_list_relationships = []

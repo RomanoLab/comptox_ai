@@ -571,14 +571,68 @@ class GraphDB(object):
   def _make_rel_projection_str(self, rel_proj_arg):
     pass
 
-  def fetch_nodes(self, node_label):
+  def fetch_nodes(self, node_type, property, values):
     """
-    Fetch nodes from the Neo4j graph database.
+    Fetch nodes by node property value.
+
+    Allows users to filter by a single node type (i.e., ontology class).
+
+    Parameters
+    ----------
+    node_type : str
+      Node type on which to filter all results. Can speed up queries
+      significantly.
+    property : str
+      Node property to match against.
+    values : str or list
+      Value or list of values on which to match `property`.
+
+    Returns
+    -------
+    list of dict
+      Each element in the list corresponds to a single node. If no matches are
+      found in the database, an empty list will be returned.
+    """
+
+  def fetch_chemical_list(self, list_name):
+    """
+    Fetch all chemicals that are members of a chemical list.
+
+    Parameters
+    ----------
+    list_name : str
+      Name (or acronym) corresponding to a Chemical List in ComptoxAI's graph
+      database.
+
+    Returns
+    -------
+    list_data : dict
+      Metadata corresponding to the matched list
+    chemicals : list of dict
+      Chemical nodes that are members of the chemical list
+    """
+    res = self.run_cypher(f"MATCH (l:ChemicalList {{ listAcronym: \"{list_name}\" }})-[:LISTINCLUDESCHEMICAL]->(c:Chemical) RETURN l, c")
+
+    return (res[0]['l'], [r['c'] for r in res])
+
+  def fetch_node_type(self, node_label):
+    """
+    Fetch an entire class of nodes from the Neo4j graph database.
+
+    Parameters
+    ----------
+    node_label : str
+      Node label corresponding to a class of entities in the database.
 
     Returns
     -------
     generator of dict
 
+    Warnings
+    --------
+    Since many entities may be members of a single class, users are cautioned
+    that this method may take a very long time to run and/or be very demanding
+    on computing resources.
     """
     
     res = self.run_cypher(f"MATCH (n:{node_label}) RETURN n;")

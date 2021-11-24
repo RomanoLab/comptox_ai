@@ -738,6 +738,7 @@ if __name__ == "__main__":
     # invitrodb = MySQLDatabaseParser("invitrodb", onto, mysql_config)
     aopwiki = FlatFileDatabaseParser("aopwiki", onto)
     tox21 = FlatFileDatabaseParser("tox21", onto)
+    disgenet = FlatFileDatabaseParser("disgenet", onto)
 
     # Add nodes and node properties in a carefully specified order
 
@@ -931,6 +932,25 @@ if __name__ == "__main__":
         skip=False
     )
 
+    ##################
+    # DISGENET NODES #
+    ##################
+    disgenet.parse_node_type(
+        node_type="Disease",
+        source_filename="disease_mappings_to_attributes.tsv",
+        fmt="tsv-pandas",
+        parse_config={
+            "iri_column_name": "diseaseId",
+            "headers": True,
+            "data_property_map": {
+                "diseaseId": onto.xrefUmlsCUI,
+                "name": onto.commonName,
+            }
+        },
+        merge=False,
+        skip=False
+    )
+
     ################
     # AOP-DB NODES #
     ################
@@ -1076,6 +1096,7 @@ if __name__ == "__main__":
     #        is inferred by looking up the object node based on a foreign
     #        key value in the subject's source table
 
+
     ########################
     # AOP-DB RELATIONSHIPS #
     ########################
@@ -1165,6 +1186,32 @@ if __name__ == "__main__":
         merge=False,
         skip=False
     )
+
+    ##########################
+    # DISGENET RELATIONSHIPS #
+    ##########################
+    disgenet.parse_relationship_type(
+        relationship_type=onto.geneAssociatesWithDisease,
+        source_filename="curated_gene_disease_associations.tsv",
+        fmt="tsv",
+        parse_config={
+            "subject_node_type": onto.Gene,
+            "subject_column_name": "geneSymbol",
+            "subject_match_property": onto.geneSymbol,
+            "object_node_type": onto.Disease,
+            "object_column_name": "diseaseId",
+            "object_match_property": onto.xrefUmlsCUI,
+            "filter_column": "diseaseType",
+            "filter_value": "disease",
+            "headers": True
+        },
+        merge=False,
+        skip=False
+    )
+    # TODO: Evaluate disease-disease associations. In DisGeNET, it seems to be
+    # based on Jaccard distance of genes and variants overlap, which may not be
+    # right for ComptoxAI.
+    # For now: Use disease-disease associations from hetionet.
 
     ##########################
     # HETIONET RELATIONSHIPS #

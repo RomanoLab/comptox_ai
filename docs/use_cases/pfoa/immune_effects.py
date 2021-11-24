@@ -11,13 +11,13 @@ import pandas as pd
 
 import ipdb
 
-db = GraphDB(hostname="165.123.13.192")
+db = GraphDB(hostname="comptox.ai")
 
-df = pd.read_excel("/data1/innatedb/innatedb_curated_genes.xls")
+df = pd.read_excel("D:/data/innatedb/innatedb_curated_genes.xls")
 hsap = df.loc[df['Species']==9606,:]  # Only interested in human genes
 hsap_genes = list(pd.unique(hsap['Gene Symbol']))
 
-pfoa_gene_links = db.run_cypher("MATCH (c:Chemical {commonName: \"PFOA\"})-[r]->(g:Gene) RETURN c, r, g;")
+pfoa_gene_links = db.run_cypher("MATCH (c:Chemical {commonName: \"2,3,7,8-Tetrachlorodibenzo-p-dioxin\"})-[r]->(g:Gene) RETURN c, r, g;")
 increases = [r for r in pfoa_gene_links if r['r'][1] == 'CHEMICALINCREASESEXPRESSION'] 
 decreases = [r for r in pfoa_gene_links if r['r'][1] == 'CHEMICALDECREASESEXPRESSION'] 
 inc_symbols = [i['g']['geneSymbol'] for i in increases]

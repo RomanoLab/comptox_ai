@@ -876,6 +876,10 @@ if __name__ == "__main__":
             print("SAVING INITIAL CHEMICAL DATA...")
             with open("D:\\projects\\comptox_ai\\comptox_mid.rdf", "wb") as fp:
                 onto.save(file=fp, format="rdfxml")
+        elif os.name == 'posix':
+            print("SAVING INITIAL CHEMICAL DATA...")
+            with open(os.path.join(repo_root, "comptox_mid.rdf"), "wb") as fp:
+                onto.save(file=fp, format="rdfxml")
         else:
             raise NotImplementedError("Whoops!")
 

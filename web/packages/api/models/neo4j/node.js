@@ -6,6 +6,7 @@ const Node = module.exports = function(_node, nodeData) {
     const node_features = _node.properties;
     const node_labels = _node['labels'];
 
+    // Map identifiers
     const identifiers = Object.keys(node_features).reduce(function(xrefs, nf) {
         if (nf.startsWith("xref")) {
             if (typeof node_features[nf] === "object") {
@@ -23,19 +24,36 @@ const Node = module.exports = function(_node, nodeData) {
         return xrefs;
     }, []);
 
+    // Map non-identifier node features
     const features = Object.keys(node_features).reduce(function(feats, nf) {
         if (!nf.startsWith("xref") && !['commonName','uri'].includes(nf)) {
-            if (typeof node_features[nf] === "object") {
-                feats.push({
-                    featType: nf,
-                    featValue: node_features[nf].toNumber()
-                });
-            } else {
-                feats.push({
-                    featType: nf,
-                    featValue: node_features[nf]
-                });
+            const this_feat = node_features[nf];
+            switch (typeof this_feat) {
+                case "object":
+                    var fv;
+
+                    if (Array.isArray(this_feat)) {
+                        // Convert each element of the list to a number
+                        fv = this_feat.map(x => x.toNumber()).join('');
+                    } else {
+                        fv = this_feat.toNumber();
+                    }
+
+                    feats.push({
+                        featType: nf,
+                        featValue: fv
+                    }); 
+                    
+                    break;
+                default:
+                    feats.push({
+                        featType: nf,
+                        featValue: node_features[nf]
+                    });
+
+                    break;
             }
+
         }
         return feats;
     }, []);

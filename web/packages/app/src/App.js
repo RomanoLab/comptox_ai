@@ -4,10 +4,12 @@ import Container from '@material-ui/core/Container';
 import NodeSearch from './components/NodeSearch';
 import RelationshipSearch from './components/RelationshipSearch';
 import PathSearch from './components/PathSearch';
+import DatasetBuilder from './components/DatasetBuilder';
 
 import './App.css';
 
-import * as config from './data.json';
+import * as config from './data/data.json';
+import * as chemLists from './data/chemical_list_data.json'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 
 const theme = createMuiTheme({
@@ -37,7 +39,9 @@ class App extends React.Component {
               For detailed usage instructions, please see <a href="https://comptox.ai/browse.html">this page</a>.
             </p>
             {/* <HowToUse /> */}
-            <NodeSearch config={config.default}/>
+            <NodeSearch 
+              config={config.default}
+            />
             <RelationshipSearch
               relationshipResults={this.state.relationshipResults}
             />
@@ -45,6 +49,10 @@ class App extends React.Component {
               pathResults={this.state.pathResults}
             />
             {/* <BatchQuery /> */}
+            <DatasetBuilder
+              config={config.default}
+              chemLists={chemLists.default}
+            />
           </Container>
         </ThemeProvider>
       </div>

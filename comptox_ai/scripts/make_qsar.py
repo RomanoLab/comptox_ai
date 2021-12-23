@@ -40,7 +40,15 @@ async def main():
 
   # TODO: Make async flashing cursor, or something along those lines
   # subgraph = 
-  subgraph = db.exporter.stream_subgraph(node_types = ['Chemical', args.endpoint])
+  # subgraph = db.exporter.stream_subgraph(node_types = ['Chemical', args.endpoint])
+  subgraph = db.exporter.stream_tabular_dataset(
+    sample_node_type="Chemical",
+    sample_filter_node_type="ChemicalList",
+    sample_filter_node_value="EPAHFR"
+    target_node_type="Assay",
+    target_match_property="commonName",
+    target_match_value="tox21-erb-bla-p1",
+  )
 
   print_dataset_statistics(subgraph)
 

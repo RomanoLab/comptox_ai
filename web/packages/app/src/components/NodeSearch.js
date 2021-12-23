@@ -4,12 +4,10 @@ import { Map } from 'react-lodash';
 import {
   makeStyles,
   Button,
-  Checkbox,
   TextField,
   Select,
   MenuItem,
   FormControl,
-  FormControlLabel,
   InputLabel,
   Paper
 } from '@material-ui/core';
@@ -43,13 +41,12 @@ const useStyles = makeStyles((theme) => ({
 // See: https://www.digitalocean.com/community/tutorials/how-to-build-forms-in-react
 const NodeSearch = (props) => {
   const { config } = props;
-  
   const [formData, setFormData] = useReducer(formReducer, {});
   const [submitData, setSubmitData] = useReducer(submitReducer, {});
-  
+
   // eslint-disable-next-line
   const [skip, setSkip] = useState(true); // Don't render search results until we've hit "search" at least once
-  
+
   const { data = [], error, isLoading, isUninitialized } = useSearchNodesQuery([submitData.label, submitData.field, submitData.value], {
     skip,
   });
@@ -149,6 +146,7 @@ const NodeSearch = (props) => {
               name="nodeType"
               onChange={handleChange}
               value={formData.nodeType || ''}
+              defaultValue=""
             >
               {config.nodeConfig.nodeLabels.map((nodeLabel) => (
                 <MenuItem value={nodeLabel}>{nodeLabel}</MenuItem>
@@ -164,6 +162,7 @@ const NodeSearch = (props) => {
               labelId="select-outlined-label-field"
               onChange={handleChange}
               value={formData.nodeField || []}
+              defaultValue=""
             >
               {fetchNodeFields(formData.nodeType).map((nf) => (
                 <MenuItem value={nf.property}>{nf.display}</MenuItem>
@@ -183,15 +182,6 @@ const NodeSearch = (props) => {
           
           <br/>
           <div className={classes.root}>
-            {/* <FormControlLabel
-              control={
-                <Checkbox
-                  name="exactMatchCheckbox"
-                />
-              }
-              label="Exact matches only"
-              style={{marginRight:'18px'}}
-            /> */}
             <Button variant="contained" color="primary" type="submit">Search</Button>
             <Button variant="contained" color="primary" onClick={handleReset}>Clear Form</Button>
           </div>

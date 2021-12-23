@@ -91,9 +91,6 @@ const RelationshipSearch = (props) => {
 
   const skip = (selectedRel) ? false : true;
   
-  console.log(skip);
-  console.log(selectedRel);
-  
   const { data = [], error, isLoading, isUninitialized } = useFetchRelationshipsByNodeIdQuery(selectedRel, {
     skip,
   });

@@ -13,6 +13,10 @@ from pathlib import Path
 import pandas as pd
 import uuid
 import datetime as dt
+import numpy as np
+import pandas as pd
+
+import ipdb
 
 
 # FOR DEBUGGING ONLY:
@@ -131,3 +135,76 @@ class TabularExporter(DbExporter):
   
   def __init__(self, db: GraphDB):
     super().__init__(db)
+
+  def stream_tabular_dataset(
+    self,
+    sample_node_type: str = 'Chemical',
+    sample_filter_node_type: str = 'ChemicalList',
+    sample_filter_node_value: str = 'EPAPCS',
+    target_node_type: str = 'Assay',
+    target_match_property: str = 'commonName',
+    target_match_value: str = 'tox21-pxr-p1',
+    target_pos_relationship_type: str = 'CHEMICALHASACTIVEASSAY',
+    target_neg_relationship_type: str = 'CHEMICALHASINACTIVEASSAY',
+    make_discovery_dataset: bool = False):
+    """
+    Example
+    -------
+    >>> g = GraphDB("comptox.ai")
+    >>> exporter = TabularExporter(g)
+    >>> exporter.stream_tabular_dataset(
+    ...   sample_node_type = 'Chemical',
+    ...   sample_filter_node_type = 'ChemicalList',
+    ...   sample_filter_node_value = 'EPAPCS',
+    ...   target_node_type = 'Assay',
+    ...   target_match_property = 'commonName',
+    ...   target_match_value = 'tox21-pxr-p1',
+    ...   target_pos_relationship_type = 'CHEMICALHASACTIVEASSAY',
+    ...   target_neg_relationship_type = 'CHEMICALHASINACTIVEASSAY'
+    ... )
+    """
+
+    cypher_query_template = "MATCH {0} WHERE {1} RETURN {2};"
+
+    if not make_discovery_dataset:
+      match_clause = f"(sf:{sample_filter_node_type})-[r2]-(s:{sample_node_type})-[r1]-(t:{target_node_type})"
+
+      where_clause = f"s.maccs IS NOT NULL AND sf.listAcronym = \"{sample_filter_node_value}\" AND t.{target_match_property} = \"{target_match_value}\""
+
+      return_clause = f"s.commonName AS name, s.maccs AS maccs, type(r1) AS rel_type"
+
+      cypher_query = cypher_query_template.format(match_clause, where_clause, return_clause)
+
+      res = self.db.run_cypher(cypher_query)
+
+      X = np.array([x['maccs'] for x in res])
+      y = np.array([1 if x['rel_type'] == target_pos_relationship_type else 0 for x in res ], dtype=np.int32)
+
+      names = [x['name'] for x in res]
+
+      df = pd.DataFrame(X)
+      df['y'] = y
+      df.index = names
+
+      return df
+
+    else:
+      # Generate a dataset without known links to the target
+      match_clause = f"(sf:{sample_filter_node_type})-[r2]-(s:{sample_node_type})"
+
+      where_clause = f"s.maccs IS NOT NULL AND sf.listAcronym = \"{sample_filter_node_value}\" AND NOT (s)-[]-(:{target_node_type} {{ {target_match_property}: \"{target_match_value}\" }})"
+
+      return_clause = f"s.commonName AS name, s.maccs AS maccs"
+
+      cypher_query = cypher_query_template.format(match_clause, where_clause, return_clause)
+
+      res = self.db.run_cypher(cypher_query)
+      
+      X = np.array([x['maccs'] for x in res])
+
+      names = [x['name'] for x in res]
+
+      df = pd.DataFrame(X)
+      df.index = names
+
+      return df

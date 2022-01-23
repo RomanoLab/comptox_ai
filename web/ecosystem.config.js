@@ -13,7 +13,7 @@ module.exports = {
       }
     },
     {
-      name: "app",
+      name: "data-browser",
       script: "app.js",
       cwd: 'packages/app/',
       watch: true,

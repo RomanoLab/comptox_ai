@@ -33,6 +33,7 @@
     "morgan": "^1.10.0",
     "nconf": "^0.11.2",
     "neo4j-driver": "^4.2.2",
+    "python-shell": "^3.0.1",
     "swagger-jsdoc": "^6.0.6",
     "swagger-ui-express": "^4.1.6"
   },

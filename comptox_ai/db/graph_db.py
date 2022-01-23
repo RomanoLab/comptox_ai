@@ -145,14 +145,14 @@ class GraphDB(object):
         ComptoxAI graph database
         ------------------------
         Hostname: {self.hostname}
-        Username: {self.username}
-        
-        Statistics
-        ----------
-        Node count:       {self.graph_stats['nodeCount']}
-        Edge count:       {self.graph_stats['relCount']}
-        Node type count:  {self.graph_stats['labelCount']}
-        Edge type count:  {self.graph_stats['relTypeCount']}""")
+        Username: {self.username}""")
+        # 
+        # Statistics
+        # ----------
+        # Node count:       {self.graph_stats['nodeCount']}
+        # Edge count:       {self.graph_stats['relCount']}
+        # Node type count:  {self.graph_stats['labelCount']}
+        # Edge type count:  {self.graph_stats['relTypeCount']}""")
     )
 
   def _connect(self):
@@ -168,8 +168,8 @@ class GraphDB(object):
         
       username = cnf['neo4j']['username']
       password = cnf['neo4j']['password']
-      hostname = cnf['neo4j']['password']
-      
+      hostname = cnf['neo4j']['hostname']
+
     else:
       username = self.username
       password = self.password
@@ -202,7 +202,8 @@ class GraphDB(object):
     if (conn_result is None):
       raise RuntimeError("Neo4j driver created but a valid connection hasn't been established. You might be using an invalid hostname.")
 
-    self.graph_stats = self.get_graph_statistics()
+    # This is too intense to run every time we instantiate a graph object:
+    #self.graph_stats = self.get_graph_statistics()
 
   def _disconnect(self):
     self._driver.close()
@@ -236,8 +237,9 @@ class GraphDB(object):
     [{'num_chems': 719599}]
     """
     with self._driver.session() as session:
-      if self.verbose or verbose:
-        print(f"Writing Cypher transaction: \n  {qry_str}")
+      if self.verbose:
+        if verbose: # users can still override verbosity at the run_cypher level
+          print(f"Writing Cypher transaction: \n  {qry_str}")
       try:
         res = session.write_transaction(self._run_transaction, qry_str)
       except CypherSyntaxError as e:
@@ -263,7 +265,7 @@ class GraphDB(object):
       procedures are not installed/available.
     """
     qry = "CALL apoc.meta.stats();"
-    response = self.run_cypher(qry)
+    response = self.run_cypher(qry, verbose=self.verbose)
     assert len(response) == 1
 
     response = response[0]

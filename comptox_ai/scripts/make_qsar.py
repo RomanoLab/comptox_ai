@@ -6,17 +6,15 @@ endpoints, and return it in tabular format.
 """
 
 import argparse
-import asyncio
+import sys
+import json
 
 import ipdb
 
 from comptox_ai.db import GraphDB
+from comptox_ai.utils import load_config
 
 
-parser = argparse.ArgumentParser(description='Connect to ComptoxAI, extract a QSAR dataset with user-defined endpoints, and return it in tabular format.')
-parser.add_argument('--endpoint', type=str, help='An entity type in the graph database corresponding to the endpoint for the QSAR analysis. Examples include Pathway, Gene, and Assay.')
-
-args = parser.parse_args()
 
 def print_dataset_statistics(subgraph):
   print()
@@ -26,30 +24,62 @@ def print_dataset_statistics(subgraph):
 
 # async def get_subgraph(**kwargs)
 
-async def main():
+def main():
+  parser = argparse.ArgumentParser(description='Connect to ComptoxAI, extract a QSAR dataset with user-defined endpoints, and return it in tabular format.')
+  parser.add_argument('--assay-abbrev', type=str, help='An assay name abbreviation corresponding to a Tox21 assay (see first column of https://tripod.nih.gov/tox21/assays/).')
+  parser.add_argument('--chem-list', type=str, help='Acronym for an EPA chemical list (see first column of https://comptox.epa.gov/dashboard/chemical-lists). If not provided, all chemicals will be used.')
+  parser.add_argument('--max-chems', type=int, default=1000, help='Maximum number of chemicals to fetch from the database in each target category. High values may result in long query times. If 0, no limit will be used.')
+  parser.add_argument('--make-discovery', action='store_true', dest='discovery', help='Generate a discovery dataset with unknown activity endpoints.')
+  parser.add_argument('--no_discovery', action='store_false', dest='discovery', help='Do not generate a discovery dataset.')
+  parser.set_defaults(discovery=True)
+
+  args = parser.parse_args()
+
+  cnf = load_config()
+
+  username = cnf['neo4j']['username']
+  password = cnf['neo4j']['password']
+  hostname = cnf['neo4j']['hostname']
+
+  output = sys.stdout
+  err = sys.stderr
+
+  format = "json"
+
+  if args.max_chems is not 0:
+    limit_str = f" LIMIT {args.max_chems}"
+  else:
+    limit_str = ""
   
-  db = GraphDB(hostname="165.123.13.192")
+  db = GraphDB(hostname=hostname, username=username, password=password)
 
-  print(f"Endpoint: {args.endpoint}")
+  res_active = db.run_cypher("""
+  MATCH (l:ChemicalList {{listAcronym: '{0}' }})-[r1:LISTINCLUDESCHEMICAL]->(c:Chemical)-[r2:CHEMICALHASACTIVEASSAY]->(a:Assay {{commonName: '{1}' }})
+  WHERE c.maccs IS NOT null
+  RETURN c.xrefDTXSID as chemical, c.maccs as maccs{2};
+  """.format(args.chem_list, args.assay_abbrev, limit_str))
 
-  print("Extracting QSAR dataset from ComptoxAI; please be patient...")
+  res_inactive = db.run_cypher("""
+  MATCH (l:ChemicalList {{listAcronym: '{0}' }})-[r1:LISTINCLUDESCHEMICAL]->(c:Chemical)-[r2:CHEMICALHASINACTIVEASSAY]->(a:Assay {{commonName: '{1}' }})
+  WHERE c.maccs IS NOT null
+  RETURN c.xrefDTXSID as chemical, c.maccs as maccs{2};
+  """.format(args.chem_list, args.assay_abbrev, limit_str))
 
-  subgraph_args = {
-    'node_types': ['Chemical', args.endpoint]
-  }
+  res_discovery = db.run_cypher("""
+  MATCH (l:ChemicalList {{listAcronym: '{0}' }})-[r1:LISTINCLUDESCHEMICAL]->(c:Chemical)
+  WHERE c.maccs IS NOT null AND NOT (c)-[:CHEMICALHASINACTIVEASSAY]->(:Assay {{commonName: '{1}' }})
+  RETURN c.xrefDTXSID as chemical, c.maccs as maccs{2};
+  """.format(args.chem_list, args.assay_abbrev, limit_str))
 
-  # TODO: Make async flashing cursor, or something along those lines
-  # subgraph = 
-  # subgraph = db.exporter.stream_subgraph(node_types = ['Chemical', args.endpoint])
-  subgraph = db.exporter.stream_tabular_dataset(
-    sample_node_type="Chemical",
-    sample_filter_node_type="ChemicalList",
-    sample_filter_node_value="EPAHFR"
-    target_node_type="Assay",
-    target_match_property="commonName",
-    target_match_value="tox21-erb-bla-p1",
-  )
+  if format == "json":
+    final_result = {
+      'active': res_active,
+      'inactive': res_inactive,
+      'discovery': res_discovery
+    }
 
-  print_dataset_statistics(subgraph)
-
-  ipdb.set_trace()
+  # Not extremely elegant. Explore other options for writing output.
+  output.write(json.dumps(final_result))
+  
+if __name__=="__main__":
+  main()

@@ -15,6 +15,10 @@ import {
 import Autocomplete from '@material-ui/lab/autocomplete';
 
 
+const qsarBuilderConfig = require('../data/qsar_params_data.json');
+
+
+
 const formReducer = (state, event) => {
   return {
     ...state,
@@ -149,20 +153,30 @@ const DatasetBuilderQueryForm = (props) => {
           <FormControl
             variant="outlined"
             size="small"
-            style={{ width: '100%'}}
+            style={{ width: '100%', paddingBottom: 8 }}
           >
-            {/* <InputLabel id="select-outlined-label-chemicallist">Chemical List</InputLabel>
-            <Select
-              name="selectChemicalList"
-              label="Chemical List"
-              labelId="select-outlined-label-chemicallist"
-              onChange={handleChange}
-              value={formData.chemicalListSelect}
-            /> */}
             <Autocomplete
               id="autocomplete-outlined-chemicallist"
-              options={chemLists}
-              getOptionLabel={(option) => option.listName}
+              // options={chemLists}
+              size="small"
+              options={qsarBuilderConfig.chemicalLists}
+              getOptionLabel={(option) => (option.name + " (n=" + option.num_chems + ")")}
+              renderInput={(params) => <TextField {...params} label="EPA Chemical List filter" variant="outlined" />}
+            />
+          </FormControl>
+
+          <FormControl
+            variant="outlined"
+            size="small"
+            style={{ width: '100%'}}
+          >
+            <Autocomplete
+              id="autocomplete-outlined-assayendpoint"
+              // options={chemLists}
+              size="small"
+              options={qsarBuilderConfig.assays}
+              getOptionLabel={(option) => (option.assayName + " (id: " + option.assayId + ")")}
+              renderInput={(params) => <TextField {...params} label="Assay endpoint for QSAR" variant="outlined" />}
             />
           </FormControl>
 

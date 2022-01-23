@@ -28,6 +28,10 @@ var swaggerOpts = {
             {
                 url: "https://comptox.ai/api",
                 description: "ComptoxAI's public REST API"
+            },
+            {
+                url: "http://localhost:3000",
+                description: "Default local (dev) API server"
             }
         ],
         host: "localhost:3000",
@@ -110,6 +114,8 @@ app.get("/nodes/fetchById/:id", routes.nodes.fetchById);
 app.get("/relationships/fromStartNodeId/:id", routes.relationships.findRelationshipsByNode);
 
 app.get("/paths/findByIds?", routes.paths.findByIds)
+
+app.get("/datasets/makeQsarDataset?", routes.datasets.makeQsarDataset)
 
 // handle errors
 app.use(function (err, req, res, next) {

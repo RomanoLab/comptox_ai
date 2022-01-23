@@ -719,7 +719,7 @@ if __name__ == "__main__":
     
     # open config file:
     with open("../../CONFIG.yaml", 'r') as fp:
-        cnf = load(fp)
+        cnf = load(fp, Loader=Loader)
     mysql_config = dict()
     mysql_config["host"] = cnf["mysql"]["host"]
     mysql_config["user"] = cnf["mysql"]["user"]

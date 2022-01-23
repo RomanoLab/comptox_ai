@@ -1,5 +1,15 @@
 import os
+from pathlib import Path
+from yaml import load, Loader
 import configparser
+
+def _get_default_config_file():
+    root_dir = Path(__file__).resolve().parents[2]
+    if os.path.exists(os.path.join(root_dir, 'CONFIG.yaml')):
+        default_config_file = os.path.join(root_dir, 'CONFIG.yaml')
+    else:
+        default_config_file = os.path.join(root_dir, 'CONFIG-default.yaml')
+    return default_config_file
 
 def load_config(config_file_path=None):
     """Load a ComptoxAI configuration file from the location specified.
@@ -27,20 +37,19 @@ def load_config(config_file_path=None):
         location, None will be returned instead, and the user will be notified
         to try again.
     """
+    
     if config_file_path:
         full_fname = config_file_path
     else:
-        userdir = os.path.expanduser("~")
-        full_fname = os.path.join(userdir, ".comptoxai.cfg")
-
-    config = configparser.ConfigParser()
+        full_fname = _get_default_config_file()
 
     try:
-        config.read(full_fname)
+        with open(full_fname, 'r') as fp:
+            cnf = load(fp, Loader=Loader)
     except FileNotFoundError:
         print("Error: Config file not found. Refer to the documentation for " \
               "details:\n" \
               "http://comptox.ai/docs/guide/building.html")
         return None
 
-    return dict(config)
+    return dict(cnf)

@@ -26,6 +26,9 @@ export const comptoxApiSlice = createApi({
     findPathByNodeIds: builder.query({
       query: (nodeIds) => `/paths/findByIds?fromId=${nodeIds[0]}&toId=${nodeIds[1]}`
     }),
+    makeQsarDataset: builder.query({
+      query: (qsarParams) => `/datasets/makeQsarDataset?assay=${qsarParams[0]}&chemList=${qsarParams[1]}`
+    }),
   })
 });
 
@@ -34,5 +37,6 @@ export const {
   useSearchNodesQuery,
   useSearchNodesContainsQuery,
   useFetchRelationshipsByNodeIdQuery,
-  useFindPathByNodeIdsQuery
+  useFindPathByNodeIdsQuery,
+  useMakeQsarDatasetQuery
 } = comptoxApiSlice;

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import {
   Button,
+  Checkbox,
   Container,
   FormControl,
   FormControlLabel,
-  Switch,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/autocomplete';
@@ -14,10 +17,9 @@ const qsarBuilderConfig = require('../data/qsar_params_data.json');
 const DatasetBuilderQueryForm = (props) => {
 
   const [chemListValue, setChemListValue] = useState({'acronym': '', 'name': ''});
-  const [chemListInputValue, setChemListInputValue] = React.useState('');
-
   const [assayValue, setAssayValue] = useState({'assayId': '', 'assayName': ''});
-  const [assayInputValue, setAssayInputValue] = React.useState('');
+  const [checkedState, setCheckedState] = useState({ checkedIncludeDiscovery: true });
+  const [formatValue, setFormatValue] = useState('json');
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -25,72 +27,14 @@ const DatasetBuilderQueryForm = (props) => {
     window.open(`http://localhost:3000/datasets/makeQsarDataset?assay=${assayValue.assayId}&chemList=${chemListValue.acronym}`);
   }
 
+  const handleToggleCheckbox = (event) => {
+    setCheckedState({ ...checkedState, [event.target.name]: event.target.checked });
+  };
+
   return (
     <form onSubmit={handleSubmit}>
 
       <Container>
-
-        {/* <Grid container spacing={3} style={{ paddingBottom: 8 }}>
-          <Grid item xs={2}>
-            <FormControl
-              variant="outlined"
-              size="small"
-              // style={{ width: '20%', paddingBottom: 8, paddingRight: 8 }}
-              style={{ width: '100%' }}
-            >
-              <InputLabel id="select-outlined-label-filter-prop">Filter by...</InputLabel>
-              <Select
-                name="chemicalFilterPropertySelect"
-                label="Filter by..."
-                labelId="select-outlined-label-filter-prop"
-                onChange={handleChange}
-                value={formData.chemicalFilterPropertySelect || ''}
-                defaultValue=""
-              >
-                {chemicalFields.map((cf) => (
-                  <MenuItem value={cf.property}>{cf.display}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={1}>
-            <FormControl
-              variant="outlined"
-              size="small"
-              style={{ width: '100%' }}
-            >
-              <Select
-                defaultValue="="
-              >
-                <MenuItem value="=">=</MenuItem>
-                <MenuItem value="contains">contains</MenuItem>
-                <MenuItem value="not">not</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={9}>
-            <FormControl
-              variant="outlined"
-              size="small"
-              style={{ width: '100%' }}
-            >
-              <InputLabel id="select-outlined-label-filter-value">Filter value</InputLabel>
-              <TextField
-                name="chemicalFilterValue"
-                label="Filter value"
-                labelId="select-outlined-label-filter-value"
-                onChange={handleChange}
-                value={formData.chemicalFilterValue || ''}
-                defaultValue=""
-                variant="outlined"
-                size="small"
-              />
-            </FormControl>
-          </Grid>
-        </Grid> */}
-
 
         <FormControl
           variant="outlined"
@@ -99,18 +43,14 @@ const DatasetBuilderQueryForm = (props) => {
         >
           <Autocomplete
             id="autocomplete-outlined-chemicallist"
-            // options={chemLists}
+            autoComplete
             size="small"
             onChange={(event, newValue) => {
               setChemListValue(newValue);
             }}
-            inputValue={chemListInputValue}
-            onInputChange={(event, newInputValue) => {
-              setChemListInputValue(newInputValue);
-            }}
-            value={chemListValue || ''}
+            value={chemListValue || null}
             options={qsarBuilderConfig.chemicalLists}
-            getOptionLabel={(option) => (option.name + " (n=" + option.num_chems + ")")}
+            getOptionLabel={(option) => option.name ? (option.name + " (n=" + option.num_chems + ")") : ''}
             getOptionSelected={(option, value) => option.acronym === value.acronym}
             renderInput={(params) => <TextField {...params} label="EPA Chemical List filter" variant="outlined" />}
           />
@@ -119,25 +59,54 @@ const DatasetBuilderQueryForm = (props) => {
         <FormControl
           variant="outlined"
           size="small"
-          style={{ width: '100%', paddingBottom: 8 }}
+          style={{ width: '100%'}}
         >
           <Autocomplete
             id="autocomplete-outlined-assayendpoint"
             size="small"
+            autoComplete
             onChange={(event, newValue) => {
               setAssayValue(newValue);
             }}
-            inputValue={assayInputValue}
-            onInputChange={(event, newInputValue) => {
-              setAssayInputValue(newInputValue)
-            }}
-            value={assayValue || ''}
+            value={assayValue || null}
             options={qsarBuilderConfig.assays}
-            getOptionLabel={(option) => (option.assayName + " (id: " + option.assayId + ")")}
+            getOptionLabel={(option) => option.assayId ? (option.assayName + " (id: " + option.assayId + ")") : ''}
             getOptionSelected={(option, value) => option.assayId === value.assayId}
             renderInput={(params) => <TextField {...params} label="Assay endpoint for QSAR" variant="outlined" />}
           />
         </FormControl>
+
+        <br/>
+        <FormControl variant="outlined" size="small">
+          <InputLabel id="select-outlined-label-format">Format</InputLabel>
+          <Select
+            name="selectFormat"
+            label="Results format"
+            labelId="select-outlined-label-format"
+            onChange={(event, newValue) => {
+              setFormatValue(newValue);
+            }}
+            value={formatValue}
+            defaultValue="json"
+            style={{ width: 120 }}
+          >
+            <MenuItem value="json">JSON</MenuItem>
+            <MenuItem value="tsv">TSV</MenuItem>
+            <MenuItem value="csv">CSV</MenuItem>
+          </Select>
+        </FormControl>
+        
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={checkedState.checked}
+              onChange={handleToggleCheckbox}
+              name="checkedIncludeDiscovery"
+              color="primary"
+            />
+          }
+          label="Include 'discovery' dataset of chemicals with unknown assay activity"
+        />
 
         <br/>
         <Button variant="contained" color="primary" type="submit" style={{marginRight: 6}}>Build QSAR Dataset</Button>

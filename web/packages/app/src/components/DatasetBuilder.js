@@ -31,6 +31,10 @@ const DatasetBuilderQueryForm = (props) => {
     setCheckedState({ ...checkedState, [event.target.name]: event.target.checked });
   };
 
+  const handleChangeFormat = (event) => {
+    setFormatValue(event.target.value);
+  };
+
   return (
     <form onSubmit={handleSubmit}>
 
@@ -39,7 +43,7 @@ const DatasetBuilderQueryForm = (props) => {
         <FormControl
           variant="outlined"
           size="small"
-          style={{ width: '100%', paddingBottom: 8 }}
+          style={{ width: '100%', paddingBottom: 10 }}
         >
           <Autocomplete
             id="autocomplete-outlined-chemicallist"
@@ -52,14 +56,14 @@ const DatasetBuilderQueryForm = (props) => {
             options={qsarBuilderConfig.chemicalLists}
             getOptionLabel={(option) => option.name ? (option.name + " (n=" + option.num_chems + ")") : ''}
             getOptionSelected={(option, value) => option.acronym === value.acronym}
-            renderInput={(params) => <TextField {...params} label="EPA Chemical List filter" variant="outlined" />}
+            renderInput={(params) => <TextField {...params} label="Filter chemicals by EPA Chemical List (optional)" variant="outlined" />}
           />
         </FormControl>
 
         <FormControl
           variant="outlined"
           size="small"
-          style={{ width: '100%'}}
+          style={{ width: '100%', paddingBottom: 8 }}
         >
           <Autocomplete
             id="autocomplete-outlined-assayendpoint"
@@ -72,30 +76,11 @@ const DatasetBuilderQueryForm = (props) => {
             options={qsarBuilderConfig.assays}
             getOptionLabel={(option) => option.assayId ? (option.assayName + " (id: " + option.assayId + ")") : ''}
             getOptionSelected={(option, value) => option.assayId === value.assayId}
-            renderInput={(params) => <TextField {...params} label="Assay endpoint for QSAR" variant="outlined" />}
+            renderInput={(params) => <TextField {...params} label="QSAR assay endpoint" variant="outlined" />}
           />
         </FormControl>
 
         <br/>
-        <FormControl variant="outlined" size="small">
-          <InputLabel id="select-outlined-label-format">Format</InputLabel>
-          <Select
-            name="selectFormat"
-            label="Results format"
-            labelId="select-outlined-label-format"
-            onChange={(event, newValue) => {
-              setFormatValue(newValue);
-            }}
-            value={formatValue}
-            defaultValue="json"
-            style={{ width: 120 }}
-          >
-            <MenuItem value="json">JSON</MenuItem>
-            <MenuItem value="tsv">TSV</MenuItem>
-            <MenuItem value="csv">CSV</MenuItem>
-          </Select>
-        </FormControl>
-        
         <FormControlLabel
           control={
             <Checkbox
@@ -106,10 +91,27 @@ const DatasetBuilderQueryForm = (props) => {
             />
           }
           label="Include 'discovery' dataset of chemicals with unknown assay activity"
+          style={{ marginBottom: 6}}
         />
 
         <br/>
-        <Button variant="contained" color="primary" type="submit" style={{marginRight: 6}}>Build QSAR Dataset</Button>
+        <FormControl variant="outlined" size="small">
+          <InputLabel id="select-outlined-label-format">Format</InputLabel>
+          <Select
+            name="selectFormat"
+            label="Format"
+            labelId="select-outlined-label-format"
+            onChange={handleChangeFormat}
+            value={formatValue}
+            defaultValue="json"
+            style={{ width: 120, marginRight: 8}}
+          >
+            <MenuItem value="json">JSON</MenuItem>
+            <MenuItem value="tsv">TSV</MenuItem>
+            <MenuItem value="csv">CSV</MenuItem>
+          </Select>
+        </FormControl>
+        <Button variant="contained" color="primary" type="submit" style={{marginRight: 6, paddingTop: 9}}>Build QSAR Dataset</Button>
         <i>(Results will open in a new tab)</i>
 
       </Container>
@@ -124,10 +126,9 @@ const DatasetBuilder = (props) => {
     <div className="datasetBuilder">
       <div className="datasetBuilderHeader">
         <h2>Build QSAR Dataset</h2>
-        <p><i>Build a new dataset to use in Quantitative Structure Activity Relationship modeling.</i></p>
+        <p><i>Build a new dataset to use in Quantitative Structure-Activity Relationship modeling.</i></p>
       </div>
       <div className="datasetBuilderQuery">
-        <h3>Dataset options</h3>
         <div className="formWrapper">
 
           <DatasetBuilderQueryForm

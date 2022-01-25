@@ -101,7 +101,8 @@ app.get('/', (req, res) => {
  *               type: object
  */
 app.get('/config', (req, res) => {
-    res.send(dataConfigJson);
+    console.log(dataConfigJson);
+    res.json(dataConfigJson);
 })
 
 app.get("/nodes/listNodeTypes", routes.nodes.listNodeTypes);

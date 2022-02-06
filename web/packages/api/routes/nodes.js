@@ -138,11 +138,16 @@ exports.listNodeTypeProperties = function (req, res, next) {
  *           items:
  *             $ref: '#/components/schemas/Node'
  */
-exports.findNode = function (req, res, next) {
-    Nodes.findNodeByQuery(dbUtils.getSession(req), req.params.type, req.query.field, req.query.value)
+ exports.findNode = function (req, res, next) {
+    Nodes.findNodeCaseInsensitive(dbUtils.getSession(req), req.params.type, req.query.field, req.query.value)
         .then(response => writeResponse(res, response))
         .catch(next);
 };
+// exports.findNode = function (req, res, next) {
+//     Nodes.findNodeByQuery(dbUtils.getSession(req), req.params.type, req.query.field, req.query.value)
+//         .then(response => writeResponse(res, response))
+//         .catch(next);
+// };
 
 /**
  * @openapi

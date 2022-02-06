@@ -50,19 +50,51 @@ const listNodeTypeProperties = function (session, nodeTypeLabel) {
     });
 };
 
-const findNodeByQuery = function (session, type, field, value) {
-    const query = [
-        `MATCH (n:${type} {${field}: $value})`,
-        `RETURN n, id(n);`
-    ].join(' ');
+const findNodeCaseInsensitive = function (session, type, field, value) {
+    // Convert the value to an int if it looks like an int
+    const intValue = parseInt(value);
+    const safeCastValue = (isNaN(intValue)) ? value : intValue;
 
+    // Case insensitive matching using Cypher's regex syntax:
+    let query;
+    if (isNaN(intValue)) {
+        query = [
+            `MATCH (n:${type})`,
+            `WHERE n.${field} =~ '(?i)${value}'`,
+            `RETURN n, id(n);`
+        ].join(' ');
+    } else {
+        query = [
+            `MATCH (n:${type})`,
+            `WHERE n.${field} = ${value}`,
+            `RETURN n, id(n);`
+        ].join(' ');
+    }
+    
+    return session.readTransaction(txc =>
+        txc.run(query)
+    ).then(result => {
+        if (!_.isEmpty(result.records)) {
+            return parseNodes(result);
+        } else {
+            throw {message: 'No results found for user query', query: query, result: result, status: 404}
+        }
+    });
+};
+
+const findNodeByQuery = function (session, type, field, value) {
     // Convert the value to an int if it looks like an int
     const intValue = parseInt(value);
     const safeCastValue = (isNaN(intValue)) ? value : intValue;
     
+    const query = [
+        `MATCH (n:${type} {${field}: $value})`,
+        `RETURN n, id(n);`
+    ].join(' ');
+    
     return session.readTransaction(txc =>
         txc.run(query, {value: safeCastValue})
-    ) .then(result => {
+    ).then(result => {
         if (!_.isEmpty(result.records)) {
             return parseNodes(result);
         } else {
@@ -72,16 +104,25 @@ const findNodeByQuery = function (session, type, field, value) {
 };
 
 const findNodeByQueryContains = function (session, type, field, value) {
-    const query = [
-        `MATCH (n:${type})`,
-        `WHERE n.${field} CONTAINS $value`,
-        `RETURN n, id(n);`
-    ].join(' ');
-
     // Convert the value to an int if it looks like an int
     const intValue = parseInt(value);
     const safeCastValue = (isNaN(intValue)) ? value : intValue;
-    
+
+    let query;
+    if (isNaN(intValue)) {
+        query = [
+            `MATCH (n:${type})`,
+            `WHERE n.${field} =~ '(?i).*${value}.*'`,
+            `RETURN n, id(n);`
+        ].join(' ');
+    } else {
+        query = [
+            `MATCH (n:${type})`,
+            `WHERE n.${field} = ${value}`,
+            `RETURN n, id(n);`
+        ].join(' ');
+    }
+
     return session.readTransaction(txc =>
         txc.run(query, {value: safeCastValue})
     ) .then(result => {
@@ -110,6 +151,7 @@ const fetchById = function (session, id) {
 module.exports = {
     listNodeTypes: listNodeTypes,
     listNodeTypeProperties: listNodeTypeProperties,
+    findNodeCaseInsensitive: findNodeCaseInsensitive,
     findNodeByQuery: findNodeByQuery,
     findNodeByQueryContains: findNodeByQueryContains,
     fetchById: fetchById,

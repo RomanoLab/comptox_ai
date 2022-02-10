@@ -21,6 +21,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'cmu_sans_serifitalic';
+    src: url('../fonts/cmunsx-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+
 :target::before {
     content: "";
     display: block;
@@ -53,6 +60,11 @@ body h2 {
 body h3 {
     font-family: 'cmu_sans_serifbold', sans-serif;
     font-size: 18px;
+}
+
+body h4 {
+    font-family: 'cmu_sans_serifitalic', sans-serif;
+    font-size: 16px;
 }
 
 code {

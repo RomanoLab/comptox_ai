@@ -16,6 +16,7 @@ methods, and functions, please refer to the :ref:`API documentation <docs>`.
    :numbered:
    :maxdepth: 2
 
+   comptox
    db_queries
    graph_db
    graph_concepts

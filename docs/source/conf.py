@@ -92,6 +92,7 @@ extensions = [
 ]
 
 imgmath_image_format = 'svg'
+imgmath_font_size = 14
 
 autodoc_default_options = {"members": True, "inherited-members": True}
 

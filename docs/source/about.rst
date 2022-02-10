@@ -12,21 +12,25 @@ biological organization. However, the tools for interacting with these data are
 - at best - inconsistent, outdated, and fail to use state-of-the-art
 computational methods.
 
+Please refer to the :ref:`User Guide <user_guide>` for additional information on computational
+toxicology and the utilities provided by ComptoxAI.
+
 .. _authors:
 
 Authors
 -------
 
 ComptoxAI is developed and maintained by `Joseph D. Romano <https://jdr.bio>`_,
-who is a postdoctoral researcher at the University of Pennsylvania.
+who is a postdoctoral researcher at the University of Pennsylvania. Yun Hao, a
+PhD student at the University of Pennsylvania, provides assistance with data
+preprocessing/curation and analysis.
 
 Other important contributors include:
 
 - `Jason Moore
-  <https://www.med.upenn.edu/apps/faculty/index.php/g275/p8803452>`_ (Penn)
+  <http://epistasis.org/jason-h-moore-phd/>`_ (Cedars-Sinai)
 - `Trevor Penning
   <https://www.med.upenn.edu/apps/faculty/index.php/g275/p12620>`_ (Penn)
-- Yun Hao (Penn)
 - Holly Mortensen (US EPA)
 - Jonathan Senn (US EPA)
 - Mei Liang (US EPA)
@@ -36,10 +40,11 @@ Other important contributors include:
 Citing ComptoxAI
 ----------------
 
-ComptoxAI is still under development, but we would still appreciate citations
-of the following form until we have our first preprints/papers published:
+We are preparing two papers for publication which, together, will comprehensively
+describe ComptoxAI and its current features. Until those are released, please
+cite us using the following:
 
-| ComptoxAI: A toolkit for AI research in computational toxicology, Romano *et al*, `<https://comptox.ai>`_, 2021
+| Romano *et al*. (2022) ComptoxAI: A toolkit for AI research in computational toxicology. `<https://comptox.ai>`_.
 
 BibTeX entry::
 
@@ -48,6 +53,21 @@ BibTeX entry::
     author = "Joseph~D.~Romano",
     howpublished = "\url{https://comptox.ai}",
     year = 2021
+  }
+
+Other Publications
+^^^^^^^^^^^^^^^^^^
+
+* Romano JD, Hao Y, & Moore JH. (2022) Improving QSAR Modeling for Predictive Toxicology using Publicly Aggregated Semantic Graph Data and Graph Neural Networks. *Pacific Symposium on Biocomputing 27*: 187-198.
+::
+
+  @inproceedings{romano2021improving,
+    title={Improving QSAR Modeling for Predictive Toxicology using Publicly Aggregated Semantic Graph Data and Graph Neural Networks},
+    author={Romano, Joseph D and Hao, Yun and Moore, Jason H},
+    booktitle={PACIFIC SYMPOSIUM ON BIOCOMPUTING 2022},
+    pages={187--198},
+    year={2021},
+    organization={World Scientific}
   }
 
 .. _source_dbs:
@@ -83,8 +103,8 @@ at::
    joseph.romano [at] pennmedicine.upenn.edu
 
 Similar projects can be found at `his personal website
-<http://jdr.bio>`_, or at the University of Pennsylvania's `Computational
-Genetics Lab home page <http://epistasis.org>`_.
+<http://jdr.bio>`_, or at the `Artificial Intelligence Innovation Lab's home
+page <http://epistasis.org>`_.
 
 .. _contributing:
 
@@ -108,6 +128,7 @@ Health, including:
 - `K99-LM013646 <https://reporter.nih.gov/project-details/10371656>`_ (PI: Romano)
 - `R01-LM010098 <https://reporter.nih.gov/project-details/10126058>`_ (PI: Moore)
 - `R01-LM012601 <https://reporter.nih.gov/project-details/9999032>`_ (PI: Moore)
+- `P30-ES013508 <https://reporter.nih.gov/project-details/10437460>`_ (PI: Penning)
 - `T32-ES019851 <https://reporter.nih.gov/project-details/10176487>`_ (PI: Penning)
 
 ComptoxAI would also not be possible without essential contributions from

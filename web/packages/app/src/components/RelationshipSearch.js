@@ -1,14 +1,14 @@
-import { 
+import {
   Button,
-  makeStyles,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TableRow
-} from '@material-ui/core';
+  TableRow,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import React from 'react';
 
 import { setRelStartNode } from '../features/relationshipSlice';

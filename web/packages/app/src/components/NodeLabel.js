@@ -1,4 +1,4 @@
-import { Avatar, Chip, Typography } from '@material-ui/core';
+import { Avatar, Chip, Typography } from '@mui/material';
 import React from 'react';
 
 const colorMap = {

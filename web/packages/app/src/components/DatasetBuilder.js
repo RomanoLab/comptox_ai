@@ -9,8 +9,8 @@ import {
   MenuItem,
   Select,
   TextField
-} from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/autocomplete';
+} from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const qsarBuilderConfig = require('../data/qsar_params_data.json');
 
@@ -55,7 +55,7 @@ const DatasetBuilderQueryForm = (props) => {
             value={chemListValue || null}
             options={qsarBuilderConfig.chemicalLists}
             getOptionLabel={(option) => option.name ? (option.name + " (n=" + option.num_chems + ")") : ''}
-            getOptionSelected={(option, value) => option.acronym === value.acronym}
+            isOptionEqualToValue={(option, value) => option.acronym === value.acronym}
             renderInput={(params) => <TextField {...params} label="Filter chemicals by EPA Chemical List (optional)" variant="outlined" />}
           />
         </FormControl>
@@ -75,7 +75,7 @@ const DatasetBuilderQueryForm = (props) => {
             value={assayValue || null}
             options={qsarBuilderConfig.assays}
             getOptionLabel={(option) => option.assayId ? (option.assayName + " (id: " + option.assayId + ")") : ''}
-            getOptionSelected={(option, value) => option.assayId === value.assayId}
+            isOptionEqualToValue={(option, value) => option.assayId === value.assayId}
             renderInput={(params) => <TextField {...params} label="QSAR assay endpoint" variant="outlined" />}
           />
         </FormControl>
@@ -116,7 +116,7 @@ const DatasetBuilderQueryForm = (props) => {
 
       </Container>
     </form>
-  )
+  );
 }
 
 const DatasetBuilder = (props) => {

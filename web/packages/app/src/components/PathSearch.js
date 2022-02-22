@@ -1,6 +1,6 @@
 import React from 'react';
 import { Graph } from "react-d3-graph";
-import { Box, Button, Typography } from "@material-ui/core";
+import { Box, Button, Typography } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useFindPathByNodeIdsQuery } from '../features/comptoxApiSlice';

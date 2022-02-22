@@ -6,7 +6,7 @@ import {
     MenuItem,
     Select,
     TextField
-} from '@material-ui/core';
+} from '@mui/material';
 
 const NodeSearchWidget = (props) => {
     <Grid container spacing={3} style={{ paddingBottom: 8 }}>

@@ -1,16 +1,9 @@
 import React, { useReducer, useState } from 'react';
 import { Map } from 'react-lodash';
 
-import {
-  makeStyles,
-  Button,
-  TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Paper
-} from '@material-ui/core';
+import { Button, TextField, Select, MenuItem, FormControl, InputLabel, Paper } from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 import NodeResult from './NodeResult';
 import { useSearchNodesQuery } from '../features/comptoxApiSlice';

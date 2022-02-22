@@ -3,13 +3,11 @@ import {
     TextField
 } from '@mui/material';
 
-const placeholderText = `CALL apoc.path.spanningTree(
-    879088,
-    {
-        maxLevel: 5
-    })
-YIELD path
-RETURN path;`;
+const placeholderText = `MATCH 
+    (d:Disease {commonName: "Non-alcoholic Fatty Liver Disease"}),
+    (c:Chemical {commonName: "PFOA"}),
+    p= allShortestPaths((d)-[*]-(c))
+RETURN p;`;
 
 const ShortestPath = (props) => {
     return(
@@ -21,7 +19,7 @@ const ShortestPath = (props) => {
                     type='text'
                     defaultValue={placeholderText}
                     multiline
-                    rows={7}
+                    rows={5}
                     inputProps={
                         {readOnly: true,}
                     }

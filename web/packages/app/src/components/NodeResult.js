@@ -174,6 +174,8 @@ const NodeResult = (props) => {
 
           <p id="uri-text"><Typography>Ontology IRI: <tt>{nodeIRI}</tt></Typography></p>
 
+          <Typography>Actions:</Typography>
+
           <ButtonGroup color="primary" size="small" aria-label="small outlined button group">
             <Button onClick={handleRelSearch}>
               Load relationships
@@ -183,6 +185,16 @@ const NodeResult = (props) => {
           <ButtonGroup color="primary" size="small" style={{marginLeft: '12px'}}>
             <Button onClick={handleSetPathStartNode}>Path start node</Button>
             <Button onClick={handleSetPathEndNode}>Path end node</Button>
+          </ButtonGroup>
+
+          <br/>
+
+          <ButtonGroup color="primary" size="small" style={{marginTop: '10px'}}>
+            <Button onClick={handleSetPathStartNode}>Shortest Path (start)</Button>
+            <Button onClick={handleSetPathStartNode}>Shortest Path (end)</Button>
+          </ButtonGroup>
+          <ButtonGroup color="primary" size="small" style={{marginLeft: '12px'}}>
+            <Button onClick={handleSetPathEndNode}>Expand network</Button>
           </ButtonGroup>
         </Box>
       </ThemeProvider>

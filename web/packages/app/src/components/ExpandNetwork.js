@@ -1,5 +1,17 @@
 import React from 'react';
-import { TextField, createTheme } from '@mui/material';
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Button,
+    Dialog,
+    DialogContent,
+    DialogContentText,
+    TextField,
+    Typography
+} from '@mui/material';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const placeholderText = `CALL apoc.path.spanningTree(
     879088,
@@ -9,28 +21,93 @@ const placeholderText = `CALL apoc.path.spanningTree(
 YIELD path
 RETURN path;`;
 
-const monospaceFontTheme = createTheme({
-
-});
-
 const ExpandNetwork = (props) => {
+    const [popupOpen, setPopupOpen] = React.useState(false);
+    
+    const handleCopyCypher = () => {
+        // see: https://stackoverflow.com/a/58406346/1730417
+        let selBox = document.createElement('textarea');
+        selBox.style.position = 'fixed';
+        selBox.style.left = '0';
+        selBox.style.top = '0';
+        selBox.style.opacity = '0';
+        selBox.value = placeholderText;
+        document.body.appendChild(selBox);
+        selBox.focus();
+        selBox.select();
+        document.execCommand('copy');
+        document.body.removeChild(selBox);
+        setPopupOpen(true);
+    };
+
+    const handleClose = () => {
+        setPopupOpen(false);
+    };
+
+    const openInNewTab = (url) => {
+        const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+        if (newWindow) newWindow.opener = null;
+    };
+
     return(
         <div id="expand-network">
             <div className="expandNetworkHeader">
                 <h2>Expand a network around a query node</h2>
                 <p><i>Create a Cypher query that builds a spanning tree outward from a starting node, showing their local neighborhood in the overall knowledge graph.</i></p>
+                <Accordion
+                    style={{margin: '6px'}}
+                >
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="shortestpathhelp-content"
+                        id="shortestpathhelp-header"
+                    >
+                        <Typography>Usage instructions</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <ol>
+                            <li>Find a node using the search feature at the top of the page, and click "Send to Expand Network".</li>
+                            <li>Click the "Copy Database Query" button below to copy the query to your clipboard.</li>
+                            <li>Click the "Open Database Browser" button below to open the Neo4j interface.</li>
+                            <li>Paste the contents in the query bar and run the search.</li>
+                        </ol>
+                    </AccordionDetails>
+                </Accordion>
                 <TextField
                     type='text'
                     defaultValue={placeholderText}
                     multiline
                     rows={7}
-                    inputProps={
-                        {readOnly: true,}
-                    }
+                    inputProps={{
+                        readOnly: true,
+                        style: {fontFamily: 'monospace'}
+                    }}
                     style={{width: '100%'}}
                     variant="outlined"
-                    theme={monospaceFontTheme}
                 />
+                <Button
+                    onClick={handleCopyCypher}
+                    variant="outlined"
+                >
+                    <FileCopyIcon color="action"/>{'\u00A0'}Copy database query
+                </Button>
+                <Button
+                    onClick={() => openInNewTab('http://neo4j.comptox.ai/browser/')}
+                    variant="outlined"
+                    style={{margin:'4px'}}
+                >
+                    Open database browser
+                </Button>
+                <Dialog
+                    open={popupOpen}
+                    onClose={handleClose}
+                    aria-labelledby="cypher-copy-alert"
+                    aria-describedby="cypher data copied to clipboard"
+                >
+                    <DialogContent>
+                        <DialogContentText>Cypher database query copied to the clipboard.</DialogContentText>
+                    </DialogContent>
+                </Dialog>
             </div>
         </div>
     );

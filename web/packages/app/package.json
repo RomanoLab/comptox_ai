@@ -11,6 +11,7 @@
     "@mui/styles": "^5.4.2",
     "@reduxjs/toolkit": "1.7.2",
     "bootstrap": "^4.6.0",
+    "dedent-js": "^1.0.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",

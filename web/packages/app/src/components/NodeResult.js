@@ -25,6 +25,7 @@ import { Box, createTheme } from '@mui/material';
 import { ThemeProvider } from '@mui/styles';
 import { StyledEngineProvider } from '@mui/material';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
+import { setExpandNetworkNode } from '../features/modulesSlice';
 
 const nodeResultTheme = createTheme(adaptV4Theme({
   typography: {
@@ -67,6 +68,10 @@ const NodeResult = (props) => {
   const handleSetPathEndNode = () => {
     dispatch(setPathEndNodeId(nodeNeo4jID));
     dispatch(setPathEndNodeName(nodeName));
+  }
+
+  const handleSetExpandNetworkNode = () => {
+    dispatch(setExpandNetworkNode(nodeNeo4jID));
   }
 
   const handleCopyJson = () => {
@@ -194,7 +199,7 @@ const NodeResult = (props) => {
             <Button onClick={handleSetPathStartNode}>Shortest Path (end)</Button>
           </ButtonGroup>
           <ButtonGroup color="primary" size="small" style={{marginLeft: '12px'}}>
-            <Button onClick={handleSetPathEndNode}>Expand network</Button>
+            <Button onClick={handleSetExpandNetworkNode}>Expand network</Button>
           </ButtonGroup>
         </Box>
       </ThemeProvider>

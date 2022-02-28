@@ -13,6 +13,10 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 
+import { useAppSelector } from '../redux/hooks';
+
+import dedent from 'dedent-js';
+
 const placeholderText = `MATCH 
     (d:Disease {commonName: "Non-alcoholic Fatty Liver Disease"}),
     (c:Chemical {commonName: "PFOA"}),
@@ -20,6 +24,20 @@ const placeholderText = `MATCH
 RETURN p;`;
 
 const ShortestPath = (props) => {
+    const shortestPathStartNodeId = useAppSelector((state) => state.modules.shortestPathStart);
+    const shortestPathEndNodeId = useAppSelector((state) => state.modules.shortestPathEnd);
+
+    const startNodeId = shortestPathStartNodeId ? shortestPathStartNodeId : null;
+    const endNodeId = shortestPathEndNodeId ? shortestPathEndNodeId : null;
+    const boxDisabled = (startNodeId===null) ?? (endNodeId===null);
+    
+    const shortestPathCypherQuery = (startNodeId && endNodeId) ? dedent(`MATCH
+        (n1), (n2), p= allShortestPaths((n1)-[*]-(n2))
+    WHERE
+        id(n1) = ${startNodeId} AND
+        id(n2) = ${endNodeId}
+    RETURN p;`) : "Select a 'start' and an 'end' node using Node Search (above)."
+
     const [popupOpen, setPopupOpen] = React.useState(false);
     
     const handleCopyCypher = () => {
@@ -29,7 +47,7 @@ const ShortestPath = (props) => {
         selBox.style.left = '0';
         selBox.style.top = '0';
         selBox.style.opacity = '0';
-        selBox.value = placeholderText;
+        selBox.value = shortestPathCypherQuery;
         document.body.appendChild(selBox);
         selBox.focus();
         selBox.select();
@@ -73,19 +91,22 @@ const ShortestPath = (props) => {
                 </Accordion>
                 <TextField
                     type='text'
-                    defaultValue={placeholderText}
+                    defaultValue={shortestPathCypherQuery}
+                    value={shortestPathCypherQuery}
                     multiline
-                    rows={5}
+                    rows={6}
                     inputProps={{
                             readOnly: true,
                             style: {fontFamily: 'monospace'}
                     }}
                     style={{width: '100%'}}
                     variant="outlined"
+                    disabled={boxDisabled}
                 />
                 <Button
                     onClick={handleCopyCypher}
                     variant="outlined"
+                    disabled={boxDisabled}
                 >
                     <FileCopyIcon color="action"/>{'\u00A0'}Copy database query
                 </Button>

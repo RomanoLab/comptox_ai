@@ -13,15 +13,31 @@ import {
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const placeholderText = `CALL apoc.path.spanningTree(
-    879088,
-    {
-        maxLevel: 5
-    })
-YIELD path
-RETURN path;`;
+import { useAppSelector } from '../redux/hooks';
+
+import dedent from 'dedent-js';
+
+// const placeholderText = `CALL apoc.path.spanningTree(
+//     879088,
+//     {
+//         maxLevel: 5
+//     })
+// YIELD path
+// RETURN path;`;
 
 const ExpandNetwork = (props) => {
+    const expandNetworkNode = useAppSelector((state) => state.modules.expandNetworkNode);
+
+    const selectedNodeId = expandNetworkNode ? expandNetworkNode : null;
+    
+    const expandNetworkCypherQuery = selectedNodeId ? dedent(`CALL apoc.path.spanningTree(
+        ${selectedNodeId},
+        {
+            maxLevel: 5
+        })
+    YIELD path
+    RETURN path;`) : "Find a node in the search interface and select 'Expand Network'."
+    
     const [popupOpen, setPopupOpen] = React.useState(false);
     
     const handleCopyCypher = () => {
@@ -31,7 +47,7 @@ const ExpandNetwork = (props) => {
         selBox.style.left = '0';
         selBox.style.top = '0';
         selBox.style.opacity = '0';
-        selBox.value = placeholderText;
+        selBox.value = expandNetworkCypherQuery;
         document.body.appendChild(selBox);
         selBox.focus();
         selBox.select();
@@ -75,7 +91,8 @@ const ExpandNetwork = (props) => {
                 </Accordion>
                 <TextField
                     type='text'
-                    defaultValue={placeholderText}
+                    defaultValue={expandNetworkCypherQuery}
+                    value={expandNetworkCypherQuery}
                     multiline
                     rows={7}
                     inputProps={{
@@ -84,10 +101,12 @@ const ExpandNetwork = (props) => {
                     }}
                     style={{width: '100%'}}
                     variant="outlined"
+                    disabled={selectedNodeId == null}
                 />
                 <Button
                     onClick={handleCopyCypher}
                     variant="outlined"
+                    disabled={selectedNodeId == null}
                 >
                     <FileCopyIcon color="action"/>{'\u00A0'}Copy database query
                 </Button>

@@ -107,8 +107,8 @@ const DatasetBuilderQueryForm = (props) => {
             style={{ width: 120, marginRight: 8}}
           >
             <MenuItem value="json">JSON</MenuItem>
-            <MenuItem value="tsv">TSV</MenuItem>
-            <MenuItem value="csv">CSV</MenuItem>
+            {/* <MenuItem value="tsv">TSV</MenuItem>
+            <MenuItem value="csv">CSV</MenuItem> */}
           </Select>
         </FormControl>
         <Button variant="contained" color="primary" type="submit" style={{marginRight: 6, paddingTop: 9}}>Build QSAR Dataset</Button>

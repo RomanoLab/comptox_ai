@@ -17,11 +17,6 @@ import { useAppSelector } from '../redux/hooks';
 
 import dedent from 'dedent-js';
 
-const placeholderText = `MATCH 
-    (d:Disease {commonName: "Non-alcoholic Fatty Liver Disease"}),
-    (c:Chemical {commonName: "PFOA"}),
-    p= allShortestPaths((d)-[*]-(c))
-RETURN p;`;
 
 const ShortestPath = (props) => {
     const shortestPathStartNodeId = useAppSelector((state) => state.modules.shortestPathStart);
@@ -68,8 +63,8 @@ const ShortestPath = (props) => {
     return(
         <div className="shortestPath">
             <div className="shortestPathHeader">
-                <h2>Make shortest path query</h2>
-                <p><i>Create a Cypher query to find the set of shortest paths linking two nodes in the knowledge base.</i></p>
+                <h2>Make all shortest paths query</h2>
+                <p><i>Create a Cypher query to find the set of all shortest paths linking two nodes in the knowledge base.</i></p>
                 <Accordion
                     style={{margin: '6px'}}
                 >
@@ -82,7 +77,8 @@ const ShortestPath = (props) => {
                     </AccordionSummary>
                     <AccordionDetails>
                         <ol>
-                            <li>Find a node using the search feature at the top of the page, and click "Send to shortest path".</li>
+                            <li>Find a starting node using the search feature at the top of the page, and click "Shortest Path (Start)".</li>
+                            <li>Find an ending node using the search feature at the top of the page, and click "Shortest Path (End)".</li>
                             <li>Click the "Copy Database Query" button below to copy the query to your clipboard.</li>
                             <li>Click the "Open Database Browser" button below to open the Neo4j interface.</li>
                             <li>Paste the contents in the query bar and run the search.</li>

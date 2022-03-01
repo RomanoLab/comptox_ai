@@ -106,7 +106,7 @@ const RelationshipSearch = (props) => {
       {error ? (
         <></>
       ) : isUninitialized ? (
-        <p><i>Search for a node in the box above and click "Load relationships" to show all linked nodes.</i></p>
+        <p><i>Search for a node in the box above and click "Load relationships" to show all adjacent nodes in the knowledge graph.</i></p>
       ) : isLoading ? (
         <>Loading relationships...</>
       ) : data ? (

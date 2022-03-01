@@ -77,6 +77,7 @@ const PathSearch = (props) => {
   return(
     <div id="path-search">
       <h2>Paths</h2>
+      <p><i>Find a single shortest path linking two nodes in the knowledge graph. To find all paths with the shortest length, use the "Make all shortest paths query" tool, below.</i></p>
       {pathStartId &&
       <Typography variant='h6'>
         Start node: {pathStartName}

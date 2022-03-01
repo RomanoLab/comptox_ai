@@ -17,13 +17,6 @@ import { useAppSelector } from '../redux/hooks';
 
 import dedent from 'dedent-js';
 
-// const placeholderText = `CALL apoc.path.spanningTree(
-//     879088,
-//     {
-//         maxLevel: 5
-//     })
-// YIELD path
-// RETURN path;`;
 
 const ExpandNetwork = (props) => {
     const expandNetworkNode = useAppSelector((state) => state.modules.expandNetworkNode);
@@ -33,7 +26,7 @@ const ExpandNetwork = (props) => {
     const expandNetworkCypherQuery = selectedNodeId ? dedent(`CALL apoc.path.spanningTree(
         ${selectedNodeId},
         {
-            maxLevel: 5
+            maxLevel: 3
         })
     YIELD path
     RETURN path;`) : "Find a node in the search interface and select 'Expand Network'."
@@ -82,7 +75,7 @@ const ExpandNetwork = (props) => {
                     </AccordionSummary>
                     <AccordionDetails>
                         <ol>
-                            <li>Find a node using the search feature at the top of the page, and click "Send to Expand Network".</li>
+                            <li>Find a node using the search feature at the top of the page, and click "Expand Network".</li>
                             <li>Click the "Copy Database Query" button below to copy the query to your clipboard.</li>
                             <li>Click the "Open Database Browser" button below to open the Neo4j interface.</li>
                             <li>Paste the contents in the query bar and run the search.</li>

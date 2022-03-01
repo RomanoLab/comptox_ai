@@ -5,8 +5,6 @@ from typing import List
 
 from lxml import etree
 
-import ipdb
-
 
 def get_subtree_element(element, subtree_type):
     element = [x for x in element if x.tag.split("}")[-1] == subtree_type]
@@ -132,7 +130,7 @@ class AopWiki(object):
             print(f"Warning: No Molecular Initiating Event for AOP: {title}")
             aop_mie_id = None
         else:
-            ipdb.set_trace()
+            raise Exception
             print()
 
         aop_ao = get_subtree_element(aop_element, 'adverse-outcome')
@@ -144,7 +142,7 @@ class AopWiki(object):
             print(f"Warning: No Adverse Outcome for AOP: {title}")
             aop_ao_id = None
         else:
-            ipdb.set_trace()
+            raise Exception
             print()
 
         aop_kes = get_subtree_element(aop_element, 'key-events')

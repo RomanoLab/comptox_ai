@@ -17,8 +17,6 @@ from yaml import load, Loader
 import owlready2
 from tqdm import tqdm
 
-import ipdb
-
 
 _OWL = owlready2.get_ontology("http://www.w3.org/2002/07/owl#")
 

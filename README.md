@@ -1,7 +1,5 @@
 # `ComptoxAI`
 
-### NOTE: ComptoxAI's website is temporarily offline while we move to a new web server. We apologize for the inconvenience, and will restore service as soon as possible.
-
 ![Build](https://github.com/jdromano2/comptox_ai/actions/workflows/main.yml/badge.svg)
 
 A modern data infrastructure for computational toxicology.

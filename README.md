@@ -1,5 +1,7 @@
 # `ComptoxAI`
 
+[![DOI](https://zenodo.org/badge/202416245.svg)](https://zenodo.org/badge/latestdoi/202416245)
+
 ![Build](https://github.com/jdromano2/comptox_ai/actions/workflows/main.yml/badge.svg)
 
 A modern data infrastructure for computational toxicology.

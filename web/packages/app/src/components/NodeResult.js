@@ -25,7 +25,7 @@ import { Box, createTheme } from '@mui/material';
 import { ThemeProvider } from '@mui/styles';
 import { StyledEngineProvider } from '@mui/material';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
-import { setExpandNetworkNode } from '../features/modulesSlice';
+import { setExpandNetworkNode, setShortestPathEndNode, setShortestPathStartNode } from '../features/modulesSlice';
 
 const nodeResultTheme = createTheme(adaptV4Theme({
   typography: {
@@ -72,6 +72,14 @@ const NodeResult = (props) => {
 
   const handleSetExpandNetworkNode = () => {
     dispatch(setExpandNetworkNode(nodeNeo4jID));
+  }
+
+  const handleSetShortestPathStartNode = () => {
+    dispatch(setShortestPathStartNode(nodeNeo4jID));
+  }
+
+  const handleSetShortestPathEndNode = () => {
+    dispatch(setShortestPathEndNode(nodeNeo4jID));
   }
 
   const handleCopyJson = () => {
@@ -177,6 +185,7 @@ const NodeResult = (props) => {
             </Grid>
           </Grid>
 
+          <p id="uri-text"><Typography>ComptoxAI Node ID: <tt>{nodeNeo4jID}</tt></Typography></p>
           <p id="uri-text"><Typography>Ontology IRI: <tt>{nodeIRI}</tt></Typography></p>
 
           <Typography>Actions:</Typography>
@@ -195,8 +204,8 @@ const NodeResult = (props) => {
           <br/>
 
           <ButtonGroup color="primary" size="small" style={{marginTop: '10px'}}>
-            <Button onClick={handleSetPathStartNode}>Shortest Path (start)</Button>
-            <Button onClick={handleSetPathStartNode}>Shortest Path (end)</Button>
+            <Button onClick={handleSetShortestPathStartNode}>Shortest Path (start)</Button>
+            <Button onClick={handleSetShortestPathEndNode}>Shortest Path (end)</Button>
           </ButtonGroup>
           <ButtonGroup color="primary" size="small" style={{marginLeft: '12px'}}>
             <Button onClick={handleSetExpandNetworkNode}>Expand network</Button>

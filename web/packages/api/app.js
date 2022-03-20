@@ -118,6 +118,8 @@ app.get("/paths/findByIds?", routes.paths.findByIds)
 
 app.get("/datasets/makeQsarDataset?", routes.datasets.makeQsarDataset)
 
+app.get("/graphs/test", routes.graphs.testGraphs)
+
 // handle errors
 app.use(function (err, req, res, next) {
     if (err && err.status) {

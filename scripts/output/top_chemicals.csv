@@ -1,0 +1,1001 @@
+chemicalName,nodeDegree,drugbankId
+Valproic acid,12740.0,DB00313
+Cyclosporin A,8751.0,DB00091
+Acetaminophen,8198.0,DB00316
+Doxorubicin,7349.0,DB00997
+Cisplatin,7292.0,DB00515
+17beta-Estradiol,6618.0,DB00783
+Copper sulfate,5991.0,DB06778
+all-trans-Retinoic acid,5062.0,DB00755
+Silica,4575.0,DB11132
+Urethane,4478.0,DB04827
+Dexamethasone,4280.0,DB01234
+Formaldehyde,4011.0,DB03843
+Quercetin,3554.0,DB04216
+Indomethacin,3443.0,DB00328
+Lactic acid,3394.0,DB04398
+Cobalt chloride,3306.0,DB14206
+Arsenic oxide (As2O3),3192.0,DB01169
+Isobutylmethylxanthine,3099.0,DB07954
+Calcitriol,2570.0,DB00136
+Triclosan,2410.0,DB08604
+(-)-Epigallocatechin gallate,2359.0,DB12116
+Leflunomide,2215.0,DB01097
+Progesterone,2183.0,DB00396
+Methotrexate,1976.0,DB00563
+Cadmium,1732.0,DB14085
+Pentanal,1646.0,DB01919
+Oxygen,1620.0,DB09140
+Genistein,1592.0,DB01645
+Nickel sulfate,1533.0,DB14180
+Testosterone,1444.0,DB00624
+Rotenone,1317.0,DB11457
+Hydrogen peroxide,1276.0,DB11091
+Ethanol,1206.0,DB00898
+Thimerosal,1143.0,DB11590
+5-Fluorouracil,1035.0,DB00544
+13-cis Retinoic acid,1015.0,DB00982
+Decitabine,981.0,DB01262
+5alpha-Dihydrotestosterone,967.0,DB02901
+Fulvestrant,940.0,DB00947
+Colcemid,900.0,DB13318
+Tamoxifen,896.0,DB00675
+Cianidanol,894.0,DB14086
+Troglitazone,891.0,DB00197
+5-Azacytidine,816.0,DB00928
+Cytarabine,812.0,DB00987
+Methylparaben,809.0,DB14212
+Disulfiram,807.0,DB00822
+Simvastatin,795.0,DB00641
+1-Butanol,790.0,DB02145
+Hydralazine,780.0,DB01275
+Niclosamide,774.0,DB06803
+Sirolimus,767.0,DB00877
+Actinomycin D,762.0,DB00970
+Amiodarone,744.0,DB01118
+Hydroquinone,738.0,DB09526
+Azathioprine,710.0,DB00993
+Curcumin,697.0,DB11672
+Menadione,695.0,DB00170
+Ouabain,692.0,DB01092
+Mitomycin C,692.0,DB00305
+Piroxicam,688.0,DB00554
+Daunorubicin,676.0,DB00694
+Aspirin,631.0,DB00945
+Norgestrel,630.0,DB00367
+Digoxin,621.0,DB00390
+Dasatinib,617.0,DB01254
+Mebendazole,607.0,DB00643
+Mycophenolic acid,605.0,DB01024
+Thioridazine,600.0,DB00679
+Theophylline,598.0,DB00277
+Digitoxin,590.0,DB01396
+Sodium dodecyl sulfate,589.0,DB00815
+,585.0,DB08865
+Mitoxantrone,578.0,DB01204
+Bortezomib,577.0,DB00188
+Suberoylanilide hydroxamic acid,567.0,DB02546
+Raloxifene,565.0,DB00481
+Etoposide,564.0,DB00773
+Bisacodyl,560.0,DB09020
+Podofilox,553.0,DB01179
+Vinblastine,551.0,DB00570
+Teniposide,545.0,DB00444
+Topotecan,544.0,DB01030
+Atabrine,542.0,DB01103
+4-Hydroxytamoxifen,542.0,DB04468
+Epirubicin,540.0,DB00445
+Perhexiline,536.0,DB01074
+Gemcitabine,534.0,DB00441
+N-Acetyl-L-cysteine,531.0,DB06151
+Everolimus,526.0,DB01590
+Omacetaxine mepesuccinate,524.0,DB04865
+Dabrafenib,524.0,DB08912
+DEET,521.0,DB11282
+Idarubicin,518.0,DB01177
+Cerulenin,517.0,DB01034
+Temsirolimus,509.0,DB06287
+Irinotecan,502.0,DB00762
+Cupric oxide,499.0,DB11134
+Medroxyprogesterone acetate,495.0,DB00603
+3'-Azido-3'-deoxythymidine,484.0,DB00495
+Rifampicin,481.0,DB01045
+Pitavastatin,473.0,DB08860
+,472.0,DB00374
+Tamibarotene,469.0,DB04942
+Betamethasone,468.0,DB00443
+9-cis Retinoic acid,468.0,DB00523
+L-Ascorbic acid,467.0,DB00126
+Vemurafenib,465.0,DB08881
+,447.0,DB01273
+Mifepristone,438.0,DB00834
+,431.0,DB08916
+Caffeine,425.0,DB00201
+Folic acid,414.0,DB00158
+Kojic acid,389.0,DB01759
+Fenofibrate,384.0,DB01039
+Sorafenib,381.0,DB00398
+Metformin,378.0,DB00331
+D-Glucose,376.0,DB01914
+Arbutin,367.0,DB11217
+Vincristine,364.0,DB00541
+Lovastatin,362.0,DB00227
+Fluvastatin,360.0,DB01095
+Paroxetine,354.0,DB00715
+17alpha-Ethinylestradiol,352.0,DB00977
+Gold,347.0,DB14154
+Diethylstilbestrol,344.0,DB00255
+Terbinafine,339.0,DB00857
+Resorcinol,339.0,DB11085
+Melphalan,339.0,DB01042
+"p,p'-DDT",328.0,DB13424
+Phenobarbital,328.0,DB01174
+8-Hydroxyquinoline,320.0,DB11145
+Carmustine,319.0,DB00262
+Oleic acid,318.0,DB04224
+Ifosfamide,311.0,DB01181
+Zinc chloride,310.0,DB14533
+Methyltrienolone,307.0,DB02998
+Ibuprofen,306.0,DB01050
+Colchicine,302.0,DB01394
+Ponatinib,301.0,DB08901
+"1-Chloro-2,4-dinitrobenzene",301.0,DB11831
+,300.0,DB08911
+Cocaine,297.0,DB00907
+Zinc sulfate,286.0,DB09322
+Eugenol,286.0,DB09086
+Succimer,283.0,DB00566
+Sulindac,280.0,DB00605
+Reserpine,280.0,DB00206
+Estriol,279.0,DB04573
+Norethindrone,278.0,DB00717
+Chlorpromazine,278.0,DB00477
+Phenethyl isothiocyanate,277.0,DB12695
+Ozone,277.0,DB12510
+Ivermectin,276.0,DB00602
+Phenol,272.0,DB03255
+LY294002,269.0,DB02656
+Albendazole,268.0,DB00518
+Cyclophosphamide,264.0,DB00531
+Titanium dioxide,263.0,DB09536
+"3,5,3'-Triiodothyronine",263.0,DB00279
+"5,5-Diphenylhydantoin",262.0,DB00252
+Cidofovir,261.0,DB00369
+Mercuric chloride,260.0,DB13765
+Busulfan,257.0,DB01008
+Bucladesine,255.0,DB13242
+Danazol,254.0,DB01406
+"5,6-Benzoflavone",254.0,DB06732
+Paclitaxel,253.0,DB01229
+Clomiphene,252.0,DB00882
+Capsaicin,248.0,DB06774
+Ciclopirox,247.0,DB01188
+Prednisolone,246.0,DB00860
+Erlotinib,243.0,DB00530
+Vinorelbine,241.0,DB00361
+Clofarabine,235.0,DB00631
+Thalidomide,234.0,DB01041
+Hydrocortisone,233.0,DB00741
+Dibutyl phthalate,232.0,DB13716
+Lucanthone,230.0,DB04967
+Pazopanib,228.0,DB06589
+Ketoconazole,227.0,DB01026
+Ciglitizone,225.0,DB09201
+Sunitinib,223.0,DB01268
+Clodronic acid,221.0,DB00720
+Pioglitazone,220.0,DB01132
+Trichloroethylene,219.0,DB13323
+Copper(II) chloride,219.0,DB09131
+Dimethyl sulfoxide,217.0,DB01093
+Carbamazepine,215.0,DB00564
+Hexadecanoic acid,214.0,DB03796
+Mycophenolate mofetil,213.0,DB00688
+Cladribine,212.0,DB00242
+4-Hydroxyphenyl retinamide,212.0,DB05076
+Gefitinib,210.0,DB00317
+Salinomycin,206.0,DB11544
+Daidzein,205.0,DB13182
+Ampicillin,203.0,DB00415
+Diclofenac,201.0,DB00586
+"2-Amino-1methyl-6-phenylimidazo [4,5-b]pyridine",201.0,DB08398
+Methylprednisolone,200.0,DB00959
+Dinoprostone,200.0,DB00917
+Sulfasalazine,198.0,DB00795
+Butanoic acid,198.0,DB03568
+Nizatidine,196.0,DB00585
+Glutathione,196.0,DB00143
+Ruxolitinib,195.0,DB08877
+Butylparaben,195.0,DB14084
+Melatonin,194.0,DB01065
+Bezafibrate,194.0,DB01393
+Retinol,193.0,DB00162
+Methyldopa,192.0,DB00968
+Estrone,192.0,DB00655
+Sertraline,191.0,DB01104
+Hydroxyurea,190.0,DB01005
+Clozapine,189.0,DB00363
+Adenine,189.0,DB00173
+Cypermethrin,188.0,DB13721
+Chenodeoxycholic acid,186.0,DB06777
+Pindolol,185.0,DB00960
+Cyproheptadine,184.0,DB00434
+"1,4-Benzenediamine",184.0,DB14141
+Chromium,182.0,DB11136
+Malathion,181.0,DB00772
+Budesonide,180.0,DB01222
+Nicotine,179.0,DB00184
+Nifedipine,178.0,DB01115
+Glybenclamide,178.0,DB01016
+Propylparaben,176.0,DB14177
+Acyclovir,175.0,DB00787
+8-Methoxypsoralen,175.0,DB00553
+Nilotinib,173.0,DB04868
+Methimazole,173.0,DB00763
+Vitamin E,172.0,DB00163
+Kaempferol,171.0,DB01852
+Clorgyline,171.0,DB04017
+Chloramphenicol,170.0,DB00446
+Paraoxon,169.0,DB13495
+Lamivudine,169.0,DB00709
+Adefovir dipivoxil,169.0,DB00718
+Deferoxamine,168.0,DB00746
+Berberine,168.0,DB04115
+,166.0,DB06616
+Permethrin,166.0,DB04930
+Triamcinolone,165.0,DB00620
+Phenol red,165.0,DB13212
+Hydrochlorothiazide,165.0,DB00999
+Ellagic acid,165.0,DB08846
+Diazepam,165.0,DB00829
+Cimetidine,165.0,DB00501
+Isoproterenol,164.0,DB01064
+Gemfibrozil,164.0,DB01241
+Dopamine,164.0,DB00988
+l-Taurine,163.0,DB01956
+Fluticasone propionate,163.0,DB00588
+Flutamide,163.0,DB00499
+Chloroxine,163.0,DB01243
+Verapamil,162.0,DB00661
+Thiabendazole,162.0,DB00730
+Niacinamide,161.0,DB02701
+Apigenin,161.0,DB07352
+Amlodipine,161.0,DB00381
+(+/-) -Fluoxetine,161.0,DB00472
+Warfarin,160.0,DB00682
+Chlorambucil,160.0,DB00291
+6-Propyl-2-thiouracil,160.0,DB00550
+Quetiapine,159.0,DB01224
+Pyrimethamine,159.0,DB00205
+Methamidophos,159.0,DB14972
+Haloperidol,159.0,DB00502
+Ethacrynic acid,159.0,DB00903
+Pimozide,158.0,DB01100
+Dapsone,158.0,DB00250
+p-Cresol,157.0,DB01688
+Isopropanol,157.0,DB02325
+Biperiden,157.0,DB00810
+Linolenic acid,156.0,DB00132
+Emodin,156.0,DB07715
+5-Aminosalicylic acid,156.0,DB00244
+2-Mercaptobenzothiazole,156.0,DB11496
+Omeprazole,155.0,DB00338
+Exemestane,155.0,DB00990
+Aniline,155.0,DB06728
+Salicylic acid,154.0,DB00936
+Procaterol,154.0,DB01366
+Losartan,154.0,DB00678
+Dichlorvos,154.0,DB11397
+Benzoic acid,154.0,DB03793
+Maprotiline,153.0,DB00934
+Glycerol,153.0,DB09462
+Clofibrate,153.0,DB00636
+Benzyl alcohol,153.0,DB06770
+Tetracycline,152.0,DB00759
+Glyphosate,152.0,DB04539
+Erythromycin,152.0,DB00199
+Aminoglutethimide,152.0,DB00357
+Fluocinolone acetonide,151.0,DB00591
+Clotrimazole,151.0,DB00257
+Carbendazim,151.0,DB13009
+beta-Carotene,150.0,DB06755
+"N,N-Dimethylformamide",150.0,DB01844
+Methamphetamine,150.0,DB01577
+Mestranol,150.0,DB01357
+Maleic acid,150.0,DB04299
+Loperamide,150.0,DB00836
+Enalapril,150.0,DB00584
+Docetaxel,150.0,DB01248
+Diazoxide,149.0,DB01119
+Acetic acid,149.0,DB03166
+"1,2-Propylene glycol",149.0,DB01839
+"o,p'-DDD",148.0,DB00648
+Pentamidine,148.0,DB00738
+Isoniazid,148.0,DB00951
+Isoeugenol,148.0,DB14188
+Dimethyl phthalate,148.0,DB13336
+Tramadol,147.0,DB00193
+Propofol,147.0,DB00818
+"1,2-Dichloroethane",147.0,DB03733
+Flurandrenolide,146.0,DB00846
+Chloroform,146.0,DB11387
+Butanedioic acid,146.0,DB00139
+Atenolol,146.0,DB00335
+17-Methyltestosterone,146.0,DB06710
+Perphenazine,144.0,DB00850
+Oxazepam,144.0,DB00842
+Octadecanoic acid,144.0,DB03193
+Methyl salicylate,144.0,DB09543
+Epinephrine,144.0,DB00668
+Vitamin D3,143.0,DB00169
+Suramin,143.0,DB04786
+Pentoxifylline,143.0,DB00806
+Clonidine,143.0,DB00575
+Toremifene,142.0,DB00539
+Lidocaine,142.0,DB00281
+Imipramine,142.0,DB00458
+Amodiaquine,142.0,DB00613
+4-Aminopyridine,142.0,DB06637
+Thiram,141.0,DB13245
+Testosterone propionate,141.0,DB01420
+Ofloxacin,141.0,DB01165
+Floxuridine,141.0,DB00322
+Clobetasol propionate,141.0,DB01013
+Arecoline,141.0,DB04365
+Piperonyl butoxide,140.0,DB09350
+Penicillin G,140.0,DB01053
+Nimesulide,140.0,DB04743
+Halothane,140.0,DB01159
+Streptozotocin,139.0,DB00428
+Probenecid,139.0,DB01032
+Flurbiprofen,139.0,DB00712
+Flunisolide,139.0,DB00180
+Bosentan,139.0,DB00559
+Benzophenone,139.0,DB01878
+Trichlorfon,138.0,DB11473
+Rosiglitazone,138.0,DB00412
+Nitrofurazone,138.0,DB00336
+N-Methyl-2-pyrrolidone,138.0,DB12521
+Cyclohexanone,138.0,DB02060
+Adenosine,138.0,DB00640
+4-Phenylbutyric acid,138.0,DB06819
+Olanzapine,137.0,DB00334
+Biotin,137.0,DB00121
+4-Nitrophenol,137.0,DB04417
+Thiotepa,136.0,DB04572
+Prednisone,136.0,DB00635
+Glycine,136.0,DB00145
+Coumarin,136.0,DB04665
+Albuterol,136.0,DB01001
+"1,2-Dichlorobenzene",136.0,DB13963
+Fluconazole,135.0,DB00196
+Fenthion,135.0,DB11412
+Roxithromycin,134.0,DB00778
+Naproxen,134.0,DB00788
+Furosemide,134.0,DB00695
+Dimethylarsinic acid,134.0,DB02994
+Desoximetasone,134.0,DB00547
+Clopidogrel,134.0,DB00758
+Amitriptyline,134.0,DB00321
+Primidone,133.0,DB00794
+Glutaraldehyde,133.0,DB03266
+Citric acid,133.0,DB04272
+Catechol,133.0,DB02232
+Methergine,132.0,DB00353
+Histamine,132.0,DB05381
+Chloroquine,132.0,DB00608
+Calcium chloride,132.0,DB01164
+Alprenolol,132.0,DB00866
+"1,2-Dichloropropane",132.0,DB01701
+"1,10-Phenanthroline",132.0,DB02365
+Risperidone,131.0,DB00734
+Chlorhexidine,131.0,DB00878
+1-Propanol,131.0,DB03175
+1-Octanol,131.0,DB12452
+Sulfamethoxazole,130.0,DB01015
+Spironolactone,130.0,DB00421
+Ketoprofen,130.0,DB01009
+Farnesol,130.0,DB02509
+2-Methoxyethanol,130.0,DB02806
+Wortmannin,129.0,DB08059
+Urea,129.0,DB03904
+Tolbutamide,129.0,DB01124
+Octanoic acid,129.0,DB04519
+Nicotinic acid,129.0,DB00627
+Methenamine,129.0,DB06799
+Levothyroxine,129.0,DB00451
+Famotidine,129.0,DB00927
+Atropine,129.0,DB00572
+"2,4-Dinitrophenol",129.0,DB04528
+Zonisamide,128.0,DB00909
+Triethanolamine,128.0,DB13747
+Phenazone,128.0,DB01435
+Lycopene,128.0,DB11231
+Captopril,128.0,DB01197
+2-Phenoxyethanol,128.0,DB11304
+m-Cresol,127.0,DB01776
+Topiramate,127.0,DB00273
+Hexachlorophene,127.0,DB00756
+Dodecanoic acid,127.0,DB03017
+Norfloxacin,126.0,DB01059
+Norepinephrine,126.0,DB00368
+Moclobemide,126.0,DB01171
+Caffeic acid,126.0,DB01880
+"1,8-Cineol",126.0,DB03852
+Thymol,125.0,DB02513
+Theobromine,125.0,DB01412
+Isoflurane,125.0,DB00753
+Camptothecin,125.0,DB04690
+Allopurinol,125.0,DB00437
+5-Chloro-2-methyl-3(2H)-isothiazolone,125.0,DB14197
+Sulfathiazole,124.0,DB06147
+Riboflavin,124.0,DB00140
+Phosphoric acid,124.0,DB09394
+Phenylbutazone,124.0,DB00812
+Glucosamine,124.0,DB01296
+Ethylparaben,124.0,DB13628
+Cyclohexanol,124.0,DB03703
+Codeine,124.0,DB00318
+Chlorprothixene,124.0,DB01239
+"2',3'-Dideoxycytidine",124.0,DB00943
+Triphthasine,123.0,DB00831
+Trichloroacetic acid,123.0,DB11152
+Indole-3-carbinol,123.0,DB12881
+Benzyl benzoate,123.0,DB00676
+2-Ethoxyethanol,123.0,DB02249
+Irbesartan,122.0,DB01029
+Gatifloxacin,122.0,DB01044
+Dichloroacetic acid,122.0,DB08809
+Benzocaine,122.0,DB01086
+4-Butyrolactone,122.0,DB04699
+Triethylene glycol,121.0,DB02327
+Saccharin,121.0,DB12418
+Ropinirole,121.0,DB00268
+Mefenamic acid,121.0,DB00784
+Mecamylamine,121.0,DB00657
+Fluorometholone,121.0,DB00324
+Fludarabine,121.0,DB01073
+Ethanolamine,121.0,DB03994
+Cephalothin,121.0,DB00456
+Amantadine,121.0,DB00915
+Triclocarban,120.0,DB11155
+Morphine,120.0,DB00295
+Diphenhydramine,120.0,DB01075
+Bromoform,120.0,DB03054
+Biochanin A,120.0,DB15334
+(Z)-Thiothixene,120.0,DB01623
+Temazepam,119.0,DB00231
+Stavudine,119.0,DB00649
+Nalidixic acid,119.0,DB00779
+Fluspirilene,119.0,DB04842
+Ethylenediaminetetraacetic acid,119.0,DB00974
+D-Limonene,119.0,DB08921
+Tetradecanoic acid,118.0,DB08231
+Sulfamethizole,118.0,DB00576
+Sucrose,118.0,DB02772
+Oxytetracycline,118.0,DB00595
+Flecainide,118.0,DB01195
+Ethylenediamine,118.0,DB14189
+Dehydroepiandrosterone,118.0,DB01708
+Cyfluthrin,118.0,DB13828
+Aspartame,118.0,DB00168
+2-Hydroxy-4-methoxybenzophenone,118.0,DB01428
+Temozolomide,117.0,DB00853
+Sodium fluoride,117.0,DB09325
+Propionic acid,117.0,DB03766
+Phosmet,117.0,DB11448
+Nitrazepam,117.0,DB01595
+Indole,117.0,DB04532
+Gabapentin,117.0,DB00996
+Decanoic acid,117.0,DB03600
+Cyproterone acetate,117.0,DB04839
+Cilostazol,117.0,DB01166
+Camphor,117.0,DB14156
+Acetazolamide,117.0,DB00819
+2-Oxopropanoic acid,117.0,DB00119
+Trimethoprim,116.0,DB00440
+Nevirapine,116.0,DB00238
+Naltrexone,116.0,DB00704
+Metronidazole,116.0,DB00916
+Glipizide,116.0,DB01067
+Carboplatin,116.0,DB00958
+4-Chlorophenol,116.0,DB13154
+"4-Androstene-3,17-dione",116.0,DB01536
+2-Phenylethanol,116.0,DB02192
+1-Hexadecanol,116.0,DB09494
+Sulfadoxine,115.0,DB01299
+Polyoxyethylene(10)nonylphenyl ether,115.0,DB06804
+Naloxone,115.0,DB01183
+Malic acid,115.0,DB12751
+Letrozole,115.0,DB01006
+Etodolac,115.0,DB00749
+Deltamethrin,115.0,DB13600
+Coumaphos,115.0,DB11390
+Acetamide,115.0,DB02736
+"3,3,-Diindolylmethane",115.0,DB11875
+"2,4,6-Tribromophenol",115.0,DB02417
+Sulfuric acid,114.0,DB11309
+Sulfamethazine,114.0,DB01582
+Remoxipride,114.0,DB00409
+Phenacetin,114.0,DB03783
+Pentanoic acid,114.0,DB02406
+Oxalic acid,114.0,DB03902
+Morpholine,114.0,DB13669
+Isopentyl alcohol,114.0,DB02296
+Iohexol,114.0,DB01362
+Glycolic acid,114.0,DB03085
+D-Glucitol,114.0,DB01638
+Clarithromycin,114.0,DB01211
+4-Dimethylaminoantipyrine,114.0,DB01424
+2-Methoxyphenol,114.0,DB11359
+Venlafaxine,113.0,DB00285
+Sumatriptan,113.0,DB00669
+Ribavirin,113.0,DB00811
+Lamotrigine,113.0,DB00555
+Finasteride,113.0,DB01216
+Celecoxib,113.0,DB00482
+Amoxapine,113.0,DB00543
+2-Hydroxy-2-methylpropanenitrile,113.0,DB02203
+Propyl acetate,112.0,DB01670
+Phenylacetic acid,112.0,DB09269
+Nortriptyline,112.0,DB00540
+Clomipramine,112.0,DB01242
+Clioquinol,112.0,DB04815
+Cholesterol,112.0,DB04540
+Carboxin,112.0,DB04657
+l-Tryptophan,111.0,DB00150
+Sulfanilamide,111.0,DB00259
+Sulfadimethoxine,111.0,DB06150
+Praziquantel,111.0,DB01058
+Ondansetron,111.0,DB00904
+Loratadine,111.0,DB00455
+Isopropyl tetradecanoic acid,111.0,DB13966
+Fluphenazine,111.0,DB00623
+D-Mannitol,111.0,DB00742
+Butylamine,111.0,DB03659
+Benzoyl peroxide,111.0,DB09096
+2-Butanol,111.0,DB02606
+Trichlormethiazide,110.0,DB01021
+Metoclopramide,110.0,DB01233
+Methyl isocyanate,110.0,DB12765
+Flucytosine,110.0,DB01099
+Dimethylaminoethanol,110.0,DB13352
+Boscalid,110.0,DB12792
+Bisphenol A diglycidyl ether,110.0,DB14083
+Bis(2-methoxyethyl) ether,110.0,DB02935
+Rutin trihydrate,109.0,DB01698
+Procainamide,109.0,DB01035
+Phenoxybenzamine,109.0,DB00925
+Nitrofurantoin,109.0,DB00698
+Nitrendipine,109.0,DB01054
+Isoxaflutole,109.0,DB12938
+Fumaric acid,109.0,DB01677
+Cyanamide,109.0,DB02679
+Cephalexin,109.0,DB00567
+Calcipotriene,109.0,DB02300
+Bumetanide,109.0,DB00887
+Anastrozole,109.0,DB01217
+(RS)-(+/-)-sulpiride,109.0,DB00391
+Triethylenetetramine,108.0,DB06824
+Phthalic acid,108.0,DB02746
+Metyrapone,108.0,DB01011
+Hydroflumethiazide,108.0,DB00774
+Flurazepam,108.0,DB00690
+Etoricoxib,108.0,DB01628
+Etidronic acid,108.0,DB01077
+Clenbuterol,108.0,DB01407
+Boric acid,108.0,DB11326
+Amitraz,108.0,DB11373
+4-Aminobenzoic acid,108.0,DB02362
+Vandetanib,107.0,DB05294
+Toluene,107.0,DB11558
+Pyridoxine,107.0,DB00165
+Oxcarbazepine,107.0,DB00776
+Nonanedioic acid,107.0,DB00548
+Mianserin,107.0,DB06148
+Meprobamate,107.0,DB00371
+Isoquinoline,107.0,DB04329
+Icaridin,107.0,DB14074
+Buspirone,107.0,DB00490
+Adenosine-5-phosphate,107.0,DB00131
+2-Methylpropanoic acid,107.0,DB02531
+cAMP,106.0,DB02527
+Tromethamine,106.0,DB03754
+Tribenuron-methyl,106.0,DB03656
+Riluzole,106.0,DB00740
+Promethazine,106.0,DB01069
+Linoleic acid,106.0,DB14104
+Lansoprazole,106.0,DB00448
+Iopanoic acid,106.0,DB08946
+Iodine,106.0,DB05382
+Geraniol,106.0,DB14183
+Flavone,106.0,DB07776
+Carbimazole,106.0,DB00389
+Azithromycin,106.0,DB00207
+Aminohippuric acid,106.0,DB00345
+6-Aminocaproic acid,106.0,DB00513
+3-Methylpyridine,106.0,DB01996
+"1,4-Butanediol",106.0,DB01955
+"1,3-Butanediol",106.0,DB14110
+Ursodiol,105.0,DB01586
+Sulisobenzone,105.0,DB11185
+Salicylamide,105.0,DB08797
+N-Butylbenzenesulfonamide,105.0,DB02055
+Lufenuron,105.0,DB11424
+Indapamide,105.0,DB00808
+Imidazole,105.0,DB03366
+Griseofulvin,105.0,DB00400
+Felbamate,105.0,DB00949
+Famciclovir,105.0,DB00426
+Corticosterone,105.0,DB04652
+Chlorthalidone,105.0,DB00310
+"7-Hydroxy-3,7-dimethyloctanal",105.0,DB14187
+"1,3-Diphenylguanidine",105.0,DB14191
+Ziprasidone,104.0,DB00246
+Triethylene glycol dimethyl ether,104.0,DB02078
+Sulfacetamide,104.0,DB00634
+Potassium nitrate,104.0,DB11090
+Phenothiazine,104.0,DB11447
+Pentanedioic acid,104.0,DB03553
+Nitazoxanide,104.0,DB00507
+Metaxalone,104.0,DB00660
+Gliclazide,104.0,DB01120
+Fluvoxamine,104.0,DB00176
+Chlorpropamide,104.0,DB00672
+Betaine,104.0,DB06756
+Aripiprazole,104.0,DB01238
+Amphotericin B,104.0,DB00681
+Acifluorfen,104.0,DB07338
+4-Methoxyphenol,104.0,DB09516
+"4-Chloro-3,5-dimethylphenol",104.0,DB11121
+"2',3'-Dideoxyinosine",104.0,DB00900
+1-Naphthaleneacetic acid,104.0,DB01750
+"(1R,2S,5R)-(-)-Menthol",104.0,DB00825
+Tetramethrin,103.0,DB13752
+Sulfinpyrazone,103.0,DB01138
+Sulfapyridine,103.0,DB00891
+Silybin,103.0,DB09298
+Lenalidomide,103.0,DB00480
+Ketotifen,103.0,DB00920
+Dipyridamole,103.0,DB00975
+Dacarbazine,103.0,DB00851
+D-Gluconic acid,103.0,DB13180
+Chlormezanone,103.0,DB01178
+Carisoprodol,103.0,DB00395
+Balsalazide,103.0,DB01014
+Amobarbital,103.0,DB01351
+4-Methyl-1-(propan-2-yl)cyclohex-3-en-1-ol,103.0,DB12816
+Yohimbine,102.0,DB01392
+Potassium iodide,102.0,DB06715
+Piperazine,102.0,DB00592
+Phenylacetaldehyde,102.0,DB02178
+Phenothrin,102.0,DB13717
+Meloxicam,102.0,DB00814
+Levorphanol,102.0,DB00854
+Indole-3-acetic acid,102.0,DB07950
+Hexobarbital,102.0,DB01355
+Fluocinonide,102.0,DB01047
+Disopyramide,102.0,DB00280
+Diclofop-methyl,102.0,DB13918
+Danthron,102.0,DB04816
+Crotamiton,102.0,DB00265
+Chloral hydrate,102.0,DB01563
+Cabergoline,102.0,DB00248
+Bronopol,102.0,DB13960
+5-Methoxypsoralen,102.0,DB12216
+1-Amino-2-propanol,102.0,DB02576
+Zolpidem,101.0,DB00425
+Sulfamerazine,101.0,DB01581
+Methocarbamol,101.0,DB00423
+L-Tartaric acid,101.0,DB09459
+Felodipine,101.0,DB01023
+Ethosuximide,101.0,DB00593
+Diltiazem,101.0,DB00343
+Dichlorophen,101.0,DB11396
+Cisapride,101.0,DB00604
+6-Methyl-2-thiouracil,101.0,DB13644
+3-Chlorophenol,101.0,DB01957
+(S)-Timolol,101.0,DB00373
+Tolazamide,100.0,DB00839
+Sparfloxacin,100.0,DB01208
+Pentylcinnamaldehyde,100.0,DB14175
+Pentaerythritol tetranitrate,100.0,DB06154
+Paraldehyde,100.0,DB09117
+Oxolinic acid,100.0,DB13627
+Nisoldipine,100.0,DB00401
+Memantine,100.0,DB01043
+L-Arginine,100.0,DB00125
+Fenoxaprop-ethyl,100.0,DB05252
+Enflurane,100.0,DB00228
+Benzylamine,100.0,DB02464
+Alprazolam,100.0,DB00404
+Vitamin B12,99.0,DB00115
+Torsemide,99.0,DB00214
+Sulfisoxazole,99.0,DB00263
+Sodium chlorite,99.0,DB13210
+Sodium acetate,99.0,DB09395
+Pyrazinamide,99.0,DB00339
+Prazepam,99.0,DB01588
+Physostigmine,99.0,DB00981
+Perindopril,99.0,DB00790
+Pentaerythritol,99.0,DB13526
+Orlistat,99.0,DB01083
+Nadolol,99.0,DB01203
+Itraconazole,99.0,DB01167
+Iodoform,99.0,DB13813
+Imidazolidinyl urea,99.0,DB14075
+Flufenamic acid,99.0,DB02266
+Ezetimibe,99.0,DB00973
+Ethionamide,99.0,DB00609
+Ergocalciferol,99.0,DB00153
+Dibucaine,99.0,DB00527
+Anthranilic acid,99.0,DB04166
+Adenosine triphosphate,99.0,DB00171
+Triprolidine,98.0,DB00427
+Suprofen,98.0,DB00870
+Oxymetazoline,98.0,DB00935
+Modafinil,98.0,DB00745
+Medrysone,98.0,DB00253
+Isovaleric acid,98.0,DB03750
+Hydrocinnamic acid,98.0,DB02024
+Guaifenesin,98.0,DB00874
+Gibberellic acid,98.0,DB07814
+Furazolidone,98.0,DB00614
+Cortisone,98.0,DB14681
+Bromocriptine,98.0,DB01200
+Asenapine,98.0,DB06216
+Amisulpride,98.0,DB06288
+4-Oxopentanoic acid,98.0,DB02239
+"2,5,8,11,14-Pentaoxapentadecane",98.0,DB14000
+10-Undecenoic acid,98.0,DB11117
+Tolnaftate,97.0,DB00525
+Thioglycolic acid,97.0,DB15429
+L-Tyrosine,97.0,DB00135
+Iloperidone,97.0,DB04946
+Gestodene,97.0,DB06730
+Flumazenil,97.0,DB01205
+Domperidone,97.0,DB01184
+Diatrizoic acid,97.0,DB00271
+Cinnarizine,97.0,DB00568
+Cefuroxime,97.0,DB01112
+Candesartan,97.0,DB13919
+Allantoin,97.0,DB11100
+1-Phenyl-3-methyl-5-pyrazolone,97.0,DB12243
+Trifluridine,96.0,DB00432
+Tizanidine,96.0,DB00697
+Temephos,96.0,DB12231
+Sulfaquinoxaline,96.0,DB11464
+Pilocarpine,96.0,DB01085
+Phenyl salicylate,96.0,DB11071
+Oxypurinol,96.0,DB05262
+Octinoxate,96.0,DB09496
+Enoxacin,96.0,DB00467
+Dyphylline,96.0,DB00651
+Cefazolin,96.0,DB01327
+Benzoin,96.0,DB14020
+Allethrin,96.0,DB13746
+4-Chlorobenzoic acid,96.0,DB03728
+4-Aminophenol,96.0,DB14144
+"2-Ethyl-1,3-hexanediol",96.0,DB13826
+Procarbazine,95.0,DB01168
+Prazosin,95.0,DB00457
+Phenolphthalein,95.0,DB04824
+Pamidronic acid,95.0,DB00282
+Paliperidone,95.0,DB01267
+Nicardipine,95.0,DB00622
+Miconazole,95.0,DB01110
+L-Threonine,95.0,DB00156
+Isosorbide dinitrate,95.0,DB00883
+Florasulam,95.0,DB15316
+Chlorothiazide,95.0,DB00880
+Bendroflumethiazide,95.0,DB00436
+Baclofen,95.0,DB00181
+Amiloride,95.0,DB00594
+"3,6-Diacetylmorphine",95.0,DB01452
+1-Bromoheptadecafluorooctane,95.0,DB05791
+"1,1,5-Trimethyl-6-heptenol",95.0,DB02273
+Ramipril,94.0,DB00178
+Minoxidil,94.0,DB00350
+Metolazone,94.0,DB00524
+Mesoridazine,94.0,DB00933
+Hydrochloric acid,94.0,DB13366
+Ganciclovir,94.0,DB01004
+Flumequine,94.0,DB08972
+Fenchlorphos,94.0,DB11456
+Famphur,94.0,DB11408
+Diazolidinyl urea,94.0,DB14173
+Ciprofibrate,94.0,DB09064
+Cefixime,94.0,DB00671
+Acenocoumarol,94.0,DB01418
+Acarbose,94.0,DB00284
+4-Hydroxy-3-nitrophenylarsonic acid,94.0,DB11458
+Zaleplon,93.0,DB00962
+Rufinamide,93.0,DB06201
+Propyl gallate,93.0,DB12450
+Propafenone,93.0,DB01182
+Pramipexole,93.0,DB00413
+Pantoprazole,93.0,DB00213
+Nitric oxide,93.0,DB00435
+Nelfinavir,93.0,DB00220
+Metoprolol,93.0,DB00264
+Lindane,93.0,DB00431
+Indole-3-butyric acid,93.0,DB02740
+Etomidate,93.0,DB00292
+Eszopiclone,93.0,DB00402
+Cefadroxil,93.0,DB01140
+Butafenacil,93.0,DB15261
+"2,3-Pyridinedicarboxylic acid",93.0,DB01796
+Zileuton,92.0,DB00744
+Tricaprylin,92.0,DB12176
+Ticlopidine,92.0,DB00208
+Tetrabenazine,92.0,DB04844
+Propranolol,92.0,DB00571
+Piracetam,92.0,DB09210
+Pentobarbital,92.0,DB00312
+Orotic acid,92.0,DB02262
+Nonivamide,92.0,DB11324
+Niflumic acid,92.0,DB04552
+Milrinone,92.0,DB00235
+Methyl nicotinate,92.0,DB13882
+Isradipine,92.0,DB00270
+Iopamidol,92.0,DB08947
+Hexetidine,92.0,DB08958
+Dydrogesterone,92.0,DB00378
+D-Xylose,92.0,DB09419
+Benzimidazole,92.0,DB02962
+Astemizole,92.0,DB00637
+5-(Hydroxymethyl)-2-furfural,92.0,DB12298
+4-Hexylresorcinol,92.0,DB11254
+1-(3-Chlorophenyl)piperazine,92.0,DB12110
+Zearalanol,91.0,DB11478
+Xylitol,91.0,DB11195
+Tyramine,91.0,DB08841
+Trimethadione,91.0,DB00347
+Triethoxyoctylsilane,91.0,DB11267
+Topramezone,91.0,DB14826
+Ritonavir,91.0,DB00503
+Propanedioic acid,91.0,DB02175
+Piperine,91.0,DB12582
+Penciclovir,91.0,DB00299
+Noscapine,91.0,DB06174
+Nimodipine,91.0,DB00393
+Nicotinyl alcohol,91.0,DB04145
+Lapatinib,91.0,DB01259
+Iopromide,91.0,DB09156
+Gluconolactone,91.0,DB04564
+Dexpanthenol,91.0,DB09357
+D-Camphor,91.0,DB01744
+"4-Hydroxy-2,2,6,6-tetramethylpiperidin-1-yl)oxidanyl",91.0,DB12449
+2-Octyl-1-dodecanol,91.0,DB14134
+Voriconazole,90.0,DB00582
+Uracil,90.0,DB03419
+Sulfaguanidine,90.0,DB13726
+Pyrilamine,90.0,DB06691
+Propyphenazone,90.0,DB13524
+Nilutamide,90.0,DB00665
+Formononetin,90.0,DB15335
+Dicumarol,90.0,DB00266
+Dibutyl butanedioate,90.0,DB13332
+Chlorzoxazone,90.0,DB00356
+Cefaclor,90.0,DB00833
+Bromoacetic acid,90.0,DB02198
+Brinzolamide,90.0,DB01194
+Bornyl acetate,90.0,DB14665
+Betaxolol,90.0,DB00195
+"2,2'-Dithiobisbenzothiazole",90.0,DB14201
+17alpha-Hydroxyprogesterone,90.0,DB14570
+Triamterene,89.0,DB00384
+Phytonadione,89.0,DB01022
+Methysergide,89.0,DB00247
+Lomustine,89.0,DB01206
+Isatin,89.0,DB02095
+Hypoxanthine,89.0,DB04076
+Diflunisal,89.0,DB00861
+Creatinine,89.0,DB11846
+Capecitabine,89.0,DB01101
+Amifostine,89.0,DB01143
+"3,4-Dihydroxybenzoic acid",89.0,DB03946
+"1,2-Octanediol",89.0,DB14589
+beta-Cyclodextrin,88.0,DB03995
+Trioxsalen,88.0,DB04571
+Triflupromazine,88.0,DB00508
+Tinidazole,88.0,DB00911
+Thiamphenicol,88.0,DB08621
+Sodium iodide,88.0,DB11119
+Sodium L-ascorbate,88.0,DB14482
+Pirenzepine,88.0,DB00670
+Phentolamine,88.0,DB00692
+Phensuximide,88.0,DB00832
+Panthenol,88.0,DB11204
+Oxaprozin,88.0,DB00991
+Nimustine,88.0,DB13069
+Nateglinide,88.0,DB00731
+Methyl glyoxal,88.0,DB03587
+Hydroxyzine,88.0,DB00557
+Ensulizole,88.0,DB11115
+Droperidol,88.0,DB00450
+Ciprofloxacin,88.0,DB00537
+Amrinone,88.0,DB01427
+Acetohexamide,88.0,DB00414
+"2,7,8,9-Tricyclazole",88.0,DB02891
+(Z)-Hexadec-9-enoic acid,88.0,DB04257
+p-Synephrine,87.0,DB09203
+Zolmitriptan,87.0,DB00315
+Tropicamide,87.0,DB00809
+Tacrine,87.0,DB00382
+Sulfaphenazole,87.0,DB06729
+Squalane,87.0,DB11420
+Sodium sulfate anyhdrous,87.0,DB09472
+Ranolazine,87.0,DB00243
+Pentetic acid,87.0,DB14007
+Norgestimate,87.0,DB00957
+Methsuximide,87.0,DB05246
+Glycyrrhizin,87.0,DB13751
+Glutethimide,87.0,DB01437
+Eletriptan,87.0,DB00216
+Dithiopyr,87.0,DB15230
+Chlorfenson,87.0,DB05377
+Carprofen,87.0,DB00821
+Apomorphine,87.0,DB00714
+2-Ethylhexyl 4-(dimethylamino)benzoate,87.0,DB11570
+2-Allylphenol,87.0,DB02534
+"1,1,1-Trichloro-2-methyl-2-propanol",87.0,DB11386
+meso-Hexestrol,86.0,DB07931
+alpha-Ketoglutaric acid,86.0,DB08845
+Probucol,86.0,DB01599
+Nandrolone,86.0,DB13169
+Marbofloxacin,86.0,DB11426
+Kinetin,86.0,DB11336
+Glycocholic acid,86.0,DB02691
+Flufenoxuron,86.0,DB15006
+Ethylene glycol dimethyl ether,86.0,DB01749
+Diphacinone,86.0,DB13347
+D-Lactic acid,86.0,DB03066
+Cantharidin,86.0,DB12328
+Candoxatril,86.0,DB00616
+Anthralin,86.0,DB11157
+Almotriptan,86.0,DB00918
+Zoalene,85.0,DB11480
+Zinc oxide,85.0,DB09321
+Telmisartan,85.0,DB00966
+Sulfachloropyridazine,85.0,DB11461
+Minocycline,85.0,DB01017
+Methapyrilene,85.0,DB04819
+Melengestrol acetate,85.0,DB14659
+Megestrol acetate,85.0,DB00351
+Iodixanol,85.0,DB01249
+Cyclothiazide,85.0,DB00606
+Carvedilol,85.0,DB01136
+Carbutamide,85.0,DB13406
+Calcium lactate,85.0,DB13231
+Benzthiazide,85.0,DB00562
+Barbital,85.0,DB01483
+6-Thioguanine,85.0,DB00352
+6-Mercaptopurine,85.0,DB01033
+"2H-3,1-Benzoxazine-2,4(1H)-dione",85.0,DB11593
+2-Ethylhexyl benzoate,85.0,DB11291
+2-Aminophenol,85.0,DB01726
+"2,4-Dichlorobenzyl alcohol",85.0,DB13269
+17beta-Trenbolone,85.0,DB11551
+d-Tubocurarine,84.0,DB01199
+alpha-Cyclodextrin,84.0,DB01909
+Zinc acetate,84.0,DB14487
+Tin(II) chloride,84.0,DB11056
+Sevoflurane,84.0,DB01236
+Rolipram,84.0,DB01954
+Rhein,84.0,DB13174
+Pidolic acid,84.0,DB03088
+Nomifensine,84.0,DB04821
+Nabumetone,84.0,DB00461
+NS398,84.0,DB14060
+N-Cyclohexyl-2-benzothiazolesulfenamide,84.0,DB14200
+Inosine,84.0,DB04335
+Drospirenone,84.0,DB01395
+Dobutamine,84.0,DB00841
+Diosmin,84.0,DB08995
+Carbromal,84.0,DB13817
+Benzylparaben,84.0,DB14176
+"7-Ethyl-2-methyl-4-undecanolsulfate, sodium salt",84.0,DB00464
+"2,5-Dimethylaniline",84.0,DB02163
+"2,4-Dihydroxybenzoic acid",84.0,DB02839
+"1,6-Hexanediol",84.0,DB02210
+"(9Z,12R)-12-Hydroxyoctadec-9-enoic acid",84.0,DB02955

@@ -1,0 +1,1001 @@
+Chemical name	Distance (lower = more similar)
+Perfluorododecanesulfonic acid (PFDOS)	0
+1,1,2,2-tetrafluoroethanesulfonic Acid	0
+1,1,2,3,3,3-hexafluoropropanesulfonic acid	0
+Difluoromethanesulphonic acid	0
+Perfluorononanesulfonic acid	0
+1-Pentanesulfonic acid, 1,1,2,2,3,3,4,4,5,5,5-undecafluoro-	0
+1-Heptanesulfonic acid, 1,1,2,2,3,3,4,4,5,5,6,6,7,7,7-pentadecafluoro-	0
+Trifluoromethanesulfonic acid	0
+PFDS	0
+PFHxS	0
+1-Perfluorobutanesulfonic acid	0
+PFOS	0
+1,1,2,3,3,3-Hexafluoro-2-(trifluoromethyl)propanesulphonic acid	1
+Trichloromethanesulfonic acid	2
+Dimethiodal	2
+Tribromomethanesulfonic acid	2
+Perfluorobutanesulfonate	3
+Nonadecafluorononane-1-sulfonate	3
+Perfluorohexanesulfonate	3
+Perfluorodecanesulfonate	3
+Trifluoromethanesulfonic acid--water (2/1)	3
+1,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,9-Heptadecafluoronon-1-ene-1-sulfonic acid	3
+Silyl trifluoromethanesulfonate	3
+Trifluoromethanesulfonic acid--water (1/5)	3
+Trifluoromethanesulfonic acid--water (1/4)	3
+Trifluoromethanesulfonic acid--water (1/6)	3
+Trifluoromethanesulfonic acid--difluoroxenon (1/1)	3
+Octafluorobutane-1,4-disulfonic acid--water (1/2)	3
+1,1,2,2,3-Pentafluoropropane-1-sulfonic acid	3
+Trifluoromethanesulfonic acid--water (1/1)	3
+Silyl nonafluorobutane-1-sulfonate	3
+4-(Chlorosulfonyl)-1,1,2,2,3,3,4,4-octafluorobutane-1-sulfonic acid	3
+Ethanesulfonic acid, 1-chloro-	3
+Perfluorooctanesulfonate	3
+Trifluoromethanesulfonate	3
+Fluorosulfonic acid	3
+3,3-Dichloroprop-1-ene-1-sulfonic acid	4
+Pentafluoroethyl trifluoromethanesulfonate	4
+1,1,2,2-Tetrafluoro-2-(1,1,2,2-tetrafluoroethoxy)ethane-1-sulfonic acid	4
+Octafluorobutane-1,4-disulfinic acid	4
+1,1,3,3,3-Pentafluoro-2-oxopropane-1-sulfonic acid	4
+1,1,2,2-Tetrafluoro-2-(pentafluoroethoxy)ethane-1-sulfonic acid	4
+Difluoromethyl difluoromethanesulfonate	4
+trifluoromethyl trifluoromethanesulfonate	4
+1-Hexanesulfonic acid, 1,1,2,2,3,3,4,4,5,5,6,6,6-tridecafluoro-, ammonium salt	4
+1-Heptanesulfonic acid, 1,1,2,2,3,3,4,4,5,5,6,6,7,7,7-pentadecafluoro-, ammonium salt	4
+1-Pentanesulfonic acid, 1,1,2,2,3,3,4,4,5,5,5-undecafluoro-, ammonium salt	4
+1-Octanesulfonic acid, 1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-heptadecafluoro-, ammonium salt	4
+1-Nonanesulfonic acid, 1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,9-nonadecafluoro-, ammonium salt	4
+Trifluoromethanesulfonic acid--manganese (2/1)	5
+2,2,3,3-Tetrafluoro-3-sulfopropanoic acid	5
+Sulfuriodidic acid	5
+Sulfurobromidic acid	5
+3-(Trifluoromethyl)benzene-1-sulfonic acid	5
+2,2,3,3,4,4-Hexafluoro-4-sulfobutanoic acid	5
+2,2'-Oxybis(tetrafluoroethane-1-sulfonic acid)	5
+Methylsulfenyl trifluoromethanesulfonate	5
+1,1,2,2,3,3,4,4,4-Nonafluorobutane-1-sulphonic anhydride	5
+Fluorosulfate radical	5
+Ethanesulfonic acid, 2,2,2-trifluoro-	5
+Chlorosulfuric acid	5
+Tetrasulfane-1-sulfonic acid	6
+1-Fluoro-3-hydroxy-1,1,3,3-tetraoxo-1lambda~6~,3lambda~6~-dithioxane	6
+Cerium(3+) trifluoromethanesulfonate--water (1/3/1)	6
+Lanthanum trifluoromethanesulfonate--water (1/3/1)	6
+Cerium(4+) trifluoromethanesulfonate--water (1/4/1)	6
+Yttrium trifluoromethanesulfonate--water (1/3/1)	6
+Buta-1,3-diene-1-sulfonic acid	6
+Ytterbium(3+) trifluoromethanesulfonate--water (1/3/1)	6
+Sodium trifluoromethanesulfonate	6
+Potassium trifluoromethanesulfonate	6
+Sodium heptadecafluorooctane-1-sulfonate	6
+Lithium nonafluorobutane-1-sulfonate	6
+Sodium 1,1,2,3,3,3-hexafluoropropane-1-sulfonate	6
+Ammonium trifluoromethanesulfonate	6
+3-Fluorobenzene-1-sulfonic acid	6
+1,1,2,2-Tetrafluoro-2-(1,1,2,2-tetrafluoroethoxy)ethane-1-sulfinic acid	6
+vinyl triflate	6
+Propane, 1,1,1,2,3,3,3-heptafluoro-2-[(trifluoromethyl)sulfonyl]-	6
+Vinyl nonafluoro-1-butanesulfonate	6
+Fluorosulfate	6
+Methyl nonaflate	6
+Cyclohexanesulfonicacid, 1,2,2,3,3,4,5,5,6,6-decafluoro-4-(1,1,2,2,2-pentafluoroethyl)-	6
+Cyclohexanesulfonic acid, decafluoro(trifluoromethyl)-	6
+Potassium 1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,12-pentacosafluorododecane-1-sulphonate	6
+Diiodomethanedisulfonic acid	6
+2,2-Diiodo-1,1-ethanedisulfonic acid	6
+4-Fluorobenzenesulphonic acid	6
+Potassium henicosafluorodecanesulphonate	6
+Propane-2-sulphonic acid	6
+Ethane, 1,1'-sulfonylbis[1,1,2,2,2-pentafluoro-	6
+1-Butanesulfonic acid, 1,1,2,2,3,3,4,4,4-nonafluoro-, ammonium salt	6
+1-Decanesulfonic acid, 1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10-heneicosafluoro-, ammonium salt	6
+1-Heptanesulfonic acid, 1,1,2,2,3,3,4,4,5,5,6,6,7,7,7-pentadecafluoro-, lithium salt	6
+1-Heptanesulfonic acid, 1,1,2,2,3,3,4,4,5,5,6,6,7,7,7-pentadecafluoro-, potassium salt	6
+Methanesulfonic acid, trifluoro-, silver(1+) salt	6
+1-Pentanesulfonic acid, 1,1,2,2,3,3,4,4,5,5,5-undecafluoro-, potassium salt	6
+Methyl trifluoromethanesulfonate	6
+Ethenesulfonic acid	6
+Lithium trifluoromethanesulfonate	6
+PFOS-K	6
+PFBS-K	6
+PFHS-K	6
+Lithium perfluorooctane sulfonate	6
+Methanesulfonic acid	6
+1,2-Bis(trifluoromethanesulfonyl)ethene	7
+Sulfuric acid--trifluoromethanol (1/2)	7
+2,2,3,3,4,4-Hexafluoro-4-sulfinobutanoic acid	7
+(~13~C)Methyl trifluoromethanesulfonate	7
+3,3,4,4,5,5,6,6,7,7,8,8,9,9,9-Pentadecafluorononane-1-sulfonic acid	7
+Holmium tris(trifluoromethanesulfonate)	7
+Dodecafluorohexane-1,6-disulfonyl difluoride	7
+(~2~H_3_)Methyl trifluoromethanesulfonate	7
+Octafluorobutane-1,4-disulfonyl difluoride	7
+1,2,2,3,3,4-Hexafluorobutane-1,4-disulfonyl difluoride	7
+1,1,2,2-Tetrafluoro-2-(2,2,2-trifluoroethoxy)ethane-1-sulfonic acid	7
+1,1,2,2,3,3-Hexafluoropropyl sulfurofluoridate	7
+2,2,3,3-Tetrafluoro-3-(fluorosulfonyl)propanoyl fluoride	7
+2,2,3,3-Tetrafluoropropyl difluoromethanesulfonate	7
+Difluoromethanesulfonyl fluoride	7
+1,2,2,3-Tetrafluoropropane-1,3-disulfonyl difluoride	7
+Fluoro[tris(trifluoromethanesulfonyl)]methane	7
+1,2,2,3,3,4,4,5,5,6-Decafluorohexane-1,6-disulfonyl difluoride	7
+1,1,2,2-Tetrafluoro-2-hydroxyethane-1-sulfonyl fluoride	7
+Heptafluoropropyl sulfurofluoridate	7
+Terbium(III) trifluoromethanesulfonate	7
+Iron(III) trifluoromethanesulfonate	7
+Butanoyl fluoride, 2,2,3,3,4,4-hexafluoro-4-(fluorosulfonyl)-	7
+Erbium(III) trifluoromethanesulfonate	7
+Lutetium(III) trifluoromethanesulfonate	7
+1,1,2,2,3,3-hexafluoropropane-1,3-disulfonyldifluoride	7
+AG-G-90691	7
+2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-Pentadecafluorooctyl trifluoromethanesulfonate	7
+Cyclopropanesulfonic Acid	7
+Samarium(III) trifluoromethanesulfonate	7
+europium trifluoromethanesulfonate	7
+Dysprosium(III) trifluoromethanesulfonate	7
+Nickel(II) Trifluoromethanesulfonate	7
+Cerium(IV) trifluoromethanesulfonate	7
+Bismuth(III) trifluoromethanesulfonate	7
+Praseodymium(III) trifluoromethanesulfonate	7
+TRIS[(TRIFLUOROMETHYL)SULFONYL]METHANE	7
+2,2,3,3-tetrafluoropropyl trifluoromethanesulfonate	7
+Ethanesulfonic acid, 1-oxo-	7
+2,2,3,3,4,4,4-heptafluorobutyl 1,1,2,2,3,3,4,4,4-nonafluorobutane-1-sulfonate	7
+Magnesium nonafluorobutanesulfonate	7
+2,2,3,3,4,4,4-heptafluorobutyl trifluoromethanesulfonate	7
+2,2,2-Trifluoroethyl Nonafluorobutanesulfonate	7
+2,2-difluoroethyl trifluoromethanesulfonate	7
+2,2,3,3,3-pentafluoropropyl trifluoromethanesulfonate	7
+Tin(II) trifluoromethanesulfonate	7
+Mercury(II) trifluoromethanesulfonate	7
+2,2,3,3,4,4,5,5-octafluoropentyl trifluoromethanesulfonate	7
+Magnesium trifluoromethanesulfonate	7
+Ytterbium(3+) tris(trifluoromethanesulfonate)	7
+Lanthanum tris(trifluoromethanesulfonate)	7
+Cerium(III) Triflate	7
+Indium(III) trifluoromethanesulfonate	7
+Scandium(III) triflate	7
+Thulium(III) trifluoromethanesulfonate	7
+Yttrium(III) trifluoromethanesulfonate	7
+Neodymium(III) trifluoromethanesulfonate	7
+GALLIUM(III) TRIFLUOROMETHANESULFONATE	7
+difluorosulfoacetic acid	7
+Potassium 1,1,2,3,3,3-hexafluoro-2-(trifluoromethyl)propanesulphonate	7
+Methanetrisulphonic acid	7
+3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10-Heptadecafluorodecanesulphonic acid	7
+Thiosulfuric acid	7
+Methanesulfonic acid, trifluoro-, 2,2,2-trifluoroethyl ester	7
+1-Nonanesulfonyl fluoride, 1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,9-nonadecafluoro-	7
+Methanesulfonic acid, trifluoro-, calcium salt	7
+Methanesulfonic acid, trifluoro-, zinc salt	7
+1-Octanesulfonic acid, 3,3,4,4,5,5,6,6,7,7,8,8,8-tridecafluoro-	7
+Methanesulfonic acid, trifluoro-, barium salt	7
+1-Heptanesulfonyl fluoride, 1,1,2,2,3,3,4,4,5,5,6,6,7,7,7-pentadecafluoro-	7
+1-Hexanesulfonyl fluoride, 1,1,2,2,3,3,4,4,5,5,6,6,6-tridecafluoro-	7
+Perfluorodecanesulphonyl fluoride	7
+Ethanesulfonyl fluoride, pentafluoro-	7
+Methanesulfonyl fluoride, trifluoro-	7
+Tetrathioic acid	7
+1-Octanesulfonyl fluoride, 1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-heptadecafluoro-	7
+1-(Trifluoromethanesulfonyl)prop-1-ene	8
+Methyl dichloromethanesulfonate	8
+1,1,1,2,2,3,3,4,4-Nonafluoro-4-(prop-1-ene-1-sulfonyl)butane	8
+Tribromo(dibromomethanesulfonyl)methane	8
+Sulfuric acid--2-bromo-1,1,2,2-tetrafluoroethan-1-ol (1/2)	8
+Dimethylsilyl trifluoromethanesulfonate	8
+Methane(~2~H)sulfonic acid	8
+Methanesulfonic acid--1,1,1,3,3,3-hexafluoropropan-2-ol (1/1)	8
+(Trifluoromethanesulfonyl)ethene	8
+1,2-Dichloro-1,2,2-trifluoroethane-1-sulfonyl chloride	8
+1,2-Dichloro-1,2,2-trifluoroethane-1-sulfonyl fluoride	8
+4'-(Trifluoromethyl)[1,1'-biphenyl]-4-sulfonic acid	8
+2-Fluorobenzene-1-sulfonic acid	8
+Sulfurochloridate	8
+1,1,2,2,3,3,4,4-Octafluoro-4-iodobutyl sulfurofluoridate	8
+Trifluoromethyl 2,2,2-trifluoroethane-1-sulfonate	8
+1,1,3,3-Tetrakis(trifluoromethanesulfonyl)propane	8
+3,4-Difluorobenzene-1-sulfonic acid	8
+2,4-Difluorobenzene-1-sulfonic acid	8
+Trifluoromethanesulfonyl bromide	8
+3-(Chlorosulfonyl)-2,2,3,3-tetrafluoropropanoyl chloride	8
+2-Chloro-1,1,2,2-tetrafluoroethane-1-sulfonyl chloride	8
+Difluoro(1,1,2,2-tetrafluoro-2-sulfoethoxy)acetic acid	8
+Sulfurofluoridous acid	8
+3-Bromobenzene-1-sulfonic acid	8
+2-Chloro-1,1,2,2-tetrafluoroethyl sulfurofluoridate	8
+1,1,2,3,3,3-Hexafluoro-2-iodopropyl sulfurofluoridate	8
+1,1,2,2-Tetrafluoro-2-iodoethyl sulfurofluoridate	8
+2,3,5,6-Tetrafluorobenzene-1-sulfonic acid	8
+Chloro(difluoro)methanesulfonyl fluoride	8
+2,3,4,5-Tetrafluorobenzene-1-sulfonic acid	8
+Fluorosulfuric acid, 2-bromo-1,1,2,2-tetrafluoroethyl ester	8
+Methane, bromobis[(trifluoromethyl)sulfonyl]-	8
+Hexane, 1-(ethenylsulfonyl)-1,1,2,2,3,3,4,4,5,5,6,6,6-tridecafluoro-	8
+methyltrifluoromethylsulfone	8
+2,3,3,3-Tetrafluoro-2-(fluorosulfonyl)propanoyl fluoride	8
+Methanetrisulfonyl trifluoride	8
+3,5-dichlorobenzenesulfonic Acid	8
+3-iodobenzenesulfonic Acid	8
+1,4-Butanedisulfonyl dichloride, 1,1,2,2,3,3,4,4-octafluoro-	8
+Trifluoroacetyl triflate	8
+1,1-Ethanedisulfonic acid, 2-oxo-	8
+2-Propanesulfonic acid, 2-methyl-	8
+1,1,1,2,2,3,3,4,4-Nonafluoro-4-(methanesulfonyl)butane	8
+Heptadecafluoro-1-octanesulfonyl chloride	8
+Pentafluoroethane-1-sulfonyl chloride	8
+Nonafluoro-1-butanesulfonyl chloride	8
+1-[bromo(1,1,2,2,3,3,4,4,4-nonafluorobutylsulfonyl)methyl]sulfonyl-1,1,2,2,3,3,4,4,4-nonafluorobutane	8
+2-phenylethenesulfonic acid	8
+Sulphonylbis(tribromomethane)	8
+1,1,2,2,3,3,4,4,5,5,6,6,6-Tridecafluorohexane-1-sulphonyl chloride	8
+Trifluoromethanesulphonyl chloride	8
+Fluorosulphuric acid, compound with antimony pentafluoride (4:1)	8
+2,2,2-Trifluoroethyl trichloromethanesulphonate	8
+Difluoromethanesulphonyl chloride	8
+Benzeneselenyl trifalate	8
+Ethanesulfonic acid, 1,1,2,2-tetrafluoro-2-((trifluoroethenyl)oxy)-, polymer with tetrafluoroethene	8
+Methane, sulfonylbis[dichloro-	8
+Sulfite, hydrogen	8
+Methanesulfonic acid, trifluoro-, 2-propynyl ester	8
+Disulfuryl fluoride	8
+Acetyl fluoride, difluoro(fluorosulfonyl)-	8
+4-Chlorobenzenesulfonic acid	8
+Bis(trichloromethyl)sulfone	8
+Sulfuric acid	8
+Benzenesulfonic acid	8
+Sulfuric acid--water (1/5)	9
+Sulfuric acid--water (1/12)	9
+Sulfurous acid--1,1,1,3,3,3-hexafluoropropan-2-ol (1/2)	9
+Sulfuric acid--water (1/6)	9
+Trifluoromethanesulfonic acid--(naphthalen-1-yl)phosphane (1/1)	9
+1,1,2,3,4,4,5,5,6,6,6-Undecafluorohex-2-en-1-yl sulfurofluoridate	9
+Sulfuric acid--water (1/15)	9
+Sulfuric acid--water (1/11)	9
+Sulfuric acid--water (1/7)	9
+Sulfuric acid--water (1/9)	9
+Sulfuric acid--water (1/16)	9
+Sulfuric acid--water (1/14)	9
+Sulfuric acid--water (1/17)	9
+Sulfuric acid--water (1/10)	9
+Sulfuric acid--water (1/13)	9
+Sulfuric acid--water (1/3)	9
+Dihydroxy(oxo)(sulfodisulfanyl)-lambda~5~-phosphane	9
+Sulfuric acid--water (1/4)	9
+Dichloro(dioxo-lambda~6~-sulfanylidene)methane	9
+1,2,2,2-Tetrafluoroethane-1-sulfonic acid--pyridine (1/1)	9
+(Trifluoromethanesulfonyl)cyclopropane	9
+2,3,5,6-Tetrafluoro-4-sulfanylbenzene-1-sulfonic acid	9
+Ammonium sulfurofluoridate	9
+(1,1,1,2,3,3,3-Heptafluoropropan-2-yl)(phenyl)iodanium trifluoromethanesulfonate	9
+Potassium sulfurofluoridate	9
+2-(Trifluoromethanesulfonyl)propane	9
+1,2-Dichloroethane-1,1-disulfonic acid	9
+Hydrogen disulfate	9
+4'-Fluoro[1,1'-biphenyl]-4-sulfonic acid	9
+(4-Fluorophenyl)methanesulfonic acid	9
+1-Bromoethane-1-sulfinic acid	9
+Phenyl(tridecafluorohexyl)iodanium trifluoromethanesulfonate	9
+1,1,2,2-Tetrafluoro-2-(1,2,2,2-tetrafluoroethoxy)ethane-1-sulfonyl fluoride	9
+2-Fluoro-5-methylbenzene-1-sulfonic acid	9
+1,2,2,2-Tetrachloroethyl sulfurochloridate	9
+1,1,1,3,3,3-Hexafluoro-2-(trifluoromethyl)propan-2-yl sulfurofluoridate	9
+1,1,2,2-Tetrafluoro-2-(nonafluorobutoxy)ethane-1-sulfonyl fluoride	9
+1,1,2,2-Tetrafluoro-2-[(tridecafluorohexyl)oxy]ethane-1-sulfonyl fluoride	9
+Benzenesulfinic acid, 4-(trifluoromethyl)-	9
+2-Iodo-1,1,2,2-tetrafluoroethyl chlorosulfate	9
+1,1,2,2-Tetrafluoro-2-(1,1,2,2-tetrafluoroethoxy)ethane-1-sulfonyl fluoride	9
+Ethanesulfonyl fluoride, 1,1,2,2-tetrafluoro-2-(trifluoromethoxy)-	9
+3-PENTANESULFONIC ACID	9
+Sulfate, hydrogen, compd. with sulfuric acid (1:1)	9
+1,1,2,2-Tetrafluoro-2-(pentafluoroethoxy)ethane-1-sulfonyl fluoride	9
+(Heptadecafluorooctyl)(phenyl)iodanium trifluoromethanesulfonate	9
+(Heptafluoropropyl)(phenyl)iodanium trifluoromethanesulfonate	9
+Triisopropylsilyl trifluoromethanesulfonate	9
+bromomethanesulfonic acid	9
+NSC175780	9
+s-(trifluoromethyl) methanesulfonothioate	9
+2-propyne-1-sulfonic acid	9
+Pyrosulfurous acid	9
+Aluminum fluorosulfate, hydrate	9
+4-Mercaptobenzenesulfonic acid	9
+m-(Chlorocarbonyl)benzenesulphonic acid	9
+Methanethiosulfonate	9
+Dichloromethanesulphonyl chloride	9
+Thiosulfuric acid (H2S2O3), silver(1+) salt	9
+Sulfone, dichloromethyl trichloromethylthio	9
+Trithionic acid	9
+Tetrathioate	9
+Dithionic acid	9
+Methiodal	9
+Fluorosulfuric acid, methyl ester	9
+Fuming sulfuric acid	9
+Methanesulfonyl chloride, trichloro-	9
+Methanesulfonic acid, trifluoro-, ethyl ester	9
+Methanesulfonate	9
+Sulfurous acid	9
+2-Butanesulfonic acid	9
+Sulfuryl fluoride	9
+Sulfur trioxide	9
+4-Methylbenzenesulfonic acid	9
+(4-Fluorophenyl)(heptadecafluorooctyl)iodanium hydrogen sulfate	10
+(2R)-1-Chloro-1-oxopropan-2-yl trifluoromethanesulfonate	10
+PUBCHEM_71363405	10
+Hydrogen disulfite	10
+3-Methylpent-1-yn-1-yl trifluoromethanesulfonate	10
+2,3,4-Tribromobenzene-1-sulfonic acid	10
+1-(4-Bromophenyl)-2,2,2-trifluoroethyl trifluoromethanesulfonate	10
+1,2,3,3,3-Pentafluoroprop-1-ene-1-sulfonyl fluoride	10
+Methyl 1,1,1,2,4,4,4-heptafluoro-3-oxobutane-2-sulfonate	10
+Sodium trifluoromethanesulfinate	10
+Sulfuryl bromide fluoride	10
+1-Sulfanylpropane-1-sulfonic acid	10
+S-(Trifluoromethyl) trifluoromethanesulfinothioate	10
+(Pentafluoroethyl)(phenyl)iodanium hydrogen sulfate	10
+4-Oxobutane-2-sulfonic acid	10
+2,3-Dibromobenzene-1-sulfonic acid	10
+2-Chloro-2-oxoethane-1-sulfonic acid	10
+Hydroxy(oxo)methanesulfonic acid	10
+5,5,5-Trifluoropentane-1-sulfonate	10
+Tribromo(methanesulfonyl)methane	10
+Cyclopentanesulfonic acid	10
+2-(2-Chloro-1,1,2,2-tetrafluoroethoxy)-1,1,2,2-tetrafluoroethane-1-sulfonyl fluoride	10
+1,1,2,2,3,4,4-Heptafluorobut-3-ene-1-sulfonyl fluoride	10
+2,4-Dichlorobenzene-1-sulfonic acid	10
+3,3,3-Trifluoroprop-1-ene-2-sulfonyl fluoride	10
+Diphenyl[(trifluoromethanesulfonyl)oxy]borane	10
+2,3-Bis(sulfosulfanyl)butanedioic acid	10
+Cyclopropyl trifluoromethanesulfonate	10
+1-Chloroethyl sulfurochloridate	10
+1,1,2,2-Tetrafluoro-2-(1,1,2,2-tetrafluoroethoxy)ethane-1-sulfonyl chloride	10
+2-[(8-Chloro-1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8-hexadecafluorooctyl)oxy]-1,1,2,2-tetrafluoroethane-1-sulfonyl fluoride	10
+1,2,2,3,3,4,4,5,5,6,7,7-Dodecafluorohept-6-ene-1-sulfonyl fluoride	10
+1-Chloroethane-1-sulfonyl chloride	10
+2,2,2-Trifluoroethyl sulfurofluoridate	10
+DICYCLOPENTYLBORYL TRIFLUOROMETHANESULFONATE	10
+9-Iodoperfluoro-3-oxanonanesulphonyl fluoride	10
+1,1,2,2-Tetrafluoro-2-(1,1,2,2,3,3,4,4-octafluoro-4-iodobutoxy)ethane-1-sulfonyl fluoride	10
+BENZYL TRIFLUOROMETHANESULFONATE	10
+Benzenesulfonic acid, 4-(phenylthio)-	10
+4-methylsulfanylbenzenesulfonic Acid	10
+2,3-dichlorobenzenesulfonic Acid	10
+2,6-dichlorobenzenesulfonic Acid	10
+Sodium 1,1,2,2-tetrafluoro-2-(1,1,2,2,2-pentafluoroethoxy)ethanesulfonate	10
+2-iodobenzenesulfonic Acid	10
+Potassium 1,1,2,2-tetrafluoro-2-(pentafluoroethoxy)ethane-1-sulfonate	10
+2,2'-Oxybis(tetrafluoroethane-1-sulfonyl fluoride)	10
+perfluoroallyl fluorosulfate	10
+Trifluoroethenesulfonyl fluoride	10
+2,2-Difluoro-2-(fluorosulfonyl)acetic acid	10
+Trifluoromethanesulfinyl fluoride	10
+NSC291324	10
+NSC175782	10
+CHLOROSULFANIC ACID	10
+2,3,4,5,6-pentachlorobenzenesulfonic acid	10
+[(Trifluoromethanesulfonyl)ethynyl]benzene	10
+[(1,1,2,2,3,3,4,4,4-Nonafluorobutane-1-sulfonyl)ethynyl]benzene	10
+dichloromethanedisulfonyl dichloride	10
+3,4-Dichlorobenzenesulfonic acid	10
+METHYL TRICHLOROMETHYL SULFONE	10
+3,5-dimethylbenzenesulfonic Acid	10
+4-(bromomethyl)benzenesulfonic acid	10
+2-bromobenzenesulfonic Acid	10
+2,3,3-Trichloro-2-propenesulfonic acid	10
+2-Methyl-1-propenyl trifluoromethanesulfonate	10
+Potassium trifluoromethanesulphinate	10
+Methane, dichloro(methylsulfonyl)-	10
+2-Propanesulfonic acid, 1,3-dimercapto-, sodium salt	10
+Benzene-1,4-disulfonic acid	10
+4-Mercuriphenylsulfonate	10
+Rubidium sulfate	10
+Trithionate	10
+Dithionate	10
+Vinyl hydrogen sulphate	10
+Ethenesulfonyl fluoride	10
+1-Octanesulfinic acid, 1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,8-heptadecafluoro-, sodium salt	10
+1-Heptanesulfinic acid, 1,1,2,2,3,3,4,4,5,5,6,6,7,7,7-pentadecafluoro-, sodium salt	10
+Benzene, [bis[(trifluoromethyl)sulfonyl]methyl]-	10
+Disulfuric acid	10
+Sulfuryl chloride fluoride	10
+Ethanesulfonic acid	10
+Benzenesulfonic acid, 2,5-dichloro-	10
+Methanesulfonyl fluoride	10
+Methyl hydrogen sulfate	10
+Potassium bisulfate	10
+2-Propene-1-sulfonic acid	10
+2,4,5-Trichlorobenzenesulfonic acid	10
+4-Ethenylbenzenesulfonic acid	10
+Benzene-1,3-disulfonic acid	10
+Sodium hydrogen sulfate	10
+Cyclobutyl trifluoromethanesulfonate	11
+1,1,1-Trifluoro-3-(trifluoromethanesulfonyl)propan-2-one	11
+1,1-Bis(trifluoromethanesulfonyl)penta-1,3-diene	11
+Sulfuric acid--silanol (1/2)	11
+1-Methyl-4-[2-(1,1,2,2,3,3,4,4,5,5,6,6,6-tridecafluorohexane-1-sulfonyl)ethenyl]benzene	11
+Methanesulfonic acid--2,2,3,3-tetrafluoropropan-1-ol (1/1)	11
+(Bromomethanesulfonyl)(trifluoro)methane	11
+Butan-2-yl trifluoromethanesulfonate	11
+Tridecafluorohexane-1-sulfinyl chloride	11
+Titanium(3+) hydroxide sulfate (1/1/1)	11
+1-Fluoro-3-methoxy-1,1,3,3-tetraoxo-1lambda~6~,3lambda~6~-dithioxane	11
+1-Phenylprop-1-en-2-yl trifluoromethanesulfonate	11
+PUBCHEM_71370778	11
+Methanesulfonic acid--3,3,3-trifluoroprop-1-en-2-ol (1/1)	11
+Trifluoromethanesulfinyl bromide	11
+Methanesulfonic acid--2,2,3,3,4,4,5,5-octafluoropentan-1-ol (1/1)	11
+Zirconium(3+) hydroxide sulfate (1/1/1)	11
+3-Chloro-1,1,2,2-tetrafluoro-3-oxopropyl sulfurofluoridate	11
+PUBCHEM_71317440	11
+Pentan-3-yl trifluoromethanesulfonate	11
+Sulfurocyanidic acid--barium (1/1)	11
+Terbium(3+) sulfate--water (2/3/1)	11
+1,1,2,2-Tetrafluoro-2-[(1,1,2,2-tetrafluoro-4-iodobut-3-en-1-yl)oxy]ethane-1-sulfonyl fluoride	11
+PUBCHEM_57347370	11
+PUBCHEM_54599707	11
+4-Chlorobenzene-1-sulfonic acid--cadmium (1/1)	11
+3-(Ethenesulfonyl)benzene-1-sulfonic acid	11
+7-Bromonaphthalene-1-sulfonic acid	11
+Pent-1-ene-1-sulfonic acid	11
+Neodymium sulfate--water (2/3/1)	11
+3-Fluoropropyl trifluoromethanesulfonate	11
+Praseodymium sulfate--water (2/3/1)	11
+Methyl 2,2,2-trifluoroethane-1-sulfonate	11
+Chloro(difluoro)methanesulfinyl fluoride	11
+1-(Trifluoromethanesulfonyl)-4-[(trifluoromethyl)sulfanyl]benzene	11
+3-(Methanesulfonyl)benzene-1-sulfonic acid	11
+Cerium(4+) sulfate--water (1/2/1)	11
+7-Chloronaphthalene-2-sulfonic acid	11
+Trifluoro(trifluoromethanesulfinyl)methane	11
+6-Chloronaphthalene-1-sulfonic acid	11
+2-(4-Fluorophenyl)ethane-1-sulfonic acid	11
+Dichlorosulfamic acid	11
+Diphenyl(trifluoromethyl)sulfanium trifluoromethanesulfonate	11
+[1,1'-Biphenyl]-3-sulfonic acid	11
+Triphenyl[(trifluoromethanesulfonyl)oxy]germane	11
+Diphenyliodanium nonafluorobutane-1-sulfonate	11
+Samarium(3+) sulfate--water (2/3/1)	11
+Europium(3+) sulfate--water (2/3/1)	11
+Cerium(3+) sulfate--water (2/3/1)	11
+Erbium sulfate--water (2/3/1)	11
+Indium sulfate--water (2/3/1)	11
+Benzenesulfonic acid--water (1/1)	11
+4'-Chloro[1,1'-biphenyl]-4-sulfonic acid	11
+2-Bromo-5-methylbenzene-1-sulfonic acid	11
+5-Bromo-2-methylbenzene-1-sulfonic acid	11
+5-Chloronaphthalene-1-sulfonic acid	11
+4-Iodonaphthalene-1-sulfonic acid	11
+PUBCHEM_14921804	11
+8-Bromonaphthalene-2-sulfonic acid	11
+Sulfuryl dibromide	11
+Di-tert-butyl(methyl)silyl trifluoromethanesulfonate	11
+3-(Ethanesulfonyl)-2,2,3,3-tetrafluoropropanoyl fluoride	11
+2-Iodo-5-methylbenzene-1-sulfonic acid	11
+(4-Chlorophenyl)methanesulfonic acid	11
+5-Bromonaphthalene-1-sulfonic acid	11
+Dichloro(methanesulfonyl)methanesulfinyl chloride	11
+3,3-Difluoro-2-(fluorosulfonyl)prop-2-enoyl fluoride	11
+Sulfurofluoridoite	11
+1-Chloro-1,2,2,2-tetrafluoroethane-1-sulfinyl chloride	11
+2,3,3-Trichloro-1,1-difluoroprop-2-en-1-yl sulfurofluoridate	11
+4-Hydroxyphenyl trifluoromethanesulfonate	11
+6-Bromonaphthalene-2-sulfonic acid	11
+Phenanthrene-9-sulfonic acid	11
+2,2,2-Trifluoroethane-1-sulfonyl fluoride	11
+4-(Difluoromethanesulfonyl)benzaldehyde	11
+1,3,5-Tris(trifluoromethanesulfonyl)benzene	11
+3-(Trifluoromethanesulfonyl)prop-1-ene	11
+1-(Trifluoromethanesulfonyl)-3-(trifluoromethyl)benzene	11
+8-Bromonaphthalene-1-sulfonic acid	11
+4-Bromonaphthalene-1-sulfonic acid	11
+((Difluoromethyl)sulfonyl)benzene	11
+Methanesulfonic acid, trifluoro-, 1-phenylethenyl ester	11
+Dimethylsilanediyl bis(trifluoromethanesulfonate)	11
+Benzoyl Trifluoromethanesulfonate	11
+TRIFLUOROMETHYLSULFINYLCHLORIDE	11
+3-Ethylbenzene-1-sulfonic acid	11
+Methanesulfonic acid, trifluoro-, triphenylmethyl ester	11
+Pentaammine(trifluoromethanesulfonato)osmium(III) triflate	11
+2-bromoethyl trifluoromethanesulfonate	11
+1,1,2,2-TETRAFLUORO-2-[(1,1,2,2-TETRAFLUORO-3-BUTENYL)OXY]-ETHANESULFONYL FLUORIDE	11
+Methane, trifluoro[(iodomethyl)sulfonyl]-	11
+Methanesulfonic acid, trifluoro-, 3-butenyl ester	11
+3-(Trifluoromethyl)phenyl trifluoromethanesulfonate	11
+4-(Trifluoromethyl)phenyl trifluoromethanesulfonate	11
+6-chloronaphthalene-2-sulfonic Acid	11
+5-bromothiophene-2-sulfonic Acid	11
+1,1-Ethanedisulfonic acid, 1-hydroxy-	11
+5-bromonaphthalene-2-sulfonic Acid	11
+Azulenesulfonic acid	11
+Anthracene-9-sulfonic Acid	11
+Dithionite, hydrogen	11
+Potassium thiosulfate hydrate	11
+Benzenesulfonic acid, 4-(diphenylphosphino)-	11
+4-(2-chloroethyl)benzenesulfonic Acid	11
+Anthracene-1-sulfonic Acid	11
+4-BROMO-4'-SULFOBIPHENYL	11
+4-(trifluoromethylsulfonyl)benzaldehyde	11
+9,10-dibromoanthracene-2-sulfonic Acid	11
+Trifluoroethenyl sulfurochloridate	11
+Trimethylsilyl nonafluorobutanesulfonate	11
+Diphenyliodonium trifluoromethanesulfonate	11
+methanesulfonic acid, trifluoro-, 2-methylpropyl ester	11
+2,2,2-Trifluoroethyl methanesulfonate	11
+Di-tert-butylsilanediyl bis(trifluoromethanesulfonate)	11
+Phenyl trifluoromethanesulfonate	11
+1,1,1,2,2,3,3,4,4-Nonafluoro-4-[(1,1,2,2,3,3,4,4,4-nonafluorobutane-1-sulfonyl)methanesulfonyl]butane	11
+Phenyl nonafluorobutane-1-sulfonate	11
+s-(trichloromethyl) methanesulfonothioate	11
+4-chloronaphthalene-1-sulfonic acid	11
+thiophene-2-sulfonic acid	11
+3-(diphenylphosphanyl)benzene-1-sulfonic acid	11
+Methyl chlorosulphate	11
+NSC 314043	11
+3-Phenylsulphonylbenzenesulphonic acid	11
+4-Chlorotoluene-3-sulphonic acid	11
+4-Chloromercuribenzenesulfonate	11
+Sulfoacetaldehyde	11
+1-Pyrenesulfonic acid	11
+2-Bromoethanesulfonic acid	11
+Peroxymonosulfate	11
+m-Cumenesulfonic acid	11
+Aluminum sulfate [USP]	11
+Sulfuric acid, aluminium salt (3:2), hexadecahydrate	11
+2-Chloroethanesulphonic acid	11
+Disulfate ion	11
+3-Fluoropropanesulfonate	11
+Anhydrite (Ca(SO4))	11
+2-Anthracenesulfonic acid	11
+Iron hydroxide sulfate (Fe(OH)(SO4))	11
+Lithium sulfate monohydrate	11
+Thiosulfuric acid, disodium salt, monohydrate	11
+Sodium bisulfate monohydrate	11
+Benzenesulfonic acid, 4-(2-bromoethyl)-	11
+Methanesulfonic acid, trifluoro-, trimethylsilyl ester	11
+Sulfurous acid, potassium salt (1:1)	11
+Cyclohexanesulfonic acid, undecafluoro-, potassium salt	11
+[1,1'-Biphenyl]-4-sulfonic acid	11
+Methane, bis[(trifluoromethyl)sulfonyl]-	11
+Copper sulfate (CuSO4) monohydrate	11
+Benzenesulfonic acid, 3-chloro-4-methyl-	11
+Benzenemethanesulfonic acid	11
+Zirconium(IV) sulfate hydrate	11
+Ammonium bisulfate	11
+Naphthalene-1-sulfonic acid	11
+4-Ethylbenzenesulfonic acid	11
+Naphthalene-2-sulfonic acid	11
+2-Methylbenzenesulfonic acid	11
+4-(Propan-2-yl)benzenesulfonic acid	11
+Benzensulfonate	11
+Sodium thiosulfate	11
+Vanadyl sulfate hydrate	11
+Ferrous sulfate monohydrate	11
+Sodium bisulfite	11
+Calcium thiosulfate	11
+Zinc sulfate monohydrate	11
+Sulfuryl chloride	11
+Magnesium sulfate monohydrate	11
+Methyl methanesulfonate	11
+Manganese(II) sulfate monohydrate	11
+4,4'-[(5-Sulfo-1,3-phenylene)bis(sulfonyl-4,1-phenylenesulfonyl)]di(benzene-1-sulfonic acid)	12
+2,2-Dicyanoethenyl trifluoromethanesulfonate	12
+(Dioxo-lambda~6~-sulfanylidene)methanethiol	12
+Hexa-2,4-diene-1,6-disulfonic acid	12
+Propan-2-yl trifluoromethanesulfinate	12
+[1-(Trifluoromethanesulfonyl)prop-1-en-1-yl]benzene	12
+3-(Trifluoromethanesulfonyl)cyclohex-1-ene	12
+PUBCHEM_71381609	12
+1-(Trimethylsilyl)ethyl trifluoromethanesulfonate	12
+PUBCHEM_71376807	12
+Sulfuric acid--2,2,3,3,3-pentafluoropropan-1-ol (1/2)	12
+1,1'-[1-(Trifluoromethanesulfonyl)ethane-1,2-diyl]dibenzene	12
+1,1'-[2-(Trifluoromethanesulfonyl)propane-1,3-diyl]dibenzene	12
+Sulfurofluoridic acid--pyridine (1/1)	12
+PUBCHEM_71348694	12
+PUBCHEM_71346451	12
+PUBCHEM_71340477	12
+Bis(4-fluorophenyl)iodanium hydrogen sulfate	12
+Difluoro[(trifluoroethenyl)oxy]methanesulfonyl fluoride	12
+Dichloro{bis[(chlorosulfonyl)oxy]}stannane	12
+3a,4,5,6,7,7a-Hexahydro-1H-4,7-methanoindene-1-sulfonic acid	12
+Lanthanum sulfate--water (2/3/9)	12
+Scandium sulfate--water (2/3/5)	12
+Thulium sulfate--water (2/3/8)	12
+Lanthanum sulfate--water (2/3/8)	12
+Cerium(3+) sulfate--water (2/3/5)	12
+Indium sulfate--water (2/3/5)	12
+PUBCHEM_57347225	12
+Holmium sulfate--water (2/3/8)	12
+PUBCHEM_57348705	12
+Prop-1-yne-1-sulfonyl chloride	12
+PUBCHEM_54604919	12
+4-Methylbenzene-1-sulfonic acid--lead (1/1)	12
+4-Methylbenzene-1-sulfonic acid--mercury (1/1)	12
+Ethenyl(dimethyl)silyl trifluoromethanesulfonate	12
+3-(Chlorocarbonyl)benzene-1-sulfinic acid	12
+Erbium sulfate--water (2/3/8)	12
+Neodymium sulfate--water (2/3/8)	12
+Praseodymium sulfate--water (2/3/8)	12
+Europium(3+) sulfate--water (2/3/8)	12
+[Chloro(difluoro)methanesulfonyl]benzene	12
+7-Methylnaphthalene-1-sulfonic acid	12
+Sodium propane-2-sulfonate--water (1/1/1)	12
+1-[(Trifluoromethanesulfonyl)methyl]-3,5-bis(trifluoromethyl)benzene	12
+3-Chloropropane-1,1-disulfonic acid	12
+2,4-Dichloro-3-formylbenzene-1-sulfonic acid	12
+Vanadium(2+) sulfate--water (1/1/7)	12
+2,3-Diformylbenzene-1-sulfonic acid	12
+Magnesium sulfate--water (1/1/6)	12
+4-(2-Phenylethyl)benzene-1-sulfonic acid	12
+Magnesium sulfate--water (1/1/3)	12
+Palladium(2+) sulfate--water (1/1/2)	12
+Trifluoromethane-SO-thioperoxol	12
+5-Methylnaphthalene-1-sulfonic acid	12
+8-Methylnaphthalene-2-sulfonic acid	12
+1,1,6,6-Tetrabromo-1,6-bis(tribromomethanesulfonyl)hexane	12
+2,4,6-Trichlorobenzene-1,3-disulfonic acid	12
+2,5-Dichlorobenzene-1,3-disulfonic acid	12
+4,6-Dichlorobenzene-1,3-disulfonic acid	12
+(Dioxo-lambda~6~-sulfanylidene)methanol	12
+4-Chlorobenzene-1,3-disulfonic acid	12
+1,1'-(Peroxydisulfonyl)di(ethan-1-one)	12
+4-Methylbenzene-1-sulfonoperoxoic acid	12
+But-3-ene-1,2-disulfonic acid	12
+Cyclopentyl trifluoromethanesulfonate	12
+(Naphthalen-1-yl)(diphenyl)sulfanium trifluoromethanesulfonate	12
+(4-Methylphenyl)(diphenyl)sulfanium trifluoromethanesulfonate	12
+(4-Fluorophenyl)(diphenyl)sulfanium trifluoromethanesulfonate	12
+Dysprosium sulfate--water (2/3/8)	12
+Cerium(4+) sulfate--sulfuric acid--water (1/2/1/1)	12
+Gadolinium sulfate--water (2/3/8)	12
+Terbium(3+) sulfate--water (2/3/8)	12
+Pentane-2-sulfonic acid	12
+1,1'-(Peroxydisulfonyl)bis[3-(trifluoromethyl)benzene]	12
+3-(Fluorosulfonyl)benzoyl fluoride	12
+Methyl(diphenyl)silyl trifluoromethanesulfonate	12
+1-[(Trifluoromethanesulfonyl)methyl]-4-(trifluoromethyl)benzene	12
+3-Phosphonobenzene-1-sulfonic acid	12
+1,1,2,2-Tetrafluoro-2-{[1,1,1,2,3,3-hexafluoro-3-(pentafluoroethoxy)propan-2-yl]oxy}ethane-1-sulfonyl fluoride	12
+{[(Methanesulfonyl)peroxy]sulfonyl}methane	12
+Benzene-1,2,3-trisulfonic acid	12
+1-Oxo-1-phenylpropan-2-yl trifluoromethanesulfonate	12
+[(Trifluoromethanesulfonyl)ethynyl]cyclohexane	12
+1,1,1-Trifluoropropan-2-yl 4-methylbenzene-1-sulfonate	12
+3-(Trifluoromethyl)benzene-1-sulfonyl fluoride	12
+2,2-Difluoropropane-1,3-disulfonyl difluoride	12
+3-Chloro-1,1,3,3-tetrafluoro-2-oxopropyl sulfurofluoridate	12
+1-Bromoethene-1-sulfonyl fluoride	12
+Dipotassium 1,1,2,2,3,3,4,4-octafluoro-4-(1,1,2,2-tetrafluoro-2-sulfinatoethoxy)butane-1-sulfinate	12
+1-(1,1,2,2,3,3,4,4,4-Nonafluorobutane-1-sulfonyl)pent-1-yne	12
+Methanesulfonyl iodide	12
+5-Methylthiophene-2-sulfonic acid	12
+methyl vinylsulfonate	12
+Benzene, [(difluoroiodomethyl)sulfonyl]-	12
+2,2,2-TRICHLOROETHYL CHLOROSULFATE	12
+Methane-d3-sulfonyl chloride	12
+Ethenesulfinic Acid	12
+Acetic acid, difluoro[1,1,2,2-tetrafluoro-2-(fluorosulfonyl)ethoxy]-	12
+Methanesulfonic acid, trifluoro-, 1,5-cyclohexadien-1-yl ester	12
+Dicyclohexyl(trifluoromethanesulfonyloxy)borane	12
+propyl triflate	12
+4'-Methyl[1,1'-biphenyl]-4-sulfonic acid	12
+Methanesulfonic acid, trifluoro-, 4-pentenyl ester	12
+Methanesulfonothioic acid, trifluoro-, S-phenyl ester	12
+2-(TRIFLUOROMETHOXY)ETHYL TRIFLUOROMETHANESULFONATE	12
+6-methylnaphthalene-2-sulfonic Acid	12
+Ethenesulfonyl fluoride, 2-phenyl-	12
+Cesium methanesulfonate	12
+TDS triflate	12
+1-fluoro-4-(trifluoromethylsulfonyl)benzene	12
+3,3,3-trifluoro-1-(phenylsulphonyl)prop-1-ene	12
+Cyclopropanesulfonyl chloride	12
+bis(2,2,3,3,4,4,5,5-octafluoropentyl) sulfate	12
+1-(difluoromethylsulfonyl)-4-methylbenzene	12
+1-methyl-4-(trifluoromethylsulfonyl)benzene	12
+Methanesulfonic acid, trifluoro-, 3-methylphenyl ester	12
+p-Tolyl triflate	12
+m-Fluorophenyl trifluoromethanesulfonate	12
+Methyl 2-propanesulfonate	12
+9,10-diphenylanthracene-2-sulfonic Acid	12
+4-Methylpent-3-en-1-yn-3-yl trifluoromethanesulfonate	12
+3-Methylbut-2-en-2-yl trifluoromethanesulfonate	12
+bis(2,2,2-trifluoroethyl) sulfite	12
+NSC227857	12
+Bromo[di(methanesulfonyl)]methane	12
+2,2,2-trifluoroethyl benzenesulfonate	12
+4-formylbenzenesulfonyl fluoride	12
+3-Bromo-2,4-dimethylbenzene-1-sulfonic acid	12
+Methanesulfonyl bromide	12
+2,6-dimethylbenzenesulfonic Acid	12
+dithionous acid	12
+Disilver tetrasodium tris(thiosulphate)	12
+5-Chloro-2-formylbenzenesulphonic acid	12
+Zinc sulfate, dihydrate	12
+Sodium sulfate [USP]	12
+Sulfuric acid, zirconium(4+) salt (2:1), tetrahydrate	12
+Sulfuric acid, yttrium(3+) salt (3:2), octahydrate	12
+Antimony sulfate	12
+Isopropyl hydrogen sulphate	12
+4,4'-Thiodibenzenesulfonic acid	12
+tert-Butyldimethylsilyl trifluoromethanesulphonate	12
+Platinum (II) sulfate, tetrahydrate	12
+Rozenite (Fe(SO4).4H2O)	12
+Methane, dichloro((chloromethyl)sulfonyl)-	12
+Sulfuric acid, aluminum salt, hydrate	12
+Thiosulfuric acid (H2S2O3), Silver(1+) sodium salt (2:1:3)	12
+Platinum(II) sulfate	12
+1,1,2-Ethanetrisulfonic acid	12
+Cyclohexylidenemethyl trifluoromethanesulfonate	12
+Sulfuric acid, scandium(3+) salt (3:2), octahydrate	12
+Nickel sulfate (Ni(HSO4)2)	12
+Sulfuric acid, zinc salt (1:1), mixt. with sulfuric acid copper(2+) salt (1:1)	12
+Bismuth sulfate	12
+Ferric sulfate heptahydrate	12
+Methane, dichlorobis(methylsulfonyl)-	12
+Benzene-m-disulphonate	12
+Calcium tetrathionate	12
+Silver sulfate	12
+Aluminum sulfate tetradecahydrate	12
+Methanesulfinic acid	12
+2,2,2-Trifluoroethanesulfonyl chloride	12
+Chromous sulfate pentahydrate	12
+Chromium(III) sulfate, hexahydrate (2:3:6)	12
+Lithium potassium sulphate	12
+Triammonium hydrogen disulphate	12
+Sulfuric acid, manganese(2+) salt (1:1), heptahydrate	12
+Sulfur tetrafluoride oxide	12
+Iron(III) sulfate (2:3), hexahydrate	12
+Chromous sulfate	12
+Chromium sulfate octahydrate	12
+Sodium tetrathionate, dihydrate (6CI,7CI)	12
+Selenium sulfate	12
+Magnesium thiosulfate hexahydrate	12
+Aluminum(1+), (sulfato(2-)-kappaO)-	12
+Cuprous sulfite hemihydrate	12
+3-Iodopropyl-1-trifluoromethanesulfonate	12
+3-Bromopropyl-1-trifluoromethanesulfonate	12
+Isopropyl sulfonyl chloride	12
+Sulfuric acid, dimercury(1+) salt	12
+1-Propyne-1-sulfonic acid, sodium salt	12
+Benzenesulfonic acid, ammonium salt	12
+Mercuric sulfate	12
+2-Propanesulfonic acid, 2-hydroxy-	12
+Methanesulfonic acid, potassium salt	12
+2-Propanesulfonic acid, sodium salt	12
+Fluorosulfuric acid, ethyl ester	12
+Benzenesulfonyl fluoride	12
+Cyclohexanesulfonyl fluoride, undecafluoro-	12
+Copper hydroxide sulfate (Cu4(OH)?6(SO4)?)	12
+Zinc sulfate hexahydrate	12
+Barium sulfate	12
+Lithium sulfate	12
+Ammonium bisulfite	12
+3,4-Dimethylbenzenesulfonic acid	12
+Calcium sulfate dihydrate	12
+2-Formylbenzenesulfonic acid	12
+2,4-Dimethylbenzenesulfonic acid	12
+Potassium tetrathionate	12
+Tosylate	12
+Manganese sulfate (1:1)	12
+Sodium thiosulfate, pentahydrate	12
+4-Methylbenzenesulfonic acid hydrate	12
+Magnesium sulfate	12
+2,5-Dimethylbenzenesulfonic acid	12
+Iron(II) sulfate heptahydrate	12
+Zinc sulfate	12
+Aluminum sulfate	12
+Magnesium sufate heptahydrate	12
+Nickel(II) sulfate heptahydrate	12
+Zinc sulfate heptahydrate	12
+Copper oxychloride sulfate	12
+Copper sulfate	12
+Potassium peroxymonosulfate	12
+Ferric sulfate	12
+Lead oxide sulfate	12
+Tetralead trioxide sulfate	12
+Potassium sulfate	12
+Calcium sulfate	12
+Cobalt sulfate	12
+Iron(II) sulfate	12
+Pentalead tetraoxide sulfate	12
+Copper(II) sulfate, pentahydrate	12
+Sodium ethenesulfonate	12
+Ethanesulfonic acid, 1-hydroxy-, monosodium salt	12
+Beryllium sulfate tetrahydrate	12
+Nickel sulfate	12
+Methanesulfonyl chloride	12
+Sodium sulfate anyhdrous	12
+Zirconium(IV) sulfate	12
+Vanadyl sulfate	12
+Nickel(II) sulfate hexahydrate	12
+Beryllium sulfate	12
+Cadmium sulfate (1:1) hydrate (3:8)	12
+Cobalt sulfate heptahydrate	12
+Cadmium sulfate (1:1)	12
+[4,4-Bis(trifluoromethanesulfonyl)buta-1,3-dien-1-yl]benzene	13
+Methanesulfonic acid--but-3-yn-2-ol (1/1)	13
+1-[2-(Methanesulfonyl)ethenyl]-3,5-bis(trifluoromethyl)benzene	13
+[(Dioxo-lambda~6~-sulfanylidene)methyl]phosphane	13
+3-(Dioxo-lambda~6~-sulfanylidene)prop-1-yne	13
+[(Dioxo-lambda~6~-sulfanylidene)methyl]silane	13
+Sulfurofluoridic acid--1,3-diphenylprop-2-yn-1-one (1/1)	13
+2-[2-(1,1,2,2,3,3,4,4,5,5,6,6,6-Tridecafluorohexane-1-sulfonyl)ethenyl]furan	13
+2-[2-(1,1,2,2,3,3,4,4,5,5,6,6,6-Tridecafluorohexane-1-sulfonyl)ethenyl]thiophene	13
+1-Methylcyclopropyl trifluoromethanesulfonate	13
+1,5-Dimethyl-1,1,5,5-tetraoxo-1lambda~6~,5lambda~6~-pentasulfane	13
+Methanesulfonic acid--(2S)-but-3-yn-2-ol (1/1)	13
+Anthracene-1,6-disulfonic acid	13
+Prop-2-en-1-yl trifluoromethanesulfinate	13
+5-(Trifluoromethanesulfonyl)pent-1-ene	13
+1-Phenylethyl trifluoromethanesulfinate	13
+1-Iodonaphthalene-2-sulfonic acid	13
+4-Fluoro-2-sulfobenzoic acid	13
+2-(Trimethylsilyl)ethene-1-sulfonic acid	13
+Methyl dichloromethanesulfinate	13
+3-Phenylprop-1-en-2-yl trifluoromethanesulfonate	13
+Benzenesulfonic acid--2,2,3,3-tetrafluoropropan-1-ol (1/1)	13
+PUBCHEM_71372572	13
+Bromo(methanesulfonyl)acetyl chloride	13
+[2,2-Bis(1,1,2,2,3,3,4,4,4-nonafluorobutane-1-sulfonyl)ethenyl]benzene	13
+3-[Bis(trifluoromethanesulfonyl)methyl]-1,2,4,5-tetrafluorobenzene	13
+6-(Trifluoromethyl)pyridine-2-sulfonic acid	13
+Cerium(3+) dihydrogen phosphate sulfate (1/1/1)	13
+PUBCHEM_71357014	13
+PUBCHEM_71349617	13
+4-[(Benzenesulfonyl)carbonyl]benzene-1-sulfonic acid	13
+2-[Bis(trifluoromethyl)amino]-1,1,2,2-tetrafluoroethane-1-sulfonyl fluoride	13
+Methanesulfonic acid--fluoromethanol (1/1)	13
+PUBCHEM_71341500	13
+PUBCHEM_71340868	13
+PUBCHEM_71341782	13
+But-2-ene-2-sulfinic acid	13
+2,6-Dihydroxy-6-sulfohexa-2,4-dienoic acid	13
+Fluoranthene-2-sulfonic acid	13
+(~13~C)Methanesulfonyl chloride	13
+4-(Trifluoromethanesulfonyl)benzene-1-sulfonyl chloride	13
+2-Methyl-1-(trifluoromethanesulfonyl)propane	13
+PUBCHEM_57377209	13
+PUBCHEM_57375696	13
+Zinc sulfate--aluminium (1/1/1)	13
+2-(2,4,6-Trimethylphenyl)ethene-1-sulfonic acid	13
+Chromium(3+) sodium sulfate--water (1/1/2/12)	13
+Anthracene-1,7-disulfonic acid	13
+Sodium dithionate--water (2/1/2)	13
+4'-Formyl[1,1'-biphenyl]-4-sulfonic acid	13
+2-Iodobenzene-1-sulfonic acid--water (1/2)	13
+Europium(3+) sodium sulfate (1/1/2)	13
+PUBCHEM_54602481	13
+3-Hydroxyprop-1-ene-1-sulfonic acid	13
+2-(2-Phenylethenyl)benzene-1-sulfonic acid	13
+Sulfuric acid--(~15~N)ammonia (1/2)	13
+4-[(Trifluoromethyl)sulfanyl]phenyl trifluoromethanesulfonate	13
+(4-Methylphenyl)(phenyl)[(1E)-3,3,3-trifluoroprop-1-en-1-yl]sulfanium trifluoromethanesulfonate	13
+4-[(Trifluoromethyl)sulfanyl]benzene-1-sulfonyl chloride	13
+Sodium 2,3-dibromopropane-1-sulfonate	13
+Phosphorodifluoridothioic O-acid	13
+4'-Cyano[1,1'-biphenyl]-4-sulfonic acid	13
+3-(4-Fluorophenyl)propane-1-sulfonic acid	13
+2-Iodonaphthalene-1-sulfonic acid	13
+Naphthalene-1,4,6-trisulfonic acid	13
+PUBCHEM_22480701	13
+Cyclobutanesulfonyl chloride	13
+Sulfuriodidoite	13
+Bismuth(3+) sulfite (2/3)	13
+1,3-Bis(tribromomethanesulfonyl)benzene	13
+(Dioxo-lambda~6~-sulfanylidene)acetaldehyde	13
+1,1-Difluoromethanesulfonamide	13
+Trifluoro(methanesulfinyl)methane	13
+2,3-Diiodoanthracene-1-sulfonic acid	13
+5-Formyl-2-methylbenzene-1-sulfonic acid	13
+Naphthalene-1,4,5-trisulfonic acid	13
+Dichloromethanesulfinyl chloride	13
+3-Methylbutane-2-sulfonyl chloride	13
+2-(Diiodomethanesulfonyl)-2-methylpropane	13
+2-Chloronaphthalene-1-sulfonic acid	13
+2,5-Dichlorobenzene-1-sulfonic acid--water (1/2)	13
+Ethyl 1,1,3,3,3-pentafluoro-2-oxopropane-1-sulfonate	13
+Calcium sulfate--phosphoric acid (1/1/1)	13
+4-Boronobenzene-1-sulfonic acid	13
+(Dioxo-lambda~6~-sulfanylidene)ethane	13
+2,3,5,6-Tetrafluoro-4-sulfobenzoic acid	13
+2-Methylbenzene-1,3,5-trisulfonic acid	13
+Potassium sodium sulfite (1/1/1)	13
+1-Chloro-1-hydroxypropane-1-sulfonic acid	13
+Bis(dioxo-lambda~6~-sulfanylidene)methane	13
+[2,2-Bis(trifluoromethanesulfonyl)ethenyl]benzene	13
+2,3,5-Trimethylbenzene-1-sulfonic acid	13
+2-Hydroxyethane-1,1-disulfonic acid	13
+3-Formylbenzene-1,2-disulfonic acid	13
+Sulfurobromidoite	13
+(4-Ethylphenyl)methanesulfonic acid	13
+(4-Bromophenyl)(diphenyl)sulfanium trifluoromethanesulfonate	13
+(4-Chlorophenyl)(diphenyl)sulfanium trifluoromethanesulfonate	13
+(4-Iodophenyl)(diphenyl)sulfanium trifluoromethanesulfonate	13
+4-(Difluoromethanesulfonyl)benzene-1-sulfonyl chloride	13
+PUBCHEM_15874544	13
+3-(1,1,1,2,3,3,3-Heptafluoropropane-2-sulfonyl)benzoic acid	13
+6-(4-Methylphenyl)naphthalene-2-sulfonic acid	13
+2,2-Dimethylpropyl trifluoromethanesulfonate	13
+4-(1,1,1,2,3,3,3-Heptafluoropropane-2-sulfonyl)benzoic acid	13
+4-(1,1,2,2,3,3,3-Heptafluoropropane-1-sulfonyl)benzoic acid	13
+3-(1,1,2,2,3,3,3-Heptafluoropropane-1-sulfonyl)benzoic acid	13
+3-(Trifluoromethanesulfonyl)benzoic acid	13
+4-Chloronaphthalene-1,6-disulfonic acid	13
+3-(Heptadecafluorooctyl)benzene-1-sulfonyl chloride	13
+Cyclohexyl trifluoromethanesulfonate	13
+1-[Bis(trifluoromethanesulfonyl)methyl]naphthalene	13
+3,5-Difluorobenzene-1-sulfonyl fluoride	13
+{[(Benzenesulfonyl)(difluoro)methyl]sulfanyl}benzene	13
+Naphthalene-1,4-disulfonic acid	13
+Methyl 2,2,3,3-tetrafluoro-3-(methanesulfonyl)propanoate	13
+Dimethyl(phenyl)silyl trifluoromethanesulfonate	13
+2-Methylhex-2-en-4-yn-3-yl trifluoromethanesulfonate	13
+Fluoromethanesulfonyl chloride	13
+(2-Chlorophenyl)methanesulfonic acid	13
+2,3,4,5-Tetramethylbenzene-1-sulfonic acid	13
+Methyl dichloro(methanesulfonyl)methanesulfinate	13
+4-Phenylbut-3-yn-1-yl trifluoromethanesulfonate	13
+Difluoro[1,1,2,2-tetrafluoro-2-(fluorosulfonyl)ethoxy]acetyl chloride	13
+4-Cyclopropylbut-3-yn-1-yl trifluoromethanesulfonate	13
+3-Chlorophenyl trifluoromethanesulfonate	13
+[2-(Trifluoromethanesulfonyl)ethyl]benzene	13
+Naphthalene-1,3-disulfonic acid	13
+1,1,2,2-Tetrafluoro-2-(1,1,2,2-tetrafluoro-4-iodobutoxy)ethane-1-sulfonyl fluoride	13
+1-Chloro-4-[chloro(difluoro)methanesulfonyl]benzene	13
+2,2-Bis(sulfomethyl)propane-1,3-disulfonic acid	13
+2-Methylbenzene-1,3-disulfonic acid	13
+[1,1'-Biphenyl]-2-sulfonic acid	13
+(1,1,2,2,3,3,4,4,4-Nonafluorobutane-1-sulfonyl)acetonitrile	13
+Sulfene	13
+1,3,6-Pyrenetrisulfonic acid	13
+Benzenesulfonic acid, 3,4-dicyano-	13
+1,3,7-Naphthalenetrisulfonic acid	13
+Methanesulfonic acid, trifluoro-, 4-chlorobutyl ester	13
+Perfluorohexanesulfonamide	13
+Ethanesulfonyl chloride, 1,1,2,2-tetrafluoro-2-[(trifluoroethenyl)oxy]-	13
+Hexane, 1-(ethenylsulfinyl)-1,1,2,2,3,3,4,4,5,5,6,6,6-tridecafluoro-	13
+Ethanesulfonamide, 1,1,2,2,2-pentafluoro-	13
+Methanesulfonic acid, trifluoro-, tris(pentafluorophenyl)silyl ester	13
+[Hydroxy(methanesulfonyloxy)iodo]benzene	13
+Methanesulfonic acid, trifluoro-, 1,3-cyclohexadien-1-yl ester	13
+Methanesulfonic acid, trifluoro-, 3-pentynyl ester	13
+4-(trifluoromethanesulfonyloxy)benzaldehyde	13
+2-(Trifluoromethyl)phenyl trifluoromethanesulfonate	13
+1-CHLORO-1-ETHENESULFONYL CHLORIDE	13
+1-[Bis(trifluoromethanesulfonyl)methyl]-2,3,4,5,6-pentafluorobenzene	13
+2,6-Anthracenedisulfonic acid	13
+Ethanesulfonothioic acid	13
+Bis(1,5-cyclooctadiene)rhodium(I) trifluoromethanesulfonate	13
+2,7-Anthracenedisulfonic acid	13
+Acetonitrile, [(trifluoromethyl)sulfonyl]-	13
+3-Fluoranthenesulfonic acid	13
+8-cyanonaphthalene-1-sulfonic acid	13
+4-(Difluoromethanesulfonyl)benzoic acid	13
+1,3,5,7-Naphthalenetetrasulfonic acid	13
+4-(Trifluoromethanesulfonyl)benzonitrile	13
+1h,1h-perfluorohexyl p-toluenesulfonate	13
+1h,1h-nonafluoropentyl p-toluenesulfonate	13
+2,2-Difluoroethyl p-toluenesulfonate	13
+4-(Trifluoromethyl)benzenesulfonyl chloride	13
+1H,1H,9H-Perfluorononyl p-toluenesulfonate	13
+2,2,3,3,4,4,5,5-Octafluoropentyl 4-methylbenzene-1-sulfonate	13
+2,2,3,3,3-Pentafluoropropyl 4-methylbenzene-1-sulfonate	13
+4-trifluoromethylphenylmethylsulfone	13
+3,3,3-Trifluoropropane-1-sulfonyl chloride	13
+Benzenesulfonic acid, 3-benzoyl-	13
+Pyridinium trifluoromethanesulfonate	13
+3-(Trifluoromethyl)benzenesulfonyl chloride	13
+1-chloro-4-[(1,1,2,2,3,3,3-heptafluoropropane)sulfonyl]benzene	13
+2,2,3,3-tetrafluoropropyl p-toluenesulfonate	13
+2,2,3,3,4,4,4-Heptafluorobutyl 4-methylbenzene-1-sulfonate	13
+4-Trifluoromethanesulfonyl-benzoic acid	13
+1-Chloro-4-(trifluoromethanesulfonyl)benzene	13
+1-(dichloromethylsulfonylmethyl)-3-(trifluoromethyl)benzene	13
+2,2,3,3,4,4,5,5,6,6,7,7-Dodecafluoroheptyl 4-methylbenzenesulfonate	13
+4-Chlorophenyl trifluoromethanesulfonate	13
+Methanesulfonic acid, trifluoro-, 3-cyanophenyl ester	13
+4-Cyanophenyl trifluoromethanesulfonate	13
+(4-chlorophenyl) 1,1,2,2,3,3,4,4,4-nonafluorobutane-1-sulfonate	13
+2-Propenoic acid, 2-sulfo-	13
+2-methylpropane-2-sulfinic acid	13

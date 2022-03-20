@@ -50,6 +50,31 @@ exports.listRelationshipTypes = function (req, res, next) {
         .catch(next);
 };
 
+/**
+ * @openapi
+ * /relationships/fromStartNodeId/{id}:
+ *   get:
+ *     tags:
+ *     - relationships
+ *     description: Get all edges incident to the query node by node ID
+ *     summary: Get all edges incident to the query node by node ID
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Neo4j Node ID corresponding to the query node
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful query
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: '#/components/schemas/Node'
+ */
 exports.findRelationshipsByNode = function(req, res, next) {
     Relationships.findRelationshipsByNode(dbUtils.getSession(req), req.params.id)
         .then(response => writeResponse(res, response))

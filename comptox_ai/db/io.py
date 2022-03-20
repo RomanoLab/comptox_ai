@@ -208,3 +208,63 @@ class TabularExporter(DbExporter):
       df.index = names
 
       return df
+
+def get_node_statistics(statistic, node_type: str = None):
+  """
+  Retrieve a specific statistic for nodes, optionally of a single node type.
+
+  Parameters
+  ----------
+  statistic : {'degree'}
+    The statistic to retrieve. See below for details.
+  node_type : str
+    Node type (label) to retrieve. E.g., `'Chemical'`.
+  top_n : int or None, default 1000
+    Number of nodes to retrieve statistics for, sorted by 'top' values. Top
+    value ordering is semantically specific to the statistic. E.g., `'degree'`
+    will sort in descending order.
+
+  Returns
+  -------
+  pandas.DataFrame
+    Data frame containing node identifiers, node name, and the desired
+    statistic values.
+
+  Notes
+  -----
+  `'degree'` is the total number of incident edges to the node in question.
+
+  """
+  if node_type == 'degree':
+     query_res = _get_node_degrees(node_type)
+  else:
+    raise ValueError(f"Error - statistic {node_type} not currently recognized or supported.")
+
+def _get_node_degrees(graph_db: comptox_ai.graph.GraphDB, node_type_label: str, extra_id: str, limit: int = 1000):
+  safe_label = node_type_label.capitalize()
+  if limit:
+    limit_clause = f"LIMIT {limit}"
+  else:
+    limit_clause = ""
+  
+  degree_query = f"""
+  CALL gds.degree.stream(
+      {{
+          nodeProjection: "*",
+          relationshipProjection: "*",
+          orientation: "UNDIRECTED"
+      }}
+  ) YIELD
+  nodeId, score
+  WITH
+      gds.util.asNode(nodeId).commonName AS name,
+      score AS degree,
+      LABELS(gds.util.asNode(nodeId)) AS labels,
+      gds.util.asNode(nodeId).{extra_id} AS {extra_id}
+  WHERE '{safe_label}' IN labels AND {extra_id} IS NOT NULL
+  RETURN name, nodeId, {extra_id}, degree
+  ORDER BY degree DESC, name DESC
+  {limit_clause};
+  """
+
+  return graph_db.run_cypher(degree_query)

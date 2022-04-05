@@ -23,7 +23,7 @@ const Datasets = require('../models/datasets');
  *       - name: chemList
  *         in: query
  *         description: EPA Chemical List acronym (see first column of https://comptox.epa.gov/dashboard/chemical-lists)
- *         required: true
+ *         required: false
  *         schema:
  *           type: string
  *     responses:

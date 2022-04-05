@@ -240,7 +240,7 @@ def get_node_statistics(statistic, node_type: str = None):
   else:
     raise ValueError(f"Error - statistic {node_type} not currently recognized or supported.")
 
-def _get_node_degrees(graph_db: comptox_ai.graph.GraphDB, node_type_label: str, extra_id: str, limit: int = 1000):
+def _get_node_degrees(graph_db, node_type_label: str, extra_id: str, limit: int = 1000):
   safe_label = node_type_label.capitalize()
   if limit:
     limit_clause = f"LIMIT {limit}"

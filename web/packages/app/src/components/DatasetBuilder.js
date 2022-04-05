@@ -23,8 +23,8 @@ const DatasetBuilderQueryForm = (props) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    // Open new tab with API URL
-    window.open(`http://localhost:3000/datasets/makeQsarDataset?assay=${assayValue.assayId}&chemList=${chemListValue.acronym}`);
+    // Open new tab with API URL (should we refactor to use Redux or is this good enough?)
+    window.open(`https://comptox.ai/api/datasets/makeQsarDataset?assay=${assayValue.assayId}&chemList=${chemListValue.acronym}`);
   }
 
   const handleToggleCheckbox = (event) => {

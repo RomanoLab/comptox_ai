@@ -2,16 +2,24 @@ const { PythonShell } = require('python-shell');
 
 const makeQsarDataset = function (assay, chemList) {
 
+    let scriptArgs = [
+        '--assay-abbrev',
+        assay
+    ];
+    console.log("Testing...");
+    if (chemList !== undefined) {
+        console.log("No list provided!");
+        scriptArgs.push('--chem-list', chemList);
+    }
+
+    console.log("Args:");
+    console.log(scriptArgs);
+
     return new Promise( (resolve, reject) => {
         const options = {
             scriptPath: '../../../comptox_ai/scripts',
             mode: 'json',
-            args: [
-                '--assay-abbrev',
-                assay,
-                '--chem-list',
-                chemList
-            ]
+            args: scriptArgs
         };
         
         const pyshell = PythonShell.run('make_qsar.py', options, (err, results) => {
@@ -20,8 +28,6 @@ const makeQsarDataset = function (assay, chemList) {
                 console.log(err);
                 reject(err);
             }
-            // console.log(results);
-            // return eval(results);
             return (results);
         });
 

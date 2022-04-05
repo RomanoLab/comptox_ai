@@ -9,6 +9,7 @@ const writeResponse = require('../helpers/response').writeResponse;
  *   schemas:
  *     Graph:
  *       type: object
+ *       description: A graph or subgraph retrieved from ComptoxAI.
  *       properties:
  *         nodes:
  *           type: array

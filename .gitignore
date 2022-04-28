@@ -101,3 +101,5 @@ CONFIG.cfg
 CONFIG.yaml
 catalog-*.xml
 comptox_*.rdf
+
+scripts/pfhxs

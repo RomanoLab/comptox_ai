@@ -1,5 +1,11 @@
 const { PythonShell } = require('python-shell');
 
+/**
+ * 
+ * @param {*} assay 
+ * @param {*} chemList 
+ * @returns 
+ */
 const makeQsarDataset = function (assay, chemList) {
 
     let scriptArgs = [

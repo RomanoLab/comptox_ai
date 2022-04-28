@@ -56,7 +56,8 @@ setuptools.setup(
         'openpyxl==3.0.7',
         'owlready2==0.34',
         'PyYAML==5.3.1',
-        'ipdb==0.13.9'
+        'ipdb==0.13.9',
+        'ista @ git+https://github.com/JDRomano2/ista@v0.1.0#egg=ista'
     ],
     extras_require={
         "testing": ["pytest"],

@@ -20,5 +20,6 @@ for synonym_file in tqdm(glob.glob("D:\\data\\epa\\DSSTox_synonyms_SDF_File_2018
 
 print("writing to file...")
 with open("D:\\data\\epa\\CUSTOM\\synonyms.tsv", 'w', encoding='utf-8') as fp:
+    fp.write("DTXSID\tsynonyms\n")
     for syn in synonyms:        
         fp.write(f"{syn[0]}\t{'|'.join(syn[1])}\n")

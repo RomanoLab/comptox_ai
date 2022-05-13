@@ -3,12 +3,14 @@
 
 """
 
-from ista import FlatFileDatabaseParser, MySQLDatabaseParser
+from ista import FlatFileDatabaseParser, MySQLDatabaseParser, load_kb
 from ista.util import print_onto_stats
 
 import os
 from pathlib import Path
 from yaml import load, Loader
+
+import ipdb
 
 import owlready2
 
@@ -25,6 +27,9 @@ config_file = _get_default_config_file()
 with open(config_file, "r") as fp:
     CONFIG = load(fp, Loader=Loader)
 DATA_DIR = CONFIG["data"]["prefix"]
+print("Data directory:", DATA_DIR)
+OUT_DIR = CONFIG["data"]["outdir"]
+print("Output will be written to:", OUT_DIR)
 
 
 WARM_START = False
@@ -43,17 +48,16 @@ if "socket" in cnf["mysql"]:
     mysql_config["socket"] = cnf["mysql"]["socket"]
 
 #print("INITIAL ONTOLOGY STATISTICS:")
-#print_ontology_stats(onto)
+print_onto_stats(onto)
 
-epa = FlatFileDatabaseParser("epa", onto)
-ncbigene = FlatFileDatabaseParser("ncbigene", onto)
-drugbank = FlatFileDatabaseParser("drugbank", onto)
-hetionet = FlatFileDatabaseParser("hetionet", onto)
+epa = FlatFileDatabaseParser("epa", onto, DATA_DIR)
+ncbigene = FlatFileDatabaseParser("ncbigene", onto, DATA_DIR)
+drugbank = FlatFileDatabaseParser("drugbank", onto, DATA_DIR)
+hetionet = FlatFileDatabaseParser("hetionet", onto, DATA_DIR)
 aopdb = MySQLDatabaseParser("aopdb", onto, mysql_config)
-# invitrodb = MySQLDatabaseParser("invitrodb", onto, mysql_config)
-aopwiki = FlatFileDatabaseParser("aopwiki", onto)
-tox21 = FlatFileDatabaseParser("tox21", onto)
-disgenet = FlatFileDatabaseParser("disgenet", onto)
+aopwiki = FlatFileDatabaseParser("aopwiki", onto, DATA_DIR)
+tox21 = FlatFileDatabaseParser("tox21", onto, DATA_DIR)
+disgenet = FlatFileDatabaseParser("disgenet", onto, DATA_DIR)
 
 # Add nodes and node properties in a carefully specified order
 
@@ -101,27 +105,7 @@ else:
     )
     # with open("D:\\projects\\comptox_ai\\comptox_mid.rdf", "wb") as fp:
     #     onto.save(file=fp, format="rdfxml")
-    # ipdb.set_trace()
-    # epa.parse_node_type(
-    #     node_type="Chemical",
-    #     source_filename="CUSTOM_cid_maccs.tsv",
-    #     fmt="tsv",
-    #     parse_config={
-    #         "iri_column_name": "CID",
-    #         "headers": True,
-    #         "data_property_map": {
-    #             "CID": onto.xrefPubchemCID,
-    #             "MACCS": onto.maccs
-    #         },
-    #         "merge_column": {
-    #             "source_column_name": "CID",
-    #             "data_property": onto.xrefPubchemCID
-    #         },
-    #     },
-    #     merge=True,
-    #     skip_create_new_node=True,  # Don't create an empty chemical node with just a MACCS property if the CID isn't already in the ontology
-    #     skip=False
-    # )
+
     epa.parse_node_type(
         node_type="Chemical",
         source_filename="CUSTOM/chemical_maccs_fingerprints.tsv",
@@ -198,7 +182,30 @@ else:
     else:
         raise NotImplementedError("Whoops!")
 
-#onto = owlready2.get_ontology("file://{}".format(os.path.join(repo_root, "comptox_mid.rdf"))).load()
+    #onto = owlready2.get_ontology("file://{}".format(os.path.join(repo_root, "comptox_mid.rdf"))).load()
+
+# Synonyms
+epa.parse_node_type(
+    node_type="Chemical",
+    source_filename="CUSTOM/synonyms.tsv",
+    fmt="tsv",
+    parse_config={
+        "iri_column_name": "DTXSID",
+        "headers": True,
+        "data_property_map": {
+            "DTXSID": onto.xrefDTXSID,
+            "synonyms": onto.synonyms
+        },
+        "merge_column": {
+            "source_column_name": "DTXSID",
+            "data_property": onto.xrefDTXSID
+        }
+    },
+    merge=True,
+    skip_create_new_node=True,
+    skip=False
+)
+
 
 ##################
 # DRUGBANK NODES #
@@ -386,25 +393,6 @@ aopdb.parse_node_type(
     skip=False
 )
 
-###################
-# INVITRODB NODES #
-###################
-# invitrodb.parse_node_type(
-#     node_type="Chemical",
-#     source_table="chemical",
-#     parse_config={
-#         "iri_column_name": "dsstox_substance_id",
-#         "data_property_map": {
-#             "chid": onto.xrefGSID
-#         },
-#         "merge_column":{
-#             "source_column_name": "dsstox_substance_id",
-#             "data_property": onto.xrefDTXSID,
-#         }
-#     },
-#     merge=True,
-#     skip=False
-# )
 
 # Add relationships and relationship properties
 # Options for "source_type":
@@ -624,13 +612,9 @@ hetionet.parse_relationship_type(
     skip=False
 )
 
-# ipdb.set_trace()
-
 # # Save the ontology to a new file
 # with open("D:\\projects\\comptox_ai\\comptox_mid.rdf", "wb") as fp:
 #     onto.save(file=fp, format="rdfxml")
-
-# ipdb.set_trace()
 
 aopwiki.parse_relationship_type(
     relationship_type=onto.keyEventTriggers,
@@ -724,9 +708,19 @@ tox21.parse_relationship_type(
 ipdb.set_trace()
 
 # Save the ontology to a new file
-if os.name == 'nt':
-    with open("D:\\projects\\comptox_ai\\comptox_populated.rdf", "wb") as fp:
-        onto.save(file=fp, format="rdfxml")
-else:
-    with open(cnf["data"]["output_file"], 'wb') as fp:
-        onto.save(file=fp, format="rdfxml")
+with open(os.path.join(OUT_DIR, "comptox_populated.rdf"), "wb") as fp:
+    onto.save(file=fp, format="rdfxml")
+
+print("Ontology build successful!")
+print_onto_stats(onto)
+
+def yes_or_no(question):
+    while "the answer is invalid":
+        reply = str(input(question+' (y/n): ')).lower().strip()
+        if reply[0] == 'y':
+            return True
+        if reply[0] == 'n':
+            return False
+
+if yes_or_no("Do you want to load the database into Neo4j right away?"):
+    load_kb(os.path.join(OUT_DIR, "comptox_populated.rdf"))

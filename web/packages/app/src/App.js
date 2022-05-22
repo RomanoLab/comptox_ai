@@ -1,7 +1,10 @@
 import React from 'react';
 import Container from '@mui/material/Container';
+// import { Helmet } from 'react-helmet';
+// import ScriptTag from 'react-script-tag';
 
 import NodeSearch from './components/NodeSearch';
+import ChemicalSearch from './components/ChemicalSearch';
 import RelationshipSearch from './components/RelationshipSearch';
 import PathSearch from './components/PathSearch';
 import DatasetBuilder from './components/DatasetBuilder';
@@ -42,6 +45,7 @@ class App extends React.Component {
                 For detailed usage instructions, please see <a href="https://comptox.ai/browse.html">this page</a>.
               </p>
               {/* <HowToUse /> */}
+              <ChemicalSearch />
               <NodeSearch 
                 config={config.default}
               />

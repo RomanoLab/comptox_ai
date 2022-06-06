@@ -175,8 +175,20 @@ const NodeSearch = (props) => {
           
           <br/>
           <div className={classes.root}>
-            <Button variant="contained" color="primary" type="submit">Search</Button>
-            <Button variant="contained" color="primary" onClick={handleReset}>Clear Form</Button>
+            <Button 
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
+              Search
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleReset}
+            >
+              Clear Form
+            </Button>
           </div>
         </form>
       </div>

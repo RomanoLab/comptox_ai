@@ -100,3 +100,19 @@ h2 {
   font-weight: bold;
   margin-right: 24px;
 }
+
+#marvin-bottom-controls {
+  margin-left: 18px;
+  margin-right: 18px;
+  margin-top: 8px;
+  margin-bottom: 6px;
+}
+
+#current-smiles {
+  margin-top: 8px;
+  margin-bottom: 6px;
+  padding: 4px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  font-family: 'Courier New', Courier, monospace;
+}

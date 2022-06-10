@@ -72,6 +72,14 @@
         {
           "property": "xrefPubchemSID",
           "display": "PubChem SID"
+        },
+        {
+          "property": "sMILES",
+          "display": "SMILES string"
+        },
+        {
+          "property": "synonyms",
+          "display": "Synonyms"
         }
       ],
       "Gene": [

@@ -14,8 +14,8 @@ with open("README.md", 'r') as fp:
 package_src_dir = Path(__file__).parent
 
 MAJOR      = 1
-MINOR      = 0
-MICRO      = 0
+MINOR      = 1
+MICRO      = 2
 ISRELEASED = True
 VERSION    = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
 

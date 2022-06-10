@@ -15,7 +15,7 @@ Introducing ComptoxAI
 We're thrilled to present ComptoxAI---a new resource that's meant to act as a
 'home base' for advanced applications of artificial intelligence (AI) in the
 field of computational toxicology! A complete set of :ref:`user guides
-<user_guide>` and :ref:`documentation pages <docs>` are available on the main
+<user_guide>` and :ref:`documentation pages <api_docs>` are available on the main
 site, but we're writing this post to give a brief introduction to ComptoxAI and
 illustrate why it is important to the translational research community.
 

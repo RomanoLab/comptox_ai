@@ -13,7 +13,7 @@ class ChemicalSearch extends React.Component {
         ChemicalizeMarvinJs.createEditor("#marvin-editor").then(function (marvin) {
             function handleMolChange() {
                 console.log(marvin);
-                marvin.exportStructure().then(function (smiles) {
+                marvin.exportStructure("smiles").then(function (smiles) {
                     document.getElementById("current-smiles").innerHTML = "SMILES: " + smiles;
                 })
             }

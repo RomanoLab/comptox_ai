@@ -206,6 +206,28 @@ epa.parse_node_type(
     skip=False
 )
 
+# SMILES strings
+epa.parse_node_type(
+    node_type="Chemical",
+    source_filename="CUSTOM/dsstox_smiles_for_maccs.tsv",
+    fmt="tsv",
+    parse_config={
+        "iri_column_name": "DSSTox_Substance_ID",
+        "headers": True,
+        "data_property_map": {
+            "DSSTox_Substance_ID": onto.xrefDTXSID,
+            "SMILES": onto.SMILES
+        },
+        "merge_column": {
+            "source_column_name": "DSSTox_Substance_ID",
+            "data_property": onto.xrefDTXSID
+        }
+    },
+    merge=True,
+    skip_create_new_node=True,
+    skip=False
+)
+
 
 ##################
 # DRUGBANK NODES #

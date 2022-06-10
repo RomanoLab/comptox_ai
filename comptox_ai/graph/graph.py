@@ -77,7 +77,7 @@ class Graph(object):
     The internal data storage can be in several different formats, each of
     which has advantages in different scenarios.
 
-    Read more in the :ref:`User Guide <graph>`.
+    Read more in the :ref:`User Guide <user_guide>`.
 
     Parameters
     ----------
@@ -158,6 +158,11 @@ class Graph(object):
     def add_edges(self, edges: Union[List[tuple], tuple]):
         """
         Add one or more edges to the graph.
+
+        Parameters
+        ----------
+        edges : tuple or list of tuple
+            Edge or edges to add to the graph.
         """
         if isinstance(edges, tuple):
             self._data.add_edge(edges)

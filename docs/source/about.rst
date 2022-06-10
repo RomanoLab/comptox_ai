@@ -12,8 +12,10 @@ biological organization. However, the tools for interacting with these data are
 - at best - inconsistent, outdated, and fail to use state-of-the-art
 computational methods.
 
-Please refer to the :ref:`User Guide <user_guide>` for additional information on computational
-toxicology and the utilities provided by ComptoxAI.
+See also:
+
+- :ref:`User Guide <user_guide>` - An introduction to ComptoxAI and its features
+- :ref:`API Documentation <api_docs>` - Developer reference for ComptoxAI's Python library
 
 .. _authors:
 
@@ -32,7 +34,7 @@ Other important contributors include:
 - `Trevor Penning
   <https://www.med.upenn.edu/apps/faculty/index.php/g275/p12620>`_ (Penn)
 - Holly Mortensen (US EPA)
-- Jonathan Senn (US EPA)
+- Jonathan Senn (formerly US EPA)
 - Mei Liang (US EPA)
 
 .. _citing:
@@ -79,7 +81,7 @@ ComptoxAI consists of data integrated from a wide range of third-party, open
 access databases (many of which are relational databases rather than graph
 databases). These include:
 
-- AOP-DB
+- `AOP-DB <https://aopdb.epa.gov/home>`_
 - AOP-Wiki
 - Drugbank
 - DSSTox

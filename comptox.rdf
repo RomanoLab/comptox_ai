@@ -745,6 +745,16 @@ Furthermore, this is beneficial when the ontology is used to populate a graph da
     
 
 
+    <!-- http://jdr.bio/ontologies/comptox.owl#SMILES -->
+
+    <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#SMILES">
+        <rdfs:subPropertyOf rdf:resource="http://jdr.bio/ontologies/comptox.owl#chemicalDataProperty"/>
+        <rdfs:domain rdf:resource="http://jdr.bio/ontologies/comptox.owl#Chemical"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://jdr.bio/ontologies/comptox.owl#aopDataProperty -->
 
     <owl:DatatypeProperty rdf:about="http://jdr.bio/ontologies/comptox.owl#aopDataProperty"/>

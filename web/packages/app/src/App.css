@@ -108,11 +108,19 @@ h2 {
   margin-bottom: 6px;
 }
 
-#current-smiles {
+/* #current-smiles {
   margin-top: 8px;
   margin-bottom: 6px;
   padding: 4px;
   border: 1px solid lightgray;
   border-radius: 4px;
   font-family: 'Courier New', Courier, monospace;
+} */
+#current-smiles {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+#current-mol {
+  font-family: 'Courier New', Courier, monospace;
+  padding-bottom: 6px;
 }

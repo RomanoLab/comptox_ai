@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 
 import ChemicalizeMarvinJs from './marvin/client';
 
@@ -15,6 +15,9 @@ class ChemicalSearch extends React.Component {
                 console.log(marvin);
                 marvin.exportStructure("smiles").then(function (smiles) {
                     document.getElementById("current-smiles").innerHTML = "SMILES: " + smiles;
+                })
+                marvin.exportStructure("mol").then(function (mol) {
+                    document.getElementById("current-mol").innerHTML = mol;
                 })
             }
 
@@ -32,10 +35,25 @@ class ChemicalSearch extends React.Component {
                 <div id="marvin-editor" style={{width: '100%', height: '480px'}}></div>
                 {/* Display the SMILES string: */}
                 <div id="marvin-bottom-controls">
-                <div id="current-smiles"></div>
+                {/* <div id="current-smiles"></div> */}
+                <TextField
+                    id="current-smiles"
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                />
+                <TextField
+                    id="current-mol"
+                    multiline
+                    rows={10}
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                />
                 <Button
                     variant="contained"
                     color="primary"
+                    size="small"
                 >
                     Search for structure
                 </Button>

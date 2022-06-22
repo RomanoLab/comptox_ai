@@ -105,6 +105,9 @@ app.get('/config', (req, res) => {
     res.json(dataConfigJson);
 })
 
+// Note: We use bodyParser here to enable text data in the request body
+app.get("/chemicals/structureSearch", bodyParser.text({type: '*/*'}), routes.chemicals.structureSearch);
+
 app.get("/nodes/listNodeTypes", routes.nodes.listNodeTypes);
 app.get("/nodes/listNodeTypeProperties/:type", routes.nodes.listNodeTypeProperties);
 // example: http://localhost:3000/nodes/Chemical/search?field=xrefDTXSID&value=DTXSID30857908

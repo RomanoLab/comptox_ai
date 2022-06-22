@@ -1,3 +1,4 @@
+exports.chemicals = require('./chemicals');
 exports.nodes = require('./nodes');
 exports.relationships = require('./relationships');
 exports.paths = require('./paths');

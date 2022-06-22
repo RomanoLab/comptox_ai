@@ -122,5 +122,15 @@ h2 {
 
 #current-mol {
   font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  line-height: 12pt;
   padding-bottom: 6px;
+}
+
+#structure-info {
+  margin: 6px;
+}
+
+#structure-search-button {
+  margin-left: 6px;
 }

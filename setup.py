@@ -45,7 +45,7 @@ setuptools.setup(
     include_package_data=True,
     install_requires=[
         'ablog==0.10.19',
-        'numpy==1.21.2',
+        'numpy==1.22.0',
         'scipy==1.7.1',
         'pandas==1.3.3',
         'mysqlclient==2.0.3',

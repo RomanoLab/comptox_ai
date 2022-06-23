@@ -13,8 +13,11 @@ const swaggerUi = require('swagger-ui-express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const path = require('path');
+const cors = require('cors');
 
 const port = 3000
+
+const HOST = (process.env.NODE_ENV === 'production') ? 'https://comptox.ai/api' : 'http://localhost:3000';
 
 var swaggerOpts = {
     definition: {
@@ -34,7 +37,7 @@ var swaggerOpts = {
                 description: "Default local (dev) API server"
             }
         ],
-        host: "localhost:3000",
+        host: HOST,
     },
     apis: ["./routes/*.js", "./*.js"],
 };
@@ -49,22 +52,27 @@ app.use(require('./neo4j'));
 app.use(bodyParser.json());
 app.use(methodOverride());
 
+app.use(cors());
+
 // CORS: Important for Open API and other things
 app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Credentials", "true");
-    res.header(
-        "Access-Control-Allow-Methods",
-        "GET,HEAD,OPTIONS,POST,PUT,DELETE"
-    );
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    );
+    // res.header("Access-Control-Allow-Origin", "*");
+    // res.header("Access-Control-Allow-Credentials", "true");
+    // // res.header("Access-Control-Allow-Credentials", "false");
+    // res.header(
+    //     "Access-Control-Allow-Methods",
+    //     "GET,HEAD,OPTIONS,POST,PUT,DELETE"
+    // );
+    // res.header(
+    //     "Access-Control-Allow-Headers",
+    //     "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Auth-Token"
+    // );    
     // Make everything be returned as JSON
     res.header("Content-Type", 'application/json');
     next();
 });
+
+app.options('*', cors());
 
 app.use(neo4jSessionCleanup);
 
@@ -106,7 +114,7 @@ app.get('/config', (req, res) => {
 })
 
 // Note: We use bodyParser here to enable text data in the request body
-app.get("/chemicals/structureSearch", bodyParser.text({type: '*/*'}), routes.chemicals.structureSearch);
+app.post("/chemicals/structureSearch", bodyParser.text({type: '*/*'}), routes.chemicals.structureSearch);
 
 app.get("/nodes/listNodeTypes", routes.nodes.listNodeTypes);
 app.get("/nodes/listNodeTypeProperties/:type", routes.nodes.listNodeTypeProperties);

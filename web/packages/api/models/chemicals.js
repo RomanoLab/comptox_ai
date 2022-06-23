@@ -23,7 +23,12 @@ const runStructureSearch = function (req) {
         appendFileSync(tmpobj.fd, req.body);
 
         // Call jcsearch using the temp file
-        const cml_data_raw = execSync(`jcsearch -q ${tmpobj.name} -f cml -t:i DB:public.chemicals`).toString();
+        const cml_data_raw = execSync(
+            `jcsearch -q ${tmpobj.name} -f cml -t:i DB:public.chemicals`,
+            {
+                maxBuffer: (1024*1024*24)
+            }
+        ).toString();
 
         var cml_obj;
         parseString(cml_data_raw, function (err, result) {

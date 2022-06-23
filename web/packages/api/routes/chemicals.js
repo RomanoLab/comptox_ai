@@ -4,7 +4,7 @@ const writeResponse = require('../helpers/response').writeResponse;
 /**
  * @openapi
  * /chemicals/structureSearch:
- *   get:
+ *   post:
  *     tags:
  *     - chemicals
  *     description: Search for structures similar to a query structure

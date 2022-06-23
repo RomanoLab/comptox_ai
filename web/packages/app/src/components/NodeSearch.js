@@ -227,7 +227,6 @@ const NodeSearch = (props) => {
           </Paper>
         </div>
       ) : null}
-      {/* } */}
     </div>
   )
 }

@@ -122,6 +122,7 @@ app.get("/nodes/listNodeTypeProperties/:type", routes.nodes.listNodeTypeProperti
 app.get("/nodes/:type/search?", routes.nodes.findNode);
 app.get("/nodes/:type/searchContains?", routes.nodes.findNodeContains);
 app.get("/nodes/fetchById/:id", routes.nodes.fetchById);
+app.get("/nodes/fetchChemicalByDtsxid/:id", routes.nodes.fetchChemicalByDtsxid);
 
 app.get("/relationships/fromStartNodeId/:id", routes.relationships.findRelationshipsByNode);
 

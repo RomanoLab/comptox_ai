@@ -222,3 +222,9 @@ exports.fetchById = function (req, res, next) {
         .then(response => writeResponse(res, response))
         .catch(next);
 };
+
+exports.fetchChemicalByDtsxid = function (req, res, next) {
+    Nodes.fetchChemicalByDtsxid(dbUtils.getSession(req), req.params.id)
+        .then(response => writeResponse(res, response))
+        .catch(next);
+};

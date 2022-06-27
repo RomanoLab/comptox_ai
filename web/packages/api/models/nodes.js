@@ -148,6 +148,20 @@ const fetchById = function (session, id) {
     });
 };
 
+const fetchChemicalByDtsxid = function (session, id) {
+    const query = `MATCH (n:Chemical {xrefDTXSID: "${id}"}) RETURN n;`;
+
+    return session.readTransaction(txc =>
+        txc.run(query)
+    ).then(result => {
+        if (!_.isEmpty(result.records)) {
+            return parseNodes(result);
+        } else {
+            throw {message: `No nodes found for DSSTox ID ${id}`, query: query, result: result, status: 404}
+        }
+    });
+}
+
 module.exports = {
     listNodeTypes: listNodeTypes,
     listNodeTypeProperties: listNodeTypeProperties,
@@ -155,4 +169,5 @@ module.exports = {
     findNodeByQuery: findNodeByQuery,
     findNodeByQueryContains: findNodeByQueryContains,
     fetchById: fetchById,
+    fetchChemicalByDtsxid: fetchChemicalByDtsxid
 };

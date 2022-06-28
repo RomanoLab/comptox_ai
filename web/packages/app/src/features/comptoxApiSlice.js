@@ -18,6 +18,9 @@ export const comptoxApiSlice = createApi({
         return `/nodes/${label[0]}/search?field=${label[1]}&value=${label[2]}`
       }
     }),
+    fetchChemicalByDtsxid: builder.query({
+      query: (dtsxid) => `/nodes/fetchChemicalByDtsxid/${dtsxid}`
+    }),
     fetchRelationshipsByNodeId: builder.query({
       query: (nodeId) => `/relationships/fromStartNodeId/${nodeId}`
     }),
@@ -42,6 +45,7 @@ export const {
   useFetchConfigQuery,
   useSearchNodesQuery,
   useSearchNodesContainsQuery,
+  useFetchChemicalByDtsxidQuery,
   useFetchRelationshipsByNodeIdQuery,
   useFindPathByNodeIdsQuery,
   useMakeQsarDatasetQuery,

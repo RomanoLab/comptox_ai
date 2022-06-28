@@ -1,5 +1,6 @@
 import React, { useReducer, useState } from 'react';
 import { Map } from 'react-lodash';
+import { connect } from "react-redux";
 
 import { Button, TextField, Select, MenuItem, FormControl, InputLabel, Paper } from '@mui/material';
 
@@ -7,6 +8,8 @@ import makeStyles from '@mui/styles/makeStyles';
 
 import NodeResult from './NodeResult';
 import { useSearchNodesQuery } from '../features/comptoxApiSlice';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { readSearchResults } from '../features/nodeSlice';
 
 const formReducer = (state, event) => {
   return {
@@ -33,9 +36,11 @@ const useStyles = makeStyles((theme) => ({
 
 // See: https://www.digitalocean.com/community/tutorials/how-to-build-forms-in-react
 const NodeSearch = (props) => {
-  const { config } = props;
+  const { config, nodeResults } = props;
   const [formData, setFormData] = useReducer(formReducer, {});
   const [submitData, setSubmitData] = useReducer(submitReducer, {});
+  const dispatch = useAppDispatch();
+  const searchResults = useAppSelector((state) => state.node.searchResults);
 
   // eslint-disable-next-line
   const [skip, setSkip] = useState(true); // Don't render search results until we've hit "search" at least once
@@ -43,6 +48,10 @@ const NodeSearch = (props) => {
   const { data = [], error, isLoading, isUninitialized } = useSearchNodesQuery([submitData.label, submitData.field, submitData.value], {
     skip,
   });
+
+  if (data.length > 0) {
+    dispatch(readSearchResults(data));
+  }
 
   const classes = useStyles()
 
@@ -193,14 +202,14 @@ const NodeSearch = (props) => {
         </form>
       </div>
 
-      <h3>Search Results</h3>
+      {/* <h3>Search Results</h3>
       {error ? (
         <>Error - the requested node was not found. Please try again with a new query.</>
       ) : isUninitialized ? (
         <>Please enter a search query and click "Search" to find nodes.</>
       ) : isLoading ? (
         <>Loading...</>
-      ) : data ? (
+      ) : nodeResults ? (
         <div>
           <Button 
             onClick={handleResetNodeSearch}
@@ -211,7 +220,7 @@ const NodeSearch = (props) => {
           </Button>
           <Paper>
             <Map
-              collection={data}
+              collection={nodeResults}
               iteratee={r => (
                 <NodeResult
                   nodeType={r.nodeType}
@@ -226,9 +235,15 @@ const NodeSearch = (props) => {
             />
           </Paper>
         </div>
-      ) : null}
+      ) : null} */}
     </div>
   )
 }
 
-export default NodeSearch;
+// We need to use older redux patterns to make NodeSearch recognize when we
+// externally make changes to the store. Otherwise, NodeSearch doesn't rerender!
+function mapStateToProps(state) {
+  return {nodeResults: state.node.searchResults}
+}
+
+export default connect(mapStateToProps)(NodeSearch);

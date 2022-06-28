@@ -30,16 +30,6 @@ import { setExpandNetworkNode, setShortestPathEndNode, setShortestPathStartNode 
 const nodeResultTheme = createTheme(adaptV4Theme({
   typography: {
     fontFamily: [
-      // '-apple-system',
-      // 'BlinkMacSystemFont',
-      // '"Segoe UI"',
-      // 'Roboto',
-      // '"Helvetica Neue"',
-      // 'Arial',
-      // 'sans-serif',
-      // '"Apple Color Emoji"',
-      // '"Segoe UI Emoji"',
-      // '"Segoe UI Symbol"',
       'Roboto',
       '"Helvetica Neue"',
       'Arial',

@@ -1,3 +1,8 @@
+/**
+ * This slice handles state related to both individual nodes and sets of nodes
+ * retrieved through searches on the Web API.
+ */
+
 import { createSlice } from '@reduxjs/toolkit';
 
 export const nodeSlice = createSlice({

@@ -1,14 +1,18 @@
 import React, { useReducer, useState } from 'react';
-import { Map } from 'react-lodash';
 import { connect } from "react-redux";
 
-import { Button, TextField, Select, MenuItem, FormControl, InputLabel, Paper } from '@mui/material';
-
+import {
+  Button,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel
+} from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 
-import NodeResult from './NodeResult';
 import { useSearchNodesQuery } from '../features/comptoxApiSlice';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { useAppDispatch } from '../redux/hooks';
 import { readSearchResults } from '../features/nodeSlice';
 
 const formReducer = (state, event) => {
@@ -36,12 +40,11 @@ const useStyles = makeStyles((theme) => ({
 
 // See: https://www.digitalocean.com/community/tutorials/how-to-build-forms-in-react
 const NodeSearch = (props) => {
-  const { config, nodeResults } = props;
+  const { config } = props;
   const [formData, setFormData] = useReducer(formReducer, {});
   const [submitData, setSubmitData] = useReducer(submitReducer, {});
   const dispatch = useAppDispatch();
-  const searchResults = useAppSelector((state) => state.node.searchResults);
-
+  
   // eslint-disable-next-line
   const [skip, setSkip] = useState(true); // Don't render search results until we've hit "search" at least once
 
@@ -202,40 +205,6 @@ const NodeSearch = (props) => {
         </form>
       </div>
 
-      {/* <h3>Search Results</h3>
-      {error ? (
-        <>Error - the requested node was not found. Please try again with a new query.</>
-      ) : isUninitialized ? (
-        <>Please enter a search query and click "Search" to find nodes.</>
-      ) : isLoading ? (
-        <>Loading...</>
-      ) : nodeResults ? (
-        <div>
-          <Button 
-            onClick={handleResetNodeSearch}
-            variant="outlined"
-            style={{marginBottom:'6px'}}
-          >
-            Clear node search results
-          </Button>
-          <Paper>
-            <Map
-              collection={nodeResults}
-              iteratee={r => (
-                <NodeResult
-                  nodeType={r.nodeType}
-                  nodeName={r.commonName}
-                  nodeIDs={r.identifiers}
-                  nodeIRI={r.ontologyIRI}
-                  nodeNeo4jID={r.nodeId}
-                  nodeFeatures={r.nodeFeatures}
-                  config={config}
-                />
-              )}
-            />
-          </Paper>
-        </div>
-      ) : null} */}
     </div>
   )
 }

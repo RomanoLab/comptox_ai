@@ -10,6 +10,7 @@ export const nodeSlice = createSlice({
   initialState: {
     selectedNode: null,
     searchResults: [],
+    searchStatus: 'uninitialized'
   },
   reducers: {
     selectNode: (state, action) => {
@@ -17,10 +18,13 @@ export const nodeSlice = createSlice({
     },
     readSearchResults: (state, action) => {
       state.searchResults = action.payload
+    },
+    setSearchStatus: (state, action) => {
+      state.searchStatus = action.payload
     }
   },
 })
 
-export const { selectNode, readSearchResults } = nodeSlice.actions
+export const { selectNode, readSearchResults, setSearchStatus } = nodeSlice.actions
 
 export default nodeSlice.reducer

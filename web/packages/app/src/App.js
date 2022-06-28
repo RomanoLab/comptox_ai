@@ -16,6 +16,7 @@ import './App.css';
 import * as config from './data/data.json';
 import * as chemLists from './data/chemical_list_data.json'
 import { createTheme, ThemeProvider, StyledEngineProvider, adaptV4Theme } from '@mui/material';
+import NodeResults from './components/NodeResults';
 
 const theme = createTheme(adaptV4Theme({
   spacing: 2
@@ -47,6 +48,9 @@ class App extends React.Component {
               {/* <HowToUse /> */}
               <ChemicalSearch />
               <NodeSearch 
+                config={config.default}
+              />
+              <NodeResults
                 config={config.default}
               />
               <RelationshipSearch

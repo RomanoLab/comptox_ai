@@ -15,7 +15,7 @@ import FileCopyIcon from '@mui/icons-material/FileCopy';
 
 import { useAppSelector } from '../redux/hooks';
 
-import dedent from 'dedent-js';
+import endent from 'endent';
 
 
 const ShortestPath = (props) => {
@@ -26,7 +26,7 @@ const ShortestPath = (props) => {
     const endNodeId = shortestPathEndNodeId ? shortestPathEndNodeId : null;
     const boxDisabled = (startNodeId===null) ?? (endNodeId===null);
     
-    const shortestPathCypherQuery = (startNodeId && endNodeId) ? dedent(`MATCH
+    const shortestPathCypherQuery = (startNodeId && endNodeId) ? endent(`MATCH
         (n1), (n2), p= allShortestPaths((n1)-[*]-(n2))
     WHERE
         id(n1) = ${startNodeId} AND

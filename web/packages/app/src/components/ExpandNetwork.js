@@ -15,7 +15,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { useAppSelector } from '../redux/hooks';
 
-import dedent from 'dedent-js';
+import endent from 'endent';
 
 
 const ExpandNetwork = (props) => {
@@ -23,7 +23,7 @@ const ExpandNetwork = (props) => {
 
     const selectedNodeId = expandNetworkNode ? expandNetworkNode : null;
     
-    const expandNetworkCypherQuery = selectedNodeId ? dedent(`CALL apoc.path.spanningTree(
+    const expandNetworkCypherQuery = selectedNodeId ? endent(`CALL apoc.path.spanningTree(
         ${selectedNodeId},
         {
             maxLevel: 3

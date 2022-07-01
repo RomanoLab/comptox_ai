@@ -23,11 +23,8 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 
 import ChemicalizeMarvinJs from './marvin/client';
-import {
-    useRunStructureSearchQuery,
-    useFetchChemicalByDtsxidQuery
-} from '../features/comptoxApiSlice';
-import { readSearchResults } from '../features/nodeSlice';
+import { useRunStructureSearchQuery } from '../features/comptoxApiSlice';
+import { setSearch } from '../features/nodeSlice';
 import { useAppDispatch } from '../redux/hooks';
 
 
@@ -76,7 +73,6 @@ const TEST_DATA = [
 
 class StructureEditor extends React.Component {
     componentDidMount() {
-        // ChemicalizeMarvinJs.createEditor("#marvin-test");
         ChemicalizeMarvinJs.createEditor("#marvin-editor").then(function (marvin) {
             function handleMolChange() {
                 marvin.exportStructure("mol").then(function (mol) {
@@ -97,21 +93,6 @@ class StructureEditor extends React.Component {
     }
 }
 
-/*
-    {
-      "DSSTox_Compound_id": "DTXCID7023801",
-      "DSSTox_Substance_id": "DTXSID9043801",
-      "CASRN": "463-79-6",
-      "QC_Level": "DSSTox_High",
-      "Preferred_name": "Carbonic acid",
-      "Mol_Weight": "62.0240000000",
-      "Mol_Formula": "CH2O3",
-      "Monoisotopic_Mass": "62.0003939240",
-      "Dashboard_URL": "https://comptox.epa.gov/dashboard/DTXSID9043801",
-      "dissimilarity": "0.16666669",
-      "SIMILARITY": "0.833"
-    }
- */
 const StructureResult = (props) => {
     const data = props.data;
     
@@ -127,30 +108,18 @@ const StructureResult = (props) => {
 }
 
 
-
 const StructureResultsRow = (props) => {
     const { row } = props;
     const [open, setOpen]  = React.useState(false);
-    const [buttonHasBeenClicked, setButtonHasBeenClicked] = React.useState(false);
     const dispatch = useAppDispatch();
 
-    const { data = [], error, isLoading, isUninitialized } = useFetchChemicalByDtsxidQuery(row.DSSTox_Substance_id, {
-        skip: !buttonHasBeenClicked
-    });
-
-    // "Correct" usage of RTK query would have the node search results request
-    // the cached data using the same hook we use in this component, but that
-    // feels messy and weird to me. Instead, we are doing it the 'wrong' way, by
-    // copying the data retrieved from the API into the nodeSlice portion of
-    // the redux store. Then, the node search component will render the results.
-    if (data.length > 0) {
-        // put the data into the store
-        dispatch(readSearchResults(data));
-    }
-
     const handleNodeSearch = event => {
-        event.preventDefault();
-        setButtonHasBeenClicked(true);
+        dispatch(setSearch({
+            searchType: 'dsstox',
+            params: {
+                dtxsid: row.DSSTox_Substance_id
+            }
+        }))
     }
     
     return (
@@ -295,7 +264,6 @@ const StructureSearchControls = (props) => {
                             >
                                 <StructureResultsTable
                                     data={TEST_DATA}
-                                    // data={[].concat(...new Array(30).fill(TEST_DATA))}
                                 />
                             </Box>
                         </Box>                        

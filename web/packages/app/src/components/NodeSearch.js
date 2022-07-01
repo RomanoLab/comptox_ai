@@ -1,5 +1,4 @@
-import React, { useReducer, useState } from 'react';
-import { connect } from "react-redux";
+import React, { useReducer } from 'react';
 
 import {
   Button,
@@ -11,22 +10,13 @@ import {
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 
-import { useSearchNodesQuery } from '../features/comptoxApiSlice';
 import { useAppDispatch } from '../redux/hooks';
-import { readSearchResults } from '../features/nodeSlice';
+import { setSearch } from '../features/nodeSlice';
 
 const formReducer = (state, event) => {
   return {
     ...state,
     [event.name]: event.value
-  }
-}
-
-const submitReducer = (state, event) => {
-  return {
-    label: event.label,
-    field: event.field,
-    value: event.value,
   }
 }
 
@@ -38,34 +28,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// See: https://www.digitalocean.com/community/tutorials/how-to-build-forms-in-react
 const NodeSearch = (props) => {
   const { config } = props;
   const [formData, setFormData] = useReducer(formReducer, {});
-  const [submitData, setSubmitData] = useReducer(submitReducer, {});
   const dispatch = useAppDispatch();
   
-  // eslint-disable-next-line
-  const [skip, setSkip] = useState(true); // Don't render search results until we've hit "search" at least once
-
-  const { data = [], error, isLoading, isUninitialized } = useSearchNodesQuery([submitData.label, submitData.field, submitData.value], {
-    skip,
-  });
-
-  if (data.length > 0) {
-    dispatch(readSearchResults(data));
-  }
-
   const classes = useStyles()
 
   const handleSubmit = event => {
     event.preventDefault();
-    setSkip(false);
-    setSubmitData({
-      label: formData.nodeType,
-      field: formData.nodeField,
-      value: formData.nodeValue,
-    })
+    dispatch(setSearch({
+      searchType: 'node',
+      params: {
+        label: formData.nodeType,
+        field: formData.nodeField,
+        value: formData.nodeValue
+      }
+    }));
   }
 
   const handleChange = event => {
@@ -88,9 +67,6 @@ const NodeSearch = (props) => {
       name: 'nodeValue',
       value: ''
     })
-    
-    console.log("handleReset:")
-    console.log(formData);
   }
 
   const handleLoadExampleQuery = event => {
@@ -115,16 +91,6 @@ const NodeSearch = (props) => {
       return config.nodeConfig.nodeLabelProperties[selectedNodeLabel]
     }
   } 
-
-  const handleResetNodeSearch = () => {
-    handleReset(); // resets the form
-    setSkip(true); // prevents error message from rendering
-    setSubmitData({ // clears the results
-      label: '',
-      field: '',
-      value: ''
-    })
-  }
 
   return(
     <div className="node-search">
@@ -204,15 +170,8 @@ const NodeSearch = (props) => {
           </div>
         </form>
       </div>
-
     </div>
   )
 }
 
-// We need to use older redux patterns to make NodeSearch recognize when we
-// externally make changes to the store. Otherwise, NodeSearch doesn't rerender!
-function mapStateToProps(state) {
-  return {nodeResults: state.node.searchResults}
-}
-
-export default connect(mapStateToProps)(NodeSearch);
+export default NodeSearch;

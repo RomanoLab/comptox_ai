@@ -5,33 +5,49 @@ import {
   Paper
 } from '@mui/material';
 
-import { useAppSelector } from '../redux/hooks';
+import { useAppSelector, useAppDispatch } from '../redux/hooks';
 
 import NodeResult from './NodeResult';
+import { useFetchChemicalByDtsxidQuery, useSearchNodesQuery } from '../features/comptoxApiSlice';
+import { setSearch } from '../features/nodeSlice';
+
 
 const NodeResults = (props) => {
   const { config } = props;
+  const dispatch = useAppDispatch();
 
-  const error = false;
-  const isLoading = false;
-  const isUninitialized = false;
+  const searchParams = useAppSelector((state) => state.node.searchParams);
 
-  const searchResults = useAppSelector((state) => state.node.searchResults);
+  const dsstoxResults = useFetchChemicalByDtsxidQuery(searchParams.params.dtxsid, {
+    skip: !(searchParams.searchType === 'dsstox')
+  });
+  const nodeResults = useSearchNodesQuery([
+    searchParams.params.label,
+    searchParams.params.field,
+    searchParams.params.value
+  ], {
+    skip: !(searchParams.searchType === 'node')
+  });
+
+  const searchResults = (searchParams.searchType === 'dsstox') ? dsstoxResults : nodeResults;
 
   const handleResetNodeSearch = () => {
-
+    dispatch(setSearch({
+      searchType: null,
+      params: {}
+    }))
   }
-  
+
   return (
     <div>
       <h3>Search Results</h3>
-      {error ? (
+      {searchResults.isError ? (
         <>Error - the requested node was not found. Please try again with a new query.</>
-      ) : isUninitialized ? (
+      ) : searchResults.isUninitialized ? (
         <>Please enter a search query and click "Search" to find nodes.</>
-      ) : isLoading ? (
+      ) : searchResults.isLoading ? (
         <>Loading...</>
-      ) : searchResults ? (
+      ) : searchResults.data ? (
         <div>
           <Button 
             onClick={handleResetNodeSearch}
@@ -42,7 +58,7 @@ const NodeResults = (props) => {
           </Button>
           <Paper>
             <Map
-              collection={searchResults}
+              collection={searchResults.data}
               iteratee={r => (
                 <NodeResult
                   nodeType={r.nodeType}

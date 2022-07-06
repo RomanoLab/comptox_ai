@@ -93,20 +93,6 @@ class StructureEditor extends React.Component {
     }
 }
 
-const StructureResult = (props) => {
-    const data = props.data;
-    
-    return (
-        <Box className="structure-result">
-            <ul>
-                <li>{data.Preferred_name}</li>
-                <li>{data.Mol_Formula}</li>
-                <li>{data.SIMILARITY}</li>
-            </ul>
-        </Box>
-    );
-}
-
 
 const StructureResultsRow = (props) => {
     const { row } = props;
@@ -119,7 +105,7 @@ const StructureResultsRow = (props) => {
             params: {
                 dtxsid: row.DSSTox_Substance_id
             }
-        }))
+        }));
     }
     
     return (
@@ -224,7 +210,6 @@ const StructureSearchControls = (props) => {
                             variant="outlined"
                             size="small"
                             disabled={true}
-                            // value={this.state.molString}
                         />
                     </AccordionDetails>
                 </Accordion>
@@ -296,7 +281,11 @@ const StructureSearchControls = (props) => {
                         </Box>
                     </>
                 ) : data ? (
-                    <>{data.map((structure) => <StructureResult data={structure}/>)}</>
+                    <>
+                        <StructureResultsTable
+                            data={data}
+                        />
+                    </>
                 ) : null}
             </Box>
         </div>

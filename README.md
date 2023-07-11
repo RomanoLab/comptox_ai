@@ -11,7 +11,7 @@ A modern data infrastructure for AI research in computational toxicology.
 
 ComptoxAI is a collection of resources made to enable a diverse range of artificial intelligence applications for computational toxicology data. This repository contains all of the code that comprises the overall ComptoxAI project, including code related to the database, website, REST API, graph machine learning toolkit, and other miscellaneous utilities.
 
-ComptoxAI is maintained by [Joseph D. Romano, PhD](http://jdr.bio), who is a postdoctoral researcher at the [University of Pennsylvania](https://upenn.edu) in the [Institute for Biomedical Informatics](https://ibi.med.upenn.edu/) and the [Center of Excellence in Environmental Toxicology](http://ceet.upenn.edu/). 
+ComptoxAI is maintained by [the Romano Lab](http://romanolab.org) at the [University of Pennsylvania](https://upenn.edu) in the [Institute for Biomedical Informatics](https://ibi.med.upenn.edu/) and the [Center of Excellence in Environmental Toxicology](http://ceet.upenn.edu/). 
 
 ### Funding
 

@@ -4,5 +4,29 @@
     },
     "python.pythonPath": "C:\\Users\\jdr2160\\Miniconda3\\envs\\comptox_ai\\python.exe",
     "restructuredtext.confPath": "${workspaceFolder}\\docs\\source",
-    "restructuredtext.languageServer.disabled": true
+    "restructuredtext.languageServer.disabled": true,
+
+    // Javascript: Prettier
+    "[javascript]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    // Typescript formatter: Prettier
+    "[typescript]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    // Editor indent setting
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+
+    // Python Docstring formatter: AutoDocstring NumPy
+    "autoDocstring.docstringFormat": "numpy",
+
+    // Python formatter: PEP8
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "python.formatting.provider": "none"
 }

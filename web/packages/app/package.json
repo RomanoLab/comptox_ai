@@ -13,6 +13,7 @@
     "bootstrap": "^4.6.0",
     "endent": "^2.1.0",
     "prop-types": "^15.7.2",
+    "d3": "^5.5.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-d3-graph": "^2.6.0",

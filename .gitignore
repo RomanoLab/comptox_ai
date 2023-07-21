@@ -103,3 +103,4 @@ catalog-*.xml
 comptox_*.rdf
 
 scripts/pfhxs
+node_modules

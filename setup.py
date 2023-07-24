@@ -45,10 +45,9 @@ setuptools.setup(
     include_package_data=True,
     install_requires=[
         'ablog==0.10.19',
-        'numpy==1.21.2',
+        'numpy==1.24.4',
         'scipy==1.10.1',
         'pandas==1.3.3',
-        'mysqlclient==2.0.3',
         'neo4j==4.3.4',
         'networkx==2.6.3',
         'py2neo==2021.1.5',
@@ -57,7 +56,6 @@ setuptools.setup(
         'owlready2==0.34',
         'PyYAML==5.3.1',
         'ipdb==0.13.9',
-        'ista @ git+https://github.com/JDRomano2/ista@v0.1.0#egg=ista'
     ],
     extras_require={
         "testing": ["pytest"],

@@ -13,14 +13,16 @@ with open("README.md", 'r') as fp:
 
 package_src_dir = Path(__file__).parent
 
-MAJOR      = 1
-MINOR      = 1
-MICRO      = 2
+MAJOR = 1
+MINOR = 1
+MICRO = 2
 ISRELEASED = True
-VERSION    = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
+VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
+
 
 def get_docs_url():
     return "https://comptox.ai/use/index.html"
+
 
 setuptools.setup(
     name="comptox_ai",
@@ -45,10 +47,9 @@ setuptools.setup(
     include_package_data=True,
     install_requires=[
         'ablog==0.10.19',
-        'numpy==1.21.2',
+        'numpy==1.24.4',
         'scipy==1.10.1',
-        'pandas==1.3.3',
-        'mysqlclient==2.0.3',
+        'pandas',
         'neo4j==4.3.4',
         'networkx==2.6.3',
         'py2neo==2021.1.5',
@@ -57,7 +58,7 @@ setuptools.setup(
         'owlready2==0.34',
         'PyYAML==5.3.1',
         'ipdb==0.13.9',
-        'ista @ git+https://github.com/JDRomano2/ista@v0.1.0#egg=ista'
+        'pytest==7.4',
     ],
     extras_require={
         "testing": ["pytest"],

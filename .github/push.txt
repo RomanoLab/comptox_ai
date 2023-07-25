@@ -1,0 +1,16 @@
+[#42] Refer to Github issue...
+
+This update adds GitHub Action workflow, python-package.yml. The
+workflow tests whther Python packages necessary for Comptox AI are
+installed sucessfully without any conflicts.
+
+The update modifies README.md to reflect changes in workflow status
+badge.
+
+The update adds workflow templates.
+
+The update modifies setup.py to resolve pandas version conflict.
+
+The update modifies .gitignore to add "build" to the ignore list.
+
+Closes-Bug #42

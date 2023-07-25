@@ -1,0 +1,81 @@
+from comptox_ai.db import GraphDB
+
+import pytest
+import warnings
+import os
+
+TEST_DIR = os.path.dirname(os.path.realpath(__file__))
+
+
+# Module-level scope so we don't keep reconnecting with every test
+@pytest.fixture(scope="module")
+def G():
+  G = GraphDB(verbose=True, hostname="165.123.13.192")
+  return G
+
+class TestGraphDB(object):
+  
+  def test_raise_when_config_file_not_found(self):
+    with pytest.raises(RuntimeError) as e_info:
+      G_pre = GraphDB(config_file="/dev/null")
+
+  def test_raise_when_bad_config_given(self):
+    bad_config_file = os.path.join(TEST_DIR, 'badconfig.txt')
+    with pytest.raises(RuntimeError) as e_info:
+      G_pre = GraphDB(config_file=bad_config_file)
+
+  def test_raise_when_database_unavailable(self):
+    unavail_config_file = os.path.join(TEST_DIR, 'unavailconfig.txt')
+    with pytest.raises(RuntimeError) as e_info:
+      G_pre = GraphDB(config_file=unavail_config_file)
+  
+  def test_neo4j_connection_does_exist(self, G):
+    with warnings.catch_warnings():
+      # Supress the ExperimentalWarning for now
+      warnings.simplefilter("ignore")
+      assert G._driver.verify_connectivity() is not None
+
+  def test_cypher_query_does_run(self, G):
+    x = G.run_cypher("RETURN 'hello';")
+    assert len(x[0]) > 0
+
+  ## THE FOLLOWING ARE OBSOLETE UNTIL GDS GRAPH CATALOG IS COMPATIBLE WITH
+  ## STRING PROPERTIES:
+  
+  # def test_gds_list_existing_graphs(self, G):
+  #   x = G.list_existing_graphs()
+  #   assert isinstance(x, list)
+
+  # def test_gds_delete_existing_graphs(self, G):
+  #   x = G.drop_all_existing_graphs()
+
+  #   y = G.list_existing_graphs()
+
+  #   assert len(y) is 0
+
+  # def test_gds_create_graph_native_projection(self, G):
+  #   newgraph1 = G.build_graph_native_projection(
+  #     "testgraph1",
+  #     ["Chemical", "Disease"],
+  #     "*",
+  #   )
+
+  #   def test_gds_new_num_graphs_is_1(self, G):
+  #     y = G.list_existing_graphs()
+  #     assert len(y) == 1
+
+  # def test_gds_delete_graph_native_projection(self, G):
+  #   x = G.drop_existing_graph("testgraph1")
+  #   assert x['graphName'] == "testgraph1"
+
+  # def test_gds_create_graph_cypher_projection(self, G):
+  #   newgraph2 = G.build_graph_cypher_projection(
+  #     "testgraph2",
+  #     "MATCH (n) WHERE n:Chemical OR n:Disease RETURN id(n) AS id, labels(n) AS labels",
+  #     "MATCH (c:Chemical)-->(d:Disease) RETURN id(c) as source, id(d) as target"
+  #   )
+
+  # def test_gds_delete_graph_cypher_projection(self, G):
+  #   # Note: this test will fail if the previous test fails
+  #   x = G.drop_existing_graph("testgraph2")
+  #   assert x['graphName'] == "testgraph2"

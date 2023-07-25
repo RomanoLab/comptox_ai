@@ -9,8 +9,8 @@ class TestIO(object):
 
   @pytest.fixture
   def G(self):
-    G = comptox_ai.db.GraphDB(verbose=True, hostname="165.123.13.192")
+    G = comptox_ai.db.GraphDB(verbose=True, hostname="neo4j.comptox.ai")
     self.G = G
 
-  def test_graphdb_creates_exporter(self):
-    G.
+  def test_graphdb_exists(self):
+    print(G)

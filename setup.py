@@ -47,7 +47,7 @@ setuptools.setup(
     include_package_data=True,
     install_requires=[
         'ablog==0.10.19',
-        'numpy==1.24.4',
+        'numpy==1.21.2',
         'scipy==1.10.1',
         'pandas',
         'neo4j==4.3.4',

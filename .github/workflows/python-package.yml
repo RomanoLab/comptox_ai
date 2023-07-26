@@ -1,6 +1,8 @@
 name: Python package
 
-on: [push, workflow_dispatch]
+on:
+    - push
+    - workflow_dispatch
 
 jobs:
     build-package:

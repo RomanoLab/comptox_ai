@@ -7,7 +7,7 @@
 ![App](https://github.com/jdromano2/comptox_ai/actions/workflows/react-build.yml/badge.svg)
 
 [![DOI](https://zenodo.org/badge/202416245.svg)](https://zenodo.org/badge/latestdoi/202416245)
-![Doc](https://github.com/jdromano2/comptox_ai/actions/workflows/main.yml/doc-build.svg)
+![Doc](https://github.com/jdromano2/comptox_ai/actions/workflows/doc-build.yml/badge.svg)
 
 [Website](https://comptox.ai/)
 

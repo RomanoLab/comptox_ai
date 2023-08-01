@@ -1,7 +1,8 @@
 # `ComptoxAI`
 
 [![DOI](https://zenodo.org/badge/202416245.svg)](https://zenodo.org/badge/latestdoi/202416245)
-![Build](https://github.com/jdromano2/comptox_ai/actions/workflows/main.yml/badge.svg)
+
+![comptox_ai](https://github.com/jdromano2/comptox_ai/actions/workflows/python-package.yml/badge.svg) ![web app](https://github.com/jdromano2/comptox_ai/actions/workflows/react-build.yml/badge.svg) ![docs](https://github.com/jdromano2/comptox_ai/actions/workflows/doc-build.yml/badge.svg)
 
 [Website](https://comptox.ai/)
 

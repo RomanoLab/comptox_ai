@@ -73,14 +73,14 @@ class Graph(object):
 
   Parameters
   ----------
-  parent_db : comptox_ai.db.GraphDb
+  source_db : comptox_ai.db.GraphDb
       A Neo4j graph database object, as defined in ComptoxAI.
   name : str
       A name that can be used to identify the graph.
   """
 
-  def __init__(self, parent_db, name):
-    self._db = parent_db
+  def __init__(self, source_db, name):
+    self._db = source_db
     self.name = name
 
 
@@ -109,31 +109,20 @@ class GraphDB(object):
 
   Parameters
   ----------
-  config_file : str, default None
-    Relative path to a config file containing a "NEO4J" block, as described
-    below. If None, ComptoxAI will look in the ComptoxAI root directory for
-    either a "CONFIG.cfg" file or "CONFIG-default.cfg", in that order. If no
-    config file can be found in any of those locations, an exception will be
-    raised.
   verbose: bool, default True
     Sets verbosity to on or off. If True, status information will be returned
     to the user occasionally.
   """
-  def __init__(self, config_file=None, verbose=False, username=None, password=None, hostname=None):
+  def __init__(self, username=None, password=None, hostname=None, verbose=False):
     self.is_connected = False
     self.verbose = verbose
 
-    if not config_file:
-      if hostname:
-        self.config_file = None
-        self.username = username
-        self.password = password
-        self.hostname = hostname
-      else:
-        self.config_file = _get_default_config_file()
-    else:
-      self.config_file = config_file
-
+    if hostname:
+      self.config_file = None
+      self.username = username
+      self.password = password
+      self.hostname = hostname
+    
     self._connect()
 
     self.exporter = comptox_ai.db.GraphExporter(self)
@@ -156,24 +145,10 @@ class GraphDB(object):
     )
 
   def _connect(self):
-    if self.config_file is not None:
-      try:
-        with open(self.config_file, 'r') as fp:
-          cnf = load(fp, Loader=Loader)
-      except FileNotFoundError as e:
-        raise RuntimeError("Config file not found at the specified location - using default configuration")
-
-      if not _validate_config_file_contents(cnf):
-        raise RuntimeError("Config file has an invalid format. Please see `CONFIG-default.yaml`.")
-        
-      username = cnf['neo4j']['username']
-      password = cnf['neo4j']['password']
-      hostname = cnf['neo4j']['hostname']
-
-    else:
-      username = self.username
-      password = self.password
-      hostname = self.hostname
+    
+    username = self.username
+    password = self.password
+    hostname = self.hostname
 
     if hostname == 'localhost':
       uri = "bolt://localhost:7687"

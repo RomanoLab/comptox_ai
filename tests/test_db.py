@@ -10,24 +10,10 @@ TEST_DIR = os.path.dirname(os.path.realpath(__file__))
 # Module-level scope so we don't keep reconnecting with every test
 @pytest.fixture(scope="module")
 def G():
-  G = GraphDB(verbose=True, hostname="165.123.13.192")
+  G = GraphDB(verbose=True, hostname="neo4j.comptox.ai")
   return G
 
 class TestGraphDB(object):
-  
-  def test_raise_when_config_file_not_found(self):
-    with pytest.raises(RuntimeError) as e_info:
-      G_pre = GraphDB(config_file="/dev/null")
-
-  def test_raise_when_bad_config_given(self):
-    bad_config_file = os.path.join(TEST_DIR, 'badconfig.txt')
-    with pytest.raises(RuntimeError) as e_info:
-      G_pre = GraphDB(config_file=bad_config_file)
-
-  def test_raise_when_database_unavailable(self):
-    unavail_config_file = os.path.join(TEST_DIR, 'unavailconfig.txt')
-    with pytest.raises(RuntimeError) as e_info:
-      G_pre = GraphDB(config_file=unavail_config_file)
   
   def test_neo4j_connection_does_exist(self, G):
     with warnings.catch_warnings():

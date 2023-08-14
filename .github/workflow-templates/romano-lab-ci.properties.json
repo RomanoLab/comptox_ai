@@ -1,0 +1,7 @@
+{
+    "name": "Romano Lab Workflow",
+    "description": "Romano Lab CI starter workflow.",
+    "iconName": "example-icon",
+    "categories": ["continuous-integration"],
+    "filePatterns": ["package.json$", "^Dockerfile", ".*\\.md$"]
+}

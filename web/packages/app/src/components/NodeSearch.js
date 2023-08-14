@@ -6,7 +6,7 @@ import {
   Select,
   MenuItem,
   FormControl,
-  InputLabel
+  InputLabel,
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 
@@ -16,9 +16,9 @@ import { setSearch } from '../features/nodeSlice';
 const formReducer = (state, event) => {
   return {
     ...state,
-    [event.name]: event.value
-  }
-}
+    [event.name]: event.value,
+  };
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,68 +32,70 @@ const NodeSearch = (props) => {
   const { config } = props;
   const [formData, setFormData] = useReducer(formReducer, {});
   const dispatch = useAppDispatch();
-  
-  const classes = useStyles()
 
-  const handleSubmit = event => {
+  const classes = useStyles();
+
+  const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(setSearch({
-      searchType: 'node',
-      params: {
-        label: formData.nodeType,
-        field: formData.nodeField,
-        value: formData.nodeValue
-      }
-    }));
-  }
+    dispatch(
+      setSearch({
+        searchType: 'node',
+        params: {
+          label: formData.nodeType,
+          field: formData.nodeField,
+          value: formData.nodeValue,
+        },
+      })
+    );
+  };
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setFormData({
       name: event.target.name,
       value: event.target.value,
     });
-  }
+  };
 
   const handleReset = () => {
     setFormData({
       name: 'nodeType',
-      value: ''
-    })
+      value: '',
+    });
     setFormData({
       name: 'nodeField',
-      value: ''
-    })
+      value: '',
+    });
     setFormData({
       name: 'nodeValue',
-      value: ''
-    })
-  }
+      value: '',
+    });
+  };
 
-  const handleLoadExampleQuery = event => {
+  const handleLoadExampleQuery = (event) => {
     setFormData({
       name: 'nodeType',
-      value: 'Gene'
+      value: 'Gene',
     });
     setFormData({
       name: 'nodeField',
-      value: 'geneSymbol'
+      value: 'geneSymbol',
     });
     setFormData({
       name: 'nodeValue',
-      value: 'CYP2E1'
+      value: 'CYP2E1',
     });
-  }
+  };
 
-  const fetchNodeFields = selectedNodeLabel => {
+  const fetchNodeFields = (selectedNodeLabel) => {
     if (selectedNodeLabel === undefined) {
-      return []
+      return [];
     } else {
-      return config.nodeConfig.nodeLabelProperties[selectedNodeLabel]
+      return config.nodeConfig.nodeLabelProperties[selectedNodeLabel];
     }
-  } 
+  };
 
-  return(
-    <div className="node-search">
+  return (
+    <div className="node-search subject-container">
       <h2>Nodes</h2>
       <div className="search-header">
         <span className="search-text">Search</span>
@@ -107,9 +109,12 @@ const NodeSearch = (props) => {
         </Button>
       </div>
       <div className="formWrapper">
-
         <form onSubmit={handleSubmit}>
-          <FormControl variant="outlined" size="small" style={{ width: 500, paddingBottom: 8 }}>
+          <FormControl
+            variant="outlined"
+            size="small"
+            style={{ width: 500, paddingBottom: 8 }}
+          >
             <InputLabel id="select-outlined-label-type">Node Type</InputLabel>
             <Select
               labelId="select-outlined-label-type"
@@ -124,8 +129,12 @@ const NodeSearch = (props) => {
               ))}
             </Select>
           </FormControl>
-          
-          <FormControl variant="outlined" size="small" style={{ width: 500, paddingBottom: 8 }}>
+
+          <FormControl
+            variant="outlined"
+            size="small"
+            style={{ width: 500, paddingBottom: 8 }}
+          >
             <InputLabel id="select-outlined-label-field">Node Field</InputLabel>
             <Select
               name="nodeField"
@@ -140,7 +149,7 @@ const NodeSearch = (props) => {
               ))}
             </Select>
           </FormControl>
-          
+
           <TextField
             label="Value"
             variant="outlined"
@@ -150,28 +159,20 @@ const NodeSearch = (props) => {
             name="nodeValue"
             value={formData.nodeValue || ''}
           />
-          
-          <br/>
+
+          <br />
           <div className={classes.root}>
-            <Button 
-              variant="contained"
-              color="primary"
-              type="submit"
-            >
+            <Button variant="contained" color="primary" type="submit">
               Search
             </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleReset}
-            >
+            <Button variant="contained" color="primary" onClick={handleReset}>
               Clear Form
             </Button>
           </div>
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default NodeSearch;

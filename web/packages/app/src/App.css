@@ -101,6 +101,11 @@ h2 {
   margin-right: 24px;
 }
 
+.subject-container {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
 #marvin-bottom-controls {
   margin-left: 18px;
   margin-right: 18px;

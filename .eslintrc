@@ -1,0 +1,66 @@
+{
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:prettier/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:import/recommended"
+    // "plugin:node/recommended"
+  ],
+  "plugins": ["prettier", "react", "import"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "prettier/prettier": ["error"],
+
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-indent-props": [2, 4],
+    "react/jsx-indent": [2, 4],
+    "react/jsx-one-expression-per-line": [0],
+    "react/prefer-stateless-function": [1],
+    "react/static-property-placement": [1, "property assignment"],
+    "react/no-multi-comp": ["error", { "ignoreStateless": true }],
+
+    "semi": 2,
+    "comma-dangle": "error",
+    "no-underscore-dangle": "error",
+    "space-before-blocks": "error",
+    "keyword-spacing": "error",
+    "spaced-comment": "error",
+    "quotes": ["error", "single"],
+    "prefer-template": "warn",
+    "template-curly-spacing": ["error", "never"],
+    "jsx-quotes": ["warn", "prefer-double"],
+    "camelcase": ["error", { "properties": "always" }],
+    "no-unused-vars": ["warn"],
+
+    "import/prefer-default-export": ["warn", { "target": "any" }],
+    "import/no-duplicates": ["error", { "considerQueryString": true }],
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-from .graph_db import GraphDB
+from .graph_db import GraphDB, Node
 from .io import GraphExporter
 
-__all__ = ["GraphDB", "GraphExporter"]
+__all__ = ["GraphDB", "GraphExporter", "Node"]

@@ -25,6 +25,17 @@ class TestGraphDB(object):
     x = G.run_cypher("RETURN 'hello';")
     assert len(x[0]) > 0
 
+  def test_dsstox_to_casrn_converts(self, G):
+    converted_ids = G.convert_ids(
+      node_type='Chemical',
+      from_id='xrefDTXSID',
+      to_id='xrefCasRN',
+      ids=['DTXSID40857898', 'DTXSID40858749']
+    )
+    
+    # Hopefully DSSTOX -> CASRN mappings are stable between versions...
+    assert converted_ids == ['69313-80-0', '4559-79-9']
+
   ## THE FOLLOWING ARE OBSOLETE UNTIL GDS GRAPH CATALOG IS COMPATIBLE WITH
   ## STRING PROPERTIES:
   

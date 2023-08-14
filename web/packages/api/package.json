@@ -30,7 +30,7 @@
     "express": "^4.17.1",
     "lodash": "^4.17.21",
     "method-override": "^3.0.0",
-    "mocha": "^8.3.0",
+    "mocha": "^10.1.0",
     "morgan": "^1.10.0",
     "nconf": "^0.11.4",
     "neo4j-driver": "^4.2.2",

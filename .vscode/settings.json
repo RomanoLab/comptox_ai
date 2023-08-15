@@ -1,16 +1,209 @@
 {
   "emmet.includeLanguages": {
-    "javascript": "javascriptreact"
+    "javascript": "javascriptreact",
+    "jinja2": "html",
+    "jinja-html": "html",
+    "django-html": "html",
+    "postcss": "css"
   },
   "python.pythonPath": "C:\\Users\\jdr2160\\Miniconda3\\envs\\comptox_ai\\python.exe",
   "restructuredtext.confPath": "${workspaceFolder}\\docs\\source",
   "restructuredtext.languageServer.disabled": true,
 
-  // Javascript: Prettier
+  // Javascript formatter: Prettier
   "[javascript]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+
+  // CSS formatter: Styelint, PostCSS Recess Ordering.
+  // Turn off VSCode default css warnings to avoid duplicate warnings
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  //
+  "postcssSorting.config": {
+    "order": [
+      "custom-properties",
+      "dollar-variables",
+      {
+        "type" : "at-rule",
+        "name" : "include",
+      },
+      {
+        "type"     : "at-rule",
+        "name"     : "include",
+        "hasBlock" : true
+      },
+      "declarations",
+      {
+        "type"     : "rule",
+        "selector" : /^&/
+      },
+      {
+        "type"     : "rule",
+        "selector" : /^&:\w+$/
+      },
+      {
+        "type"     : "rule",
+        "selector" : /^&:   : \w+$/
+      },
+      {
+        "type" : "at-rule",
+        "name" : "media"
+      }
+    ],
+    "properties-order": [
+      "position",
+      "top",
+      "right",
+      "bottom",
+      "left",
+      "z-index",
+      "display",
+      "float",
+      "width",
+      "height",
+      "max-width",
+      "max-height",
+      "min-width",
+      "min-height",
+      "padding",
+      "padding-top",
+      "padding-right",
+      "padding-bottom",
+      "padding-left",
+      "margin",
+      "margin-top",
+      "margin-right",
+      "margin-bottom",
+      "margin-left",
+      "margin-collapse",
+      "margin-top-collapse",
+      "margin-right-collapse",
+      "margin-bottom-collapse",
+      "margin-left-collapse",
+      "overflow",
+      "overflow-x",
+      "overflow-y",
+      "clip",
+      "clear",
+      "font",
+      "font-family",
+      "font-size",
+      "font-smoothing",
+      "osx-font-smoothing",
+      "font-style",
+      "font-weight",
+      "hyphens",
+      "src",
+      "line-height",
+      "letter-spacing",
+      "word-spacing",
+      "color",
+      "text-align",
+      "text-decoration",
+      "text-indent",
+      "text-overflow",
+      "text-rendering",
+      "text-size-adjust",
+      "text-shadow",
+      "text-transform",
+      "word-break",
+      "word-wrap",
+      "white-space",
+      "vertical-align",
+      "list-style",
+      "list-style-type",
+      "list-style-position",
+      "list-style-image",
+      "pointer-events",
+      "cursor",
+      "background",
+      "background-attachment",
+      "background-color",
+      "background-image",
+      "background-position",
+      "background-repeat",
+      "background-size",
+      "border",
+      "border-collapse",
+      "border-top",
+      "border-right",
+      "border-bottom",
+      "border-left",
+      "border-color",
+      "border-image",
+      "border-top-color",
+      "border-right-color",
+      "border-bottom-color",
+      "border-left-color",
+      "border-spacing",
+      "border-style",
+      "border-top-style",
+      "border-right-style",
+      "border-bottom-style",
+      "border-left-style",
+      "border-width",
+      "border-top-width",
+      "border-right-width",
+      "border-bottom-width",
+      "border-left-width",
+      "border-radius",
+      "border-top-right-radius",
+      "border-bottom-right-radius",
+      "border-bottom-left-radius",
+      "border-top-left-radius",
+      "border-radius-topright",
+      "border-radius-bottomright",
+      "border-radius-bottomleft",
+      "border-radius-topleft",
+      "content",
+      "quotes",
+      "outline",
+      "outline-offset",
+      "opacity",
+      "filter",
+      "visibility",
+      "size",
+      "zoom",
+      "transform",
+      "box-align",
+      "box-flex",
+      "box-orient",
+      "box-pack",
+      "box-shadow",
+      "box-sizing",
+      "table-layout",
+      "animation",
+      "animation-delay",
+      "animation-duration",
+      "animation-iteration-count",
+      "animation-name",
+      "animation-play-state",
+      "animation-timing-function",
+      "animation-fill-mode",
+      "transition",
+      "transition-delay",
+      "transition-duration",
+      "transition-property",
+      "transition-timing-function",
+      "background-clip",
+      "backface-visibility",
+      "resize",
+      "appearance",
+      "user-select",
+      "interpolation-mode",
+      "direction",
+      "marks",
+      "page",
+      "set-link-source",
+      "unicode-bidi",
+      "speak"
+    ],
+    "unspecified-properties-position" : "bottom"
+  },
+
   // Typescript formatter: Prettier
   "[typescript]": {
     "editor.formatOnSave": true,
@@ -25,10 +218,40 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "ms-python.autopep8"
   },
-  "python.formatting.provider": "none",
 
   // Python testing: PyTest
   "python.testing.pytestArgs": ["tests"],
   "python.testing.unittestEnabled": false,
-  "python.testing.pytestEnabled": true
+  "python.testing.pytestEnabled": true,
+
+  // Jinja formatter: First done with Prettier and finalized with djLint
+  "[jinja]": {
+    "editor.defaultFormatter": "monosans.djlint",
+    "multiFormatter.formatterList": ["esbenp.prettier-vscode", "monosans.djlint"],
+    "editor.detectIndentation": false,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  },
+  "[jinja-html]": {
+    "editor.defaultFormatter": "monosans.djlint",
+    "multiFormatter.formatterList": ["esbenp.prettier-vscode", "monosans.djlint"],
+    "editor.detectIndentation": false,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  },
+  "[django-html]": {
+    "editor.defaultFormatter": "monosans.djlint",
+    "multiFormatter.formatterList": ["esbenp.prettier-vscode", "monosans.djlint"],
+    "editor.detectIndentation": false,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  },
+  "files.associations": {
+    "*.html": "django-html"
+  },
+
+  // YAML formatter: Redhat
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
 }

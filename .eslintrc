@@ -1,4 +1,11 @@
 {
+  "root": true,
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
   "extends": [
     "airbnb",
     "airbnb/hooks",
@@ -7,13 +14,14 @@
     "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:import/recommended"
-    // "plugin:node/recommended"
   ],
-  "plugins": ["prettier", "react", "import"],
+  "plugins": ["prettier", "react", "import", "simple-import-sort", "sort-exports"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
-    }
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
   },
   "rules": {
     "prettier/prettier": ["error"],
@@ -21,12 +29,13 @@
     "react-hooks/exhaustive-deps": "warn",
     "react-hooks/rules-of-hooks": "error",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "react/jsx-indent-props": [2, 4],
-    "react/jsx-indent": [2, 4],
+    "react/jsx-indent-props": [2, 2],
+    "react/jsx-indent": [2, 2],
     "react/jsx-one-expression-per-line": [0],
     "react/prefer-stateless-function": [1],
     "react/static-property-placement": [1, "property assignment"],
     "react/no-multi-comp": ["error", { "ignoreStateless": true }],
+    "react/prop-types": "warn",
 
     "semi": 2,
     "comma-dangle": "error",
@@ -38,29 +47,67 @@
     "prefer-template": "warn",
     "template-curly-spacing": ["error", "never"],
     "jsx-quotes": ["warn", "prefer-double"],
-    "camelcase": ["error", { "properties": "always" }],
+    "camelcase": ["warn", { "properties": "always" }],
     "no-unused-vars": ["warn"],
 
     "import/prefer-default-export": ["warn", { "target": "any" }],
     "import/no-duplicates": ["error", { "considerQueryString": true }],
-    "import/order": [
-      "error",
-      {
-        "groups": ["builtin", "external", "internal"],
-        "pathGroups": [
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+
+    "sort-exports/sort-exports": ["error", { "sortDir": "asc" }]
+  },
+  "overrides": [
+    // Exceptions for ESLint related files
+    {
+      "env": {
+        "node": true
+      },
+      "files": [".eslintrc.{js,cjs}"],
+      "parserOptions": {
+        "sourceType": "script"
+      }
+    },
+    // Override "simple-import-sort" config
+    {
+      "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
+      "rules": {
+        "simple-import-sort/imports": [
+          "error",
           {
-            "pattern": "react",
-            "group": "external",
-            "position": "before"
+            "groups": [
+              // Packages `react` related packages come first.
+              ["^react", "^@?\\w"],
+              // Internal packages.
+              ["^(@|components)(/.*|$)"],
+              // Side effect imports.
+              ["^\\u0000"],
+              // Parent imports. Put `..` last.
+              ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+              // Other relative imports. Put same-folder imports and `.` last.
+              ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+              // Style imports.
+              ["^.+\\.?(css)$"]
+            ]
           }
         ],
-        "pathGroupsExcludedImportTypes": ["react"],
-        "newlines-between": "always",
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true
-        }
+        "simple-import-sort/exports": "error"
       }
-    ]
-  }
+    },
+    // Exception rules for specific packages
+    {
+      "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
+      "rules": {
+        "no-underscore-dangle": [
+          "error",
+          {
+            // Rewire methods
+            "allow": ["__get__", "__set__", "__reset__"]
+          }
+        ]
+      }
+    }
+  ]
 }

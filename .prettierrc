@@ -4,5 +4,24 @@
   "singleQuote": true,
   "tabWidth": 2,
   "trailingComma": "all",
-  "jsxSingleQuote": false
+  "jsxSingleQuote": false,
+
+  "plugins": ["prettier-plugin-organize-attributes", "prettier-plugin-jinja-template"],
+
+  "attributeGroups": ["^class$", "^(id|name)$", "$DEFAULT", "^aria-"],
+
+  "overrides": [
+    {
+      "files": ["*.html"],
+      "options": {
+        "parser": "jinja-template"
+      }
+    },
+    {
+      "files": ["*.yml"],
+      "options": {
+        "printWidth": 80
+      }
+    }
+  ]
 }

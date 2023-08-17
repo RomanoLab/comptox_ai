@@ -1,5 +1,7 @@
 {
-    "name": "comptoxai",
-    "private": true,
-    "workspaces": ["packages/*"]
+  "name": "comptoxai",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
 }

@@ -15,6 +15,10 @@ def G():
 
 class TestGraphDB(object):
   
+<<<<<<< HEAD
+=======
+  
+>>>>>>> master
   def test_neo4j_connection_does_exist(self, G):
     with warnings.catch_warnings():
       # Supress the ExperimentalWarning for now
@@ -37,6 +41,19 @@ class TestGraphDB(object):
     assert converted_ids == ['69313-80-0', '4559-79-9']
 
   ## THE FOLLOWING ARE OBSOLETE UNTIL GDS GRAPH CATALOG IS COMPATIBLE WITH
+  # def test_raise_when_config_file_not_found(self):
+  #   with pytest.raises(RuntimeError) as e_info:
+  #     G_pre = GraphDB(config_file="/dev/null")
+
+  # def test_raise_when_bad_config_given(self):
+  #   bad_config_file = os.path.join(TEST_DIR, 'badconfig.txt')
+  #   with pytest.raises(RuntimeError) as e_info:
+  #     G_pre = GraphDB(config_file=bad_config_file)
+
+  # def test_raise_when_database_unavailable(self):
+  #   unavail_config_file = os.path.join(TEST_DIR, 'unavailconfig.txt')
+  #   with pytest.raises(RuntimeError) as e_info:
+  #     G_pre = GraphDB(config_file=unavail_config_file)
   ## STRING PROPERTIES:
   
   # def test_gds_list_existing_graphs(self, G):

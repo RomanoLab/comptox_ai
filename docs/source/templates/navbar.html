@@ -1,21 +1,45 @@
 <header class="fixed-top">
-  <nav class="navbar navbar-expand-md navbar-light">
-    <a href="{{ pathto('index') }}" class="navbar-brand brand-align-mid" id="logo"><img src="{{ pathto('_static/img/icon.png', 1) }}" class="d-inline-block align-top" id="icon" height=40 width=40><span class="valign-mid">ComptoxAI</span></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item"><a href="{{ pathto('about') }}" class="nav-link">About</a></li>
-        <li class="nav-item"><a href="{{ pathto('browse') }}" class="nav-link">Data</a></li>
-        <li class="nav-item"><a href="{{ pathto('install') }}" class="nav-link">Install</a></li>
-        <li class="nav-item"><a href="{{ pathto('use/index') }}" class="nav-link">User Guide</a></li>
-        <li class="nav-item"><a href="{{ pathto('api/index') }}" class="nav-link">API Docs</a></li>
-        <li class="nav-item"><a href="{{ pathto('blog') }}" class="nav-link">Blog</a></li>
-      </ul>
-      <span class="navbar-text">
-        <a href="https://github.com/jdromano2/comptox_ai" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
-      </span>
-    </div>
-  </nav>
+    <nav class="navbar navbar-expand-md navbar-light">
+        <a href="{{ pathto('index') }}" class="navbar-brand brand-align-mid" id="logo"
+            ><img
+                src="{{ pathto('_static/img/icon.png', 1) }}"
+                class="d-inline-block align-top"
+                id="icon"
+                height="40"
+                width="40"
+            /><span class="valign-mid">ComptoxAI</span></a
+        >
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a href="{{ pathto('about') }}" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="{{ pathto('browse') }}" class="nav-link">Data</a></li>
+                <li class="nav-item">
+                    <a href="{{ pathto('install') }}" class="nav-link">Install</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ pathto('use/index') }}" class="nav-link">User Guide</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ pathto('docs/index') }}" class="nav-link">API Docs</a>
+                </li>
+                <li class="nav-item"><a href="{{ pathto('blog') }}" class="nav-link">Blog</a></li>
+            </ul>
+            <span class="navbar-text">
+                <a href="https://github.com/jdromano2/comptox_ai" target="_blank"
+                    ><i class="fa fa-github-square fa-2x"></i
+                ></a>
+            </span>
+        </div>
+    </nav>
 </header>

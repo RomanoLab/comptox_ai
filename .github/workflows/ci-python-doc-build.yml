@@ -1,0 +1,68 @@
+---
+name: ci-python-doc-build
+
+# Define the events that trigger the workflow
+on:
+  push:
+    branches:
+      # You can change the default value as needed
+      - '*'
+  workflow_dispatch:
+    inputs:
+      # You can change the default value as needed
+      working-directory:
+        description: 'Working directory for documentation build'
+        default: './docs'
+        required: true
+
+# Define the jobs in the workflow
+jobs:
+  build-python-doc:
+    runs-on: ubuntu-latest
+
+    # Define strategy for matrix builds
+    strategy:
+      matrix:
+        # You can change the default value as needed
+        python-version: ['3.8']
+
+    steps:
+      # Step: Check out the repository's code to the runner
+      - name: checkout-code
+        uses: actions/checkout@v3
+
+      # Step: Set up Python environment
+      - name: setup-python-env ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Step: Install project dependencies using pip
+      - name: install-dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools
+          python -m pip install ".[docs]"
+        # Modify the name inside the brackets to match the name of the
+        # extras_require you would like to install.
+        # There should be no whitespaces inside the brackets.
+        # e.g. python -m pip install-e ".[dev,docs]"
+
+      # Step: Clean previous build to remove deprecated files before building
+      - name: clean-previous-build
+        working-directory: ${{ inputs.working-directory }}
+        run: rm -rf ./build
+
+      # Step: Build documentation with Sphinx and then test docstring coverage
+      - name: build-doc
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          make html
+        # sphinx-build -b coverage docs/source build/coverage
+
+      # Step: Check documentation coverage with Sphinx
+      - name: coverage
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          sphinx-build -b coverage ./source ./build/coverage
+        # You can change the default value of last two parameters
+        # SOURCEDIR, BUILDDIR as needed

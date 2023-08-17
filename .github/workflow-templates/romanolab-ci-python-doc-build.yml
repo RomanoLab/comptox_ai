@@ -1,0 +1,48 @@
+---
+name: ci-python-doc-build
+
+# Define the events that trigger the workflow
+on:
+  push:
+    branches:
+      # You can change the default value as needed
+      - [$default-branch]
+  workflow_dispatch:
+
+# Define the jobs in the workflow
+jobs:
+  build-python-doc:
+    runs-on: ubuntu-latest
+
+    # Define strategy for matrix builds
+    strategy:
+      matrix:
+        # You can change the default value as needed
+        python-version: ["3.8", "3.9", "3.10"]
+
+    steps:
+      # Step: Check out the repository's code to the runner
+      - name: checkout-code
+        uses: actions/checkout@v3
+
+      # Step: Set up Python environment
+      - name: setup-python-env ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Step: Install project dependencies using pip
+      - name: install-dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools
+          python -m pip install-e ".[docs]"
+        # Modify the name inside the brackets to match the name of the
+        # extras_require you would like to install.
+        # There should be no whitespaces inside the brackets.
+        # e.g. python -m pip install-e ".[dev,docs]"
+
+      # Step: Build documentation with Sphinx and then test docstring coverage
+      - name: build-doc
+        # Change working directory to your path
+        working-directory: ${{ github.workspace }}/docs
+        run: make html

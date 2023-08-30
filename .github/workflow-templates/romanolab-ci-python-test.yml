@@ -1,4 +1,5 @@
 ---
+# Automates building and running pytest
 name: ci-python-test
 
 # Define the events that trigger the workflow

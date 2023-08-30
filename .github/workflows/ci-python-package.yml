@@ -1,4 +1,5 @@
 ---
+# Automates building and testing of a Python package
 name: ci-python-package
 
 # Define the events that trigger the workflow

@@ -11,10 +11,10 @@
     "@mui/styles": "^5.4.2",
     "@reduxjs/toolkit": "1.7.2",
     "bootstrap": "^4.6.0",
+    "d3": "^5.5.0",
     "endent": "^2.1.0",
     "prop-types": "^15.7.2",
-    "d3": "^5.5.0",
-    "react": "^17.0.2",
+    "react": "^16.4.1",
     "react-bootstrap": "^1.5.2",
     "react-d3-graph": "^2.6.0",
     "react-dom": "^17.0.2",
@@ -45,10 +45,14 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "react-scripts": "5.0.0",
     "rewire": "^5.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.4.1"
   }
 }

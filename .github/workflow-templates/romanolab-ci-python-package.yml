@@ -1,11 +1,11 @@
 ---
+# Automates building and testing of a Python package
 name: ci-python-package
 
 # Define the events that trigger the workflow
 on:
   push:
     branches:
-      # You can change the default value as needed
       - [$default-branch]
   workflow_dispatch:
 

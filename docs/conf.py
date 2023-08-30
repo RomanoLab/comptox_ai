@@ -91,6 +91,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.imgmath',
     'sphinx.ext.autosummary',  # note: automatically loaded by numpydoc
+    'sphinx.ext.coverage',
     'numpydoc',
     'ablog',
     'sphinxext.opengraph'
@@ -115,6 +116,9 @@ blog_title = 'ComptoxAI\'s blog'
 exclude_patterns = ["build", "templates", "themes"]
 
 pygments_style = "sphinx"
+
+# Configuration of sphinx.ext.coverage
+coverage_show_missing_items = True
 
 # -- Options for HTML output -------------------------------------------------
 

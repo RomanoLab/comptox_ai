@@ -1,0 +1,131 @@
+---
+# Automates building of python docs via sphinx,
+name: ci-build
+
+# Define the events that trigger the workflow
+on:
+  push:
+    branches:
+      # You can change the default value as needed
+      - '*'
+  workflow_dispatch:
+
+# Define the jobs in the workflow
+jobs:
+  build-all:
+    runs-on: ubuntu-latest
+
+    # You can change the default value as needed
+    env:
+      # Directory of docs
+      doc-directory: ./docs
+      # Directory of React app
+      app-directory: ./web/packages/app
+
+    # Define strategy for matrix builds
+    strategy:
+      matrix:
+        # You can change the default value as needed
+        python-version: ['3.9']
+
+    steps:
+      # Step: Check out the repository's code to the runner
+      - name: checkout-code
+        uses: actions/checkout@v3
+
+      # Step: Set up Python environment
+      - name: setup-python-env ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Step: Install project dependencies using pip
+      - name: install-dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools
+          python -m pip install ".[docs]"
+        # Modify the name inside the brackets to match the name of the
+        # extras_require you would like to install. There should be no
+        # whitespaces inside the brackets. e.g. python -m pip install-e
+        # ".[dev,docs]"
+
+      # Step: Clean previous build to remove deprecated files before building
+      - name: clean-previous-build
+        working-directory: ${{env.doc-directory}}
+        run: rm -rf ./build
+
+      # Step: Build documentation with Sphinx
+      - name: build-doc
+        working-directory: ${{env.doc-directory}}
+        run: make html
+
+      # Step: List files in doc build directory
+      - name: list-files-doc-build
+        working-directory: ${{env.doc-directory}}
+        run: |
+          directory="./build/html"
+          ls "$directory"
+
+      # Step: Check if necessary files exist in the list You can change the
+      # default value of the list as needed
+      - name: check-files-doc-build
+        working-directory: ${{env.doc-directory}}
+        run: |
+          directory="./build/html"
+          required_files=("index.html" "browse.html")
+          missing_files=()
+
+          for file in "${required_files[@]}"; do
+            if [[ ! -f "$directory/$file" ]]; then
+              missing_files+=("$file")
+            fi
+          done
+
+          if [[ ${#missing_files[@]} -gt 0 ]]; then
+            echo "These files are missing in '$directory': ${missing_files[*]}"
+            exit 1
+          fi
+
+      # # Step: Check documentation coverage with Sphinx
+      # - name: coverage run: sphinx-build -b coverage ./source
+      #   ./build/coverage
+      #   # You can change the default value of last two parameters,
+      #   # SOURCEDIR, BUILDDIR as needed
+
+      # Step: Clean previous build to remove deprecated files before building
+      - name: clean-previous-react-build
+        working-directory: ${{env.app-directory}}
+        run: rm -rf ./build
+
+      # Step: Build React app
+      - name: build-react-app
+        working-directory: ${{env.app-directory}}
+        run: |
+          npm install --package-lock-only
+          npm ci
+          npm run build
+
+      # Step: List files in doc build directory
+      - name: list-files-react-build
+        working-directory: ${{env.doc-directory}}
+        run: |
+          directory="./"
+          ls "$directory"
+
+      # Step: Copy React app result to docs folder
+      - name: copy-app-to-doc
+        run: |
+          cp ${{env.app-directory}}/build/static/js/* \
+          ${{ env.doc-directory }}/build/html/_static/js/
+
+      # Step: Check if the files are properly copied by checking for file diff
+      - name: check-copy
+        run: |
+          cmp --silent ${{env.app-directory}}/build/static/js/main.js \
+          ${{ env.doc-directory }}/build/html/_static/js/main.js
+          if [[ $? -eq 0 ]]; then
+            echo "Files were copied successfully."
+          else
+            echo "Files were not copied successfully."
+            exit 1
+          fi

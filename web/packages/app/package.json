@@ -14,7 +14,7 @@
     "d3": "^5.5.0",
     "endent": "^2.1.0",
     "prop-types": "^15.7.2",
-    "react": "^16.4.1",
+    "react": "16.0.0 || ^17.0.0",
     "react-bootstrap": "^1.5.2",
     "react-d3-graph": "^2.6.0",
     "react-dom": "^17.0.2",
@@ -51,8 +51,5 @@
     "@testing-library/user-event": "^7.2.1",
     "react-scripts": "5.0.0",
     "rewire": "^5.0.0"
-  },
-  "peerDependencies": {
-    "react": "^16.4.1"
   }
 }

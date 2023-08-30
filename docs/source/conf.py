@@ -6,6 +6,14 @@
 
 # -- Project information -----------------------------------------------------
 
+import re
+from sphinx.util.inspect import safe_getattr
+from docutils.parsers.rst import directives
+from sphinx.ext.autosummary import Autosummary, get_documenter
+import ablog
+import comptox_ai
+import os
+import sys
 from datetime import datetime
 
 project = 'ComptoxAI'
@@ -17,23 +25,15 @@ release = '0.1a'
 
 # -- General configuration ---------------------------------------------------
 
-import sys
-import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
-import comptox_ai
-
-import ablog
 
 #############################################
 # Custom Autosummary that shows class members
 #############################################
-from sphinx.ext.autosummary import Autosummary, get_documenter
-from docutils.parsers.rst import directives
-from sphinx.util.inspect import safe_getattr
-import re
 
 # see: https://stackoverflow.com/a/30783465/1730417
+
 class AutoClassSummary(Autosummary):
     option_spec = {
         'methods': directives.unchanged,
@@ -54,7 +54,8 @@ class AutoClassSummary(Autosummary):
                 continue
             if documenter.objtype == typ:
                 items.append(name)
-        public = [x for x in items if x in include_public or not x.startswith('_')]
+        public = [
+            x for x in items if x in include_public or not x.startswith('_')]
         return public, items
 
     def run(self):
@@ -65,12 +66,15 @@ class AutoClassSummary(Autosummary):
             c = getattr(m, class_name)
             if 'methods' in self.options:
                 _, methods = self.get_members(c, 'method', ['__init__'])
-                self.content = ["~%s.%s" % (clss, method) for method in methods if not method.startswith('_')]
+                self.content = ["~%s.%s" % (
+                    clss, method) for method in methods if not method.startswith('_')]
             if 'attributes' in self.options:
                 _, attribs = self.get_members(c, 'attribute')
-                self.content = ["~%s.%s" % (clss, attrib) for attrib in attribs if not attrib.startswith('_')]
+                self.content = ["~%s.%s" % (
+                    clss, attrib) for attrib in attribs if not attrib.startswith('_')]
         finally:
             return super(AutoClassSummary, self).run()
+
 
 def setup(app):
     app.add_directive('autoclasssummary', AutoClassSummary)
@@ -79,6 +83,7 @@ def setup(app):
 # End custom autosummary
 ########################
 
+
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
@@ -86,6 +91,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.imgmath',
     'sphinx.ext.autosummary',  # note: automatically loaded by numpydoc
+    'sphinx.ext.coverage',
     'numpydoc',
     'ablog',
     'sphinxext.opengraph'
@@ -110,6 +116,9 @@ blog_title = 'ComptoxAI\'s blog'
 exclude_patterns = ["build", "templates", "themes"]
 
 pygments_style = "sphinx"
+
+# Configuration of sphinx.ext.coverage
+coverage_show_missing_items = True
 
 # -- Options for HTML output -------------------------------------------------
 

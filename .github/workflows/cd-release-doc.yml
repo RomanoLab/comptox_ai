@@ -36,7 +36,7 @@ jobs:
         uses: easingthemes/ssh-deploy@v2
         with:
           SSH_PRIVATE_KEY: ${{ secrets.COMPTOX_AI_AWS_SSH }}
-          REMOTE_HOST: 'ec2-54-196-111-219.compute-1.amazonaws.com'
+          REMOTE_HOST: 'ec2-54-92-148-244.compute-1.amazonaws.com'
           REMOTE_USER: 'ec2-user'
           SOURCE: ./docs/build/
           TARGET: '/home/ec2-user/ComptoxAiWeb'

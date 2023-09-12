@@ -25,12 +25,18 @@ jobs:
       - name: checkout-code
         uses: actions/checkout@v3
 
+      # Step: Install Node.js
+      - name: install-node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
       # Step: Deploy to server
       - name: deploy-to-server
         uses: easingthemes/ssh-deploy@v2
         with:
           SSH_PRIVATE_KEY: ${{ secrets.COMPTOX_AI_AWS_SSH }}
-          REMOTE_HOST: 'ec2-54-196-111-219.compute-1.amazonaws.com'
+          REMOTE_HOST: 'ec2-54-92-148-244.compute-1.amazonaws.com'
           REMOTE_USER: 'ec2-user'
           SOURCE: ./docs/build/
           TARGET: '/home/ec2-user/ComptoxAiWeb'

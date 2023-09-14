@@ -53,10 +53,8 @@
     "import/prefer-default-export": ["warn", { "target": "any" }],
     "import/no-duplicates": ["error", { "considerQueryString": true }],
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error",
     "import/first": "error",
     "import/newline-after-import": "error",
-
     "sort-exports/sort-exports": ["error", { "sortDir": "asc" }]
   },
   "overrides": [

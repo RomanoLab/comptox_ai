@@ -27,30 +27,30 @@
       "custom-properties",
       "dollar-variables",
       {
-        "type" : "at-rule",
-        "name" : "include",
+        "type": "at-rule",
+        "name": "include"
       },
       {
-        "type"     : "at-rule",
-        "name"     : "include",
-        "hasBlock" : true
+        "type": "at-rule",
+        "name": "include",
+        "hasBlock": true
       },
       "declarations",
       {
-        "type"     : "rule",
-        "selector" : /^&/
+        "type": "rule",
+        "selector": "^&"
       },
       {
-        "type"     : "rule",
-        "selector" : /^&:\w+$/
+        "type": "rule",
+        "selector": "^&:\\w+$"
       },
       {
-        "type"     : "rule",
-        "selector" : /^&:   : \w+$/
+        "type": "rule",
+        "selector": "^&:   : \\w+$"
       },
       {
-        "type" : "at-rule",
-        "name" : "media"
+        "type": "at-rule",
+        "name": "media"
       }
     ],
     "properties-order": [
@@ -201,7 +201,7 @@
       "unicode-bidi",
       "speak"
     ],
-    "unspecified-properties-position" : "bottom"
+    "unspecified-properties-position": "bottom"
   },
 
   // Typescript formatter: Prettier
@@ -253,5 +253,5 @@
   // YAML formatter: Redhat
   "[yaml]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
-  },
+  }
 }

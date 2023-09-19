@@ -101,28 +101,31 @@ jobs:
       - name: build-react-app
         working-directory: ${{env.app-directory}}
         run: |
-          npm install --package-lock-only
           npm ci
           npm run build
 
-      # Step: List files in doc build directory
+      # Step: List files in app build directory
       - name: list-files-react-build
-        working-directory: ${{env.doc-directory}}
+        working-directory: ${{env.app-directory}}
         run: |
-          directory="./"
+          directory="./build"
           ls "$directory"
 
       # Step: Copy React app result to docs folder
       - name: copy-app-to-doc
         run: |
           cp ${{env.app-directory}}/build/static/js/* \
-          ${{ env.doc-directory }}/build/html/_static/js/
+            ${{ env.doc-directory}}/build/html/_static/js/
+          cp ${{env.app-directory}}/build/static/css/* \
+            ${{ env.doc-directory}}/build/html/_static/css/
 
       # Step: Check if the files are properly copied by checking for file diff
       - name: check-copy
         run: |
           cmp --silent ${{env.app-directory}}/build/static/js/main.js \
-          ${{ env.doc-directory }}/build/html/_static/js/main.js
+            ${{ env.doc-directory }}/build/html/_static/js/main.js &&
+          cmp --silent ${{env.app-directory}}/build/static/css/main.css \
+            ${{ env.doc-directory }}/build/html/_static/css/main.css
           if [[ $? -eq 0 ]]; then
             echo "Files were copied successfully."
           else

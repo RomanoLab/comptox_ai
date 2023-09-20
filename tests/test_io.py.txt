@@ -11,6 +11,3 @@ class TestIO(object):
   def G(self):
     G = comptox_ai.db.GraphDB(verbose=True, hostname="165.123.13.192")
     self.G = G
-
-  def test_graphdb_creates_exporter(self):
-    G.

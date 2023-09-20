@@ -10,12 +10,15 @@ TEST_DIR = os.path.dirname(os.path.realpath(__file__))
 # Module-level scope so we don't keep reconnecting with every test
 @pytest.fixture(scope="module")
 def G():
-  G = GraphDB(verbose=True, hostname="165.123.13.192")
+  G = GraphDB(verbose=True, hostname="neo4j.comptox.ai")
   return G
 
 class TestGraphDB(object):
   
+<<<<<<< HEAD
+=======
   
+>>>>>>> master
   def test_neo4j_connection_does_exist(self, G):
     with warnings.catch_warnings():
       # Supress the ExperimentalWarning for now
@@ -25,6 +28,17 @@ class TestGraphDB(object):
   def test_cypher_query_does_run(self, G):
     x = G.run_cypher("RETURN 'hello';")
     assert len(x[0]) > 0
+
+  def test_dsstox_to_casrn_converts(self, G):
+    converted_ids = G.convert_ids(
+      node_type='Chemical',
+      from_id='xrefDTXSID',
+      to_id='xrefCasRN',
+      ids=['DTXSID40857898', 'DTXSID40858749']
+    )
+    
+    # Hopefully DSSTOX -> CASRN mappings are stable between versions...
+    assert converted_ids == ['69313-80-0', '4559-79-9']
 
   ## THE FOLLOWING ARE OBSOLETE UNTIL GDS GRAPH CATALOG IS COMPATIBLE WITH
   # def test_raise_when_config_file_not_found(self):

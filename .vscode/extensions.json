@@ -9,18 +9,15 @@
     "ms-python.autopep8",
     "ms-python.flake8",
     "ms-python.isort",
-
     "njpwerner.autodocstring",
-
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-
     "batisteo.vscode-django",
     "monosans.djlint",
     "samuelcolvin.jinjahtml",
     "jota0222.multi-formatter",
-
-    "redhat.vscode-yaml"
+    "redhat.vscode-yaml",
+    "rvest.vs-code-prettier-eslint"
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
   "unwantedRecommendations": []

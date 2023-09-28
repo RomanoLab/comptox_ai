@@ -9,13 +9,12 @@
   "extends": [
     "airbnb",
     "airbnb/hooks",
-    "plugin:prettier/recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:import/recommended"
   ],
-  "plugins": ["prettier", "react", "import", "simple-import-sort", "sort-exports"],
+  "plugins": ["react", "import", "simple-import-sort"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -24,8 +23,6 @@
     "sourceType": "module"
   },
   "rules": {
-    "prettier/prettier": ["error"],
-
     "react-hooks/exhaustive-deps": "warn",
     "react-hooks/rules-of-hooks": "error",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
@@ -50,12 +47,12 @@
     "camelcase": ["warn", { "properties": "always" }],
     "no-unused-vars": ["warn"],
 
+    "import/order": "off",
     "import/prefer-default-export": ["warn", { "target": "any" }],
     "import/no-duplicates": ["error", { "considerQueryString": true }],
     "simple-import-sort/imports": "error",
     "import/first": "error",
-    "import/newline-after-import": "error",
-    "sort-exports/sort-exports": ["error", { "sortDir": "asc" }]
+    "import/newline-after-import": "error"
   },
   "overrides": [
     // Exceptions for ESLint related files

@@ -13,7 +13,7 @@
   // Javascript formatter: Prettier
   "[javascript]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
 
   // CSS formatter: Styelint, PostCSS Recess Ordering.
@@ -204,10 +204,10 @@
     "unspecified-properties-position": "bottom"
   },
 
-  // Typescript formatter: Prettier
+  // Typescript formatter: Prettier-ESLint
   "[typescript]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
 
   // Python Docstring formatter: AutoDocstring NumPy
@@ -231,21 +231,21 @@
   // Jinja formatter: First done with Prettier and finalized with djLint
   "[jinja]": {
     "editor.defaultFormatter": "monosans.djlint",
-    "multiFormatter.formatterList": ["esbenp.prettier-vscode", "monosans.djlint"],
+    "multiFormatter.formatterList": ["rvest.vs-code-prettier-eslint", "monosans.djlint"],
     "editor.detectIndentation": false,
     "editor.tabSize": 2,
     "editor.formatOnSave": true
   },
   "[jinja-html]": {
     "editor.defaultFormatter": "monosans.djlint",
-    "multiFormatter.formatterList": ["esbenp.prettier-vscode", "monosans.djlint"],
+    "multiFormatter.formatterList": ["rvest.vs-code-prettier-eslint", "monosans.djlint"],
     "editor.detectIndentation": false,
     "editor.tabSize": 2,
     "editor.formatOnSave": true
   },
   "[django-html]": {
     "editor.defaultFormatter": "monosans.djlint",
-    "multiFormatter.formatterList": ["esbenp.prettier-vscode", "monosans.djlint"],
+    "multiFormatter.formatterList": ["rvest.vs-code-prettier-eslint", "monosans.djlint"],
     "editor.detectIndentation": false,
     "editor.tabSize": 2,
     "editor.formatOnSave": true

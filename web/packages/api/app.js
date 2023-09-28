@@ -14,7 +14,7 @@ import routes from './routes';
 
 const port = 3000;
 
-const HOST = process.env.NODE_ENV === 'production' ? 'https://comptox.ai/api' : 'http://localhost:3000';
+const HOST = process.env.NODE_ENV === 'production' ? 'https://comptox.ai/api' : 'http://localhost:3000/api';
 
 const swaggerOpts = {
   definition: {

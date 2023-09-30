@@ -14,7 +14,7 @@ import routes from './routes';
 
 const port = 3000;
 
-const HOST = process.env.NODE_ENV === 'production' ? 'https://comptox.ai/api' : 'http://localhost:3000/api';
+const HOST = process.env.NODE_ENV === 'production' ? 'https://comptox.ai/api' : 'http://localhost:3000';
 
 const swaggerOpts = {
   definition: {
@@ -30,7 +30,7 @@ const swaggerOpts = {
         description: 'ComptoxAI\'s public REST API',
       },
       {
-        url: 'http://localhost:3000/api',
+        url: 'http://localhost:3000',
         description: 'Default local (dev) API server',
       },
     ],
@@ -145,5 +145,5 @@ app.use((err, _, res, next) => {
 });
 
 app.listen(app.get('port'), () => {
-  console.log(`ComptoxAI API listening at http://localhost:${port}/api`);
+  console.log(`ComptoxAI API listening at http://localhost:${port}`);
 });

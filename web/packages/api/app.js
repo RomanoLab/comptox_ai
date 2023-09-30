@@ -1,20 +1,23 @@
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import express from 'express';
-import methodOverride from 'method-override';
-import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
+const express = require('express');
 
-import dataConfigJson from './assets/data.json';
-import { writeError } from './helpers/response';
-import neo4jSessionCleanup from './middleware/neo4jSessionCleanup';
-import nconf from './config';
-import neo4jMiddleware from './neo4j';
-import routes from './routes';
+const nconf = require('./config');
+const routes = require('./routes');
+const neo4jSessionCleanup = require('./middleware/neo4jSessionCleanup');
+const { writeError } = require('./helpers/response');
+
+const dataConfigJson = require('./assets/data.json');
+
+const app = express();
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
+const path = require('path');
+const cors = require('cors');
 
 const port = 3000;
 
-const HOST = process.env.NODE_ENV === 'production' ? 'https://comptox.ai/api' : 'http://localhost:3000';
+const HOST = (process.env.NODE_ENV === 'production') ? 'https://comptox.ai/api' : 'http://localhost:3000';
 
 const swaggerOpts = {
   definition: {
@@ -41,12 +44,10 @@ const swaggerOpts = {
 
 // Make swagger/openapi documentation
 const swaggerSpec = swaggerJSDoc(swaggerOpts);
-const app = express();
-
 app.use('/help', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.set('port', nconf.get('PORT'));
 
-app.use(neo4jMiddleware);
+app.use(require('./neo4j'));
 
 app.use(bodyParser.json());
 app.use(methodOverride());
@@ -54,17 +55,17 @@ app.use(methodOverride());
 app.use(cors());
 
 // CORS: Important for Open API and other things
-app.use((_, res, next) => {
-  // res.header('Access-Control-Allow-Origin', '*');
-  // res.header('Access-Control-Allow-Credentials', 'true');
-  // // res.header('Access-Control-Allow-Credentials', 'false');
+app.use((req, res, next) => {
+  // res.header("Access-Control-Allow-Origin", "*");
+  // res.header("Access-Control-Allow-Credentials", "true");
+  // // res.header("Access-Control-Allow-Credentials", "false");
   // res.header(
-  //     'Access-Control-Allow-Methods',
-  //     'GET,HEAD,OPTIONS,POST,PUT,DELETE'
+  //     "Access-Control-Allow-Methods",
+  //     "GET,HEAD,OPTIONS,POST,PUT,DELETE"
   // );
   // res.header(
-  //     'Access-Control-Allow-Headers',
-  //     'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Auth-Token'
+  //     "Access-Control-Allow-Headers",
+  //     "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Auth-Token"
   // );
   // Make everything be returned as JSON
   res.header('Content-Type', 'application/json');
@@ -89,10 +90,8 @@ app.use(neo4jSessionCleanup);
  *             schema:
  *               type: string
  */
-app.get('/', (_, res) => {
-  res.send(
-    'Welcome to ComptoxAI\'s web API! Please read the documentation at http://comptox.ai/api/help/ for available operations.',
-  );
+app.get('/', (req, res) => {
+  res.send('Welcome to ComptoxAI\'s web API! Please read the documentation at http://comptox.ai/api/help/ for available operations.');
 });
 
 /**
@@ -109,17 +108,13 @@ app.get('/', (_, res) => {
  *             schema:
  *               type: object
  */
-app.get('/config', (_, res) => {
+app.get('/config', (req, res) => {
   console.log(dataConfigJson);
   res.json(dataConfigJson);
 });
 
 // Note: We use bodyParser here to enable text data in the request body
-app.post(
-  '/chemicals/structureSearch',
-  bodyParser.text({ type: '*/*' }),
-  routes.chemicals.structureSearch,
-);
+app.post('/chemicals/structureSearch', bodyParser.text({ type: '*/*' }), routes.chemicals.structureSearch);
 
 app.get('/nodes/listNodeTypes', routes.nodes.listNodeTypes);
 app.get('/nodes/listNodeTypeProperties/:type', routes.nodes.listNodeTypeProperties);
@@ -138,7 +133,7 @@ app.get('/datasets/makeQsarDataset?', routes.datasets.makeQsarDataset);
 app.get('/graphs/test', routes.graphs.testGraphs);
 
 // handle errors
-app.use((err, _, res, next) => {
+app.use((err, req, res, next) => {
   if (err && err.status) {
     writeError(res, err);
   } else next(err);

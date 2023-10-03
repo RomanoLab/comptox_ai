@@ -17,7 +17,7 @@ const cors = require('cors');
 
 const port = 3000;
 
-const HOST = (process.env.NODE_ENV === 'production') ? 'https://comptox.ai/api' : 'http://localhost:3000';
+const HOST = (process.env.NODE_ENV === 'production') ? 'https://comptox.ai/api' : 'http://0.0.0.0:3000';
 
 const swaggerOpts = {
   definition: {
@@ -33,7 +33,7 @@ const swaggerOpts = {
         description: 'ComptoxAI\'s public REST API',
       },
       {
-        url: 'http://localhost:3000',
+        url: 'http://0.0.0.0:3001',
         description: 'Default local (dev) API server',
       },
     ],
@@ -118,7 +118,7 @@ app.post('/chemicals/structureSearch', bodyParser.text({ type: '*/*' }), routes.
 
 app.get('/nodes/listNodeTypes', routes.nodes.listNodeTypes);
 app.get('/nodes/listNodeTypeProperties/:type', routes.nodes.listNodeTypeProperties);
-// example: http://localhost:3000/nodes/Chemical/search?field=xrefDTXSID&value=DTXSID30857908
+// example: http://0.0.0.0:3000/nodes/Chemical/search?field=xrefDTXSID&value=DTXSID30857908
 app.get('/nodes/:type/search?', routes.nodes.findNode);
 app.get('/nodes/:type/searchContains?', routes.nodes.findNodeContains);
 app.get('/nodes/fetchById/:id', routes.nodes.fetchById);
@@ -140,5 +140,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(app.get('port'), () => {
-  console.log(`ComptoxAI API listening at http://localhost:${port}`);
+  console.log(`ComptoxAI API listening at http://0.0.0.0:${port}`);
 });

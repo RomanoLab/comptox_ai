@@ -25,7 +25,7 @@
     "redux-form": "^8.3.10"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start --port 3001",
     "build": "DISABLE_ESLINT_PLUGIN=true node ./scripts/build-custom.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -9,7 +9,7 @@ toxicology, meaning it consists of a number of different tools that work
 together to accomplish various goals. This installation guide is meant to teach
 you how to get each of those tools/components up and running from scratch.
 
-We've also prepared a brief guide on what to install based on the task you're 
+We've also prepared a brief guide on what to install based on the task you're
 trying to accomplish:
 
 *****************************************
@@ -19,7 +19,7 @@ What parts of ComptoxAI should I install?
 "I just want to explore the data and/or the graph database"
 ===========================================================
 
-Good news - you don't need to install anything! Most likely, this website has 
+Good news - you don't need to install anything! Most likely, this website has
 everything you need already on it. For examples of ways to browse the database,
 please refer to `Browse Data <browse.html>`_.
 
@@ -58,14 +58,14 @@ it is probably best to install the full **Neo4j graph database**.
 =============================================================================
 
 In this case, you should probably `fork the repository
-<https://github.com/jdromano2/comptox_ai/fork>`_ and edit each of the parts to 
+<https://github.com/jdromano2/comptox_ai/fork>`_ and edit each of the parts to
 fit your particular needs and environment. Make sure you read `the license
 <https://github.com/JDRomano2/comptox_ai/blob/master/LICENSE>`_ to know your
 rights and restrictions (we use the MIT License).
 
 .. important::
 
-   The examples on this page are roughly compatible with most modern UNIX (or 
+   The examples on this page are roughly compatible with most modern UNIX (or
    UNIX-like) command line applications. If you are installing ComptoxAI on
    Windows (or something else), you should modify the examples accordingly.
 
@@ -102,7 +102,7 @@ For most users, `Neo4j Desktop <https://neo4j.com/download/>`_ is the
 preferred method of installation. Neo4j Desktop does an excellent job managing
 one or more graph databases concurrently, and makes installing plugins almost
 trivially easy. It also comes with a built-in developer license for Neo4j
-Enterprise, which includes the excellent `Neo4j Bloom 
+Enterprise, which includes the excellent `Neo4j Bloom
 <https://neo4j.com/product/bloom/>`_ visualization tool. If you prefer to
 install Neo4j Server (e.g., if you want to host the complete graph database on
 a web server, or if you just like having full control over your data
@@ -148,10 +148,10 @@ following configuration options by changing the corresponding line to match:
 - ``dbms.memory.pagecache.size=2G``
 - ``dbms.security.procedures.unrestricted=jwt.security.*,n10s.*,apoc.*,gds.*``
 
-Then, add a new line at the end of the file with a configuration option that 
-specifies the directory to which graphs will be exported when you want to 
-analyze them in 3rd party software (such as PyTorch Geometric, for example). 
-This should be changed to a local directory that makes sense on your computer, 
+Then, add a new line at the end of the file with a configuration option that
+specifies the directory to which graphs will be exported when you want to
+analyze them in 3rd party software (such as PyTorch Geometric, for example).
+This should be changed to a local directory that makes sense on your computer,
 and where you have read/write permissions:
 
 - ``gds.export.location=/home/username/data/comptox_ai/subgraphs``
@@ -161,7 +161,7 @@ and where you have read/write permissions:
    This is one step where Windows users need to be careful. You need to escape
    each backslash in the export path with another backslash. It might look
    something like this::
-   
+
    gds.export.location=C:\\\\data\\\\comptox_ai\\\\subgraphs
 
 Download the ontology RDF file
@@ -169,7 +169,7 @@ Download the ontology RDF file
 
 The full RDF representation of the graph database / ontology is very large -
 currently almost 600 MB. Visit the `data browsing page
-<https://comptox.ai/browse.html>`_ and click the "Download fully-populated
+<../browse.html>`_ and click the "Download fully-populated
 ontology" button to be redirected to a page where you can download the file.
 Save it to a location that you'll remember in the next step.
 

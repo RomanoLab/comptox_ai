@@ -1,76 +1,80 @@
 {% extends "layout.html" %}
-{% set title = 'ComptoxAI: A modern toolkit for AI research in computational toxicology' %}
+{% set title = "ComptoxAI: A modern toolkit for AI research in computational toxicology" %}
 {% block content %}
-<div class="container pt-3" id="page-wrapper" role="main" style="max-width:960px;">
-
-  <section title="intro" class="browse-option">
-    <h1>Browse ComptoxAI data</h1>
-
-    <p>
-      ComptoxAI provides several flexible options for browsing its graph database. These different options are intended for various users and use case scenarios.
-    </p>
-  </section>
-
-  <hr/>
-  <section title="data-portal" class="browse-option">
-    <h2>Interactive data portal</h2>
-    <p><i>Level of usability</i>: Beginner</p>
-    <a role="button" class="btn btn-primary btn-lg" href="{{ pathto('data') }}">Launch data portal</a>
-
-    <p class="mt-3">
-      The interactive data portal is a simplified interface for ComptoxAI's graph database. Users can interactively search for nodes (entities) in the database by specifying a node type (e.g., "Chemical", or "Disease") and querying properties that are defined for that node type. When you select a node, you can then load all relationships that the node has with other nodes in the graph database.
-    </p>
-
-    <p>
-      The data portal also includes a tool for visualizing the shortest paths connecting any two nodes in the database. To use this, find two nodes separately using the node search tool, and click "Path Start Node" and "Path End Node" respectively. The shortest path between the two nodes will be identified, and it will be reconstructed into a graph visualization of the nodes and relationships comprising the shortest path. The visualization interface allows panning, zooming, and selecting individual nodes in the path for further inspection.
-    </p>
-
-    <div class="alert alert-info" role="alert">
+  <div class="container pt-3"
+       id="page-wrapper"
+       role="main"
+       style="max-width:960px">
+    <section title="intro" class="browse-option">
+      <h1>Browse ComptoxAI data</h1>
       <p>
-        We're putting the finishing touches on a <b>bulk dataset download tool</b>! This will allow users to easily generate and download portions of the ComptoxAI database to use in machine learning models. The tool uses Neo4j's Graph Data Science library to efficiently handle subgraph projections, and formats its output as tab-delimited flat files that are packaged alongside a flexible JSON-based metadata description of the dataset.
+        ComptoxAI provides several flexible options for browsing its graph database. These different options are intended for various users and use case scenarios.
       </p>
-
-      Stay tuned for more info!
-    </div>
-
-  </section>
-
-  <hr/>
-  <section title="neo4j-browser" class="browse-option">
-    <h2>Neo4j Graph Database browser</h2>
-    <p><i>Level of usability</i>: Intermediate</p>
-
-    <a role="button" class="btn btn-primary btn-lg" href="http://neo4j.comptox.ai/" target="_blank">Launch Neo4j browser</a>
-    <br/><span style="color:red;">Note: Users do not need to authenticate to access the database. Click "Connect" on the authentication form using the default options to access the database in read-only mode.</span><br/>
-
-    <div class="row mt-3" style="margin:0;">
-      <img src="_static/img/neo_aop.png" alt="ComptoxAI in Protege" id="protege-screenshot" style="margin-right:24px;margin-bottom:8px;"/>
-    </div>
-
-    <p class="mt-3">
-      ComptoxAI's graph database is implemented using the Neo4j graph database management system. The Neo4j browser is an interface that allows users to graphically interact with nodes and relationships in the database by either randomly sampling node or relationship types, or by executing database queries in the Cypher query language (which is analogous to SQL, but designed for use with graph databases rather than relational databases).
-    </p>
-
-    <p>
-      We recommend that new users read the official "<a href="https://neo4j.com/docs/getting-started/current/cypher-intro/">Introduction to Cypher</a>" tutorial to learn how to get the most out of the Neo4j interface.
-    </p>
-
-  </section>
-
-  <hr/>
-  <section title="data-portal" class="browse-option">
-    <h2>REST Web API</h2>
-    <p><i>Level of usability</i>: Advanced</p>
-
-    <a role="button" class="btn btn-primary btn-lg" href="https://comptox.ai/api/help/" target="_blank">Web API documentation</a>
-    
-    <p class="mt-3">
-      ComptoxAI's REST Web API allows programmatic access to the graph database. The base URL for the API is:
-    </p>
-
-    <code>https://comptox.ai/api/</code>
-
-    {# <p>
+    </section>
+    <hr />
+    <section title="data-portal" class="browse-option">
+      <h2>Interactive data portal</h2>
+      <p>
+        <i>Level of usability</i>: Beginner
+      </p>
+      <a role="button"
+         class="btn btn-primary btn-lg"
+         href="{{ pathto("data") }}">Launch data portal</a>
+      <p class="mt-3">
+        The interactive data portal is a simplified interface for ComptoxAI's graph database. Users can interactively search for nodes (entities) in the database by specifying a node type (e.g., "Chemical", or "Disease") and querying properties that are defined for that node type. When you select a node, you can then load all relationships that the node has with other nodes in the graph database.
+      </p>
+      <p>
+        The data portal also includes a tool for visualizing the shortest paths connecting any two nodes in the database. To use this, find two nodes separately using the node search tool, and click "Path Start Node" and "Path End Node" respectively. The shortest path between the two nodes will be identified, and it will be reconstructed into a graph visualization of the nodes and relationships comprising the shortest path. The visualization interface allows panning, zooming, and selecting individual nodes in the path for further inspection.
+      </p>
+      <div class="alert alert-info" role="alert">
+        <p>
+          We're putting the finishing touches on a <b>bulk dataset download tool</b>! This will allow users to easily generate and download portions of the ComptoxAI database to use in machine learning models. The tool uses Neo4j's Graph Data Science library to efficiently handle subgraph projections, and formats its output as tab-delimited flat files that are packaged alongside a flexible JSON-based metadata description of the dataset.
+        </p>
+        Stay tuned for more info!
+      </div>
+    </section>
+    <hr />
+    <section title="neo4j-browser" class="browse-option">
+      <h2>Neo4j Graph Database browser</h2>
+      <p>
+        <i>Level of usability</i>: Intermediate
+      </p>
+      <a role="button"
+         class="btn btn-primary btn-lg"
+         href="https://neo4j.comptox.ai/"
+         target="_blank">Launch Neo4j browser</a>
+      <br />
+      <span style="color:red;">Note: Users do not need to authenticate to access the database. Click "Connect" on the authentication form using the default options to access the database in read-only mode.</span>
+      <br />
+      <div class="row mt-3" style="margin:0;">
+        <img src="_static/img/neo_aop.png"
+             alt="ComptoxAI in Protege"
+             id="protege-screenshot"
+             style="margin-right:24px;
+                    margin-bottom:8px" />
+      </div>
+      <p class="mt-3">
+        ComptoxAI's graph database is implemented using the Neo4j graph database management system. The Neo4j browser is an interface that allows users to graphically interact with nodes and relationships in the database by either randomly sampling node or relationship types, or by executing database queries in the Cypher query language (which is analogous to SQL, but designed for use with graph databases rather than relational databases).
+      </p>
+      <p>
+        We recommend that new users read the official "<a href="https://neo4j.com/docs/getting-started/current/cypher-intro/">Introduction to Cypher</a>" tutorial to learn how to get the most out of the Neo4j interface.
+      </p>
+    </section>
+    <hr />
+    <section title="data-portal" class="browse-option">
+      <h2>REST Web API</h2>
+      <p>
+        <i>Level of usability</i>: Advanced
+      </p>
+      <a role="button"
+         class="btn btn-primary btn-lg"
+         href="/api/help/"
+         target="_blank">Web API documentation</a>
+      <p class="mt-3">
+        ComptoxAI's REST Web API allows programmatic access to the graph database. The base URL for the API is:
+      </p>
+      <code>https://comptox.ai/api/</code>
+      {# <p>
       The following example demonstrates retrieving the chemical "Cyproheptadine" in Python, using the Requests module:
     </p>
 
@@ -90,34 +94,28 @@
         'ontologyIRI': 'http://jdr.bio/ontologies/comptox.owl#chemical_dtxsid30857908'}]
       </code>
     </pre> #}
-  </section>
-
-  <hr/>
-  <section title="data-portal" class="browse-option">
-    <h2>ComptoxAI OWL2 Ontology</h2>
-    <p><i>Level of usability</i>: Advanced</p>
-
-    <a role="button" class="btn btn-primary btn-lg" href="https://upenn.box.com/s/luks9kco64f3yox58s0a43j1q2p60m9r">Download ontology without individuals (103 KB)</a>
-    <a role="button" class="btn btn-primary btn-lg" href="https://upenn.box.com/s/ti2abhdd1a6hdck5la35wre4k7foy21z">Download fully-populated ontology (598 MB)</a>
-
-    <p class="mt-3">
-      The contents of ComptoxAI's graph database are extracted from a large, fully-featured OWL2 ontology that defines the semantic meaning of each entity and relationship in the database, as well as each of the data properties attached to each node.
-    </p>
-
-    <div class="row" style="margin:0;">
-      <img src="_static/img/protege.png" alt="ComptoxAI in Protege" id="protege-screenshot" style="margin-right:24px;margin-bottom:8px;"/>
-    </div>
-
-    <p>
-      The ontology plays a central role in the development of ComptoxAI. Briefly, the database maintainers first specify the types of entities and the relationships between them by constructing a <i>class hierarchy</i> in the ontology, and then define the types of relationships&mdash;known as <i>object properties</i>&mdash;that can link those types of relationships. The ontology is then populated with individuals (nodes in the database) by parsing source databases and storing the individual elements as <i>instances</i> of those node types, and the same is done for relationships between the elements. Finally, the contents of the ontology are imported into Neo4j using the <a href="https://neo4j.com/labs/neosemantics/">neosemantics (n10s)</a> extension tool, which converts OWL2 data into a Neo4j database.
-    </p>
-
-    <p>
-      We like to use <a href="https://protege.stanford.edu/" target="_blank">Protege</a> to view and edit ontologies.
-    </p>
-
-  </section>
-
-  {% include "footer.html" %}
+</section>
+<hr />
+<section title="data-portal" class="browse-option">
+<h2>ComptoxAI OWL2 Ontology</h2>
+<p>
+<i>Level of usability</i>: Advanced
+</p>
+<a role="button" class="btn btn-primary btn-lg" href="https://upenn.box.com/s/luks9kco64f3yox58s0a43j1q2p60m9r">Download ontology without individuals (103 KB)</a>
+<a role="button" class="btn btn-primary btn-lg" href="https://upenn.box.com/s/ti2abhdd1a6hdck5la35wre4k7foy21z">Download fully-populated ontology (598 MB)</a>
+<p class="mt-3">
+The contents of ComptoxAI's graph database are extracted from a large, fully-featured OWL2 ontology that defines the semantic meaning of each entity and relationship in the database, as well as each of the data properties attached to each node.
+</p>
+<div class="row" style="margin:0;">
+<img src="_static/img/protege.png" alt="ComptoxAI in Protege" id="protege-screenshot" style="margin-right:24px;margin-bottom:8px;" />
 </div>
-{% endblock %}
+<p>
+The ontology plays a central role in the development of ComptoxAI. Briefly, the database maintainers first specify the types of entities and the relationships between them by constructing a <i>class hierarchy</i> in the ontology, and then define the types of relationships—known as <i>object properties</i>—that can link those types of relationships. The ontology is then populated with individuals (nodes in the database) by parsing source databases and storing the individual elements as <i>instances</i> of those node types, and the same is done for relationships between the elements. Finally, the contents of the ontology are imported into Neo4j using the <a href="https://neo4j.com/labs/neosemantics/">neosemantics (n10s)</a> extension tool, which converts OWL2 data into a Neo4j database.
+</p>
+<p>
+We like to use <a href="https://protege.stanford.edu/" target="_blank">Protege</a> to view and edit ontologies.
+</p>
+</section>
+{% include "footer.html" %}
+</div>
+{% endblock content %}

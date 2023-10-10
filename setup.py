@@ -6,6 +6,7 @@ __all__ = [
 
 import os
 from pathlib import Path
+
 import setuptools
 
 with open('README.md', 'r') as fp:
@@ -51,7 +52,6 @@ setuptools.setup(
         'pandas',
         'neo4j==4.3.4',
         'networkx==2.6.3',
-        'py2neo==2021.1.5',
         'rdflib==5.0.0',
         'openpyxl==3.0.7',
         'owlready2==0.34',

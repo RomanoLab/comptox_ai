@@ -1,17 +1,17 @@
 # `ComptoxAI`
 
 # Define variables for GitHub action status badge
-[python-badge]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-python-package.yml/badge.svg
+[python-badge]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-python-test.yml/badge.svg
 [web-app-badge]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-app-build.yml/badge.svg
 [docs-badge]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-doc-build.yml/badge.svg
 
-[python-link]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-python-package.yml
+[python-link]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-python-test.yml
 [web-app-link]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-app-build.yml
 [docs-link]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-doc-build.yml
 
 [![DOI](https://zenodo.org/badge/202416245.svg)](https://zenodo.org/badge/latestdoi/202416245)
 
-[![Python package][python-badge]][python-link]
+[![Python test][python-badge]][python-link]
 [![React build][web-app-badge]][web-app-link]
 [![Documentation build][docs-badge]][docs-link]
 

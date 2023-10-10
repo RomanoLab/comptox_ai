@@ -1,6 +1,5 @@
 # `ComptoxAI`
 
-# Define variables for GitHub action status badge
 [python-badge]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-python-test.yml/badge.svg
 [web-app-badge]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-app-build.yml/badge.svg
 [docs-badge]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-doc-build.yml/badge.svg

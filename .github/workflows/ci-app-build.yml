@@ -1,0 +1,45 @@
+---
+# Automates building of React build
+name: ci-app-build
+
+# Define the events that trigger the workflow
+on:
+  push:
+    branches:
+      # You can change the default value as needed
+      - '*'
+  workflow_dispatch:
+
+# Define the jobs in the workflow
+jobs:
+  build-all:
+    runs-on: ubuntu-latest
+
+    # You can change the default value as needed
+    env:
+      # Directory of React app
+      app-directory: /comptox_ai/web/packages/app
+
+    steps:
+      # Step: Check out the repository's code to the runner
+      - name: checkout-code
+        uses: actions/checkout@v3
+
+      # Step: Clean previous build to remove deprecated files before building
+      - name: clean-previous-react-build
+        working-directory: ${{env.app-directory}}
+        run: rm -rf ./build
+
+      # Step: Build React app
+      - name: build-react-app
+        working-directory: ${{env.app-directory}}
+        run: |
+          npm ci
+          npm run build
+
+      # Step: List files in app build directory
+      - name: list-files-react-build
+        working-directory: ${{env.app-directory}}
+        run: |
+          directory="./build"
+          ls "$directory"

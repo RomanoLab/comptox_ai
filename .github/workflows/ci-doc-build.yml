@@ -18,7 +18,7 @@ jobs:
     # You can change the default value as needed
     env:
       # Directory of docs
-      doc-directory: /comptox_ai/docs
+      doc-directory: ./docs
 
     # Define strategy for matrix builds
     strategy:

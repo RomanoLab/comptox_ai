@@ -12,7 +12,7 @@ on:
 
 # Define the jobs in the workflow
 jobs:
-  build-all:
+  build-doc:
     runs-on: ubuntu-latest
 
     # You can change the default value as needed
@@ -41,6 +41,7 @@ jobs:
       - name: install-dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
+          python -m pip install .
           python -m pip install ".[docs]"
         # Modify the name inside the brackets to match the name of the
         # extras_require you would like to install. There should be no

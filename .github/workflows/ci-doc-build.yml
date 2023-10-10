@@ -1,6 +1,6 @@
 ---
-# Automates building of python docs via sphinx,
-name: ci-build
+# Automates building of python docs via sphinx
+name: ci-doc-build
 
 # Define the events that trigger the workflow
 on:
@@ -18,9 +18,7 @@ jobs:
     # You can change the default value as needed
     env:
       # Directory of docs
-      doc-directory: ./docs
-      # Directory of React app
-      app-directory: ./web/packages/app
+      doc-directory: /comptox_ai/docs
 
     # Define strategy for matrix builds
     strategy:
@@ -83,52 +81,5 @@ jobs:
 
           if [[ ${#missing_files[@]} -gt 0 ]]; then
             echo "These files are missing in '$directory': ${missing_files[*]}"
-            exit 1
-          fi
-
-      # # Step: Check documentation coverage with Sphinx
-      # - name: coverage run: sphinx-build -b coverage ./source
-      #   ./build/coverage
-      #   # You can change the default value of last two parameters,
-      #   # SOURCEDIR, BUILDDIR as needed
-
-      # Step: Clean previous build to remove deprecated files before building
-      - name: clean-previous-react-build
-        working-directory: ${{env.app-directory}}
-        run: rm -rf ./build
-
-      # Step: Build React app
-      - name: build-react-app
-        working-directory: ${{env.app-directory}}
-        run: |
-          npm ci
-          npm run build
-
-      # Step: List files in app build directory
-      - name: list-files-react-build
-        working-directory: ${{env.app-directory}}
-        run: |
-          directory="./build"
-          ls "$directory"
-
-      # Step: Copy React app result to docs folder
-      - name: copy-app-to-doc
-        run: |
-          cp ${{env.app-directory}}/build/static/js/* \
-            ${{ env.doc-directory}}/build/html/_static/js/
-          cp ${{env.app-directory}}/build/static/css/* \
-            ${{ env.doc-directory}}/build/html/_static/css/
-
-      # Step: Check if the files are properly copied by checking for file diff
-      - name: check-copy
-        run: |
-          cmp --silent ${{env.app-directory}}/build/static/js/main.js \
-            ${{ env.doc-directory }}/build/html/_static/js/main.js &&
-          cmp --silent ${{env.app-directory}}/build/static/css/main.css \
-            ${{ env.doc-directory }}/build/html/_static/css/main.css
-          if [[ $? -eq 0 ]]; then
-            echo "Files were copied successfully."
-          else
-            echo "Files were not copied successfully."
             exit 1
           fi

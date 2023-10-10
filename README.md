@@ -1,8 +1,19 @@
 # `ComptoxAI`
 
+# Define variables for GitHub action status badge
+[python-badge]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-python-package.yml/badge.svg
+[web-app-badge]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-app-build.yml/badge.svg
+[docs-badge]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-doc-build.yml/badge.svg
+
+[python-link]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-python-package.yml
+[web-app-link]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-app-build.yml
+[docs-link]: https://github.com/jdromano2/comptox_ai/actions/workflows/ci-doc-build.yml
+
 [![DOI](https://zenodo.org/badge/202416245.svg)](https://zenodo.org/badge/latestdoi/202416245)
 
-![comptox_ai](https://github.com/jdromano2/comptox_ai/actions/workflows/python-package.yml/badge.svg) ![web app](https://github.com/jdromano2/comptox_ai/actions/workflows/react-build.yml/badge.svg) ![docs](https://github.com/jdromano2/comptox_ai/actions/workflows/doc-build.yml/badge.svg)
+[![Python package][python-badge]][python-link]
+[![React build][web-app-badge]][web-app-link]
+[![Documentation build][docs-badge]][docs-link]
 
 [Website](https://comptox.ai/)
 

@@ -12,7 +12,7 @@ on:
 
 # Define the jobs in the workflow
 jobs:
-  build-all:
+  build-app:
     runs-on: ubuntu-latest
 
     # You can change the default value as needed

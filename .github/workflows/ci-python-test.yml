@@ -18,8 +18,7 @@ jobs:
     strategy:
       matrix:
         # You can change the default value as needed
-        # python-version: ['3.8', '3.9', '3.10']
-        python-version: ['3.8']
+        python-version: ['3.8', '3.9', '3.10']
 
     steps:
       # Step: Check out the repository's code to the runner

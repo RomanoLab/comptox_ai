@@ -18,7 +18,7 @@ jobs:
     # You can change the default value as needed
     env:
       # Directory of React app
-      app-directory: /comptox_ai/web/packages/app
+      app-directory: ./web/packages/app
 
     steps:
       # Step: Check out the repository's code to the runner

@@ -63,7 +63,8 @@ setuptools.setup(
         'testing': ['pytest'],
         'coverage': ['pytest-cov', 'codecov'],
         'docs': ['numpydoc', 'sphinxext-opengraph', 'ablog==0.10.19',
-                 'sphinx==6.2.1', 'docutils>=0.19', 'Jinja2>=3.0'],
+                 'sphinx==6.2.1', 'docutils>=0.19', 'Jinja2>=3.0',
+                 'sphinxcontrib-bibtex', 'sphinx-mathjax-offline'],
         'styling': ['isort']
     },
     entry_points={

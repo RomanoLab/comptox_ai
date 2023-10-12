@@ -6,15 +6,17 @@
 
 # -- Project information -----------------------------------------------------
 
-import re
-from sphinx.util.inspect import safe_getattr
-from docutils.parsers.rst import directives
-from sphinx.ext.autosummary import Autosummary, get_documenter
-import ablog
-import comptox_ai
 import os
+import re
 import sys
 from datetime import datetime
+
+import ablog
+from docutils.parsers.rst import directives
+from sphinx.ext.autosummary import Autosummary, get_documenter
+from sphinx.util.inspect import safe_getattr
+
+import comptox_ai
 
 project = 'ComptoxAI'
 copyright = f'(c) {datetime.now().year} by Joseph D. Romano (MIT License)'
@@ -89,13 +91,17 @@ def setup(app):
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.imgmath',
     'sphinx.ext.autosummary',  # note: automatically loaded by numpydoc
     'sphinx.ext.coverage',
     'numpydoc',
     'ablog',
-    'sphinxext.opengraph'
+    'sphinxext.opengraph',
+    'sphinx-mathjax-offline',
+    'sphinxcontrib.bibtex'
 ]
+
+bibtex_bibfiles = ['refs.bib']
+
 
 imgmath_image_format = 'svg'
 imgmath_font_size = 14

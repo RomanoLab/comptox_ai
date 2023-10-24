@@ -1,23 +1,25 @@
 {%- if docstitle %}
-{%- set titlesuffix = " &mdash; "|safe + docstitle|e %}
+  {%- set titlesuffix = " &mdash; "|safe + docstitle|e %}
 {%- else %}
-{%- set titlesuffix = "" %}
+  {%- set titlesuffix = "" %}
 {%- endif %}
 {%- set lang_attr = 'en' if language == None else (language | replace('_', '-')) %}
 <!DOCTYPE html>
-<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
-
+<meta name="viewport"
+      content="width=device-width,height=device-height,initial-scale=1.0" />
 <head>
   {% include "head.html" %}
-  {%- block extrahead %} {% endblock %}
+  <script id="MathJax-script"
+          async
+          src="/docs/build/html/_static/mathjax/es5/tex-chtml.js"></script>
+  {%- block extrahead %}
+  {% endblock extrahead %}
 </head>
-
 {# see: https://stackoverflow.com/a/27704409/1730417 #}
 {# Body layout influenced by scikit-learn:
    See https://github.com/scikit-learn/scikit-learn #}
 <body id="bootstrap-overrides">
   {% include "navbar.html" %}
-  
   {%- block content %}
     <div class="d-flex" id="page-wrapper">
       <div id="sidebar-wrapper" class="border-right">
@@ -29,7 +31,9 @@
               <a href="#" role="button" class="btn btn-rellink py-1 disabled">Prev</a>
             {%- endif %}
             {%- if parents %}
-              <a href="{{ parents[-1].link|e }}" role="button" class="btn btn-rellink py-1">Up</a>
+              <a href="{{ parents[-1].link|e }}"
+                 role="button"
+                 class="btn btn-rellink py-1">Up</a>
             {%- else %}
               <a href="#" role="button" class="btn btn-rellink py-1 disabled">Up</a>
             {%- endif %}
@@ -41,24 +45,20 @@
           </div>
           <div class="alert alert-info p-1 mb-2" role="alert">
             <p class="text-center mb-0">
-              Please <a class="font-weight-bold" href="{{ pathto('about').replace('#', '') }}#citing"><string>cite us</string></a> if you use ComptoxAI!
+              Please <a class="font-weight-bold"
+    href="{{ pathto("about").replace('#', '') }}#citing"><string>cite us</string></a> if you use ComptoxAI!
             </p>
           </div>
           {%- if meta and meta['globalsidebartoc']|tobool %}
-            <div class="sidebar-toc sidebar-global-toc">
-              {{ toctree(maxdepth=2, titles_only=True) }}
-            </div>
+            <div class="sidebar-toc sidebar-global-toc">{{ toctree(maxdepth=2, titles_only=True) }}</div>
           {%- else %}
-            <div class="sidebar-toc">
-              {{ toc }}
-            </div>
+            <div class="sidebar-toc">{{ toc }}</div>
           {%- endif %}
         </div>
       </div>
       <div id="page-content-wrapper">
         <div class="page-content container-fluid body px-md-3" role="main">
           {% block body %}{% endblock %}
-
           {% include "footer.html" %}
         </div>
       </div>

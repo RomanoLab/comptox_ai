@@ -16,7 +16,7 @@ from docutils.parsers.rst import directives
 from sphinx.ext.autosummary import Autosummary, get_documenter
 from sphinx.util.inspect import safe_getattr
 
-import comptox_ai
+# import comptox_ai
 
 project = 'ComptoxAI'
 copyright = f'(c) {datetime.now().year} by Joseph D. Romano (MIT License)'
@@ -96,12 +96,10 @@ extensions = [
     'numpydoc',
     'ablog',
     'sphinxext.opengraph',
-    'sphinx-mathjax-offline',
-    'sphinxcontrib.bibtex'
 ]
-
-bibtex_bibfiles = ['refs.bib']
-
+# 'sphinxcontrib.bibtex'
+# bibtex_bibfiles = ['refs.bib']
+html_static_path = ['_static']
 
 imgmath_image_format = 'svg'
 imgmath_font_size = 14

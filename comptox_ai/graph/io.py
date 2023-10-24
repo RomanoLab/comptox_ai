@@ -21,6 +21,8 @@ more sustainable.
 # License: MIT License
 
 from abc import abstractmethod
+
+# from py2neo import Graph, Subgraph, Node, Relationship
 from json import JSONEncoder, dump
 from typing import Iterable, List, Tuple, Union
 
@@ -208,6 +210,7 @@ class GraphSAGEData(GraphDataMixin):
         else:
             self._graph.add_edge(u, v)
 
+
 # class Neo4jData(GraphDataMixin):
 #     """Internal representation of a connection to a Neo4j graph database
 #     containing ComptoxAI data.
@@ -239,7 +242,8 @@ class GraphSAGEData(GraphDataMixin):
 
 #         if verbose:
 #             if (n_size > 100000) or (e_size > 400000):
-#                 print("Warning: This is a very large graph! It may take a long time to load.")
+#                 print(
+#                     "Warning: This is a very large graph! It may take a long time to load.")
 
 #         if verbose:
 #             print("  Reading {0} nodes...".format(n_size))
@@ -376,9 +380,10 @@ class GraphSAGEData(GraphDataMixin):
 #         -------
 #         list of neo4j.Record
 #         """
-#         #raise NotImplementedError
+#         # raise NotImplementedError
 #         with self._driver.session() as session:
-#             query_response = session.read_transaction(_execute_cypher_transaction, query)
+#             query_response = session.read_transaction(
+#                 _execute_cypher_transaction, query)
 #         return query_response
 
 

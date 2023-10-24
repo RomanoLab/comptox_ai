@@ -33,7 +33,7 @@ networks. The general form is:
 
    \hat{y} = f(\mathbf{x}) + \epsilon
 
-where :math:`\mathbf{x}` is a vector representing a chemical structure, 
+where :math:`\mathbf{x}` is a vector representing a chemical structure,
 :math:`\hat{y}` is a predicted activity value, :math:`\epsilon` is an arbitrary
 error term, and :math:`f` is the predictive model.
 
@@ -42,7 +42,7 @@ Input features for a QSAR model are usually one of two types:
 * **Fingerprints**: A sequence of binary features where each feature represents
   presence/absence of a particular structural characteristic. Some examples are
   whether the chemical contains an aromatic ring, a disulfide bond, has fewer
-  than 3 oxygen atoms, etc. There are a number of different standardized 
+  than 3 oxygen atoms, etc. There are a number of different standardized
   fingerprints, including MACCS, PubChem fingerprints, and others. We like to
   use MACCS, which has 166 binary features and tends to perform best on most of
   the tasks we have tested it on. MACCS fingerprints are available for every
@@ -93,12 +93,12 @@ of that property based on the distribution of that property in the related
 chemicals. This can be done qualitatively (by simply assembling a table of
 chemicals and visually 'reading across' the table to inspect patterns) or
 quantitatively (by analyzing the trends in the property using statistical or
-computational techniques). 
+computational techniques).
 
 Read-across can be performed in a one-to-one, one-to-many, many-to-one, or
 many-to-many fasion, depending on your available data and the other factors.
 Additionally, you can determine the unknown value(s) by interpolation
-(e.g., placing a chemical with a length-5 carbon chain between similar 
+(e.g., placing a chemical with a length-5 carbon chain between similar
 chemicals that have length-4 and length-6 carbon chains, and predicting a
 property halfway between the two known values) or extrapolation.
 
@@ -134,7 +134,7 @@ cellular models for predictive toxicology. Currently, one of their main
 research outputs is a dataset consisting of 72 toxicology-focused assays
 evaluated on up to ~8,000 chemicals of interest, with new data being added over
 time. We use these data in ComptoxAI to represent assays and known activity
-values for chemicals in ComptoxAI's knowledge base. 
+values for chemicals in ComptoxAI's knowledge base.
 
 AOP-Wiki / AOP-DB / SAAOP
 ^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -10,25 +10,27 @@ A typical graph workflow looks something like the following:
 >>> GS = G.convert(to='graphsage')
 """
 
+import json
+import os
+from abc import abstractmethod
+from collections import defaultdict
+from textwrap import dedent
+from typing import Iterable, List, Union
+
+import networkx as nx
 import numpy as np
 import scipy.sparse
-import networkx as nx
 from networkx.readwrite import json_graph
-from collections import defaultdict
-from py2neo import Graph
-
-from abc import abstractmethod
-from typing import List, Iterable, Union
-import os
-import json
-from textwrap import dedent
 
 from comptox_ai.cypher import queries
+from comptox_ai.graph.metrics import ensure_nx_available, vertex_count
 from comptox_ai.utils import execute_cypher_transaction
-from comptox_ai.graph.metrics import vertex_count, ensure_nx_available
-from ..utils import load_config
 
-from .io import GraphDataMixin, Neo4jData, NetworkXData, GraphSAGEData
+from ..utils import load_config
+from .io import GraphDataMixin, GraphSAGEData, NetworkXData
+
+# from py2neo import Graph
+
 
 def _load_neo4j_config(config_file: str = None):
     config_dict = load_config(config_file)
@@ -47,13 +49,18 @@ def _load_neo4j_config(config_file: str = None):
     return (uri, username, password)
 
 
-def _convert(data: GraphDataMixin, from_fmt: str, to_fmt: str, safe: bool=True):
+def _convert(data: GraphDataMixin, from_fmt: str, to_fmt: str, safe: bool = True):
     # Initialize the new data structure
     if to_fmt == 'neo4j':
+        # If Neo4jData() is deprecated and no longer supported
+        raise NotImplementedError(
+            "No longer supported due to the deprecation of Neo4jData().")
+
         # TODO: Only compatible with default config file for now
-        uri, username, password = _load_neo4j_config()
-        db = Graph(uri, auth=(username, password))
-        new_data = Neo4jData(db)
+        # uri, username, password = _load_neo4j_config()
+        # db = Graph(uri, auth=(username, password))
+        # new_data = Neo4jData(db)
+
     elif to_fmt == 'networkx':
         new_data = NetworkXData()
     elif to_fmt == 'graphsage':
@@ -68,7 +75,7 @@ def _convert(data: GraphDataMixin, from_fmt: str, to_fmt: str, safe: bool=True):
     new_data.add_edges(edges)
 
     return new_data
-    
+
 
 class Graph(object):
     """
@@ -84,7 +91,7 @@ class Graph(object):
     data : comptox_ai.graph.io.GraphDataMixin
         A graph data structure that is of one of the formats compliant with
         ComptoxAI's standardized graph API.
-    
+
     Attributes
     ----------
     format : {"graphsage", "networkx", "neo4j"}
@@ -123,7 +130,7 @@ class Graph(object):
     def nodes(self):
         """
         Get all nodes in the graph and return as an iterable of tuples.
-        
+
         Returns
         -------
         iterable
@@ -136,7 +143,7 @@ class Graph(object):
     def edges(self):
         """
         Get all edges in the graph and return as an iterable of tuples.
-        
+
         Returns
         -------
         iterable
@@ -153,7 +160,8 @@ class Graph(object):
         elif isinstance(nodes, list):
             self._data.add_nodes(nodes)
         else:
-            raise AttributeError("`nodes` must be a node tuple or list of node tuples - got {0}".format(type(nodes)))
+            raise AttributeError(
+                "`nodes` must be a node tuple or list of node tuples - got {0}".format(type(nodes)))
 
     def add_edges(self, edges: Union[List[tuple], tuple]):
         """
@@ -169,7 +177,8 @@ class Graph(object):
         elif isinstance(edges, list):
             self._data.add_edges(edges)
         else:
-            raise AttributeError("`edges` must be a node tuple or list of node tuples - got {0}".format(type(edges)))
+            raise AttributeError(
+                "`edges` must be a node tuple or list of node tuples - got {0}".format(type(edges)))
 
     def node_id_map(self):
         return self._data._node_map
@@ -188,7 +197,7 @@ class Graph(object):
         Convert the graph data structure into the specified format.
 
         The actual graph contained in a `comptox_ai.Graph` can be in a variety
-        of different formats. When the user loads a graph 
+        of different formats. When the user loads a graph
         """
         if to_fmt not in [
             'neo4j',
@@ -196,19 +205,20 @@ class Graph(object):
             'graphsage',
             'dgl'
         ]:
-            raise AttributeError("Invalid format provided for graph conversion.")
+            raise AttributeError(
+                "Invalid format provided for graph conversion.")
 
         from_fmt = self._data.format
 
         if from_fmt == to_fmt:
             return True
 
-        new_graph = _convert(data = self._data,
+        new_graph = _convert(data=self._data,
                              from_fmt=from_fmt,
                              to_fmt=to_fmt)
 
         # Free memory held for old graph
-        #delattr(self, _data)
+        # delattr(self, _data)
 
         self._data = new_graph
 
@@ -217,7 +227,10 @@ class Graph(object):
         """Load a connection to a Neo4j graph database and use it to
         instantiate a comptox_ai.graph.io.Neo4j object.
 
-        NOTE: All we do here is create a driver for the graph database; the
+        NOTE: The support for Neo4jData has been deprecated. This function
+        will  raise an error if called.
+
+        PREVIOUS_NOTE: All we do here is create a driver for the graph database; the
         Neo4j constructor handles building the node index and other important
         attributes. This is different from most of the other formats, where
         the attributes are provided by the constructor
@@ -228,9 +241,14 @@ class Graph(object):
             Path to a ComptoxAI configuration file. If None, ComptoxAI will
             search for a configuration file in the default location. For more
             information, refer to http://comptox.ai/docs/guide/building.html.
-        
+
         Raises
         ------
+        NotImplementedError
+        Since Neo4jData is deprecated, this method no longer supports
+        creating an object from Neo4j data.
+
+        PREVIOUS_NOTE:
         RuntimeError
             If the data in the configuration file does not point to a valid
             Neo4j graph database.
@@ -239,20 +257,23 @@ class Graph(object):
         --------
         comptox_ai.graph.Neo4jData
         """
-        if verbose:
-            print("Parsing Neo4j configuration...")
-        uri, username, password = _load_neo4j_config(config_file)
-        if verbose:
-            print("  URI:", uri)
+        raise NotImplementedError(
+            "No longer supported due to the deprecation of Neo4jData().")
 
-        if verbose:
-            print("Creating database connection via py2neo...")
-        database = Graph(uri, auth=(username, password))
-        if verbose:
-            print("Connected to database, now reading contents")
-        neo4j_data = Neo4jData(database = database)
+        # if verbose:
+        #     print("Parsing Neo4j configuration...")
+        # uri, username, password = _load_neo4j_config(config_file)
+        # if verbose:
+        #     print("  URI:", uri)
 
-        return cls(data = neo4j_data)
+        # if verbose:
+        #     print("Creating database connection via py2neo...")
+        # database = Graph(uri, auth=(username, password))
+        # if verbose:
+        #     print("Connected to database, now reading contents")
+        # neo4j_data = Neo4jData(database=database)
+
+        # return cls(data=neo4j_data)
 
     @classmethod
     def from_networkx(cls):
@@ -271,12 +292,12 @@ class Graph(object):
 
         nx_g = nx.readwrite.json_graph.node_link_graph(graph_text)
 
-        networkx_data = NetworkXData(graph = nx_g)
+        networkx_data = NetworkXData(graph=nx_g)
 
-        return cls(data = networkx_data)
+        return cls(data=networkx_data)
 
     @classmethod
-    def from_graphsage(cls, prefix: str, directory: str=None):
+    def from_graphsage(cls, prefix: str, directory: str = None):
         """
         Create a new GraphSAGE data structure from files formatted according to
         the examples given in https://github.com/williamleif/GraphSAGE.
@@ -332,14 +353,17 @@ class Graph(object):
             A text file containing precomputed random walks along the graph.
             Each line is a pair of node integers (e.g., the second fields in
             the id_map file) indicating an edge included in random walks. The
-            lines should be arranged in ascending order, starting with the 
+            lines should be arranged in ascending order, starting with the
             first item in each pair.
         """
 
         nx_json_file = os.path.join(directory, "".join([prefix, '-G.json']))
-        id_map_file = os.path.join(directory, "".join([prefix, '-id_map.json']))
-        class_map_file = os.path.join(directory, "".join([prefix, '-class_map.json']))
-        feats_map_file = os.path.join(directory, "".join([prefix, '-feats.npy']))
+        id_map_file = os.path.join(
+            directory, "".join([prefix, '-id_map.json']))
+        class_map_file = os.path.join(
+            directory, "".join([prefix, '-class_map.json']))
+        feats_map_file = os.path.join(
+            directory, "".join([prefix, '-feats.npy']))
         walks_file = os.path.join(directory, "".join([prefix, '-walks.txt']))
 
         G = json_graph.node_link_graph(json.load(open(nx_json_file, 'r')))
@@ -364,10 +388,10 @@ class Graph(object):
             walks = None
 
         graph_data = GraphSAGEData(graph=G, node_map=id_map,
-                               node_classes=class_map,
-                               node_features=feats_map)
+                                   node_classes=class_map,
+                                   node_features=feats_map)
 
-        return cls(data = graph_data)
+        return cls(data=graph_data)
 
     @classmethod
     def from_dgl(cls):
@@ -380,4 +404,3 @@ class Graph(object):
         NotImplementedError
         """
         raise NotImplementedError
-

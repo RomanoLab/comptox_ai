@@ -441,23 +441,25 @@ class GraphDB(object):
 
         *(corresponding argument: `node_proj`)*
 
-        Node projections take the following format::
+        Node projections take the following format:
 
-        {
-            <node-label-1>: {
-                label: <neo4j-label>,
-                properties: <node-property-mappings>
-            },
-            <node-label-2>: {
-                label: <neo4j-label>,
-                properties: <node-property-mappings>
-            },
-            // ...
-            <node-label-n>: {
-                label: <neo4j-label>,
-                properties: <node-property-mappings>
+        .. code-block::
+
+            {
+                <node-label-1>: {
+                    label: <neo4j-label>,
+                    properties: <node-property-mappings>
+                },
+                <node-label-2>: {
+                    label: <neo4j-label>,
+                    properties: <node-property-mappings>
+                },
+                // ...
+                <node-label-n>: {
+                    label: <neo4j-label>,
+                    properties: <node-property-mappings>
+                }
             }
-        }
 
         where ``node-label-i`` is a name for a node label in the projected graph 
         (it can be the same as or different from the label already in neo4j),

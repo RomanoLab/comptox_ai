@@ -1,4 +1,4 @@
-.. _api_docs:
+.. _docs:
 
 *************
 API Reference
@@ -62,7 +62,7 @@ subgraphs) extracted from the :ref:`graph database <db_ref>`.
    =============================================
    .. currentmodule:: comptox_ai
 
-.. _ml_ref::
+.. _ml_ref:
 
 :mod:`comptox_ai.ml`: Machine learning models
 =============================================

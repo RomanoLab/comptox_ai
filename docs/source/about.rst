@@ -15,7 +15,7 @@ computational methods.
 See also:
 
 - :ref:`User Guide <user_guide>` - An introduction to ComptoxAI and its features
-- :ref:`API Documentation <api_docs>` - Developer reference for ComptoxAI's Python library
+- :ref:`API Documentation <docs>` - Developer reference for ComptoxAI's Python library
 
 .. _authors:
 
@@ -61,6 +61,7 @@ Other Publications
 ^^^^^^^^^^^^^^^^^^
 
 * Romano JD, Hao Y, & Moore JH. (2022) Improving QSAR Modeling for Predictive Toxicology using Publicly Aggregated Semantic Graph Data and Graph Neural Networks. *Pacific Symposium on Biocomputing 27*: 187-198.
+
 ::
 
   @inproceedings{romano2021improving,

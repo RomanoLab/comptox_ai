@@ -92,7 +92,7 @@ extensions = [
 ]
 
 imgmath_image_format = 'svg'
-imgmath_font_size = 14
+img_font_size = 14
 
 autodoc_default_options = {"members": True, "inherited-members": True}
 
@@ -110,6 +110,8 @@ blog_title = 'ComptoxAI\'s blog'
 exclude_patterns = ["build", "templates", "themes"]
 
 pygments_style = "sphinx"
+
+numpydoc_class_members_toctree = False
 
 # -- Options for HTML output -------------------------------------------------
 

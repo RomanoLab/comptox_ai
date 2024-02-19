@@ -9,6 +9,7 @@
 
 name: comptox_ai
 channels:
+  - anaconda
   - conda-forge
   - nvidia
   - pytorch

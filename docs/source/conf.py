@@ -102,7 +102,7 @@ extensions = [
 html_static_path = ['_static']
 
 imgmath_image_format = 'svg'
-imgmath_font_size = 14
+img_font_size = 14
 
 autodoc_default_options = {"members": True, "inherited-members": True}
 
@@ -120,6 +120,8 @@ blog_title = 'ComptoxAI\'s blog'
 exclude_patterns = ["build", "templates", "themes"]
 
 pygments_style = "sphinx"
+
+numpydoc_class_members_toctree = False
 
 # Configuration of sphinx.ext.coverage
 coverage_show_missing_items = True

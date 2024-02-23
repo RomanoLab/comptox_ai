@@ -148,10 +148,6 @@ html_additional_pages = {
     'data': 'data.html'
 }
 
-# html_extra_path = [
-#     '../../_redirects'
-# ]
-
 html_domain_indices = False  # Don't automatically generate a module index
 html_use_index = False  # Don't automatically generate an index
 

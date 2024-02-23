@@ -39,28 +39,29 @@ Tools to access, query, and export data from ComptoxAI's Neo4j graph database.
         :attributes:
 
 
-.. _graph_ref:
-
-:mod:`comptox_ai.graph`: Graphs
-===============================
-.. currentmodule:: comptox_ai
-
-Tools for Python-based representation and manipulation of graphs (and/or 
-subgraphs) extracted from the :ref:`graph database <db_ref>`.
-
-**User Guide:** See :ref:`graphs` for further details.
-
-.. autosummary::
-   :toctree: generated/
-   :template: class.rst
-
-   graph.Graph
-   graph.io
-
 ..
-   :mod:`comptox_ai.algorithm`: Graph algorithms
-   =============================================
+   .. _graph_ref:
+
+   :mod:`comptox_ai.graph`: Graphs
+   ===============================
    .. currentmodule:: comptox_ai
+
+   Tools for Python-based representation and manipulation of graphs (and/or 
+   subgraphs) extracted from the :ref:`graph database <db_ref>`.
+
+   **User Guide:** See :ref:`graphs` for further details.
+
+   .. autosummary::
+      :toctree: generated/
+      :template: class.rst
+
+      graph.Graph
+      graph.io
+
+   ..
+      :mod:`comptox_ai.algorithm`: Graph algorithms
+      =============================================
+      .. currentmodule:: comptox_ai
 
 .. _ml_ref:
 

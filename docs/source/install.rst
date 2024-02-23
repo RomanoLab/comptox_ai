@@ -161,8 +161,8 @@ and where you have read/write permissions:
    This is one step where Windows users need to be careful. You need to escape
    each backslash in the export path with another backslash. It might look
    something like this::
-
-   gds.export.location=C:\\\\data\\\\comptox_ai\\\\subgraphs
+   
+      gds.export.location=C:\\\\data\\comptox_ai\\\\subgraphs
 
 Download the ontology RDF file
 ==============================

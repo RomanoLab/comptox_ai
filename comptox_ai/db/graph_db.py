@@ -143,11 +143,27 @@ class GraphDB(object):
 
     Parameters
     ----------
-    verbose: bool, default True
+    hostname : string, default `"neo4j.comptox.ai"`
+        Hostname specifying the location of a Neo4j instance to which to connect. The
+        most likely values are `"neo4j.comptox.ai"` or `"localhost"`. If a non-standard
+        port is used for broadcasting the Neo4j server, it can be appended to the end of
+        the hostname (e.g., `"localhost:7688"`).
+    username : string, default None
+        Username for authentication to Neo4j. If no username or password are provided,
+        a connection will be attempted without authentication.
+    password : string, defualt None
+        Password for authentication to Neo4j. If no username or password are provided,
+        a connection will be attempted without authentication.
+    verbose : bool, default True
         Sets verbosity to on or off. If True, status information will be returned
         to the user occasionally.
     """
-    def __init__(self, username=None, password=None, hostname=None, verbose=False):
+    def __init__(self, hostname="neo4j.comptox.ai", username=None, password=None, verbose=False, silent=False):
+        if not silent:
+            print(f"Attempting to connect to public Neo4j database at `{hostname}`...")
+            if (not username) and (not password):
+                print(f"No username/password provided - attempting to connect without authentication.")
+        
         self.is_connected = False
         self.verbose = verbose
 
@@ -157,6 +173,9 @@ class GraphDB(object):
             self.hostname = hostname
         
         self._connect()
+
+        if not silent:
+            print("...connection established successfully.")
 
         self.exporter = comptox_ai.db.GraphExporter(self)
 

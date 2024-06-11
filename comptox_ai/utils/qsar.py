@@ -16,17 +16,23 @@ def grab_graph_data(listAcronym = "CPDAT"):
     print("Grabbed graph data...")
     return db.run_cypher('MATCH (cl:ChemicalList {listAcronym: "' + listAcronym + '"})-[r1]->(chem:Chemical)-[r2]->(a:Assay) RETURN chem.commonName AS chemName, chem.maccs AS maccs, r2 AS relation, a.commonName AS assayName')
 
+def assign_assay_values(output):
+    if pd.isna(output):
+        return -1
+    elif "CHEMICALHASACTIVEASSAY" in output:
+        return 1
+    else:
+        return 0
+
 def build_formatted_data(output):
     chemicals_df = pd.DataFrame(output)
     pivot_table = chemicals_df.pivot_table(index=['chemName', 'maccs'], columns='assayName', values='relation', aggfunc='first')
     for col in pivot_table.columns:
-        pivot_table[col] = pivot_table[col].apply(lambda x: -1 if pd.isna(x) 
-            else 1 if x[1] == "CHEMICALHASACTIVEASSAY" 
-            else 0)
+        pivot_table[col] = pivot_table[col].apply(lambda x: assign_assay_values(x))
     pivot_table.reset_index(inplace=True)
     return pivot_table
 
-def maccs_key_conversion(maccs):
+def maccs_key_conversion(maccs, human_readable = False):
     maccs_keys_descriptions = {
         0: 'Padding',
         1: 'ISOTOPE',
@@ -196,28 +202,26 @@ def maccs_key_conversion(maccs):
         165: 'Ring',
         166: 'Fragments  FIX: this cant be done in SMARTS'
     }
-    return [maccs_keys_descriptions[int(key)] for key in maccs]
+    return [maccs_keys_descriptions[int(key)] for key in maccs] if human_readable else [maccs_keys_descriptions[int(key) - 1] for key in maccs]
 
-def expand_maccs_column(datalist):
+def expand_maccs_column(datalist, human_readable = False):
     # maccs key is 167 rather than 166
     # Expand MACCS binary strings into separate columns
-    print(datalist['maccs'].iloc[0])
-    print(len(datalist['maccs'].iloc[0]))
     maccs_expanded = datalist['maccs'].apply(lambda x: pd.Series(list(x)).astype(int))
-    maccs_expanded.columns = maccs_key_conversion([i for i in range(maccs_expanded.shape[1])])
-    print(maccs_expanded.columns)
+    maccs_expanded.columns = maccs_key_conversion([i for i in range(maccs_expanded.shape[1])], human_readable=human_readable) if human_readable else [f'{i+1}' for i in range(maccs_expanded.shape[1])]
     datalist = datalist.drop(columns=['maccs'])
     final_df = pd.concat([datalist[['chemName']], maccs_expanded, datalist.drop(columns=['chemName'])], axis=1)
-    print("Expanding MACCS binary strings into separate columns...")
-    print("Converting from maccs key to human readable names...")
     return final_df
 
-def makeQsarDataset(listAcronym="PFASMASTER", output_dir = "./output"):
+def makeQsarDataset(listAcronym="PFASMASTER", output_dir = "./output", human_readable=False):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
     graphdata = grab_graph_data(listAcronym=listAcronym)
     cleaned_data = build_formatted_data(graphdata)
-    formatted_data = expand_maccs_column(cleaned_data)
-    formatted_data.to_csv(f"{output_dir.rstrip("/")}/comptox_{listAcronym}_all_assay.tsv", sep="\t")
-    return formatted_data
+    formatted_data = expand_maccs_column(cleaned_data, human_readable = human_readable)
+    formatted_data.to_csv(f"{output_dir.rstrip('/')}/comptox_{listAcronym}_all_assay.tsv", sep="\t")
+    return formatted_data.set_index('chemName')
 
 # Model Training Functions
 
@@ -313,8 +317,8 @@ def trainQsarModel(
     return model, test_X, row
 
 def trainQsarModels(
-        data, assays, clf, output_dir = "./output", seed = None, remove_existing_output_folder = False,
-        write_log = True, save_model = True): 
+        data, assays, clf, output_dir = "./output", seed = 42, remove_existing_output_folder = False,
+        write_log = True, save_model = True, human_readable = False): 
     if os.path.exists(f"{output_dir}/log.txt") and remove_existing_output_folder:
         os.remove(f"{output_dir}/log.txt")
     
@@ -355,7 +359,7 @@ def trainQsarModels(
         model, X = pair
         explainer = shap.TreeExplainer(model)
         shap_values = explainer.shap_values(X)
-        shap.summary_plot(shap_values, X, feature_names = maccs_key_conversion(X.columns), show = False)
+        shap.summary_plot(shap_values, X, feature_names = X.columns, show = False) if human_readable else shap.summary_plot(shap_values, X, feature_names = maccs_key_conversion(X.columns), show = False)
         plt.savefig(f"{output_dir}/shap_plots/shap_plot_{idx}.png")
         plt.clf()
     write_to_log(f"Saved {len(models)} models and skipped {skipped_models} assays due to insufficient data.", f"{output_dir}/log.txt", write_log)
@@ -387,7 +391,7 @@ def describe_dataset(data, y_col_name):
 def select_models(models, evaluation, by_rocauc = True, by_f1 = False, n = 10):
     target_col = 'rocauc' if by_rocauc else 'f1'
     best_models = evaluation.sort_values(by=[target_col], ascending=False)
-    if n < 0:
+    if n > 0:
         best_models = best_models.head(n=n)
     selected_models = []
     for idx, row in best_models.iterrows():
@@ -397,7 +401,7 @@ def select_models(models, evaluation, by_rocauc = True, by_f1 = False, n = 10):
 def select_assays(evaluation, by_rocauc = True, by_f1 = False, n = 10):
     target_col = 'rocauc' if by_rocauc else 'f1'
     best_models = evaluation.sort_values(by=[target_col], ascending=False)
-    if n < 0:
+    if n > 0:
         best_models = best_models.head(n=n)
     return best_models['assay'].tolist()
 
@@ -438,4 +442,3 @@ def validate_all_models(models, data, assays):
 
 def display_results(results, toxic_cutoff = 1, sort_by = "f1"):
     return results[results['num_toxic'] > toxic_cutoff].sort_values(by=[sort_by], ascending=False)
-    

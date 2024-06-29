@@ -225,8 +225,9 @@ def makeQsarDataset(listAcronym="PFASMASTER", output_dir = "./output", human_rea
 
 # Model Training Functions
 
-def train_generic_model(clf, X, y):
+def train_generic_model(clf, X, y, kwargs):
     # Scikit-like model interface
+    clf = clf(**kwargs)
     return clf.fit(X, y)
 
 def format_data_for_model(df, y_col_name, end_index = 167):
@@ -267,8 +268,27 @@ def makeDiscoveryDatasets(data, assays, output_dir = "./output"):
         
     return discovery_data
 
+def describe_dataset(data, y_col_name):
+    X, y = data
+    num_chemicals = X.shape[0]
+    num_toxic = y[y == 1].shape[0]
+    num_nontoxic = y[y == 0].shape[0]
+    untested = y[y == -1].shape[0]
+    return {'assay': y_col_name, 'num_chemicals': num_chemicals, 'num_toxic': num_toxic, 'num_nontoxic': num_nontoxic, 'untested': untested}
+
+def describe_datasets(data, assays, output_dir = "./output"):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    data_description = []
+    for assay in assays:
+        data_description.append(describe_dataset(format_data_for_model(data, assay), assay))
+    dd_df = pd.DataFrame.from_dict(data_description)
+    dd_df.to_csv(f"{output_dir}/data_description.tsv", sep = "\t")
+    return dd_df
+
 def trainQsarModel(
-        df, y_col_name, clf, suffix = 1, output_dir = "./output", seed = 42,
+        df, y_col_name, clf, kwargs, suffix = 1, output_dir = "./output", seed = 42,
         save_model = True, save_discovery = True):
     # Expects that the first 167 columns are the macc columns
     focus_df = df[df[y_col_name] >= 0] # Only keep rows that have assay values
@@ -286,7 +306,7 @@ def trainQsarModel(
     train_X, test_X, train_y, test_y = train_test_split(X, y, random_state=seed, stratify = y)
 
     # Train model and save
-    model = train_generic_model(clf, train_X, train_y)
+    model = train_generic_model(clf, train_X, train_y, kwargs)
 
     if save_model:
         pickle.dump(model, open(output_dir + "/models/model_" + str(suffix) + ".pkl", "wb"))
@@ -317,7 +337,7 @@ def trainQsarModel(
     return model, test_X, row
 
 def trainQsarModels(
-        data, assays, clf, output_dir = "./output", seed = 42, remove_existing_output_folder = False,
+        data, assays, clf, kwargs, output_dir = "./output", seed = None, remove_existing_output_folder = False,
         write_log = True, save_model = True, human_readable = False): 
     if os.path.exists(f"{output_dir}/log.txt") and remove_existing_output_folder:
         os.remove(f"{output_dir}/log.txt")
@@ -345,7 +365,7 @@ def trainQsarModels(
     for idx, assay in enumerate(assays):
         write_to_log(f"Training model for assay {assay} with seed {seed}.", f"{output_dir}/log.txt", write_log)
         model, X, row = trainQsarModel(
-            data, assay, clf, suffix=idx, seed = seed, output_dir = output_dir, save_model = save_model)
+            data, assay, clf, kwargs, suffix=idx, seed = seed, output_dir = output_dir, save_model = save_model)
         if model is None or row is None:
             write_to_log(f"Warning: There are not enough of both classes (y) for assay {assay} to train a model.", f"{output_dir}/log.txt", write_log)
             skipped_models += 1
@@ -367,25 +387,6 @@ def trainQsarModels(
     dd_df.to_csv(f"{output_dir}/data_description.tsv", sep = "\t")
     return models, evaluation
 
-def describe_datasets(data, assays, output_dir = "./output"):
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
-    data_description = []
-    for assay in assays:
-        data_description.append(describe_dataset(format_data_for_model(data, assay), assay))
-    dd_df = pd.DataFrame.from_dict(data_description)
-    dd_df.to_csv(f"{output_dir}/data_description.tsv", sep = "\t")
-    return dd_df
-
-def describe_dataset(data, y_col_name):
-    X, y = data
-    num_chemicals = X.shape[0]
-    num_toxic = y[y == 1].shape[0]
-    num_nontoxic = num_chemicals - num_toxic
-    untested = y[y == -1].shape[0]
-    return {'assay': y_col_name, 'num_chemicals': num_chemicals, 'num_toxic': num_toxic, 'num_nontoxic': num_nontoxic, 'untested': untested}
-
 # Model Evaluation Functions
 
 def select_models(models, evaluation, by_rocauc = True, by_f1 = False, n = 10):
@@ -405,7 +406,7 @@ def select_assays(evaluation, by_rocauc = True, by_f1 = False, n = 10):
         best_models = best_models.head(n=n)
     return best_models['assay'].tolist()
 
-def predictQsar(model, data, y_col_name):
+def predictQsar(model, data, y_col_name, output_dir = "./output"):
     data = data[data[y_col_name] >= 0] # Only keep rows that have assay values
     X, y = format_data_for_model(data, y_col_name)
     y_pred = model.predict(X)
@@ -433,11 +434,14 @@ def predictQsar(model, data, y_col_name):
         "num_nontoxic": num_nontoxic
     }
 
-def validate_all_models(models, data, assays):
+def validate_all_models(models, data, assays, output_dir = "./output"):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
     # For each model, we check predictions on all assays
     validations = []
     for idx, model in enumerate(models):
-        validations.append(predictQsar(model, data, assays[idx]))
+        validations.append(predictQsar(model, data, assays[idx], output_dir = output_dir))
     return pd.DataFrame.from_dict(validations)
 
 def display_results(results, toxic_cutoff = 1, sort_by = "f1"):

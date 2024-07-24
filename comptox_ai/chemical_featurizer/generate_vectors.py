@@ -66,7 +66,7 @@ def create_vector_table(smiles_list, rdkit_descriptors=True, molfeat_descriptors
 
         vectors.append(np.vstack(rdkit_features))
 
-    #print(np.hstack(vectors))
+
     df = pd.DataFrame(np.hstack(vectors), columns=df_column_names)
 
     df.index = smiles_list

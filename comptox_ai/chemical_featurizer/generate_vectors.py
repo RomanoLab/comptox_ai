@@ -1,86 +1,254 @@
 from comptox_ai.db.graph_db import GraphDB
 
 from molfeat.trans.fp import FPVecTransformer
-from rdkit import Chem
+from rdkit import Chem, RDLogger
 from rdkit.Chem import Descriptors
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
+from collections import defaultdict
+from itertools import chain
+
+RDLogger.DisableLog("rdApp.*")  # Disable rdkit warnings
 
 
-def retrieve_smiles(chemicals_to_find, chemical_descriptor_type="commonName"):
-    if isinstance(chemicals_to_find, str):
-        properties = {chemical_descriptor_type: chemicals_to_find}
-    elif isinstance(chemicals_to_find, list):
-        properties = {
-            chemical_descriptor_type: chemical for chemical in chemicals_to_find
-        }
-    elif isinstance(chemicals_to_find, dict):
-        properties = chemicals_to_find
+def sanitize_smiles(smiles_list):
+    """
+    Check and correct issues related to kekulization, valencies, aromaticity, conjugation, and hybridization for each SMILES string in a list of SMILES strings.
+
+    Parameters
+    ----------
+    smiles_list : List[str]
+        A list of SMILES strings.
+
+    Returns
+    -------
+    List[str]
+        List of sanitized SMILES strings.
+
+    Examples
+    --------
+    >>> from comptox_ai.chemical_featurizer.generate_vectors import sanitize_smiles
+    >>> smiles_list = ["CCN(CCO)CCCC(C)NC1=CC=NC2=CC(Cl)=CC=C12", "CC(=O)CC(C1=CC=CC=C1)C1=C(O)C2=CC=CC=C2OC1=O"]
+    >>> sanitize_smiles(smiles_list)
+    ['CCN(CCO)CCCC(C)Nc1ccnc2cc(Cl)ccc12', 'CC(=O)CC(c1ccccc1)c1c(O)c2ccccc2oc1=O']
+    """
+
+    print("Sanitizing sMILES")
+
+    return [
+        Chem.MolToSmiles(Chem.MolFromSmiles(smiles, sanitize=True))
+        for smiles in smiles_list
+    ]
+
+
+def retrieve_smiles(
+    chemicals_to_find, chemical_descriptor_type="commonName", sanitize_smiles_flag=True
+):
+    """
+    Convert chemicals IDs (potentially with various representations) to a list of SMILES strings by querying the ComptoxAI database.
+
+    Parameters
+    ----------
+    chemicals_to_find : Union(str, List[str], Dict[str, List[str]]
+        A single chemical ID, list of chemicals IDs, or dictionary of {chemical_descriptor : list of chemical IDs} key-value pairs.
+    chemical_descriptor_type : str
+        Indicates the chemical descriptor type for chemcials_to_find if chemicals_to_find is str or List[str].
+        Valid chemical_descriptor types include commonName, Drugbank ID, MeSH ID, PubChem SID, PubChem CID, CasRN, sMILES, DTXSID.
+    sanitize_smiles_flag : bool
+        Whether sanitize_smiles() should be run on the retrieved SMILES strings.
+
+    Returns
+    -------
+    List[str]
+        List of sanitized SMILES strings.
+
+    Raises
+    -------
+    ValueError
+        If type of chemicals_to_find is not str, List[str] or Dict[str, List[str]]
+
+    Examples
+    --------
+    >>> from comptox_ai.chemical_featurizer.generate_vectors import retrieve_smiles
+    >>> retrieve_smiles(["Hydroxychloroquine", "Warfarin"])
+    ['CCN(CCO)CCCC(C)Nc1ccnc2cc(Cl)ccc12', 'CC(=O)CC(c1ccccc1)c1c(O)c2ccccc2oc1=O']
+    """
+
+    if type(chemicals_to_find) == str:
+        chemicals_to_find = [chemicals_to_find]
+
+    if chemical_descriptor_type == "sMILES" and type(chemicals_to_find) in (
+        str,
+        list,
+    ):  # Return list of smiles directly no need to query database
+        if sanitize_smiles_flag:
+            return sanitize_smiles(chemicals_to_find)
+        else:
+            return chemicals_to_find
+
+    if type(chemicals_to_find) in (str, list, dict):
+
+        if not isinstance(chemicals_to_find, dict):
+            chemicals_to_find = {chemical_descriptor_type: chemicals_to_find}
+
+        # Build Cypher query
+        query = " OR ".join(
+            [
+                f"n.{descriptor} = '{chemical}'"
+                for descriptor, chemical_list in chemicals_to_find.items()
+                for chemical in chemical_list
+            ]
+        )
+
     else:
-        raise Exception(
-            "chemicals_to_find should either be a list of chemicals that are the have the same type of descriptor or a dictionary of {descriptor type : chemical} descriptor key-value pairs"
+        raise ValueError(
+            "Chemicals_to_find should either be a single chemical as a string, a list of chemicals that are the have the same type of descriptor or a dictionary of {descriptor type : List[chemical]} key-value pairs."
         )
 
     db = GraphDB()
-    nodes = list(db.find_nodes(properties=properties, node_types=["Chemical"]))
+    nodes = db.run_cypher(f"MATCH (n:Chemical) WHERE {query} RETURN n")
 
+    nodes = [
+        item["n"] for item in nodes
+    ]  # Remove a layer of the cypher query result where all keys are 'n'
     smiles_list = [node["sMILES"] for node in nodes]
 
-    return smiles_list
+    # Determine which chemicals were not found
+    # Track chemicals in user input grouped by their chemical descriptor type
+    chemicals_to_find_tracking_dict = defaultdict(lambda: set())
+
+    for descriptor, chemical_list in chemicals_to_find.items():
+        chemicals_to_find_tracking_dict[descriptor] |= set(chemical_list)
+
+    # Track chemicals returned by querying database grouped by chemical descriptor type
+
+    found_chemicals_dict = defaultdict(lambda: set())
+
+    for node in nodes:
+        for descriptor in list(chemicals_to_find_tracking_dict.keys()):
+            found_chemicals_dict[descriptor].add(node[descriptor])
+
+    # Take the difference of sets between user requested chemicals and found chemicals per descriptor
+
+    for k in chemicals_to_find_tracking_dict.keys():
+        chemicals_to_find_tracking_dict[k] -= found_chemicals_dict[k]
+
+    # Chemicals not found are left after taking set difference; combine these across descriptor types
+    chemicals_not_found = set().union(*list(chemicals_to_find_tracking_dict.values()))
+
+    print()
+    if chemicals_not_found:
+        print(chemicals_not_found, "were not found", "\n")
+
+    # Original chemical identifiers of found chemicals
+    found_chemical_id_list = []
+    chemicals_to_find_set = set(chain(*chemicals_to_find.values()))
+    for node in nodes:
+        for id_type in found_chemicals_dict.keys():
+            chemical_id = node[id_type]
+            if chemical_id in chemicals_to_find_set:
+                found_chemical_id_list.append(chemical_id)
+                continue
+
+    if sanitize_smiles_flag:
+        smiles_list = sanitize_smiles(smiles_list)
+
+    return smiles_list, found_chemical_id_list
 
 
-def create_vector_table(smiles_list, rdkit_descriptors=True, molfeat_descriptors=[]):
+def create_vector_table(
+    chemicals_to_find,
+    chemical_descriptor_type="commonName",
+    sanitize_smiles_flag=True,
+    rdkit_descriptors=True,
+    molfeat_descriptors=[],
+    use_original_chemical_ids_for_df_index=True,
+):
+    """
+    Constructs Pandas DataFrame of vector (i.e. embedding) features for query chemicals.
+
+    Parameters
+    ----------
+    chemicals_to_find : Union(str, List[str], Dict[str, List[str]]
+        A single chemical ID, list of chemicals IDs, or dictionary of {chemical_descriptor : list of chemical IDs} key-value pairs.
+    chemical_descriptor_type : str
+        Indicates the chemical descriptor type for chemcials_to_find if chemicals_to_find is str or List[str].
+        Valid chemical_descriptor types include commonName, Drugbank ID, MeSH ID, PubChem SID, PubChem CID, CasRN, sMILES, DTXSID.
+    sanitize_smiles_flag : bool
+        Whether sanitize_smiles() should be run on the retrieved SMILES strings.
+    rdkit_descriptors : bool
+        Whether full set of rdkit_descriptors should be calculated and incorporated as vectors.
+    molfeat_descriptors : List[str]
+        List of features to generate. For possible features, see https://molfeat.datamol.io/featurizers.
+     use_original_chemical_ids_for_df_index : bool
+        Whether to use input chemical IDs or generated SMILES strings as the DataFrame index.
+
+    Returns
+    -------
+    Pandas DataFrame
+        List of sanitized SMILES strings.
+
+    Raises
+    -------
+    ValueError
+        If type of rdkit_descriptors is not bool or type of molfeat_descriptors is not list.
+
+    Examples
+    --------
+    >>> from comptox_ai.chemical_featurizer.generate_vectors import create_vector_table
+    >>> create_vector_table(["Hydroxychloroquine", "Warfarin"])
+                                   maccs                  erg           ...  fr_thiophene  fr_unbrch_alkane  fr_urea
+    Hydroxychloroquine     [0.0, 0.0, 0.0, ...]   [0.0, 0.0, 0.0, ...]  ...      0.0              0.0          0.0
+    Warfarin               [0.0, 0.0, 0.0, ...]   [0.0, 0.0, 0.0, ...]  ...      0.0              0.0          0.0
+    """
 
     if not isinstance(rdkit_descriptors, bool) or not isinstance(
         molfeat_descriptors, list
     ):
-        raise Exception(
-            "rdkit_descriptors should be True or False and molfeat_descriptors should be list of desired vector features"
+        raise ValueError(
+            "Rdkit_descriptors should be True or False and molfeat_descriptors should be list of desired vector features."
         )
+
+    smiles_list, found_chemical_id_list = retrieve_smiles(
+        chemicals_to_find, chemical_descriptor_type, sanitize_smiles_flag
+    )
 
     vectors = []
     df_column_names = []
 
     if molfeat_descriptors:
-        molfeat_features = dict()
 
         for feature in molfeat_descriptors:
             print(f"Calculating {feature} descriptors")
-            featurizer = FPVecTransformer(kind=feature, dtype=np.float32)
-            molfeat_features[feature] = featurizer(smiles_list)
-
-        for k, v in molfeat_features.items():
-            df_column_names += [f"{k}_{i}" for i in range(v.shape[1])]
-
-        vectors.append(np.hstack(list(molfeat_features.values())))
+            featurizer = FPVecTransformer(kind=feature, dtype=np.float32, verbose=True)
+            vectors.append(featurizer(smiles_list).tolist())
+            df_column_names.append(feature)
 
     if rdkit_descriptors:
         print(f"Calculating rdkit descriptors")
         mols = [Chem.MolFromSmiles(smiles) for smiles in smiles_list]
-        rdkit_features = [
-            np.array(list(Descriptors.CalcMolDescriptors(mol).values())) for mol in mols
-        ]
+        rdkit_features = np.array(
+            [
+                np.array(list(Descriptors.CalcMolDescriptors(mol).values()))
+                for mol in mols
+            ]
+        )
 
         df_column_names += list(Descriptors.CalcMolDescriptors(mols[0]).keys())
 
-        vectors.append(np.vstack(rdkit_features))
+        for column in rdkit_features.T:
+            vectors.append(column.tolist())
 
+    df_dict = {
+        column_name: vector for column_name, vector in zip(df_column_names, vectors)
+    }
 
-    df = pd.DataFrame(np.hstack(vectors), columns=df_column_names)
+    df = pd.DataFrame(df_dict)
 
-    df.index = smiles_list
+    df.index = (
+        found_chemical_id_list
+        if use_original_chemical_ids_for_df_index
+        else smiles_list
+    )
 
     return df
-
-
-def chemicals_to_vectors(
-    chemicals_to_find,
-    chemical_descriptor_type="commonName",
-    rdkit_descriptors=True,
-    molfeat_descriptors=[],
-):
-
-    smiles_list = retrieve_smiles(chemicals_to_find, chemical_descriptor_type)
-
-    return create_vector_table(smiles_list, rdkit_descriptors, molfeat_descriptors)

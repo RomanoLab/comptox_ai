@@ -42,13 +42,14 @@ jobs:
           environment-file: etc/example-environment.yml
           python-version: ${{ matrix.python-version }}
           auto-activate-base: false
-        run: |
-          conda info
-          conda list
+        
 
-      # # Step: List installed packages
-      # - name: list-packages
+      # Step: List installed packages
+      - name: list-packages
       #   run: pip list
+        run: |
+            conda info
+            conda list
 
       # Step: Run tests with Pytest
       - name: run-tests

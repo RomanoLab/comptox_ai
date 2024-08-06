@@ -13,23 +13,26 @@ jobs:
   python-test:
     # Define the type of runner to use
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
 
-    # Define strategy for matrix builds
-    strategy:
-      matrix:
-        # You can change the default value as needed
-        python-version: ['3.8', '3.9', '3.10']
+    # # Define strategy for matrix builds
+    # strategy:
+    #   matrix:
+    #     # You can change the default value as needed
+    #     python-version: ['3.8', '3.9', '3.10']
 
     steps:
       # Step: Check out the repository's code to the runner
       - name: checkout-code
         uses: actions/checkout@v3
 
-      # Step: Set up Python environment
-      - name: setup-python-env ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
+      # # Step: Set up Python environment
+      # - name: setup-python-env ${{ matrix.python-version }}
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: ${{ matrix.python-version }}
 
       # Step: Install project dependencies using pip
       - name: install-dependencies
@@ -38,7 +41,7 @@ jobs:
         #   python -m pip install .
         uses: conda-incubator/setup-miniconda@v3
         with:
-          activate-environment: anaconda-client-env
+          activate-environment: comptox_ai
           environment-file: environment.yml
           python-version: 3.9
           auto-activate-base: false

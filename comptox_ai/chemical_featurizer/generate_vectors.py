@@ -1,5 +1,4 @@
 from comptox_ai.db.graph_db import GraphDB
-
 from molfeat.trans.fp import FPVecTransformer
 from rdkit import Chem, RDLogger
 from rdkit.Chem import Descriptors
@@ -35,10 +34,16 @@ def sanitize_smiles(smiles_list):
 
     print("Sanitizing sMILES")
 
-    return [
-        Chem.MolToSmiles(Chem.MolFromSmiles(smiles, sanitize=True))
-        for smiles in smiles_list
-    ]
+    cleaned_smiles = []
+    for smiles in smiles_list:
+        try:
+            cleaned_smiles.append(
+                Chem.MolToSmiles(Chem.MolFromSmiles(smiles, sanitize=True))
+            )
+        except Exception as e:
+            raise ValueError(f"Invalid SMILES string: {smiles}. Error: {str(e)}")
+
+    return cleaned_smiles
 
 
 def retrieve_smiles(
@@ -53,7 +58,7 @@ def retrieve_smiles(
         A single chemical ID, list of chemicals IDs, or dictionary of {chemical_descriptor : list of chemical IDs} key-value pairs.
     chemical_descriptor_type : str
         Indicates the chemical descriptor type for chemcials_to_find if chemicals_to_find is str or List[str].
-        Valid chemical_descriptor types include commonName, Drugbank ID, MeSH ID, PubChem SID, PubChem CID, CasRN, sMILES, DTXSID.
+        Valid chemical_descriptor types include commonName, Drugbank ID (xrefDrugbank), MeSH ID (xrefMeSH), PubChem SID (xrefPubchemSID), PubChem CID(xrefPubchemCID), CasRN (xrefCasRN), sMILES, DTXSID (xrefDTXSID).
     sanitize_smiles_flag : bool
         Whether sanitize_smiles() should be run on the retrieved SMILES strings.
 
@@ -82,9 +87,9 @@ def retrieve_smiles(
         list,
     ):  # Return list of smiles directly no need to query database
         if sanitize_smiles_flag:
-            return sanitize_smiles(chemicals_to_find)
+            return sanitize_smiles(chemicals_to_find), chemicals_to_find
         else:
-            return chemicals_to_find
+            return chemicals_to_find, chemicals_to_find
 
     if type(chemicals_to_find) in (str, list, dict):
 

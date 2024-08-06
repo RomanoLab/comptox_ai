@@ -51,9 +51,12 @@ jobs:
       - name: list-packages
       #   run: pip list
         run: |
+            source $(conda info --base)/etc/profile.d/conda.sh
             conda info
             conda list
 
       # Step: Run tests with Pytest
       - name: run-tests
-        run: python -m pytest
+        run: |
+            source $(conda info --base)/etc/profile.d/conda.sh
+            python -m pytest

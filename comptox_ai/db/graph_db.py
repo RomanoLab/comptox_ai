@@ -25,18 +25,24 @@ from textwrap import dedent
 import ipdb
 
 from neo4j import GraphDatabase
-from neo4j.exceptions import ClientError, AuthError, CypherSyntaxError, ServiceUnavailable
+from neo4j.exceptions import (
+    ClientError,
+    AuthError,
+    CypherSyntaxError,
+    ServiceUnavailable,
+)
 
 import comptox_ai.db
 
 
 def _get_default_config_file():
     root_dir = Path(__file__).resolve().parents[2]
-    if os.path.exists(os.path.join(root_dir, 'CONFIG.yaml')):
-        default_config_file = os.path.join(root_dir, 'CONFIG.yaml')
+    if os.path.exists(os.path.join(root_dir, "CONFIG.yaml")):
+        default_config_file = os.path.join(root_dir, "CONFIG.yaml")
     else:
-        default_config_file = os.path.join(root_dir, 'CONFIG-default.yaml')
+        default_config_file = os.path.join(root_dir, "CONFIG-default.yaml")
     return default_config_file
+
 
 @dataclass
 class Metagraph:
@@ -58,10 +64,12 @@ class Metagraph:
         list describing valid (subject, object) pairs (in other words, all existing
         'from' node types and 'to' node types linked by the given relationship).
     """
+
     node_labels: List[str]
     node_label_counts: Dict[str, int]
     relationship_types: List[str]
     relationship_path_schema: Dict[str, Dict[str, int]]
+
 
 class Node(dict):
     """
@@ -95,10 +103,11 @@ class Node(dict):
      'synonyms': '',
      ...}
     """
+
     def __init__(self, db, node_type, search_params, return_first_match=False):
         # build search query
         where_clause = ", ".join([f"n.{k} = '{v}'" for k, v in search_params.items()])
-        
+
         node_search_query = f"""
         MATCH (n:{node_type})
         WHERE {where_clause}
@@ -112,10 +121,13 @@ class Node(dict):
             raise Exception("Error: Node not found in graph database")
         elif len(node_search_res) > 1:
             if return_first_match == False:
-                raise Exception("Error: Multiple nodes match query. Use `return_first_match=True` to bypass error and use first matching node.")
+                raise Exception(
+                    "Error: Multiple nodes match query. Use `return_first_match=True` to bypass error and use first matching node."
+                )
 
-        self.update(node_search_res[0]['n'].items())    
-        
+        self.update(node_search_res[0]["n"].items())
+
+
 class Graph(object):
     """
     A Neo4j graph, as defined by the Neo4j Graph Data Science Library. In
@@ -158,12 +170,22 @@ class GraphDB(object):
         Sets verbosity to on or off. If True, status information will be returned
         to the user occasionally.
     """
-    def __init__(self, hostname="neo4j.comptox.ai", username=None, password=None, verbose=False, silent=False):
+
+    def __init__(
+        self,
+        hostname="neo4j.comptox.ai",
+        username=None,
+        password=None,
+        verbose=False,
+        silent=False,
+    ):
         if not silent:
             print(f"Attempting to connect to public Neo4j database at `{hostname}`...")
             if (not username) and (not password):
-                print(f"No username/password provided - attempting to connect without authentication.")
-        
+                print(
+                    f"No username/password provided - attempting to connect without authentication."
+                )
+
         self.is_connected = False
         self.verbose = verbose
 
@@ -171,7 +193,7 @@ class GraphDB(object):
             self.username = username
             self.password = password
             self.hostname = hostname
-        
+
         self._connect()
 
         if not silent:
@@ -180,14 +202,13 @@ class GraphDB(object):
         self.exporter = comptox_ai.db.GraphExporter(self)
 
     def __repr__(self):
-        return(
-            dedent(f"""\
+        return dedent(
+            f"""\
                 ------------------------
                 ComptoxAI graph database
                 ------------------------
                 Hostname: {self.hostname}
                 Username: {self.username}"""
-            )
         )
 
     def _connect(self):
@@ -195,7 +216,7 @@ class GraphDB(object):
         password = self.password
         hostname = self.hostname
 
-        if hostname == 'localhost':
+        if hostname == "localhost":
             uri = "bolt://localhost:7687"
         else:
             uri = f"neo4j://{hostname}"
@@ -207,20 +228,30 @@ class GraphDB(object):
             else:
                 self._driver = GraphDatabase.driver(uri, auth=(username, password))
         except AuthError as e:
-            raise RuntimeError("Could not find a database using the configuration provided.")
+            raise RuntimeError(
+                "Could not find a database using the configuration provided."
+            )
 
         # Test the connection to make sure we are connected to a database
         try:
             with warnings.catch_warnings():
-                warnings.filterwarnings("ignore", "The configuration may change in the future.")
+                warnings.filterwarnings(
+                    "ignore", "The configuration may change in the future."
+                )
                 conn_result = self._driver.verify_connectivity()
         except ServiceUnavailable:
-            raise RuntimeError("Neo4j driver created but we couldn't connect to any routing servers. You might be using an invalid hostname.")
+            raise RuntimeError(
+                "Neo4j driver created but we couldn't connect to any routing servers. You might be using an invalid hostname."
+            )
         except ValueError:
-            raise RuntimeError("Neo4j driver created but the host address couldn't be resolved. Check your hostname, port, and/or protocol.")
-    
-        if (conn_result is None):
-            raise RuntimeError("Neo4j driver created but a valid connection hasn't been established. You might be using an invalid hostname.")
+            raise RuntimeError(
+                "Neo4j driver created but the host address couldn't be resolved. Check your hostname, port, and/or protocol."
+            )
+
+        if conn_result is None:
+            raise RuntimeError(
+                "Neo4j driver created but a valid connection hasn't been established. You might be using an invalid hostname."
+            )
 
     def _disconnect(self):
         self._driver.close()
@@ -253,12 +284,16 @@ class GraphDB(object):
         """
         with self._driver.session() as session:
             if self.verbose:
-                if verbose: # users can still override verbosity at the run_cypher level
+                if (
+                    verbose
+                ):  # users can still override verbosity at the run_cypher level
                     print(f"Writing Cypher transaction: \n  {qry_str}")
             try:
                 res = session.write_transaction(self._run_transaction, qry_str)
             except CypherSyntaxError as e:
-                warnings.warn("Neo4j returned a Cypher syntax error. Please check your query and try again.")
+                warnings.warn(
+                    "Neo4j returned a Cypher syntax error. Please check your query and try again."
+                )
                 print(f"\nThe original error returned by Neo4j is:\n\n {e}")
                 return None
             return res
@@ -285,12 +320,25 @@ class GraphDB(object):
 
         response = response[0]
 
-        stats = {k:response[k] for k in ('nodeCount', 'relCount', 'labelCount', 'relTypeCount') if k in response}
-        
+        stats = {
+            k: response[k]
+            for k in ("nodeCount", "relCount", "labelCount", "relTypeCount")
+            if k in response
+        }
+
         return stats
 
-    def fetch(self, field, operator, value, what='both', register_graph=True,
-              negate=False, query_type='cypher', **kwargs):
+    def fetch(
+        self,
+        field,
+        operator,
+        value,
+        what="both",
+        register_graph=True,
+        negate=False,
+        query_type="cypher",
+        **kwargs,
+    ):
         """
         Create and execute a query to retrieve nodes, edges, or both.
 
@@ -312,7 +360,7 @@ class GraphDB(object):
             method call may be only the nodes or edges contained in that subgraph.
         filter : str
             'Cypher-like' filter statement, equivalent to a `WHERE` clause used in
-            a Neo4j Cypher query (analogous to SQL `WHERE` clauses). 
+            a Neo4j Cypher query (analogous to SQL `WHERE` clauses).
         query_type : {'cypher', 'native'}
             Whether to create a graph using a Cypher projection or a native
             projection. The 'standard' approach is to use a Cypher projection, but
@@ -322,11 +370,13 @@ class GraphDB(object):
             information, as well as https://neo4j.com/docs/graph-data-science/current/management-ops/graph-catalog-ops/#catalog-graph-create.
         """
 
-        raise NotImplementedError("Error: GraphDB.fetch() not yet implemented - see documentation notes.")
+        raise NotImplementedError(
+            "Error: GraphDB.fetch() not yet implemented - see documentation notes."
+        )
 
-        if query_type == 'cypher':
+        if query_type == "cypher":
             new_graph = self.build_graph_cypher_projection()
-        elif query_type == 'native':
+        elif query_type == "native":
             new_graph = self.build_graph_native_projection()
         else:
             raise ValueError("'query_type' must be either 'cypher' or 'native'")
@@ -343,17 +393,24 @@ class GraphDB(object):
         """
         if name:
             # search by name
-            query = "MATCH (n {{ commonName: \"{0}\" }}) RETURN n LIMIT 1;".format(name)
+            query = 'MATCH (n {{ commonName: "{0}" }}) RETURN n LIMIT 1;'.format(name)
         else:
             if not properties:
-                raise ValueError("Error: Must provide a value for `name` or `properties`.")
+                raise ValueError(
+                    "Error: Must provide a value for `name` or `properties`."
+                )
 
         # search by properties
         # first, separate out properties with special meaning (e.g., `id`)
 
         # then, construct a MATCH clause suing the remaining properties
-        # strings should be enclosed in 
-        prop_string = ", ".join([f"{k}: '{v}'" if type(v) == str else f"{k}: {v}" for k, v in properties.items()])
+        # strings should be enclosed in
+        prop_string = ", ".join(
+            [
+                f"{k}: '{v}'" if type(v) == str else f"{k}: {v}"
+                for k, v in properties.items()
+            ]
+        )
         match_clause = f"MATCH (n {{ {prop_string} }})"
         # assemble the complete query
 
@@ -365,10 +422,11 @@ class GraphDB(object):
             warnings.warn("Warning: No node found matching the query you provided.")
             return False
         elif len(node_response) > 1:
-            warnings.warn("Warning: Multiple nodes found for query - only returning one (see `find_nodes` if you want all results).")
-    
-        return node_response[0]['n']
+            warnings.warn(
+                "Warning: Multiple nodes found for query - only returning one (see `find_nodes` if you want all results)."
+            )
 
+        return node_response[0]["n"]
 
     def find_nodes(self, properties={}, node_types=[]):
         """
@@ -399,12 +457,21 @@ class GraphDB(object):
         rather than a list.
         """
         if (not properties) and (len(node_types) == 0):
-            raise ValueError("Error: Query must contain at least one node property or node type.")
+            raise ValueError(
+                "Error: Query must contain at least one node property or node type."
+            )
 
         if not properties:
-            warnings.warn("Warning: No property filters given - the query result may be very large!")
+            warnings.warn(
+                "Warning: No property filters given - the query result may be very large!"
+            )
 
-        prop_string = ", ".join([f"{k}: '{v}'" if type(v) == str else f"{k}: {v}" for k, v in properties.items()])
+        prop_string = ", ".join(
+            [
+                f"{k}: '{v}'" if type(v) == str else f"{k}: {v}"
+                for k, v in properties.items()
+            ]
+        )
 
         # Use a WHERE clause when multiple node types are given
         if len(node_types) == 1:
@@ -414,7 +481,7 @@ class GraphDB(object):
         elif len(node_types) > 1:
             # Multiple node labels - include them in the WHERE clause
             match_clause = f"MATCH (n {{ {prop_string} }})"
-            where_clause = " WHERE n:"+" OR n:".join(node_types)
+            where_clause = " WHERE n:" + " OR n:".join(node_types)
         else:
             # No node labels - just use bare MATCH clause and no WHERE clause
             match_clause = f"MATCH (n {{ {prop_string} }})"
@@ -426,7 +493,7 @@ class GraphDB(object):
 
         nodes_response = self.run_cypher(query)
 
-        return (n['n'] for n in nodes_response)
+        return (n["n"] for n in nodes_response)
 
     def find_relationships(self):
         """
@@ -434,8 +501,9 @@ class GraphDB(object):
         """
         pass
 
-    def build_graph_native_projection(self, graph_name, node_types,
-                                      relationship_types="all", config_dict=None):
+    def build_graph_native_projection(
+        self, graph_name, node_types, relationship_types="all", config_dict=None
+    ):
         """
         Create a new graph in the Neo4j Graph Catalog via a native projection.
 
@@ -444,7 +512,7 @@ class GraphDB(object):
         graph_name : str
         A (string) name for identifying the new graph. If a graph already exists
         with this name, a ValueError will be raised.
-        node_proj : str, list of str, or dict of 
+        node_proj : str, list of str, or dict of
         Node projection for the new graph. This can be either a single node
         label, a list of node labels, or a node projection
 
@@ -480,7 +548,7 @@ class GraphDB(object):
                 }
             }
 
-        where ``node-label-i`` is a name for a node label in the projected graph 
+        where ``node-label-i`` is a name for a node label in the projected graph
         (it can be the same as or different from the label already in neo4j),
         ``neo4j-label`` is a node label to match against in the graph database, and
         ``node-property-mappings`` are filters against Neo4j node properties, as
@@ -489,7 +557,7 @@ class GraphDB(object):
         NODE PROPERTY MAPPINGS:
 
         RELATIONSHIP PROJECTIONS:
-        
+
         Examples
         --------
         >>> g = GraphDB()
@@ -498,13 +566,15 @@ class GraphDB(object):
         node_proj = ['Gene', 'StructuralEntity'],
         relationship_proj = "*"
         )
-        >>> 
+        >>>
         """
 
         create_graph_query_template = """
         CALL gds.graph.create({0},{1},{2}{3})
         YIELD graphName, nodeCount, relationshipCount, createMillis;
-        """[1:-1]
+        """[
+            1:-1
+        ]
 
         graph_name_str = "'{0}'".format(graph_name)
 
@@ -513,17 +583,14 @@ class GraphDB(object):
         # relationship_proj_str = "'{0}'".format(relationship_proj)
         relationship_proj_str = self._make_node_projection_str(relationship_types)
 
-        #config_dict_str = str(config_dict)
+        # config_dict_str = str(config_dict)
         if config_dict is None:
             config_dict_str = ""
         else:
             config_dict_str = ", {0}".format(str(config_dict))
 
         create_graph_query = create_graph_query_template.format(
-            graph_name_str,
-            node_proj_str,
-            relationship_proj_str,
-            config_dict_str
+            graph_name_str, node_proj_str, relationship_proj_str, config_dict_str
         )
 
         if self.verbose:
@@ -533,8 +600,9 @@ class GraphDB(object):
 
         return res
 
-    def build_graph_cypher_projection(self, graph_name, node_query,
-                                      relationship_query, config_dict=None):
+    def build_graph_cypher_projection(
+        self, graph_name, node_query, relationship_query, config_dict=None
+    ):
         """
         Create a new graph in the Neo4j Graph Catalog via a Cypher projection.
 
@@ -542,13 +610,15 @@ class GraphDB(object):
         --------
         >>> g = GraphDB()
         >>> g.build_graph_cypher_projection(...)
-        >>> 
+        >>>
         """
-    
+
         create_graph_query_template = """
         CALL gds.graph.create.cypher({0},{1},{2}{3})
         YIELD graphName, nodeCount, relationshipCount, createMillis;
-        """[1:-1]
+        """[
+            1:-1
+        ]
 
         graph_name_str = "'{0}'".format(graph_name)
         node_query_str = "'{0}'".format(node_query)
@@ -560,10 +630,7 @@ class GraphDB(object):
             config_dict_str = ", configuration: {0}".format(str(config_dict))
 
         create_graph_query = create_graph_query_template.format(
-            graph_name_str,
-            node_query_str,
-            relationship_query_str,
-            config_dict_str
+            graph_name_str, node_query_str, relationship_query_str, config_dict_str
         )
 
         if self.verbose:
@@ -576,13 +643,13 @@ class GraphDB(object):
     def _make_node_projection_str(self, node_proj_arg):
         if isinstance(node_proj_arg, str):
             # We need to wrap any string in double quotes
-            if node_proj_arg == 'all':
+            if node_proj_arg == "all":
                 return '"*"'
             # e.g., 'Chemical'
             return f'"{node_proj_arg}"'
         elif isinstance(node_proj_arg, list):
             # e.g., ['Chemical', 'Disease']
-            return '{0}'.format(str(node_proj_arg))
+            return "{0}".format(str(node_proj_arg))
         elif isinstance(node_proj_arg, dict):
             return
 
@@ -630,9 +697,11 @@ class GraphDB(object):
         chemicals : list of dict
         Chemical nodes that are members of the chemical list
         """
-        res = self.run_cypher(f"MATCH (l:ChemicalList {{ listAcronym: \"{list_name}\" }})-[:LISTINCLUDESCHEMICAL]->(c:Chemical) RETURN l, c")
+        res = self.run_cypher(
+            f'MATCH (l:ChemicalList {{ listAcronym: "{list_name}" }})-[:LISTINCLUDESCHEMICAL]->(c:Chemical) RETURN l, c'
+        )
 
-        return (res[0]['l'], [r['c'] for r in res])
+        return (res[0]["l"], [r["c"] for r in res])
 
     def fetch_node_type(self, node_label):
         """
@@ -653,20 +722,21 @@ class GraphDB(object):
         that this method may take a very long time to run and/or be very demanding
         on computing resources.
         """
-        
+
         res = self.run_cypher(f"MATCH (n:{node_label}) RETURN n;")
 
-        return (r['n'] for r in res)
-
+        return (r["n"] for r in res)
 
     def fetch_relationships(self, relationship_type, from_label, to_label):
         """
         Fetch edges (relationships) from the Neo4j graph database.
         """
-    
-        res = self.run_cypher(f"MATCH (s:{from_label})-[r:{relationship_type}]->(o:{to_label}) RETURN s, r, o;")
 
-        return ((r['r'][0]['uri'], r['r'][1], r['r'][2]['uri']) for r in res)
+        res = self.run_cypher(
+            f"MATCH (s:{from_label})-[r:{relationship_type}]->(o:{to_label}) RETURN s, r, o;"
+        )
+
+        return ((r["r"][0]["uri"], r["r"][1], r["r"][2]["uri"]) for r in res)
 
     def get_metagraph(self):
         """
@@ -679,34 +749,31 @@ class GraphDB(object):
         prudent to start doing that at some point in the future. It's not an
         extremely quick operation, but it's also not prohibitively slow.
         """
-  
+
         meta = self.run_cypher("CALL apoc.meta.graph();")[0]
         node_labels = []
-        for n in meta['nodes']:
-            node_labels.append(n['name'])
-      
-        node_labels = [n['name'] for n in meta['nodes']]
-        node_label_counts = dict([(n['name'], n['count']) for n in meta['nodes']])
+        for n in meta["nodes"]:
+            node_labels.append(n["name"])
+
+        node_labels = [n["name"] for n in meta["nodes"]]
+        node_label_counts = dict([(n["name"], n["count"]) for n in meta["nodes"]])
 
         rel_types = []
         rel_path_schema = dict()
-        for r in meta['relationships']:
+        for r in meta["relationships"]:
             if r[1] not in rel_types:
                 rel_types.append(r[1])
                 rel_path_schema[r[1]] = []
-      
-        rel_path_schema[r[1]].append({
-            'from': r[0]['name'],
-            'to': r[2]['name']
-        })
+
+        rel_path_schema[r[1]].append({"from": r[0]["name"], "to": r[2]["name"]})
 
         metagraph = Metagraph(
             node_labels=node_labels,
             node_label_counts=node_label_counts,
             relationship_types=rel_types,
-            relationship_path_schema=rel_path_schema
+            relationship_path_schema=rel_path_schema,
         )
-    
+
         return metagraph
 
     def list_existing_graphs(self):
@@ -724,7 +791,11 @@ class GraphDB(object):
             if len(graphs) == 0:
                 print("Graph catalog is currently empty.")
             else:
-                print("Number of graphs currently in GDS graph catalog: {0}".format(len(graphs)))
+                print(
+                    "Number of graphs currently in GDS graph catalog: {0}".format(
+                        len(graphs)
+                    )
+                )
         return graphs
 
     def drop_existing_graph(self, graph_name):
@@ -736,7 +807,7 @@ class GraphDB(object):
         graph_name : str
         A name of a graph, corresponding to the `'graphName'` field in the
         graph's entry within the GDS graph catalog.
-        
+
         Returns
         -------
         dict
@@ -745,9 +816,7 @@ class GraphDB(object):
         elements returned by calling `list_current_graphs()`.
         """
         try:
-            res = self.run_cypher(
-                "CALL gds.graph.drop(\"{0}\")".format(graph_name)
-            )
+            res = self.run_cypher('CALL gds.graph.drop("{0}")'.format(graph_name))
             return res[0]
         except ClientError:
             if self.verbose:
@@ -774,25 +843,29 @@ class GraphDB(object):
                 print("Warning - the graph catalog is already empty.")
         else:
             for cg in current_graphs:
-                deleted_graph = self.drop_existing_graph(cg['graphName'])
+                deleted_graph = self.drop_existing_graph(cg["graphName"])
                 deleted_graphs.append(deleted_graph)
 
         return deleted_graphs
 
-    def export_graph(self, graph_name, to='db'):
+    def export_graph(self, graph_name, to="db"):
         """
         Export a graph stored in the GDS graph catalog to a set of CSV files.
 
         Parameters
         ----------
         graph_name : str
-        A name of a graph, corresponding to the `'graphName'` field in the
-        graph's entry within the GDS graph catalog.
+            A name of a graph, corresponding to the `'graphName'` field in the
+            graph's entry within the GDS graph catalog.
         """
-        if to == 'csv':
-            res = self.run_cypher(f"CALL gds.beta.graph.export('{graph_name}', {{exportName: '{graph_name}'}})")
-        elif to == 'db':
-            res = self.run_cypher(f"CALL gds.graph.export('{graph_name}', {{dbName: '{graph_name}'}});")
+        if to == "csv":
+            res = self.run_cypher(
+                f"CALL gds.beta.graph.export('{graph_name}', {{exportName: '{graph_name}'}})"
+            )
+        elif to == "db":
+            res = self.run_cypher(
+                f"CALL gds.graph.export('{graph_name}', {{dbName: '{graph_name}'}});"
+            )
         return res
 
     def stream_named_graph(self, graph_name):
@@ -802,7 +875,7 @@ class GraphDB(object):
         Parameters
         ----------
         graph_name : str
-        A name of a graph in the GDS catalog.
+            A name of a graph in the GDS catalog.
         """
         self.exporter.stream_subgraph
 
@@ -859,21 +932,28 @@ class GraphDB(object):
         Parameters
         ----------
         node_type : str
-            Node type of the entities
+            Node type of the entities.
         from_id : str
         to_id : str
         ids : list of str
+
+        Returns
+        -------
+        Dict[str, str]
+            Dictionary of from_id : to_id pairs.
         """
-        res = self.run_cypher(f"""
+        res = self.run_cypher(
+            f"""
             MATCH (n:{node_type})
             WHERE n.{from_id} IN {ids}
-            RETURN n.{to_id} AS id;
-        """)
+            RETURN n.{from_id} as from_id, n.{to_id} AS to_id;
+        """
+        )
 
-        id_list = [x['id'] for x in res]
+        id_dict = {node["from_id"]: node["to_id"] for node in res}
 
-        return id_list
-    
+        return id_dict
+
     def find_shortest_paths(self, node1, node2, cleaned=True):
         """
         Parameters

@@ -36,15 +36,15 @@ jobs:
         # run: |
         #   python -m pip install --upgrade pip setuptools wheel
         #   python -m pip install .
-        - uses: conda-incubator/setup-miniconda@v3
-          with:
-            activate-environment: anaconda-client-env
-            environment-file: etc/example-environment.yml
-            python-version: ${{ matrix.python-version }}
-            auto-activate-base: false
-        - run: |
-            conda info
-            conda list
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: anaconda-client-env
+          environment-file: etc/example-environment.yml
+          python-version: ${{ matrix.python-version }}
+          auto-activate-base: false
+        run: |
+          conda info
+          conda list
 
       # # Step: List installed packages
       # - name: list-packages

@@ -23,7 +23,7 @@ dependencies:
   - numpy=1.21.2
   - openpyxl=3.0.8
   - owlready2=0.34
-  - pandas=2.0.3
+  - pandas
   - pytest=6.2.5
   - python=3.8
   - pytorch::pytorch

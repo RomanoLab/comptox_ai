@@ -32,5 +32,5 @@ dependencies:
   - scipy=1.7.1
   - tqdm=4.62.2
   - conda-forge::molfeat
-  - rdkit
+  - conda-forge::rdkit
   - conda-forge::ipdb

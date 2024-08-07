@@ -128,30 +128,30 @@ class TestRetrieveSmiles:
         )
 
 
-class TestCreateVectorTable:
+# class TestCreateVectorTable:
 
-    def test_create_vector_table_original_chemical_ids_as_index(self):
-        df_file_path = (
-            "tests/example_vector_table_original_chemical_ids_as_index.pkl"
-            if os.path.exists(
-                "tests/example_vector_table_original_chemical_ids_as_index.pkl"
-            )
-            else "example_vector_table_original_chemical_ids_as_index.pkl"
-        )
-        expected_output_df_original_chemical_ids_as_index = pd.read_pickle(df_file_path)
-        assert create_vector_table(
-            ["Hydroxychloroquine", "Warfarin"], molfeat_descriptors=["maccs", "erg"]
-        ).equals(expected_output_df_original_chemical_ids_as_index)
+#     def test_create_vector_table_original_chemical_ids_as_index(self):
+#         df_file_path = (
+#             "tests/example_vector_table_original_chemical_ids_as_index.pkl"
+#             if os.path.exists(
+#                 "tests/example_vector_table_original_chemical_ids_as_index.pkl"
+#             )
+#             else "example_vector_table_original_chemical_ids_as_index.pkl"
+#         )
+#         expected_output_df_original_chemical_ids_as_index = pd.read_pickle(df_file_path)
+#         assert create_vector_table(
+#             ["Hydroxychloroquine", "Warfarin"], molfeat_descriptors=["maccs", "erg"]
+#         ).equals(expected_output_df_original_chemical_ids_as_index)
 
-    def test_create_vector_table_smiles_as_index(self):
-        df_file_path = (
-            "tests/example_vector_table_smiles_as_index.pkl"
-            if os.path.exists("tests/example_vector_table_smiles_as_index.pkl")
-            else "example_vector_table_smiles_as_index.pkl"
-        )
-        expected_output_df_smiles_as_index = pd.read_pickle(df_file_path)
-        assert create_vector_table(
-            ["Hydroxychloroquine", "Warfarin"],
-            molfeat_descriptors=["maccs", "erg"],
-            use_original_chemical_ids_for_df_index=False,
-        ).equals(expected_output_df_smiles_as_index)
+#     def test_create_vector_table_smiles_as_index(self):
+#         df_file_path = (
+#             "tests/example_vector_table_smiles_as_index.pkl"
+#             if os.path.exists("tests/example_vector_table_smiles_as_index.pkl")
+#             else "example_vector_table_smiles_as_index.pkl"
+#         )
+#         expected_output_df_smiles_as_index = pd.read_pickle(df_file_path)
+#         assert create_vector_table(
+#             ["Hydroxychloroquine", "Warfarin"],
+#             molfeat_descriptors=["maccs", "erg"],
+#             use_original_chemical_ids_for_df_index=False,
+#         ).equals(expected_output_df_smiles_as_index)

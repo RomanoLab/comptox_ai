@@ -27,6 +27,21 @@ class TestGraphDB(object):
         x = G.run_cypher("RETURN 'hello';")
         assert len(x[0]) > 0
 
+    def test_graph_statistics(self, G):
+        graph_statistics = G.get_graph_statistics()
+
+        assert set(graph_statistics.keys()) == {
+            "nodeCount",
+            "relCount",
+            "labelCount",
+            "relTypeCount",
+        }
+
+    def test_find_node(self, G):
+        warfarin_node = G.find_node(properties={"commonName": "Warfarin"})
+        assert warfarin_node["commonName"] == "Warfarin"
+        assert warfarin_node["xrefPubchemCID"] == "54678486"
+
     def test_dsstox_to_casrn_converts(self, G):
         converted_ids = G.convert_ids(
             node_type="Chemical",

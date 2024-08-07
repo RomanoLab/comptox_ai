@@ -33,3 +33,4 @@ dependencies:
   - tqdm=4.62.2
   - conda-forge::molfeat
   - conda-forge::rdkit
+  - conda-forge::ipdb

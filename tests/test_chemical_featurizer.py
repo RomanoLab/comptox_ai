@@ -1,4 +1,5 @@
 from comptox_ai.chemical_featurizer.generate_vectors import *
+from rdkit.Chem import Descriptors
 import pytest
 import os
 
@@ -127,6 +128,12 @@ class TestRetrieveSmiles:
             ["DTXSID8023135", "DTXSID5023742"],
         )
 
+class TestGenerate3DConformers:
+    def test_generate_3d_conformers(self):
+        mol_list = generate_3d_conformers(["CCN(CCO)CCCC(C)Nc1ccnc2cc(Cl)ccc12", "CC(=O)CC(c1ccccc1)c1c(O)c2ccccc2oc1=O"])
+
+        assert Descriptors.MolWt(mol_list[0]) == pytest.approx(335.8789999999995, 0.001)
+        assert Descriptors.MolWt(mol_list[1]) == pytest.approx(308.3329999999997, 0.001)
 
 class TestCreateVectorTable:
 

@@ -34,3 +34,6 @@ dependencies:
   - conda-forge::molfeat
   - rdkit=="2024.03.3"
   - conda-forge::ipdb
+  - transformers
+  - dgllife
+  - dglteam=2.0.0

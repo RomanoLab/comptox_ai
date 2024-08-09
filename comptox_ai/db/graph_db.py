@@ -428,72 +428,116 @@ class GraphDB(object):
 
         return node_response[0]["n"]
 
-    def find_nodes(self, properties={}, node_types=[]):
+    def find_nodes(self, search_dict):
         """
         Find multiple nodes by node properties and/or labels.
 
         Parameters
         ----------
-        properties : dict
-        Dict of property values to match in the database query. Each key of
-        `properties` should be a (case-sensitive) node property, and each value
-        should be the value of that property (case- and type-sensitive).
-        node_types : list of str
-        Case sensitive list of strings representing node labels (node types) to
-        include in the results. Two or more node types in a single query may
-        significantly increase runtime. When multiple node labels are given, the
-        results will be the union of all property queries when applied
+        search_dict : Dict[str, Dict[str, Union[str, int, list]]]
+            Case sensitive dictionary of nodes to search for in the format of {node_type : {property : property_value(s)}}
 
         Returns
         -------
-        generator of dict
-        A generator containing dict representations of nodes matching the given
-        query.
+        Dict[str : List[Dict[str, str]]]
+            Nodes found from the query in the format {node_type : [{node_property : property_value}]}
 
-        Notes
-        -----
-        The value returned in the event of a successful query can be extremely
-        large. To improve performance, the results are returned as a generator
-        rather than a list.
+        Raises
+        -------
+        TypeError
+            If type of search_dict is not Dict or if property is not str or if property values are not str, int, or List[Union[str, int]]
+
+        Examples
+        --------
+        >>> db.find_nodes({"Chemical" : {'commonName': ["Hydroxychloroquine", "Warfarin"]}, "Gene" : {"xrefNcbiGene" : 1031, "geneSymbol" : "CDKN1A"}})
+        {'Chemical': [{'commonName': 'Hydroxychloroquine',
+        'synonyms': "+-|Ethanol, 2-[[4-[(7-chloro-4-quinolinyl)amino]pentyl]ethylamino]-|(.+-.)-Hydroxychloroquine|7-Chloro-4-[4-(N-ethyl-N-β-hydroxyethylamino)-1-methylbutylamino]quinoline|7-Chloro-4-[4'-[ethyl (2''-hydroxyethyl) amino]-1'-methylbutylamino]quinoline|7-Chloro-4-[4-[ethyl(2-hydroxyethyl)amino]-1-methylbutylamino]quinoline|7-Chloro-4-[5-(N-ethyl-N-2-hydroxyethylamino)-2-pentyl]aminoquinoline|Ethanol, 2-[[4-[(7-chloro-4-quinolyl)amino]pentyl]ethylamino]-|hidroxicloroquina|Hydroxychlorochin|Oxichloroquine|Oxychlorochin|Oxychloroquine|Racemic Hydroxychloroquine|5-22-10-00280|BRN 0253894|7-Chloro-4-(4-(N-ethyl-N-beta-hydroxyethylamino)-1-methylbutylamino)quinoline|7-Chloro-4-(5-(N-ethyl-N-2-hydroxyethylamino)-2-pentyl)aminoquinoline|EINECS 204-249-8|Oxichlorochinum|Hydroxychloroquinum|Idrossiclorochina|UNII-4QWG6N8QKH|(+-)-hydroxychloroquine|2-((4-((7-chloro-4-quinolyl)amino)pentyl)ethylamino)ethanol|2-(N-(4-(7-chlor-4-chinolylamino)-4-methylbutyl)ethylamino)ethanol|7-chloro-4-(4-(N-ethyl-N-beta-hydroxyethylamino)-1-methylbutylamino)quinoline|7-chloro-4-(4-(ethyl(2-hydroxyethyl)amino)-1-methylbutylamino)quinoline|7-chloro-4-[4-(N-ethyl-N-beta-hydroxyethylamino)-1-methylbutylamino]quinoline|7-chloro-4-[5-(N-ethyl-N-2-hydroxyethylamino)-2-pentyl]aminoquinoline|NSC4375|oxichlorochine",
+        'xrefDrugbank': 'DB01611',
+        'xrefMeSH': 'MESH:D006886',
+        'xrefDTXSID': 'DTXSID8023135',
+        'xrefPubchemSID': '315673741.0',
+        'xrefCasRN': '118-42-3',
+        'uri': 'http://jdr.bio/ontologies/comptox.owl#chemical_dtxsid8023135',
+        'monoisotopicMass': '335.1764402000',
+        'maccs': '00000000000000000000000000000000000000000000000000000000000000000100000000000000101001110011000100101101110111010011101001100100110111110111001001011101010111101111110',
+        'molFormula': 'C18H26ClN3O',
+        'sMILES': 'CCN(CCO)CCCC(C)NC1=CC=NC2=CC(Cl)=CC=C12',
+        'xrefPubchemCID': '3652',
+        'molWeight': '335.8800000000'},
+        {'commonName': 'Warfarin',
+        'synonyms': "Coumadin|2H-1-Benzopyran-2-one, 4-hydroxy-3-(3-oxo-1-phenylbutyl)-|(.+-.)-Warfarin|(.+-.)-Warfarin-alcohol|(RS)-Warfarin|1-(4'-Hydroxy-3'-coumarinyl)-1-phenyl-3-butanone|3-(1'-Phenyl-2'-acetylethyl)-4-hydroxycoumarin|3-(α-Acetonylbenzyl)-4-hydroxycoumarin|3-(α-Phenyl-β-acetylethyl)-4-hydroxycoumarin|3-(α-Phenyl-β-acetylethyl)-4-hydroxy-coumarin|4-Hydroxy-3-(3-oxo-1-phenylbutyl)-2H-1-benzopyran-2-one|4-Hydroxy-3-(3-oxo-1-phenylbutyl)-2H-chromen-2-one|Athrombine-K|BENZOPYRAN(2H-1)-2-ONE, 4-HYDROXY-3-(3-OXO-1- PHENYLBUTYL)-|Brumolin|Coumafen|Coumafene|Coumaphen|Coumarin, 3-(α-acetonylbenzyl)-4-hydroxy-|Coumefene|Dethmor|DL-3-(α-Acetonylbenzyl)-4-hydroxycoumarin|Kumader|Kumatox|NSC 59813|rac-Warfarin|Ratron G|Rodafarin|Rodafarin C|Temus W|Vampirinip II|Vampirinip III|W.A.R.F. 42|WARF compound 42|warfarina|Warfarine|Zoocoumarin|5-18-04-00162|200 coumarin|Arab Rat Death|BRN 1293536|Caswell No. 903|Compound 42|Coumaphene|Coumarins|Cov-R-Tox|Dethnel|Eastern states duocide|EINECS 201-377-6|EPA Pesticide Chemical Code 086002|Frass-ratron|4-Hydroxy-3-(3-oxo-1-phenylbutyl)coumarin|Kypfarin|Liqua-tox|Maag rattentod cum|Mar-frin|Martin's mar-frin|Maveran|Mouse pak|3-(alpha-Phenyl-beta-acetylethyl)-4-hydroxycoumarin|Rat & mice bait|Rat-o-cide #2|Rat-Gard|Rat-B-gon|Rat-Kill|Rat-Mix|Rat-ola|Ratorex|Ratoxin|Rats-No-More|Ratten-koederrohr|Rattenstreupulver Neu Schacht|Rattenstreupulver new schacht|Rattentraenke|Rat-Trol|Rattunal|Rat-A-way|RCRA waste number P001|Ro-Deth|Rodex blox|Rough & ready mouse mix|Solfarin|Spray-trol brand roden-trol|Tox-Hid|Twin light rat away|Warfarat|Warfarin Q|Warfarin plus|DL-3-(alpha-Acetonylbenzyl)-4-hydroxycoumarin|Dicusat E|(Phenyl-1 acetyl-2 ethyl) 3-hydroxy-4 coumarine|3-(alpha-Phenyl-beta-acetylaethyl)-4-hydroxycumarin|4-Hydroxy-3-(3-oxo-1-fenyl-butyl) cumarine|4-Hydroxy-3-(3-oxo-1-phenyl-butyl)-cumarin|4-Idrossi-3-(3-oxo-1-fenil-butil)-cumarine|Warfarinum|UNII-5Q7ZVV76EI",
+        'xrefDrugbank': 'DB00682',
+        'xrefMeSH': 'MESH:D014859',
+        'xrefDTXSID': 'DTXSID5023742',
+        'xrefPubchemSID': '315674265.0',
+        'uri': 'http://jdr.bio/ontologies/comptox.owl#chemical_dtxsid5023742',
+        'xrefCasRN': '81-81-2',
+        'monoisotopicMass': '308.1048589950',
+        'maccs': '00000000000000000000000000000000000000000000000000000000010000000000000000000000000000000101000000100100010000000101000000010101000010001101100111100010101101011011110',
+        'molFormula': 'C19H16O4',
+        'sMILES': 'CC(=O)CC(C1=CC=CC=C1)C1=C(O)C2=CC=CC=C2OC1=O',
+        'xrefAOPWikiStressorID': 195,
+        'xrefPubchemCID': '54678486',
+        'molWeight': '308.3330000000'}],
+        'Gene': [{'typeOfGene': 'protein-coding',
+        'commonName': 'cyclin dependent kinase inhibitor 2C',
+        'xrefOMIM': '603369',
+        'xrefHGNC': '1789',
+        'xrefEnsembl': 'ENSG00000123080',
+        'geneSymbol': 'CDKN2C',
+        'uri': 'http://jdr.bio/ontologies/comptox.owl#gene_cdkn2c',
+        'xrefNcbiGene': 1031},
+        {'typeOfGene': 'protein-coding',
+        'commonName': 'cyclin dependent kinase inhibitor 1A',
+        'xrefOMIM': '116899',
+        'xrefHGNC': '1784',
+        'xrefEnsembl': 'ENSG00000124762',
+        'geneSymbol': 'CDKN1A',
+        'uri': 'http://jdr.bio/ontologies/comptox.owl#gene_cdkn1a',
+        'xrefNcbiGene': 1026}]}
         """
-        if (not properties) and (len(node_types) == 0):
-            raise ValueError(
-                "Error: Query must contain at least one node property or node type."
-            )
 
-        if not properties:
-            warnings.warn(
-                "Warning: No property filters given - the query result may be very large!"
-            )
+        result = dict()
 
-        prop_string = ", ".join(
-            [
-                f"{k}: '{v}'" if type(v) == str else f"{k}: {v}"
-                for k, v in properties.items()
-            ]
-        )
+        if not isinstance(search_dict, Dict):
+            raise TypeError("search_dict should be a dictionary.")
 
-        # Use a WHERE clause when multiple node types are given
-        if len(node_types) == 1:
-            # Only 1 node label - include it in the MATCH clause
-            match_clause = f"MATCH (n:{node_types[0]} {{ {prop_string} }})"
-            where_clause = ""
-        elif len(node_types) > 1:
-            # Multiple node labels - include them in the WHERE clause
-            match_clause = f"MATCH (n {{ {prop_string} }})"
-            where_clause = " WHERE n:" + " OR n:".join(node_types)
-        else:
-            # No node labels - just use bare MATCH clause and no WHERE clause
-            match_clause = f"MATCH (n {{ {prop_string} }})"
-            where_clause = ""
+        for node_type, property_dict in search_dict.items():
 
-        query = match_clause + where_clause + " RETURN n;"
+            if not isinstance(node_type, str):
+                raise TypeError("node_type should be str.")
+            property_match_substrings = []
 
-        print(query)
+            for property, property_value in property_dict.items():
+                if isinstance(property_value, int):
+                    property_match_substrings.append(
+                        f"((n.{property}) = {property_value})"
+                    )
+                elif isinstance(property_value, str):
+                    property_match_substrings.append(
+                        f"((n.{property}) = '{property_value}')"
+                    )
+                elif isinstance(property_value, list):
+                    property_match_substrings.append(
+                        f"((n.{property}) IN {property_value})"
+                    )
+                else:
+                    raise TypeError(
+                        "Property values should be str, int, or list of str or int."
+                    )
 
-        nodes_response = self.run_cypher(query)
+            match_substring = " OR ".join(property_match_substrings)
 
-        return (n["n"] for n in nodes_response)
+            query = f"MATCH (n:{node_type}) WHERE {match_substring} RETURN n"
+
+            print(query)
+            response = self.run_cypher(query)
+
+            response = [node["n"] for node in response]
+
+            result[node_type] = response
+
+        return result
 
     def find_relationships(self):
         """

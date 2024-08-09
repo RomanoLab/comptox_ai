@@ -35,5 +35,5 @@ dependencies:
   - conda-forge::rdkit
   - conda-forge::ipdb
   - transformers
-  - dgllife
-  - dglteam=2.0.0
+  - conda-forge::dgllife
+  - dglteam::dgl<=2.0

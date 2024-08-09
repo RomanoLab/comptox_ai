@@ -37,3 +37,4 @@ dependencies:
   - conda-forge::ipdb
   - transformers
   - dglteam:dgl=2.0.0
+  - conda-forge::dgllife

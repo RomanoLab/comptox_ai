@@ -1,5 +1,5 @@
 from comptox_ai.db.graph_db import GraphDB
-from molfeat.trans.fp import FPVecTransformer
+from molfeat.trans import MoleculeTransformer
 from molfeat.trans.pretrained.hf_transformers import PretrainedHFTransformer
 from molfeat.trans.pretrained import PretrainedDGLTransformer
 from rdkit import Chem, RDLogger
@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 from collections import defaultdict
 from itertools import chain
+
 
 RDLogger.DisableLog("rdApp.*")  # Disable rdkit warnings
 
@@ -201,6 +202,7 @@ def create_vector_table(
     sanitize_smiles_flag=True,
     rdkit_descriptors=True,
     molfeat_descriptors=[],
+    dtype=np.float32,
     use_original_chemical_ids_for_df_index=True,
 ):
     """
@@ -217,6 +219,8 @@ def create_vector_table(
         Whether sanitize_smiles() should be run on the retrieved SMILES strings.
     rdkit_descriptors : bool
         Whether full set of rdkit_descriptors should be calculated and incorporated as vectors.
+    dtype : type
+        Data type of output df (e.g. float, np.float32, etc.). 
     molfeat_descriptors : List[str]
         List of features to generate. For possible features, see https://molfeat.datamol.io/featurizers.
      use_original_chemical_ids_for_df_index : bool
@@ -254,6 +258,7 @@ def create_vector_table(
 
     vectors = []
     df_column_names = []
+    conformer_3D_flag = False
 
     if molfeat_descriptors:
 
@@ -261,13 +266,20 @@ def create_vector_table(
             print(f"Calculating {feature} descriptors")
 
             if feature in {"Roberta-Zinc480M-102M", "GPT2-Zinc480M-87M", "ChemGPT-1.2B", "ChemGPT-19M", "ChemGPT-4.7M", "MolT5", "ChemBERTa-77M-MTR", "ChemBERTa-77M-MLM"}:
-                featurizer =  PretrainedHFTransformer(kind=feature, notation='smiles', dtype=float) 
+                featurizer =  PretrainedHFTransformer(kind=feature, notation='smiles', dtype=dtype) 
+           
             elif feature in {"gin_supervised_masking", "gin_supervised_infomax", "gin_supervised_edgepred", "jtvae_zinc_no_kl", "gin_supervised_contextpred"}:
-                featurizer = PretrainedDGLTransformer(kind=feature, dtype=float)
+                featurizer = PretrainedDGLTransformer(kind=feature, dtype=dtype)
+     
             else:
-                mol_list = generate_3d_conformers(smiles_list)
-                featurizer = FPVecTransformer(kind=feature, dtype=np.float32, verbose=True)
-            vectors.append(featurizer(mol_list).tolist())
+                featurizer = MoleculeTransformer(featurizer=feature, dtype=dtype, verbose=True)
+                if feature in {"desc3D", "desc2D", "electroshape", "usrcat", "usr", "cats3d", "pharm3D-cats", "pharm3D-gobbi", "pharm3D-pmapper"}:
+                    mol_list = generate_3d_conformers(smiles_list)
+                    conformer_3D_flag = True
+
+            chemical_list = mol_list if conformer_3D_flag else smiles_list
+            vectors.append(featurizer(chemical_list).tolist())
+           
             df_column_names.append(feature)
 
     if rdkit_descriptors:
@@ -275,7 +287,7 @@ def create_vector_table(
         mols = [Chem.MolFromSmiles(smiles) for smiles in smiles_list]
         rdkit_features = np.array(
             [
-                np.array(list(Descriptors.CalcMolDescriptors(mol).values()))
+                np.array(list(Descriptors.CalcMolDescriptors(mol).values()), dtype=dtype)
                 for mol in mols
             ]
         )

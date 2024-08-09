@@ -14,13 +14,14 @@ channels:
   - conda-forge
   - nvidia
   - pytorch
+  - dglteam
 dependencies:
   - ablog=0.10.19
   - nvidia::cudatoolkit=11.1
   - mysqlclient=2.0.3
   - networkx=2.6.3
   - neo4j-python-driver=4.3.4
-  - numpy=1.21.2
+  - numpy
   - openpyxl=3.0.8
   - owlready2=0.34
   - pandas
@@ -35,5 +36,5 @@ dependencies:
   - conda-forge::rdkit
   - conda-forge::ipdb
   - transformers
-  - dgllife
-  - dglteam=2.0.0
+  - dglteam:dgl=2.0.0
+  - conda-forge::dgllife

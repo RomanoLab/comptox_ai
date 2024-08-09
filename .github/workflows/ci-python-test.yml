@@ -45,4 +45,4 @@ jobs:
       # Step: Run tests with Pytest
       - name: run-tests
         run: |
-          $CONDA/bin/pytest
+          $CONDA/bin/pytest -vv

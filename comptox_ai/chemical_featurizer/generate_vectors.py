@@ -163,6 +163,7 @@ def retrieve_smiles(
 
     return smiles_list, found_chemical_id_list
 
+
 def generate_3d_conformers(smiles_list):
     """
     Generates a list of mol objects with 3D conformer data from input list of SMILES strings.
@@ -171,7 +172,7 @@ def generate_3d_conformers(smiles_list):
     ----------
     smiles_list : List[str]
         List of SMILES strings.
-        
+
     Returns
     -------
     List[rdkit.Chem.rdchem.Mol]
@@ -189,7 +190,7 @@ def generate_3d_conformers(smiles_list):
     for smiles in smiles_list:
         mol = Chem.MolFromSmiles(smiles)
         if mol is not None:
-            mol = Chem.AddHs(mol)  
+            mol = Chem.AddHs(mol)
             AllChem.EmbedMolecule(mol, randomSeed=0)
             AllChem.UFFOptimizeMolecule(mol)
             mols_with_3d.append(mol)
@@ -220,7 +221,7 @@ def create_vector_table(
     rdkit_descriptors : bool
         Whether full set of rdkit_descriptors should be calculated and incorporated as vectors.
     dtype : type
-        Data type of output df (e.g. float, np.float32, etc.). 
+        Data type of output df (e.g. float, np.float32, etc.).
     molfeat_descriptors : List[str]
         List of features to generate. For possible features, see https://molfeat.datamol.io/featurizers.
      use_original_chemical_ids_for_df_index : bool
@@ -265,21 +266,50 @@ def create_vector_table(
         for feature in molfeat_descriptors:
             print(f"Calculating {feature} descriptors")
 
-            if feature in {"Roberta-Zinc480M-102M", "GPT2-Zinc480M-87M", "ChemGPT-1.2B", "ChemGPT-19M", "ChemGPT-4.7M", "MolT5", "ChemBERTa-77M-MTR", "ChemBERTa-77M-MLM"}:
-                featurizer =  PretrainedHFTransformer(kind=feature, notation='smiles', dtype=dtype) 
-           
-            elif feature in {"gin_supervised_masking", "gin_supervised_infomax", "gin_supervised_edgepred", "jtvae_zinc_no_kl", "gin_supervised_contextpred"}:
+            if feature in {
+                "Roberta-Zinc480M-102M",
+                "GPT2-Zinc480M-87M",
+                "ChemGPT-1.2B",
+                "ChemGPT-19M",
+                "ChemGPT-4.7M",
+                "MolT5",
+                "ChemBERTa-77M-MTR",
+                "ChemBERTa-77M-MLM",
+            }:
+                featurizer = PretrainedHFTransformer(
+                    kind=feature, notation="smiles", dtype=dtype
+                )
+
+            elif feature in {
+                "gin_supervised_masking",
+                "gin_supervised_infomax",
+                "gin_supervised_edgepred",
+                "jtvae_zinc_no_kl",
+                "gin_supervised_contextpred",
+            }:
                 featurizer = PretrainedDGLTransformer(kind=feature, dtype=dtype)
-     
+
             else:
-                featurizer = MoleculeTransformer(featurizer=feature, dtype=dtype, verbose=True)
-                if feature in {"desc3D", "desc2D", "electroshape", "usrcat", "usr", "cats3d", "pharm3D-cats", "pharm3D-gobbi", "pharm3D-pmapper"}:
+                featurizer = MoleculeTransformer(
+                    featurizer=feature, dtype=dtype, verbose=True
+                )
+                if feature in {
+                    "desc3D",
+                    "desc2D",
+                    "electroshape",
+                    "usrcat",
+                    "usr",
+                    "cats3d",
+                    "pharm3D-cats",
+                    "pharm3D-gobbi",
+                    "pharm3D-pmapper",
+                }:
                     mol_list = generate_3d_conformers(smiles_list)
                     conformer_3D_flag = True
 
             chemical_list = mol_list if conformer_3D_flag else smiles_list
             vectors.append(featurizer(chemical_list).tolist())
-           
+
             df_column_names.append(feature)
 
     if rdkit_descriptors:
@@ -287,7 +317,9 @@ def create_vector_table(
         mols = [Chem.MolFromSmiles(smiles) for smiles in smiles_list]
         rdkit_features = np.array(
             [
-                np.array(list(Descriptors.CalcMolDescriptors(mol).values()), dtype=dtype)
+                np.array(
+                    list(Descriptors.CalcMolDescriptors(mol).values()), dtype=dtype
+                )
                 for mol in mols
             ]
         )

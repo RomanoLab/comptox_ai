@@ -128,12 +128,19 @@ class TestRetrieveSmiles:
             ["DTXSID8023135", "DTXSID5023742"],
         )
 
+
 class TestGenerate3DConformers:
     def test_generate_3d_conformers(self):
-        mol_list = generate_3d_conformers(["CCN(CCO)CCCC(C)Nc1ccnc2cc(Cl)ccc12", "CC(=O)CC(c1ccccc1)c1c(O)c2ccccc2oc1=O"])
+        mol_list = generate_3d_conformers(
+            [
+                "CCN(CCO)CCCC(C)Nc1ccnc2cc(Cl)ccc12",
+                "CC(=O)CC(c1ccccc1)c1c(O)c2ccccc2oc1=O",
+            ]
+        )
 
         assert Descriptors.MolWt(mol_list[0]) == pytest.approx(335.8789999999995, 0.001)
         assert Descriptors.MolWt(mol_list[1]) == pytest.approx(308.3329999999997, 0.001)
+
 
 class TestCreateVectorTable:
 
@@ -147,7 +154,7 @@ class TestCreateVectorTable:
         )
         expected_output_df_original_chemical_ids_as_index = pd.read_pickle(df_file_path)
         assert create_vector_table(
-            ["Hydroxychloroquine", "Warfarin"], molfeat_descriptors=['maccs', "erg"]
+            ["Hydroxychloroquine", "Warfarin"], molfeat_descriptors=["maccs", "erg"]
         ).equals(expected_output_df_original_chemical_ids_as_index)
 
     def test_create_vector_table_smiles_as_index(self):
@@ -159,6 +166,6 @@ class TestCreateVectorTable:
         expected_output_df_smiles_as_index = pd.read_pickle(df_file_path)
         assert create_vector_table(
             ["Hydroxychloroquine", "Warfarin"],
-            molfeat_descriptors=['maccs', "erg"],
+            molfeat_descriptors=["maccs", "erg"],
             use_original_chemical_ids_for_df_index=False,
         ).equals(expected_output_df_smiles_as_index)

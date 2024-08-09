@@ -34,3 +34,4 @@ dependencies:
   - conda-forge::molfeat
   - conda-forge::rdkit
   - conda-forge::ipdb
+  - transformers

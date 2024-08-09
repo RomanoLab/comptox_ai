@@ -21,7 +21,7 @@ dependencies:
   - mysqlclient=2.0.3
   - networkx=2.6.3
   - neo4j-python-driver=4.3.4
-  - numpy=1.26.4
+  - numpy
   - openpyxl=3.0.8
   - owlready2=0.34
   - pandas

@@ -14,6 +14,7 @@ channels:
   - conda-forge
   - nvidia
   - pytorch
+  - dglteam
 dependencies:
   - ablog=0.10.19
   - nvidia::cudatoolkit=11.1
@@ -35,3 +36,4 @@ dependencies:
   - conda-forge::rdkit
   - conda-forge::ipdb
   - transformers
+  - dglteam:dgl=2.0.0

@@ -2,22 +2,22 @@ import React from 'react';
 import { Graph } from 'react-d3-graph';
 import { Box, Button, Typography } from '@mui/material';
 
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useFindPathByNodeIdsQuery } from '../features/comptoxApiSlice';
 import {
   setPathEndNodeId,
   setPathEndNodeName,
-  setPathStartNodeName,
   setPathStartNodeId,
+  setPathStartNodeName
 } from '../features/pathSlice';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 
 const graphConfig = {
   directed: true,
   initialZoom: 2,
   node: {
     color: '#216a05',
-    labelProperty: 'name',
-  },
+    labelProperty: 'name'
+  }
 };
 
 const colorMap = {
@@ -28,7 +28,7 @@ const colorMap = {
   MolecularInitiatingEvent: '#4ebaaa',
   AdverseOutcome: '#aee571',
   AOP: '#fdd835',
-  Assay: '#8eacbb',
+  Assay: '#8eacbb'
 };
 
 const PathSearch = (props) => {
@@ -45,9 +45,9 @@ const PathSearch = (props) => {
     data = [],
     error,
     isLoading,
-    isUninitialized,
+    isUninitialized
   } = useFindPathByNodeIdsQuery([pathStartId, pathEndId], {
-    skip,
+    skip
   });
 
   const nodes = data.nodes ? data.nodes : [];
@@ -57,17 +57,17 @@ const PathSearch = (props) => {
     id: n.id,
     name: n.name,
     nodeType: n.labels[0],
-    color: colorMap[n.labels[0]],
+    color: colorMap[n.labels[0]]
   }));
 
   const links_parsed = relationships.map((r) => ({
     source: r.source,
-    target: r.target,
+    target: r.target
   }));
 
   const parsed_data = {
     nodes: nodes_parsed,
-    links: links_parsed,
+    links: links_parsed
   };
 
   const handleClearPathSearch = () => {
@@ -87,13 +87,13 @@ const PathSearch = (props) => {
   };
 
   return (
-    <div id="path-search" class="subject-container">
+    <div id="path-search" className="subject-container">
       <h2>Paths</h2>
       <p>
         <i>
           Find a single shortest path linking two nodes in the knowledge graph.
-          To find all paths with the shortest length, use the "Make all shortest
-          paths query" tool, below.
+          To find all paths with the shortest length, use the &quot;Make all shortest
+          paths query&quot; tool, below.
         </i>
       </p>
       {pathStartId && (

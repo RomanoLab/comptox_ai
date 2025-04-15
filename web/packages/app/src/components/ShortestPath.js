@@ -1,4 +1,6 @@
 import React from 'react';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 import {
   Accordion,
   AccordionDetails,
@@ -8,14 +10,11 @@ import {
   DialogContent,
   DialogContentText,
   TextField,
-  Typography,
+  Typography
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
+import endent from 'endent';
 
 import { useAppSelector } from '../redux/hooks';
-
-import endent from 'endent';
 
 const ShortestPath = (props) => {
   const shortestPathStartNodeId = useAppSelector(
@@ -37,7 +36,7 @@ const ShortestPath = (props) => {
         id(n1) = ${startNodeId} AND
         id(n2) = ${endNodeId}
     RETURN p;`)
-      : "Select a 'start' and an 'end' node using Node Search (above).";
+      : 'Select a \'start\' and an \'end\' node using Node Search (above).';
 
   const [popupOpen, setPopupOpen] = React.useState(false);
 
@@ -88,18 +87,18 @@ const ShortestPath = (props) => {
             <ol>
               <li>
                 Find a starting node using the search feature at the top of the
-                page, and click "Shortest Path (Start)".
+                page, and click &quot;Shortest Path (Start)&quot;.
               </li>
               <li>
                 Find an ending node using the search feature at the top of the
-                page, and click "Shortest Path (End)".
+                page, and click &quot;Shortest Path (End)&quot;.
               </li>
               <li>
-                Click the "Copy Database Query" button below to copy the query
+                Click the &quot;Copy Database Query&quot; button below to copy the query
                 to your clipboard.
               </li>
               <li>
-                Click the "Open Database Browser" button below to open the Neo4j
+                Click the &quot;Open Database Browser&quot; button below to open the Neo4j
                 interface.
               </li>
               <li>Paste the contents in the query bar and run the search.</li>
@@ -114,7 +113,7 @@ const ShortestPath = (props) => {
           rows={6}
           inputProps={{
             readOnly: true,
-            style: { fontFamily: 'monospace' },
+            style: { fontFamily: 'monospace' }
           }}
           style={{ width: '100%' }}
           variant="outlined"

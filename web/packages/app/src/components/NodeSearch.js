@@ -1,31 +1,30 @@
 import React, { useReducer } from 'react';
-
 import {
   Button,
-  TextField,
-  Select,
-  MenuItem,
   FormControl,
   InputLabel,
+  MenuItem,
+  Select,
+  TextField
 } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 
-import { useAppDispatch } from '../redux/hooks';
 import { setSearch } from '../features/nodeSlice';
+import { useAppDispatch } from '../redux/hooks';
 
 const formReducer = (state, event) => {
   return {
     ...state,
-    [event.name]: event.value,
+    [event.name]: event.value
   };
 };
 
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
-      margin: theme.spacing(1),
-    },
-  },
+      margin: theme.spacing(1)
+    }
+  }
 }));
 
 const NodeSearch = (props) => {
@@ -43,8 +42,8 @@ const NodeSearch = (props) => {
         params: {
           label: formData.nodeType,
           field: formData.nodeField,
-          value: formData.nodeValue,
-        },
+          value: formData.nodeValue
+        }
       })
     );
   };
@@ -52,37 +51,37 @@ const NodeSearch = (props) => {
   const handleChange = (event) => {
     setFormData({
       name: event.target.name,
-      value: event.target.value,
+      value: event.target.value
     });
   };
 
   const handleReset = () => {
     setFormData({
       name: 'nodeType',
-      value: '',
+      value: ''
     });
     setFormData({
       name: 'nodeField',
-      value: '',
+      value: ''
     });
     setFormData({
       name: 'nodeValue',
-      value: '',
+      value: ''
     });
   };
 
   const handleLoadExampleQuery = (event) => {
     setFormData({
       name: 'nodeType',
-      value: 'Gene',
+      value: 'Gene'
     });
     setFormData({
       name: 'nodeField',
-      value: 'geneSymbol',
+      value: 'geneSymbol'
     });
     setFormData({
       name: 'nodeValue',
-      value: 'CYP2E1',
+      value: 'CYP2E1'
     });
   };
 
@@ -125,7 +124,7 @@ const NodeSearch = (props) => {
               defaultValue=""
             >
               {config.nodeConfig.nodeLabels.map((nodeLabel) => (
-                <MenuItem value={nodeLabel}>{nodeLabel}</MenuItem>
+                <MenuItem value={nodeLabel} key={nodeLabel}>{nodeLabel}</MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -145,7 +144,7 @@ const NodeSearch = (props) => {
               defaultValue=""
             >
               {fetchNodeFields(formData.nodeType).map((nf) => (
-                <MenuItem value={nf.property}>{nf.display}</MenuItem>
+                <MenuItem value={nf.property} key={nf.display}>{nf.display}</MenuItem>
               ))}
             </Select>
           </FormControl>

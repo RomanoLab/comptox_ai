@@ -2,14 +2,14 @@ import React from 'react';
 import { Map } from 'react-lodash';
 import { Button, Paper } from '@mui/material';
 
-import { useAppSelector, useAppDispatch } from '../redux/hooks';
-
-import NodeResult from './NodeResult';
 import {
   useFetchChemicalByDtsxidQuery,
-  useSearchNodesQuery,
+  useSearchNodesQuery
 } from '../features/comptoxApiSlice';
 import { setSearch } from '../features/nodeSlice';
+import { useAppDispatch,useAppSelector } from '../redux/hooks';
+
+import NodeResult from './NodeResult';
 
 const NodeResults = (props) => {
   const { config } = props;
@@ -20,17 +20,17 @@ const NodeResults = (props) => {
   const dsstoxResults = useFetchChemicalByDtsxidQuery(
     searchParams.params.dtxsid,
     {
-      skip: !(searchParams.searchType === 'dsstox'),
+      skip: !(searchParams.searchType === 'dsstox')
     }
   );
   const nodeResults = useSearchNodesQuery(
     [
       searchParams.params.label,
       searchParams.params.field,
-      searchParams.params.value,
+      searchParams.params.value
     ],
     {
-      skip: !(searchParams.searchType === 'node'),
+      skip: !(searchParams.searchType === 'node')
     }
   );
 
@@ -41,13 +41,13 @@ const NodeResults = (props) => {
     dispatch(
       setSearch({
         searchType: null,
-        params: {},
+        params: {}
       })
     );
   };
 
   return (
-    <div class="subject-container">
+    <div className="subject-container">
       <h3>Search Results</h3>
       {searchResults.isError ? (
         <>
@@ -55,7 +55,7 @@ const NodeResults = (props) => {
           query.
         </>
       ) : searchResults.isUninitialized ? (
-        <>Please enter a search query and click "Search" to find nodes.</>
+        <>Please enter a search query and click &quot;Search&quot; to find nodes.</>
       ) : searchResults.isLoading ? (
         <>Loading...</>
       ) : searchResults.data ? (

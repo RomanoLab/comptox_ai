@@ -1,4 +1,6 @@
 import React from 'react';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 import {
   Accordion,
   AccordionDetails,
@@ -8,14 +10,11 @@ import {
   DialogContent,
   DialogContentText,
   TextField,
-  Typography,
+  Typography
 } from '@mui/material';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import endent from 'endent';
 
 import { useAppSelector } from '../redux/hooks';
-
-import endent from 'endent';
 
 const ExpandNetwork = (props) => {
   const expandNetworkNode = useAppSelector(
@@ -32,7 +31,7 @@ const ExpandNetwork = (props) => {
         })
     YIELD path
     RETURN path;`)
-    : "Find a node in the search interface and select 'Expand Network'.";
+    : 'Find a node in the search interface and select \'Expand Network\'.';
 
   const [popupOpen, setPopupOpen] = React.useState(false);
 
@@ -62,7 +61,7 @@ const ExpandNetwork = (props) => {
   };
 
   return (
-    <div id="expand-network" class="subject-container">
+    <div id="expand-network" className="subject-container">
       <div className="expandNetworkHeader">
         <h2>Expand a network around a query node</h2>
         <p>
@@ -84,14 +83,14 @@ const ExpandNetwork = (props) => {
             <ol>
               <li>
                 Find a node using the search feature at the top of the page, and
-                click "Expand Network".
+                click &quot;Expand Network&quot;.
               </li>
               <li>
-                Click the "Copy Database Query" button below to copy the query
+                Click the &quot;Copy Database Query&quot; button below to copy the query
                 to your clipboard.
               </li>
               <li>
-                Click the "Open Database Browser" button below to open the Neo4j
+                Click the &quot;Open Database Browser&quot; button below to open the Neo4j
                 interface.
               </li>
               <li>Paste the contents in the query bar and run the search.</li>
@@ -106,7 +105,7 @@ const ExpandNetwork = (props) => {
           rows={7}
           inputProps={{
             readOnly: true,
-            style: { fontFamily: 'monospace' },
+            style: { fontFamily: 'monospace' }
           }}
           style={{ width: '100%' }}
           variant="outlined"

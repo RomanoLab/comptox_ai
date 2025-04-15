@@ -8,7 +8,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  TextField,
+  TextField
 } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 
@@ -18,7 +18,7 @@ const DatasetBuilderQueryForm = (props) => {
   const [chemListValue, setChemListValue] = useState({ acronym: '', name: '' });
   const [assayValue, setAssayValue] = useState({ assayId: '', assayName: '' });
   const [checkedState, setCheckedState] = useState({
-    checkedIncludeDiscovery: true,
+    checkedIncludeDiscovery: true
   });
   const [formatValue, setFormatValue] = useState('json');
 
@@ -33,7 +33,7 @@ const DatasetBuilderQueryForm = (props) => {
   const handleToggleCheckbox = (event) => {
     setCheckedState({
       ...checkedState,
-      [event.target.name]: event.target.checked,
+      [event.target.name]: event.target.checked
     });
   };
 
@@ -59,7 +59,7 @@ const DatasetBuilderQueryForm = (props) => {
             value={chemListValue || null}
             options={qsarBuilderConfig.chemicalLists}
             getOptionLabel={(option) =>
-              option.name ? option.name + ' (n=' + option.num_chems + ')' : ''
+              option.name ? `${option.name} (n=${option.num_chems})` : ''
             }
             isOptionEqualToValue={(option, value) =>
               option.acronym === value.acronym
@@ -90,7 +90,7 @@ const DatasetBuilderQueryForm = (props) => {
             options={qsarBuilderConfig.assays}
             getOptionLabel={(option) =>
               option.assayId
-                ? option.assayName + ' (id: ' + option.assayId + ')'
+                ? `${option.assayName} (id: ${option.assayId})`
                 : ''
             }
             isOptionEqualToValue={(option, value) =>

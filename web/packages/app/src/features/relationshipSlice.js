@@ -3,14 +3,14 @@ import { createSlice } from '@reduxjs/toolkit';
 export const relationshipSlice = createSlice({
   name: 'relationship',
   initialState: {
-    relStartNode: null,
+    relStartNode: null
   },
   reducers: {
     setRelStartNode: (state, action) => {
-      state.relStartNode = action.payload
+      state.relStartNode = action.payload;
     }
-  },
-})
+  }
+});
 
 export const { setRelStartNode } = relationshipSlice.actions;
 

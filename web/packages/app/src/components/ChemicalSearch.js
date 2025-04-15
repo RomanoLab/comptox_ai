@@ -1,4 +1,7 @@
-import React, { useReducer, Fragment } from 'react';
+import React, { Fragment,useReducer } from 'react';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {
   Accordion,
   AccordionDetails,
@@ -16,16 +19,14 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Typography,
+  Typography
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-import ChemicalizeMarvinJs from './marvin/client';
 import { useRunStructureSearchQuery } from '../features/comptoxApiSlice';
 import { setSearch } from '../features/nodeSlice';
 import { useAppDispatch } from '../redux/hooks';
+
+import ChemicalizeMarvinJs from './marvin/client';
 
 const TEST_DATA = [
   {
@@ -39,7 +40,7 @@ const TEST_DATA = [
     Monoisotopic_Mass: '46.0054793040',
     Dashboard_URL: 'https://comptox.epa.gov/dashboard/DTXSID2024115',
     dissimilarity: '0.0',
-    SIMILARITY: '1.000',
+    SIMILARITY: '1.000'
   },
   {
     DSSTox_Compound_id: 'DTXCID10161515',
@@ -52,7 +53,7 @@ const TEST_DATA = [
     Monoisotopic_Mass: '47.0117560500',
     Dashboard_URL: 'https://comptox.epa.gov/dashboard/DTXSID90239024',
     dissimilarity: '0.0',
-    SIMILARITY: '1.000',
+    SIMILARITY: '1.000'
   },
   {
     DSSTox_Compound_id: 'DTXCID7023801',
@@ -65,8 +66,8 @@ const TEST_DATA = [
     Monoisotopic_Mass: '62.0003939240',
     Dashboard_URL: 'https://comptox.epa.gov/dashboard/DTXSID9043801',
     dissimilarity: '0.16666669',
-    SIMILARITY: '0.833',
-  },
+    SIMILARITY: '0.833'
+  }
 ];
 
 class StructureEditor extends React.Component {
@@ -101,8 +102,8 @@ const StructureResultsRow = (props) => {
       setSearch({
         searchType: 'dsstox',
         params: {
-          dtxsid: row.DSSTox_Substance_id,
-        },
+          dtxsid: row.DSSTox_Substance_id
+        }
       })
     );
   };
@@ -182,7 +183,7 @@ const StructureSearchControls = (props) => {
 
   const { data, error, isLoading, isUninitialized } =
     useRunStructureSearchQuery(currentMolData, {
-      skip,
+      skip
     });
 
   const handleStructureQuery = (event) => {
@@ -227,17 +228,17 @@ const StructureSearchControls = (props) => {
       <Box
         className="structure-search-results"
         style={{
-          margin: 12,
+          margin: 12
         }}
       >
         {error ? (
           <>Error!</>
         ) : isUninitialized ? (
           <>
-            Draw a structure and click "Search for Structure"
+            Draw a structure and click &quot;Search for Structure&quot;
             <Box
               style={{
-                marginTop: 8,
+                marginTop: 8
                 // minHeight: 300,
                 // maxHeight: 300,
                 // overflow: 'auto'
@@ -245,7 +246,7 @@ const StructureSearchControls = (props) => {
             >
               <Box
                 style={{
-                  marginBottom: '5px',
+                  marginBottom: '5px'
                 }}
               >
                 <StructureResultsTable data={TEST_DATA} />
@@ -259,14 +260,15 @@ const StructureSearchControls = (props) => {
               style={{
                 marginTop: 8,
                 maxHeight: 300,
-                overflow: 'auto',
+                overflow: 'auto'
               }}
             >
               {Array.from(new Array(6)).map((i, idx) => (
                 <Box
                   style={{
-                    marginBottom: '5px',
+                    marginBottom: '5px'
                   }}
+                  key={i}
                 >
                   <Skeleton variant="rectangular" height={60} style={{}} />
                 </Box>

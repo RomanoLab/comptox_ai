@@ -2,7 +2,7 @@ import React from 'react';
 
 class BatchQuery extends React.Component {
   render() {
-    return(
+    return (
       <div>
         <h2>Bulk data fetch</h2>
         <p>

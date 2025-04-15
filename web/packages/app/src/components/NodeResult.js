@@ -1,31 +1,30 @@
 import React from 'react';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import Button from '@mui/material/Button';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 import {
-  Dialog,
+  adaptV4Theme,
+Box, createTheme ,   Dialog,
   DialogContent,
   DialogContentText,
-  Table,
+  Grid,
+  Paper,
+StyledEngineProvider,  Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
-  Paper,
-  Grid,
-  adaptV4Theme,
-} from '@mui/material';
-
-import { useAppDispatch } from '../redux/hooks';
-import { setRelStartNode } from '../features/relationshipSlice';
-import { setPathStartNodeId, setPathEndNodeId, setPathStartNodeName, setPathEndNodeName } from '../features/pathSlice';
-import NodeLabel from './NodeLabel';
-import { Box, createTheme } from '@mui/material';
+  Typography
+ } from '@mui/material';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import { ThemeProvider } from '@mui/styles';
-import { StyledEngineProvider } from '@mui/material';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
+
 import { setExpandNetworkNode, setShortestPathEndNode, setShortestPathStartNode } from '../features/modulesSlice';
+import { setPathEndNodeId, setPathEndNodeName,setPathStartNodeId, setPathStartNodeName } from '../features/pathSlice';
+import { setRelStartNode } from '../features/relationshipSlice';
+import { useAppDispatch } from '../redux/hooks';
+
+import NodeLabel from './NodeLabel';
 
 const nodeResultTheme = createTheme(adaptV4Theme({
   typography: {
@@ -34,8 +33,8 @@ const nodeResultTheme = createTheme(adaptV4Theme({
       '"Helvetica Neue"',
       'Arial',
       'sans-serif'
-    ].join(','),
-  },
+    ].join(',')
+  }
 }));
 
 const NodeResult = (props) => {
@@ -48,29 +47,29 @@ const NodeResult = (props) => {
 
   const handleRelSearch = () => {
     dispatch(setRelStartNode(nodeNeo4jID));
-  }
+  };
 
   const handleSetPathStartNode = () => {
     dispatch(setPathStartNodeId(nodeNeo4jID));
     dispatch(setPathStartNodeName(nodeName));
-  }
+  };
 
   const handleSetPathEndNode = () => {
     dispatch(setPathEndNodeId(nodeNeo4jID));
     dispatch(setPathEndNodeName(nodeName));
-  }
+  };
 
   const handleSetExpandNetworkNode = () => {
     dispatch(setExpandNetworkNode(nodeNeo4jID));
-  }
+  };
 
   const handleSetShortestPathStartNode = () => {
     dispatch(setShortestPathStartNode(nodeNeo4jID));
-  }
+  };
 
   const handleSetShortestPathEndNode = () => {
     dispatch(setShortestPathEndNode(nodeNeo4jID));
-  }
+  };
 
   const handleCopyJson = () => {
     // see: https://stackoverflow.com/a/58406346/1730417
@@ -93,8 +92,8 @@ const NodeResult = (props) => {
   };
 
   const getXrefDisplayString = xrefName => {
-    return config.nodeConfig.translateIdType[xrefName]
-  }
+    return config.nodeConfig.translateIdType[xrefName];
+  };
 
   return (
     <StyledEngineProvider injectFirst>
@@ -106,7 +105,7 @@ const NodeResult = (props) => {
           p={1}
         >
           {/* <span style={{textAlign: 'left'}}><Typography display="inline">Node details:</Typography></span> */}
-          <Typography variant='h6' display="inline" color='textSecondary'>Node details:</Typography>
+          <Typography variant="h6" display="inline" color="textSecondary">Node details:</Typography>
           <Button
             onClick={handleCopyJson}
             style={{float: 'right'}}
@@ -204,6 +203,6 @@ const NodeResult = (props) => {
       </ThemeProvider>
     </StyledEngineProvider>
   );
-}
+};
 
 export default NodeResult;

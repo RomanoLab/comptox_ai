@@ -2,6 +2,7 @@
 // and https://github.com/greenelab/connectivity-search-frontend/blob/master/scripts/build-non-split.js
 
 const rewire = require('rewire');
+
 const defaults = rewire('react-scripts/scripts/build.js');
 const config = defaults.__get__('config');
 

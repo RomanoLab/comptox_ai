@@ -8,14 +8,14 @@ export const comptoxApiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: HOST }),
   endpoints: (builder) => ({
     fetchConfig: builder.query({
-      query: () => `/config`,
+      query: () => '/config'
     }),
     searchNodes: builder.query({
       query: (label) => `/nodes/${label[0]}/search?field=${label[1]}&value=${label[2]}`
     }),
     searchNodesContains: builder.query({
       query: (label) => {
-        return `/nodes/${label[0]}/search?field=${label[1]}&value=${label[2]}`
+        return `/nodes/${label[0]}/search?field=${label[1]}&value=${label[2]}`;
       }
     }),
     fetchChemicalByDtsxid: builder.query({

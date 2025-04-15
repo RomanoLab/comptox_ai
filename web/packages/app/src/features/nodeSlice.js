@@ -17,20 +17,20 @@ export const nodeSlice = createSlice({
   },
   reducers: {
     selectNode: (state, action) => {
-      state.selectedNode = action.payload
+      state.selectedNode = action.payload;
     },
     readSearchResults: (state, action) => {
-      state.searchResults = action.payload
+      state.searchResults = action.payload;
     },
     setSearchStatus: (state, action) => {
-      state.searchStatus = action.payload
+      state.searchStatus = action.payload;
     },
     setSearch: (state, action) => {
-      state.searchParams = action.payload
+      state.searchParams = action.payload;
     }
-  },
-})
+  }
+});
 
-export const { selectNode, readSearchResults, setSearchStatus, setSearch } = nodeSlice.actions
+export const { selectNode, readSearchResults, setSearchStatus, setSearch } = nodeSlice.actions;
 
-export default nodeSlice.reducer
+export default nodeSlice.reducer;

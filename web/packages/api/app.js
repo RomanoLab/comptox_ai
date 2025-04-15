@@ -34,7 +34,7 @@ const swaggerOpts = {
         description: 'ComptoxAI\'s public REST API',
       },
       {
-        url: 'http://0.0.0.0:3001',
+        url: 'http://0.0.0.0:3000',
         description: 'Default local (dev) API server',
       },
     ],

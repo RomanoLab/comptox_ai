@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import nodeSlice from '../features/nodeSlice';
-import relationshipSlice from '../features/relationshipSlice';
-import pathSlice from '../features/pathSlice';
-import modulesSlice from '../features/modulesSlice';
-import structureSlice from '../features/structureSlice';
 import { comptoxApiSlice } from '../features/comptoxApiSlice';
+import modulesSlice from '../features/modulesSlice';
+import nodeSlice from '../features/nodeSlice';
+import pathSlice from '../features/pathSlice';
+import relationshipSlice from '../features/relationshipSlice';
+import structureSlice from '../features/structureSlice';
 
 
 export const store = configureStore({
@@ -15,7 +15,7 @@ export const store = configureStore({
     path: pathSlice,
     modules: modulesSlice,
     structures: structureSlice,
-    [comptoxApiSlice.reducerPath]: comptoxApiSlice.reducer,
+    [comptoxApiSlice.reducerPath]: comptoxApiSlice.reducer
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware().concat(comptoxApiSlice.middleware);

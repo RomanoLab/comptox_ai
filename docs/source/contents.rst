@@ -11,5 +11,5 @@ Table of Contents
     about
     install
     use/*
-    api/*
+    docs/*
     contact

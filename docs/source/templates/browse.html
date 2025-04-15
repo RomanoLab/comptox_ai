@@ -35,16 +35,14 @@
     </section>
     <hr />
     <section title="neo4j-browser" class="browse-option">
-      <h2>Neo4j Graph Database browser</h2>
+	 <h2>Graph Database browser (Neo4j)</h2>
       <p>
         <i>Level of usability</i>: Intermediate
       </p>
       <a role="button"
          class="btn btn-primary btn-lg"
-         href="https://neo4j.comptox.ai/"
+         href="http://54.147.33.120:7474/"
          target="_blank">Launch Neo4j browser</a>
-      <br />
-      <span style="color:red;">Note: Users do not need to authenticate to access the database. Click "Connect" on the authentication form using the default options to access the database in read-only mode.</span>
       <br />
       <div class="row mt-3" style="margin:0;">
         <img src="_static/img/neo_aop.png"
@@ -53,11 +51,12 @@
              style="margin-right:24px;
                     margin-bottom:8px" />
       </div>
-      <p class="mt-3">
-        ComptoxAI's graph database is implemented using the Neo4j graph database management system. The Neo4j browser is an interface that allows users to graphically interact with nodes and relationships in the database by either randomly sampling node or relationship types, or by executing database queries in the Cypher query language (which is analogous to SQL, but designed for use with graph databases rather than relational databases).
+      <p class="mt-3"><!--
+      ComptoxAI's graph database is implemented using the Memgraph graph database management system. The Memgraph Lab browser is an interface that allows users to graphically interact with nodes and relationships in the database by either randomly sampling node or relationship types, or by executing database queries in the Cypher query language (which is analogous to SQL, but designed for use with graph databases rather than relational databases).-->
+      ComptoxAI's graph database is implemented using Neo4j. The Neo4j browser is an interface that allows users to graphically interact with nodes and relationships in the database by either randomly sampling node or relationship types, or by executing specific database queries in the Cypher query language (which is analogous to SQL, but designed for use with graph databases rather than relational databases).
       </p>
       <p>
-        We recommend that new users read the official "<a href="https://neo4j.com/docs/getting-started/current/cypher-intro/">Introduction to Cypher</a>" tutorial to learn how to get the most out of the Neo4j interface.
+        We recommend that new users read the official "<a href="https://memgraph.com/docs/querying">Memgraph Cypher tutorial</a>" to learn how to get the most out of the Memgraph interface.
       </p>
     </section>
     <hr />

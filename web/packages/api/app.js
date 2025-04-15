@@ -17,7 +17,8 @@ const cors = require('cors');
 
 const port = 3000;
 
-const HOST = (process.env.NODE_ENV === 'production') ? 'https://comptox.ai/api' : 'http://0.0.0.0:3000';
+//const HOST = (process.env.NODE_ENV === 'production') ? 'https://comptox.ai/api' : 'http://0.0.0.0:3000';
+const HOST = '54.147.33.120:7474';
 
 const swaggerOpts = {
   definition: {

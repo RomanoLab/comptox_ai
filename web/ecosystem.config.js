@@ -6,7 +6,7 @@ module.exports = {
       cwd: 'packages/api/',
       watch: true,
       env: {
-        "NODE_ENV": "development",
+        "NODE_ENV": "production",
       },
       env_production: {
         "NODE_ENV": "production",
@@ -18,7 +18,7 @@ module.exports = {
       cwd: 'packages/app/',
       watch: true,
       env: {
-        "NODE_ENV": "development",
+        "NODE_ENV": "production",
       },
       env_production: {
         "NODE_ENV": "production",

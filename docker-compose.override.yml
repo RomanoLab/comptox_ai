@@ -1,0 +1,24 @@
+# Local development overrides — loaded automatically by `docker compose up`.
+# Exposes services directly (bypasses Caddy/TLS).
+# Delete or rename this file on the production EC2 instance.
+services:
+  api:
+    ports:
+      - "3000:3000"
+    environment:
+      API_PUBLIC_URL: "http://localhost:3000"
+
+  lab:
+    ports:
+      - "3001:3000"
+
+  bolt-proxy:
+    ports:
+      - "7688:7688"
+
+  memgraph:
+    ports:
+      - "7687:7687"
+
+  caddy:
+    profiles: ["production"]  # skip unless explicitly: docker compose --profile production up

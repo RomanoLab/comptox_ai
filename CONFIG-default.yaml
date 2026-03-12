@@ -1,19 +1,14 @@
 ---
 # Default configuration for ComptoxAI
-neo4j:
-  username: neo4j
-  password: neo4j
+database:
+  username: ""
+  password: ""
   hostname: localhost
   protocol: bolt
   port: 7687
 
-mysql:
-  user:
-  passwd:
-  host:
-
 data:
-  prefix: D:\data\
-  tempdir: D:\data\comptox_ai\
+  prefix: /data/
+  tempdir: /tmp/comptox_ai/
 
 ...

@@ -15,10 +15,7 @@ const methodOverride = require('method-override');
 const path = require('path');
 const cors = require('cors');
 
-const port = 3000;
-
-//const HOST = (process.env.NODE_ENV === 'production') ? 'https://comptox.ai/api' : 'http://0.0.0.0:3000';
-const HOST = '54.147.33.120:7474';
+const port = nconf.get('PORT') || 3000;
 
 const swaggerOpts = {
   definition: {
@@ -30,15 +27,14 @@ const swaggerOpts = {
     },
     servers: [
       {
-        url: 'https://comptox.ai/api',
+        url: process.env.API_PUBLIC_URL || 'https://api.comptox.ai',
         description: 'ComptoxAI\'s public REST API',
       },
       {
-        url: 'http://0.0.0.0:3000',
+        url: `http://0.0.0.0:${port}`,
         description: 'Default local (dev) API server',
       },
     ],
-    host: HOST,
   },
   apis: ['./routes/*.js', './*.js'],
 };
@@ -141,5 +137,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(app.get('port'), () => {
-  console.log(`ComptoxAI API listening at http://0.0.0.0:${port}`);
+  console.log(`ComptoxAI API listening at http://0.0.0.0:${app.get('port')}`);
 });

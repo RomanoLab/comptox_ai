@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const nconf = require('nconf');
 
-nconf.env(['PORT', 'NODE_ENV']).argv({
+nconf.env(['PORT', 'NODE_ENV', 'COMPTOX_AI_DATABASE_URL']).argv({
   e: {
     alias: 'NODE_ENV',
     describe: 'Specify development or production mode for running app.',
@@ -25,7 +25,7 @@ nconf.env(['PORT', 'NODE_ENV']).argv({
   USERNAME: process.env.COMPTOX_AI_DATABASE_USERNAME,
   PASSWORD: process.env.COMPTOX_AI_DATABASE_PASSWORD,
   neo4j: 'local',
-  'neo4j-local': process.env.COMPTOX_AI_DATABASE_URL || 'bolt://54.147.33.120:7687',
+  'neo4j-local': process.env.COMPTOX_AI_DATABASE_URL || 'bolt://localhost:7687',
   base_url: 'http://0.0.0.0:3000',
   api_path: '/api',
 });

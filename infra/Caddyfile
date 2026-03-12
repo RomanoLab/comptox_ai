@@ -1,0 +1,14 @@
+api.comptox.ai {
+    reverse_proxy api:3000
+    encode gzip
+    header {
+        -Server
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+    }
+}
+
+lab.comptox.ai {
+    reverse_proxy lab:3000
+    encode gzip
+}

@@ -1,5 +1,6 @@
 "use strict";
 
+const _ = require('lodash');
 const conf = require('../config');
 
 const neo4j = require('neo4j-driver');
@@ -27,6 +28,6 @@ exports.dbWhere = function (name, keys) {
     }
 };
 
-function whereTemplate(name, key, paramKey) {
+function _whereTemplate(name, key, paramKey) {
     return name + '.' + key + '={' + (paramKey || key) + '}';
 }

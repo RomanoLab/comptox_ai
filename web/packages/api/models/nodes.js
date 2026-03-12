@@ -27,18 +27,13 @@ function _makePropertiesList(labelSchemaData) {
 
 const listNodeTypeProperties = function (session, nodeTypeLabel) {
     const query = [
-        'CALL apoc.meta.schema() YIELD value as schemaMap',
-        'UNWIND keys(schemaMap) as label',
-        'WITH label, schemaMap[label] as data',
-        'WHERE data.type = "node" AND label = $nodeTypeLabel',
-        'UNWIND keys(data.properties) as property',
-        'WITH label, property, data.properties[property] as propData',
-        'RETURN label, property,',
-        'propData.type as type,',
-        'propData.indexed as isIndexed,',
-        'propData.existence as existenceConstraint'
+        'CALL schema.node_type_properties() YIELD nodeType, propertyName, propertyTypes',
+        'WITH nodeType, propertyName, propertyTypes',
+        'WHERE nodeType = ":`" + $nodeTypeLabel + "`"',
+        'RETURN $nodeTypeLabel AS label, propertyName AS property,',
+        'propertyTypes[0] AS type'
     ].join('\n');
-    
+
     return session.readTransaction(txc =>
         txc.run(query, {nodeTypeLabel: nodeTypeLabel})
     ).then(result => {

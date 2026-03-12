@@ -1,0 +1,62 @@
+name: Deploy Site
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'docs/**'
+      - 'web/packages/app/**'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Sphinx dependencies
+        run: |
+          pip install -r docs/requirements.txt 2>/dev/null || pip install sphinx sphinx-rtd-theme
+
+      - name: Build Sphinx docs
+        run: make -C docs html
+
+      - name: Build React app
+        working-directory: web/packages/app
+        run: |
+          npm ci
+          npm run build
+
+      - name: Merge React app into docs
+        run: |
+          mkdir -p docs/build/html/browse
+          cp -r web/packages/app/build/* docs/build/html/browse/
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Sync to S3
+        run: aws s3 sync docs/build/html s3://${{ secrets.S3_BUCKET }} --delete
+
+      - name: Invalidate CloudFront
+        if: ${{ secrets.CLOUDFRONT_DIST_ID != '' }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DIST_ID }} \
+            --paths "/*"

@@ -1,0 +1,671 @@
+# =============================================================================
+# ComptoxAI Knowledge Graph — ista mapping configuration
+# =============================================================================
+#
+# Translates the legacy db.py build script into a declarative YAML mapping.
+#
+# Usage:
+#   ista_populate -m comptox_mapping.yaml -o comptox_populated.rdf
+#   owl2memgraph -i comptox_populated.rdf --uri bolt://localhost:7687
+#
+# Data layout (set DATA_DIR to your local copy):
+#   ${DATA_DIR}/
+#     epa/                  — EPA CompTox Dashboard exports
+#     ncbigene/             — NCBI Gene
+#     drugbank/             — DrugBank
+#     hetionet/             — Hetionet v1.0
+#     aopwiki/              — AOP-Wiki
+#     tox21/                — Tox21
+#     disgenet/             — DisGeNET
+#
+# Known limitations:
+#   - NCBI Gene "dbXrefs" compound field (MIM, HGNC, Ensembl) cannot be
+#     split in YAML alone. A preprocessing script must split that column
+#     into separate fields first — see notes under Gene entity_type.
+#   - MolecularInitiatingEvent / AdverseOutcome need an *additional class
+#     assertion* on existing KeyEvent nodes. These are represented as
+#     enrich mappings below, but ista may need the append_class flag
+#     exposed in a future release. Until then, use a post-load Cypher
+#     query as a workaround (see comments inline).
+# =============================================================================
+
+version: "1.0"
+base_iri: "http://jdr.bio/ontologies/comptox.owl#"
+
+# ---------------------------------------------------------------------------
+# Transforms
+# ---------------------------------------------------------------------------
+transforms:
+  split_slash_last:
+    type: split
+    params:
+      delimiter: "/"
+      index: "-1"
+
+  split_double_colon_last:
+    type: split
+    params:
+      delimiter: "::"
+      index: "-1"
+
+  split_double_colon_last_int:
+    type: chain
+    params:
+      transforms: "split_double_colon_last,to_integer"
+
+  split_colon_last:
+    type: split
+    params:
+      delimiter: ":"
+      index: "-1"
+
+  split_colon_last_int:
+    type: chain
+    params:
+      transforms: "split_colon_last,to_integer"
+
+  split_underscore_last:
+    type: split
+    params:
+      delimiter: "_"
+      index: "-1"
+
+  to_integer:
+    type: to_int
+
+# ---------------------------------------------------------------------------
+# Data sources
+# ---------------------------------------------------------------------------
+
+# Shared MySQL connection anchor for AOP-DB
+_aopdb_connection: &aopdb_conn
+  host: "${MYSQL_HOST}"
+  port: 3306
+  database: aopdb
+  username: "${MYSQL_USER}"
+  password: "${MYSQL_PASSWORD}"
+
+sources:
+  # ── EPA / DSSTox ──────────────────────────────────────────────────────
+  epa_pubchem_dtxsid:
+    type: tsv
+    path: "${DATA_DIR}/epa/PubChem_DTXSID_mapping_file.txt"
+
+  epa_dsstox_cas:
+    type: csv
+    path: "${DATA_DIR}/epa/Dsstox_CAS_number_name.csv"
+
+  epa_maccs:
+    type: tsv
+    path: "${DATA_DIR}/epa/CUSTOM/chemical_maccs_fingerprints.tsv"
+
+  epa_synonyms:
+    type: tsv
+    path: "${DATA_DIR}/epa/CUSTOM/synonyms.tsv"
+
+  epa_smiles:
+    type: tsv
+    path: "${DATA_DIR}/epa/CUSTOM/dsstox_smiles_for_maccs.tsv"
+
+  epa_chemical_lists:
+    type: tsv
+    path: "${DATA_DIR}/epa/CUSTOM/Chemical Lists.tsv"
+
+  epa_chemical_list_rels:
+    type: tsv
+    path: "${DATA_DIR}/epa/CUSTOM/chemical_lists_relationships.tsv"
+
+  # ── DrugBank ──────────────────────────────────────────────────────────
+  drugbank_links:
+    type: csv
+    path: "${DATA_DIR}/drugbank/drug_links.csv"
+
+  # ── NCBI Gene ─────────────────────────────────────────────────────────
+  ncbi_gene_info:
+    type: tsv
+    path: "${DATA_DIR}/ncbigene/Homo_sapiens.gene_info"
+
+  # ── DisGeNET ──────────────────────────────────────────────────────────
+  disgenet_diseases:
+    type: tsv
+    path: "${DATA_DIR}/disgenet/disease_mappings_to_attributes.tsv"
+
+  disgenet_gene_disease:
+    type: tsv
+    path: "${DATA_DIR}/disgenet/curated_gene_disease_associations.tsv"
+
+  # ── AOP-DB (MySQL) ────────────────────────────────────────────────────
+  aopdb_aop_info:
+    type: mysql
+    connection: *aopdb_conn
+    table: aop_info
+
+  aopdb_event_info:
+    type: mysql
+    connection: *aopdb_conn
+    table: event_info
+
+  aopdb_stressor_info:
+    type: mysql
+    connection: *aopdb_conn
+    table: stressor_info
+
+  aopdb_chemical_info:
+    type: mysql
+    connection: *aopdb_conn
+    table: chemical_info
+
+  aopdb_pathway_gene_distinct:
+    type: mysql
+    connection: *aopdb_conn
+    query: |
+      SELECT DISTINCT path_id, path_name, ext_source
+      FROM pathway_gene
+      WHERE tax_id = 9606
+
+  aopdb_chemical_gene_increases:
+    type: mysql
+    connection: *aopdb_conn
+    query: |
+      SELECT * FROM chemical_gene
+      WHERE tax_id = 9606
+        AND InteractionActions LIKE '%increases^expression%'
+
+  aopdb_chemical_gene_decreases:
+    type: mysql
+    connection: *aopdb_conn
+    query: |
+      SELECT * FROM chemical_gene
+      WHERE tax_id = 9606
+        AND InteractionActions LIKE '%decreases^expression%'
+
+  aopdb_aop_stressor:
+    type: mysql
+    connection: *aopdb_conn
+    table: aop_stressor
+
+  aopdb_pathway_gene_human:
+    type: mysql
+    connection: *aopdb_conn
+    query: |
+      SELECT * FROM pathway_gene
+      WHERE tax_id = 9606
+
+  # ── Hetionet ──────────────────────────────────────────────────────────
+  hetionet_edges:
+    type: tsv
+    path: "${DATA_DIR}/hetionet/hetionet-v1.0-edges.sif"
+
+  # ── AOP-Wiki ──────────────────────────────────────────────────────────
+  aopwiki_kers:
+    type: tsv
+    path: "${DATA_DIR}/aopwiki/aop_ke_ker.tsv"
+
+  # ── Tox21 ─────────────────────────────────────────────────────────────
+  tox21_assay_info:
+    type: tsv
+    path: "${DATA_DIR}/tox21/tox21_assay_info.tsv"
+
+  tox21_assay_samples:
+    type: tsv
+    path: "${DATA_DIR}/tox21/tox21_assay_samples_all.tsv"
+
+
+# =============================================================================
+# Entity types (primary + enrichment sources)
+# =============================================================================
+entity_types:
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # Chemical — created from EPA, enriched from 6 additional sources
+  # ═══════════════════════════════════════════════════════════════════════
+  Chemical:
+    primary:
+      source: epa_pubchem_dtxsid
+      iri_column: DTXSID
+      properties:
+        - { column: CID,    property: xrefPubchemCID }
+        - { column: SID,    property: xrefPubchemSID }
+        - { column: DTXSID, property: xrefDTXSID }
+
+    enrichments:
+      - name: "EPA CAS numbers and preferred names"
+        source: epa_dsstox_cas
+        match:
+          source_column: dsstox_substance_id
+          target_property: xrefDTXSID
+        properties:
+          - { column: casrn,          property: xrefCasRN }
+          - { column: preferred_name, property: commonName }
+
+      - name: "MACCS fingerprints"
+        source: epa_maccs
+        match:
+          source_column: DTXSID
+          target_property: xrefDTXSID
+        properties:
+          - { column: MACCS, property: maccs }
+
+      - name: "Chemical synonyms"
+        source: epa_synonyms
+        match:
+          source_column: DTXSID
+          target_property: xrefDTXSID
+        properties:
+          - { column: synonyms, property: synonyms }
+
+      - name: "SMILES structures"
+        source: epa_smiles
+        match:
+          source_column: DSSTox_Substance_ID
+          target_property: xrefDTXSID
+        properties:
+          - { column: SMILES, property: SMILES }
+
+      - name: "DrugBank cross-references"
+        source: drugbank_links
+        match:
+          source_column: CAS Number
+          target_property: xrefCasRN
+        properties:
+          - { column: DrugBank ID, property: xrefDrugbank }
+
+      - name: "AOP-DB stressor IDs"
+        source: aopdb_stressor_info
+        match:
+          source_column: DTX_id
+          target_property: xrefDTXSID
+        properties:
+          - { column: stressor_id, property: xrefAOPWikiStressorID }
+
+      - name: "AOP-DB MeSH chemical IDs"
+        source: aopdb_chemical_info
+        match:
+          source_column: DTX_id
+          target_property: xrefDTXSID
+        properties:
+          - { column: ChemicalID, property: xrefMeSH }
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # Gene — created from NCBI Gene
+  # ═══════════════════════════════════════════════════════════════════════
+  #
+  # NOTE: The original db.py uses "compound_fields" to split the dbXrefs
+  # column (e.g. "MIM:603369|HGNC:HGNC:1789|Ensembl:ENSG00000123080")
+  # into separate MIM, HGNC, and Ensembl values. The ista YAML format
+  # does not support compound field splitting natively.
+  #
+  # Workaround: preprocess Homo_sapiens.gene_info to add separate columns,
+  # or run a post-load Cypher enrichment. A helper script for this is at:
+  #   comptox_ai/build/scripts/preprocess_ncbi_gene.py (TODO: create)
+  #
+  Gene:
+    primary:
+      source: ncbi_gene_info
+      iri_column: Symbol
+      properties:
+        - { column: GeneID,    property: xrefNcbiGene }
+        - { column: Symbol,    property: geneSymbol }
+        - { column: type_of_gene, property: typeOfGene }
+        - { column: Full_name_from_nomenclature_authority, property: commonName }
+        # These require compound field preprocessing of dbXrefs:
+        # - { column: MIM,     property: xrefOMIM }
+        # - { column: HGNC,    property: xrefHGNC }
+        # - { column: Ensembl, property: xrefEnsembl }
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # Disease — created from DisGeNET
+  # ═══════════════════════════════════════════════════════════════════════
+  Disease:
+    primary:
+      source: disgenet_diseases
+      iri_column: diseaseId
+      properties:
+        - { column: diseaseId, property: xrefUmlsCUI }
+        - { column: name,      property: commonName }
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # ChemicalList — created from EPA custom export
+  # ═══════════════════════════════════════════════════════════════════════
+  ChemicalList:
+    primary:
+      source: epa_chemical_lists
+      iri_column: LIST_ACRONYM
+      properties:
+        - column: LIST_ACRONYM
+          property: listAcronym
+          transform: split_slash_last
+        - { column: LIST_NAME,        property: commonName }
+        - { column: LIST_DESCRIPTION, property: listDescription }
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # AOP — created from AOP-DB
+  # ═══════════════════════════════════════════════════════════════════════
+  AOP:
+    primary:
+      source: aopdb_aop_info
+      iri_column: AOP_id
+      properties:
+        - { column: AOP_name, property: commonName }
+        - { column: AOP_id,   property: xrefAOPWikiAOPID }
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # KeyEvent — created from AOP-DB event_info
+  # ═══════════════════════════════════════════════════════════════════════
+  KeyEvent:
+    primary:
+      source: aopdb_event_info
+      iri_column: event_id
+      properties:
+        - { column: event_name, property: commonName }
+        - { column: event_id,   property: xrefAOPWikiKEID }
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # Pathway — created from AOP-DB (distinct pathways for human genes)
+  # ═══════════════════════════════════════════════════════════════════════
+  Pathway:
+    primary:
+      source: aopdb_pathway_gene_distinct
+      iri_column: path_id
+      properties:
+        - { column: path_id,    property: pathwayId }
+        - { column: path_name,  property: commonName }
+        - { column: ext_source, property: sourceDatabase }
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # Assay — created from Tox21
+  # ═══════════════════════════════════════════════════════════════════════
+  Assay:
+    primary:
+      source: tox21_assay_info
+      iri_column: protocol_name
+      properties:
+        - { column: protocol_name,   property: commonName }
+        - { column: assay_target,    property: assayTarget }
+        - { column: target_category, property: targetCategory }
+        - { column: cell_line,       property: cellLine }
+        - { column: cell_type,       property: cellType }
+
+
+# =============================================================================
+# Additional node mappings (class enrichment / append_class equivalents)
+# =============================================================================
+#
+# MolecularInitiatingEvent and AdverseOutcome are subclasses of KeyEvent.
+# The original db.py adds these as *additional class assertions* on existing
+# KeyEvent individuals (append_class=True). ista's enrich mode adds
+# properties; adding a class assertion may require a post-load step:
+#
+#   // Post-load Cypher (run against Memgraph after owl2memgraph):
+#   MATCH (n:KeyEvent) WHERE n.xrefAOPWikiKEID IN [<MIE event_ids>]
+#   SET n:MolecularInitiatingEvent;
+#
+#   MATCH (n:KeyEvent) WHERE n.xrefAOPWikiKEID IN [<AO event_ids>]
+#   SET n:AdverseOutcome;
+#
+# If ista supports append_class in YAML, these mappings will work directly.
+# Otherwise, use the post-load queries above.
+# =============================================================================
+node_mappings:
+  - name: "Tag MolecularInitiatingEvent subclass on KeyEvent nodes"
+    source: aopdb_event_info
+    target_class: MolecularInitiatingEvent
+    mode: enrich
+    filter:
+      column: event_type
+      value: "molecular-initiating-event"
+      contains: false
+    match:
+      source_column: event_id
+      target_property: xrefAOPWikiKEID
+    properties:
+      - { column: event_id, property: xrefAOPWikiKEID }
+
+  - name: "Tag AdverseOutcome subclass on KeyEvent nodes"
+    source: aopdb_event_info
+    target_class: AdverseOutcome
+    mode: enrich
+    filter:
+      column: event_type
+      value: "adverse-outcome"
+      contains: false
+    match:
+      source_column: event_id
+      target_property: xrefAOPWikiKEID
+    properties:
+      - { column: event_id, property: xrefAOPWikiKEID }
+
+
+# =============================================================================
+# Relationship mappings
+# =============================================================================
+relationship_mappings:
+
+  # ── EPA: Chemical Lists ────────────────────────────────────────────────
+  - name: "Chemical List includes Chemical"
+    source: epa_chemical_list_rels
+    relationship: listIncludesChemical
+    inverse_relationship: chemicalInList
+    subject:
+      class: ChemicalList
+      column: list_acronym
+      match_property: listAcronym
+    object:
+      class: Chemical
+      column: casrn
+      match_property: xrefCasRN
+
+  # ── AOP-DB: KeyEvent ↔ AOP ────────────────────────────────────────────
+  # NOTE: The original db.py splits AOP_ids by "; " (compound field with
+  # delimiter "; "). Each event_info row can reference multiple AOPs.
+  # If ista does not auto-expand multi-value fields, a preprocessing step
+  # is needed to explode AOP_ids into one row per (event_id, AOP_id) pair.
+  - name: "KeyEvent included in AOP"
+    source: aopdb_event_info
+    relationship: keIncludedInAOP
+    inverse_relationship: aopIncludesKE
+    subject:
+      class: KeyEvent
+      column: event_id
+      match_property: xrefAOPWikiKEID
+    object:
+      class: AOP
+      column: AOP_ids
+      match_property: xrefAOPWikiAOPID
+      transform: to_integer
+
+  # ── AOP-DB: Chemical → Gene expression ─────────────────────────────────
+  - name: "Chemical increases Gene expression (AOP-DB)"
+    source: aopdb_chemical_gene_increases
+    relationship: chemicalIncreasesExpression
+    subject:
+      class: Chemical
+      column: DTX_id
+      match_property: xrefDTXSID
+    object:
+      class: Gene
+      column: entrez
+      match_property: xrefNcbiGene
+
+  - name: "Chemical decreases Gene expression (AOP-DB)"
+    source: aopdb_chemical_gene_decreases
+    relationship: chemicalDecreasesExpression
+    subject:
+      class: Chemical
+      column: DTX_id
+      match_property: xrefDTXSID
+    object:
+      class: Gene
+      column: entrez
+      match_property: xrefNcbiGene
+
+  # ── AOP-DB: KeyEvent triggered by Chemical ─────────────────────────────
+  - name: "KeyEvent triggered by Chemical (via stressor)"
+    source: aopdb_aop_stressor
+    relationship: keyEventTriggeredBy
+    subject:
+      class: KeyEvent
+      column: event_id
+      match_property: xrefAOPWikiKEID
+    object:
+      class: Chemical
+      column: DTX_id
+      match_property: xrefDTXSID
+
+  # ── AOP-DB: Gene ↔ Pathway ────────────────────────────────────────────
+  - name: "Gene in Pathway"
+    source: aopdb_pathway_gene_human
+    relationship: geneInPathway
+    inverse_relationship: PathwayContainsGene
+    subject:
+      class: Gene
+      column: entrez
+      match_property: xrefNcbiGene
+    object:
+      class: Pathway
+      column: path_id
+      match_property: pathwayId
+
+  # ── DisGeNET: Gene ↔ Disease ───────────────────────────────────────────
+  - name: "Gene associates with Disease"
+    source: disgenet_gene_disease
+    relationship: geneAssociatesWithDisease
+    filter:
+      column: diseaseType
+      value: "disease"
+      contains: true
+    subject:
+      class: Gene
+      column: geneSymbol
+      match_property: geneSymbol
+    object:
+      class: Disease
+      column: diseaseId
+      match_property: xrefUmlsCUI
+
+  # ── Hetionet: Chemical → Gene ──────────────────────────────────────────
+  - name: "Chemical increases Gene expression (Hetionet CuG)"
+    source: hetionet_edges
+    relationship: chemicalIncreasesExpression
+    filter:
+      column: metaedge
+      value: "CuG"
+      contains: false
+    subject:
+      class: Chemical
+      column: source
+      match_property: xrefDrugbank
+      transform: split_double_colon_last
+    object:
+      class: Gene
+      column: target
+      match_property: xrefNcbiGene
+      transform: split_double_colon_last_int
+
+  - name: "Chemical decreases Gene expression (Hetionet CdG)"
+    source: hetionet_edges
+    relationship: chemicalDecreasesExpression
+    filter:
+      column: metaedge
+      value: "CdG"
+      contains: false
+    subject:
+      class: Chemical
+      column: source
+      match_property: xrefDrugbank
+      transform: split_double_colon_last
+    object:
+      class: Gene
+      column: target
+      match_property: xrefNcbiGene
+      transform: split_double_colon_last_int
+
+  - name: "Chemical binds Gene (Hetionet CbG)"
+    source: hetionet_edges
+    relationship: chemicalBindsGene
+    filter:
+      column: metaedge
+      value: "CbG"
+      contains: false
+    subject:
+      class: Chemical
+      column: source
+      match_property: xrefDrugbank
+      transform: split_double_colon_last
+    object:
+      class: Gene
+      column: target
+      match_property: xrefNcbiGene
+      transform: split_double_colon_last_int
+
+  - name: "Gene interacts with Gene (Hetionet GiG)"
+    source: hetionet_edges
+    relationship: geneInteractsWithGene
+    filter:
+      column: metaedge
+      value: "GiG"
+      contains: false
+    subject:
+      class: Gene
+      column: source
+      match_property: xrefNcbiGene
+      transform: split_double_colon_last_int
+    object:
+      class: Gene
+      column: target
+      match_property: xrefNcbiGene
+      transform: split_double_colon_last_int
+
+  # ── AOP-Wiki: KeyEvent triggers ────────────────────────────────────────
+  - name: "KeyEvent triggers KeyEvent (adjacent KERs)"
+    source: aopwiki_kers
+    relationship: keyEventTriggers
+    filter:
+      column: direct_or_indirect
+      value: "adjacent"
+      contains: false
+    subject:
+      class: KeyEvent
+      column: upstream_event_id
+      match_property: xrefAOPWikiKEID
+      transform: split_colon_last_int
+    object:
+      class: KeyEvent
+      column: downstream_event_id
+      match_property: xrefAOPWikiKEID
+      transform: split_colon_last_int
+
+  # ── Tox21: Chemical ↔ Assay ────────────────────────────────────────────
+  - name: "Chemical has active Assay"
+    source: tox21_assay_samples
+    relationship: chemicalHasActiveAssay
+    filter:
+      column: assay_outcome
+      value: "1"
+      contains: false
+    subject:
+      class: Chemical
+      column: compound_pubchem_cid
+      match_property: xrefPubchemCID
+      transform: split_underscore_last
+    object:
+      class: Assay
+      column: assay_name
+      match_property: commonName
+
+  - name: "Chemical has inactive Assay"
+    source: tox21_assay_samples
+    relationship: chemicalHasInactiveAssay
+    filter:
+      column: assay_outcome
+      value: "0"
+      contains: false
+    subject:
+      class: Chemical
+      column: compound_pubchem_cid
+      match_property: xrefPubchemCID
+      transform: split_underscore_last
+    object:
+      class: Assay
+      column: assay_name
+      match_property: commonName

@@ -216,10 +216,12 @@ class GraphDB(object):
         password = self.password
         hostname = self.hostname
 
-        if hostname == "localhost":
+        if "://" in hostname:
+            uri = hostname
+        elif hostname == "localhost":
             uri = "bolt://localhost:7687"
         else:
-            uri = f"neo4j://{hostname}"
+            uri = f"bolt://{hostname}"
 
         # Create the graph database driver
         try:

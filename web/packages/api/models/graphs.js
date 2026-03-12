@@ -7,7 +7,7 @@ const pathSegmentsAreEqual = function(seg1, seg2) {
     const sameStart = (seg1['relationship']['start'].equals(seg2['relationship']['start']));
     const sameEnd = (seg1['relationship']['end'].equals(seg2['relationship']['end']));
 
-    const sameRelType = seg1['relationship']['type'] === seq2['relationship']['type'];
+    const sameRelType = seg1['relationship']['type'] === seg2['relationship']['type'];
 
     return [sameStart, sameRelType, sameEnd].every(x => x === true);
 

@@ -1,0 +1,6 @@
+{
+  "watch": ["app.js", "config.js", "routes", "models", "middleware", "helpers", "neo4j", "assets"],
+  "ext": "js,json",
+  "ignore": ["tests/**", "node_modules/**", "*.log", ".env*"],
+  "delay": 250
+}

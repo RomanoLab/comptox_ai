@@ -1,0 +1,46 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: npm
+    directory: /web/packages/api
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: npm
+    directory: /web/packages/app
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: gomod
+    directory: /infra/bolt-proxy
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: docker
+    directory: /web/packages/api
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: docker
+    directory: /infra/bolt-proxy
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: docker
+    directory: /infra/caddy
+    schedule:
+      interval: weekly

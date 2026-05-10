@@ -200,6 +200,8 @@ sources:
   aopwiki_kers:
     type: tsv
     path: "${DATA_DIR}/aopwiki/aop_ke_ker.tsv"
+    has_headers: false
+    columns: [aop_id, upstream_event_id, downstream_event_id, relationship_id, direct_or_indirect, evidence_level, extra]
 
   # ── Tox21 ─────────────────────────────────────────────────────────────
   tox21_assay_info:

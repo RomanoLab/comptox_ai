@@ -1,20 +1,37 @@
 # Local development overrides — loaded automatically by `docker compose up`.
-# Exposes services directly (bypasses Caddy/TLS).
-# Delete or rename this file on the production EC2 instance.
+# Builds images from local source instead of pulling from GHCR, and exposes
+# service ports directly so you can hit them from the host without going
+# through Caddy/TLS. Delete or rename this file on the production EC2 instance
+# (the production compose run uses only docker-compose.yml).
+#
+# Local port layout:
+#   3000 — Memgraph Lab (web UI)
+#   3001 — REST API
+#   3002 — React app (Vite, when running via `npm run dev`)
+#   7687 — Memgraph (Bolt)
+#   7688 — bolt-proxy (cleartext, dev only)
+#   8081 — bolt-proxy /healthz
 services:
   api:
+    build:
+      context: web
+      dockerfile: packages/api/Dockerfile
+    image: comptox-api:dev
     ports:
-      - "3000:3000"
+      - "3001:3001"
     environment:
-      API_PUBLIC_URL: "http://localhost:3000"
+      API_PUBLIC_URL: "http://localhost:3001"
+
+  bolt-proxy:
+    build: infra/bolt-proxy
+    image: comptox-bolt-proxy:dev
+    ports:
+      - "7688:7688"
+      - "8081:8081"
 
   lab:
     ports:
-      - "3001:3000"
-
-  bolt-proxy:
-    ports:
-      - "7688:7688"
+      - "3000:3000"
 
   memgraph:
     ports:

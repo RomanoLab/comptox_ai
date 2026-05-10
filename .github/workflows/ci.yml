@@ -1,0 +1,158 @@
+name: ci
+
+on:
+  push:
+    branches: ['*']
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      api: ${{ steps.filter.outputs.api }}
+      app: ${{ steps.filter.outputs.app }}
+      python: ${{ steps.filter.outputs.python }}
+      docs: ${{ steps.filter.outputs.docs }}
+      proxy: ${{ steps.filter.outputs.proxy }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            api:
+              - 'web/packages/api/**'
+            app:
+              - 'web/packages/app/**'
+            python:
+              - 'comptox_ai/**'
+              - 'tests/**'
+              - 'setup.py'
+              - 'environment.yml'
+            docs:
+              - 'docs/**'
+              - 'web/packages/app/**'
+            proxy:
+              - 'infra/bolt-proxy/**'
+
+  test-api:
+    needs: changes
+    if: needs.changes.outputs.api == 'true'
+    runs-on: ubuntu-latest
+    services:
+      memgraph:
+        image: memgraph/memgraph:2.18.1
+        ports:
+          - 7687:7687
+        options: >-
+          --health-cmd "echo 'RETURN 1;' | mgconsole --host localhost || exit 0"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      COMPTOX_AI_DATABASE_URL: bolt://localhost:7687
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install
+        working-directory: web
+        run: npm ci --workspace=@comptoxai/comptox-api
+      - name: Wait for Memgraph
+        run: |
+          for i in $(seq 1 30); do
+            if (echo > /dev/tcp/localhost/7687) >/dev/null 2>&1; then
+              echo "Memgraph reachable"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Memgraph never came up"
+          exit 1
+      - name: Test
+        working-directory: web
+        run: npm test --workspace=@comptoxai/comptox-api
+
+  build-app:
+    needs: changes
+    if: needs.changes.outputs.app == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install
+        working-directory: web
+        run: npm ci --workspace=@comptoxai/comptox-app
+      - name: Build
+        working-directory: web
+        run: npm run build --workspace=@comptoxai/comptox-app
+
+  test-python:
+    needs: changes
+    if: needs.changes.outputs.python == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.11']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install -e .
+          python -m pip install pytest
+      - name: Run tests
+        run: pytest -q
+
+  build-docs:
+    needs: changes
+    if: needs.changes.outputs.docs == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install Sphinx
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r docs/requirements.txt 2>/dev/null || pip install sphinx sphinx-rtd-theme
+      - name: Build
+        run: make -C docs html
+      - name: Verify outputs
+        run: test -f docs/build/html/index.html
+
+  test-bolt-proxy:
+    needs: changes
+    if: needs.changes.outputs.proxy == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          cache-dependency-path: infra/bolt-proxy/go.sum
+      - name: Vet
+        working-directory: infra/bolt-proxy
+        run: go vet ./...
+      - name: Test
+        working-directory: infra/bolt-proxy
+        run: go test -race ./...

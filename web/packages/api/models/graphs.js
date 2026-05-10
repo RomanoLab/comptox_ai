@@ -37,13 +37,13 @@ const parsePathsToGraph = function (neo4jResult) {
 
 // Run an arbitrary Cypher query and return a Graph
 const getGraphFromPaths = function (session, cypherQuery) {
-    return session.readTransaction(txc =>
+    return session.executeRead(txc =>
         txc.run(cypherQuery)
     ).then(result => {
         if  (!_.isEmpty(result.records)) {
             return parsePathsToGraph(result);
         } else {
-            throw {message: 'No results found for user query', query: query, result: result, status: 404}
+            throw {message: 'No results found for user query', query: cypherQuery, result: result, status: 404}
         }
     });
 };

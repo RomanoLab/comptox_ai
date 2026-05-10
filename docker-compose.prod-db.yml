@@ -1,0 +1,11 @@
+# Production overlay for the DB host. Disables every service except Memgraph.
+# Used as: docker compose -f docker-compose.yml -f docker-compose.prod-db.yml up -d
+services:
+  memgraph:
+    ports:
+      - "7687:7687"   # internal SG only — exposed to the VPC private network
+
+  api:        { profiles: ["disabled"] }
+  bolt-proxy: { profiles: ["disabled"] }
+  lab:        { profiles: ["disabled"] }
+  caddy:      { profiles: ["disabled"] }

@@ -1,18 +1,23 @@
 services:
   memgraph:
-    image: memgraph/memgraph:latest
+    image: memgraph/memgraph:2.18.1
     command: ["--memory-limit=12288", "--log-level=WARNING"]
     volumes:
       - memgraph-data:/var/lib/memgraph
     networks:
       - internal
+    deploy:
+      resources:
+        limits:
+          memory: 14G
     restart: unless-stopped
 
   bolt-proxy:
-    build: infra/bolt-proxy
+    image: ghcr.io/jdromano2/comptox-bolt-proxy:${IMAGE_TAG:-latest}
     environment:
       LISTEN_ADDR: ":7688"
       BACKEND_ADDR: "memgraph:7687"
+      HEALTH_ADDR: ":8081"
     depends_on:
       - memgraph
     networks:
@@ -20,10 +25,10 @@ services:
     restart: unless-stopped
 
   api:
-    build: web/packages/api
+    image: ghcr.io/jdromano2/comptox-api:${IMAGE_TAG:-latest}
     environment:
       COMPTOX_AI_DATABASE_URL: "bolt://memgraph:7687"
-      PORT: "3000"
+      PORT: "3001"
       NODE_ENV: "production"
       API_PUBLIC_URL: "https://api.comptox.ai"
     depends_on:
@@ -33,7 +38,7 @@ services:
     restart: unless-stopped
 
   lab:
-    image: memgraph/lab:latest
+    image: memgraph/lab:2.18.1
     environment:
       QUICK_CONNECT_MG_HOST: "bolt-proxy"
       QUICK_CONNECT_MG_PORT: "7688"
@@ -44,10 +49,11 @@ services:
     restart: unless-stopped
 
   caddy:
-    image: caddy:2-alpine
+    build: infra/caddy
     ports:
       - "80:80"
       - "443:443"
+      - "7687:7687"
     volumes:
       - ./infra/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-data:/data
@@ -55,6 +61,7 @@ services:
     depends_on:
       - api
       - lab
+      - bolt-proxy
     networks:
       - internal
     restart: unless-stopped

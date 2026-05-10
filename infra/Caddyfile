@@ -1,5 +1,23 @@
+# Global config block: enable the layer4 (TCP) app for Bolt-over-TLS.
+{
+    layer4 {
+        # Public Bolt endpoint. Caddy terminates TLS using the cert it
+        # automatically provisions for bolt.comptox.ai (via on-demand or
+        # the implicit cert from the bolt.comptox.ai HTTPS site below),
+        # then forwards the cleartext Bolt stream to bolt-proxy, which
+        # enforces read-only by inspecting RUN messages.
+        :7687 {
+            @bolt tls sni bolt.comptox.ai
+            route @bolt {
+                tls
+                proxy bolt-proxy:7688
+            }
+        }
+    }
+}
+
 api.comptox.ai {
-    reverse_proxy api:3000
+    reverse_proxy api:3001
     encode gzip
     header {
         -Server
@@ -11,4 +29,10 @@ api.comptox.ai {
 lab.comptox.ai {
     reverse_proxy lab:3000
     encode gzip
+}
+
+# Empty HTTPS site for bolt.comptox.ai so Caddy issues a certificate that
+# the layer4 listener above can use for TLS termination on :7687.
+bolt.comptox.ai {
+    respond "ComptoxAI Bolt endpoint — connect with neo4j+s://bolt.comptox.ai" 200
 }

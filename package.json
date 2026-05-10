@@ -1,5 +1,20 @@
 {
+  "name": "comptox-ai-monorepo",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && npm --prefix web install",
+    "dev": "concurrently --names \"api,app\" --prefix-colors \"cyan,magenta\" \"npm:dev:api\" \"npm:dev:app\"",
+    "dev:full": "concurrently --names \"api,app,docs\" --prefix-colors \"cyan,magenta,yellow\" \"npm:dev:api\" \"npm:dev:app\" \"npm:dev:docs\"",
+    "dev:api": "npm --prefix web run dev --workspace=@comptoxai/comptox-api",
+    "dev:app": "npm --prefix web run start --workspace=@comptoxai/comptox-app",
+    "dev:docs": "python -m sphinx_autobuild docs/source docs/build/html --port 8000",
+    "build:app": "npm --prefix web run build --workspace=@comptoxai/comptox-app",
+    "build:docs": "python -m sphinx -b html docs/source docs/build/html",
+    "test:api": "npm --prefix web run test --workspace=@comptoxai/comptox-api",
+    "lint": "eslint web/packages/api web/packages/app/src"
+  },
   "devDependencies": {
+    "concurrently": "^9.0.1",
     "eslint": "^8.49.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-base": "^15.0.0",

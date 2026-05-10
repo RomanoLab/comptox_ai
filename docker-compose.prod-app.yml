@@ -1,0 +1,34 @@
+# Production overlay for the app host. Memgraph is disabled (it lives on the
+# DB host); everything else points at the remote DB via DB_PRIVATE_IP.
+# Used as: DB_PRIVATE_IP=<ip> docker compose -f docker-compose.yml -f docker-compose.prod-app.yml up -d
+services:
+  memgraph:
+    profiles: ["disabled"]
+
+  bolt-proxy:
+    environment:
+      LISTEN_ADDR: ":7688"
+      BACKEND_ADDR: "${DB_PRIVATE_IP}:7687"
+      HEALTH_ADDR: ":8081"
+    depends_on: !reset []   # no longer depends on memgraph (which lives elsewhere)
+
+  api:
+    environment:
+      COMPTOX_AI_DATABASE_URL: "bolt://${DB_PRIVATE_IP}:7687"
+      PORT: "3001"
+      NODE_ENV: "production"
+      API_PUBLIC_URL: "https://api.comptox.ai"
+    depends_on: !reset []
+
+  lab:
+    environment:
+      QUICK_CONNECT_MG_HOST: "bolt-proxy"
+      QUICK_CONNECT_MG_PORT: "7688"
+    depends_on:
+      - bolt-proxy
+
+  caddy:
+    depends_on:
+      - api
+      - lab
+      - bolt-proxy

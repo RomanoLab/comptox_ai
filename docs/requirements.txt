@@ -1,0 +1,11 @@
+# Sphinx + extensions used by docs/source/conf.py.
+# Install with: pip install -r docs/requirements.txt
+#
+# Pins are relaxed to support Python 3.8 (the version in the maintainer's
+# default conda env). If you upgrade to Python 3.9+ you can bump
+# sphinx-autobuild to a more recent release for nicer livereload behavior.
+sphinx>=6.0
+sphinx-autobuild>=2021.3.14
+numpydoc>=1.5
+ablog>=0.10
+sphinxext-opengraph>=0.7

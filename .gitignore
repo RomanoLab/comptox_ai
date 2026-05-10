@@ -104,7 +104,14 @@ comptox_*.rdf
 
 scripts/pfhxs
 node_modules
-build
+
+# Build directories: ignore generically (Vite output at web/packages/app/build,
+# Sphinx output at docs/build, etc.) but keep comptox_ai/build/, which holds
+# the ETL source files. Inside that directory, ignore the large populated RDF
+# and the *_test_*.rdf scratch files.
+build/
+!comptox_ai/build/
+comptox_ai/build/*.rdf
 
 web/packages/api/.env
 

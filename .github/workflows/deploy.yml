@@ -1,0 +1,90 @@
+name: deploy
+
+on:
+  workflow_run:
+    workflows: ['publish-images']
+    branches: [master]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Image tag to deploy (e.g. sha-abc1234 or latest)'
+        required: false
+        default: 'latest'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve image tag
+        id: tag
+        run: |
+          if [ -n "${{ github.event.inputs.image_tag }}" ]; then
+            echo "tag=${{ github.event.inputs.image_tag }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=sha-${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: SSM run-command — pull and restart
+        id: ssm
+        run: |
+          set -euo pipefail
+          IMAGE_TAG="${{ steps.tag.outputs.tag }}"
+          CMD_ID=$(aws ssm send-command \
+            --document-name AWS-RunShellScript \
+            --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
+            --comment "deploy ${IMAGE_TAG} (${GITHUB_SHA::7})" \
+            --parameters "commands=[\"set -e; cd /opt/comptox_ai && git fetch --all && git reset --hard origin/master && IMAGE_TAG=${IMAGE_TAG} docker compose pull && IMAGE_TAG=${IMAGE_TAG} docker compose up -d --remove-orphans && docker compose ps\"]" \
+            --output text --query 'Command.CommandId')
+          echo "command_id=$CMD_ID" >> $GITHUB_OUTPUT
+          echo "Command ID: $CMD_ID"
+
+      - name: Wait for SSM command to complete
+        run: |
+          set -euo pipefail
+          aws ssm wait command-executed \
+            --command-id "${{ steps.ssm.outputs.command_id }}" \
+            --instance-id "${{ secrets.EC2_INSTANCE_ID }}"
+          STATUS=$(aws ssm get-command-invocation \
+            --command-id "${{ steps.ssm.outputs.command_id }}" \
+            --instance-id "${{ secrets.EC2_INSTANCE_ID }}" \
+            --query Status --output text)
+          echo "Final status: $STATUS"
+          aws ssm get-command-invocation \
+            --command-id "${{ steps.ssm.outputs.command_id }}" \
+            --instance-id "${{ secrets.EC2_INSTANCE_ID }}" \
+            --query StandardOutputContent --output text
+          if [ "$STATUS" != "Success" ]; then
+            echo "::error::SSM command failed with status $STATUS"
+            aws ssm get-command-invocation \
+              --command-id "${{ steps.ssm.outputs.command_id }}" \
+              --instance-id "${{ secrets.EC2_INSTANCE_ID }}" \
+              --query StandardErrorContent --output text
+            exit 1
+          fi
+
+      - name: Verify /health
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 30); do
+            if curl -fsS https://api.comptox.ai/health; then
+              echo "Health check passed"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::API /health did not return 200 within 60s"
+          exit 1

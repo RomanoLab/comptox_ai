@@ -78,51 +78,18 @@ locals {
 }
 
 # ---------------------------------------------------------------------------
-# IAM — single instance role, used by both hosts. Grants:
-#   - SSM agent registration (so deploy.yml's SSM Send-Command works)
-#   - Write access to the backup S3 bucket (db host uses it; app host won't
-#     exercise this in practice but having one role keeps the spec lean)
+# IAM — the instance profile is created out-of-band by an account admin
+# because federated identities at most institutions can't run
+# iam:CreateRole / iam:CreateInstanceProfile themselves. We look it up by
+# name (var.ec2_instance_profile_name, default "comptoxai-ec2") and pass
+# the resulting ARN to the EC2 instances in instances.tf.
+#
+# The profile's wrapped role must have:
+#   - AmazonSSMManagedInstanceCore  (so SSM agent can register)
+#   - inline policy granting PutObject/ListBucket/GetBucketLocation on
+#     arn:aws:s3:::comptoxai-backups-<account_id> (for nightly backups)
 # ---------------------------------------------------------------------------
 
-resource "aws_iam_role" "ec2" {
-  name = "${local.name}-ec2"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect    = "Allow"
-      Action    = "sts:AssumeRole"
-      Principal = { Service = "ec2.amazonaws.com" }
-    }]
-  })
-  tags = local.tags
-}
-
-resource "aws_iam_role_policy_attachment" "ssm_core" {
-  role       = aws_iam_role.ec2.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-}
-
-resource "aws_iam_role_policy" "backup_writer" {
-  name = "${local.name}-backup-writer"
-  role = aws_iam_role.ec2.id
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect = "Allow"
-      Action = [
-        "s3:PutObject",
-        "s3:ListBucket",
-        "s3:GetBucketLocation",
-      ]
-      Resource = [
-        aws_s3_bucket.backups.arn,
-        "${aws_s3_bucket.backups.arn}/*",
-      ]
-    }]
-  })
-}
-
-resource "aws_iam_instance_profile" "ec2" {
-  name = "${local.name}-ec2"
-  role = aws_iam_role.ec2.name
+data "aws_iam_instance_profile" "ec2" {
+  name = var.ec2_instance_profile_name
 }

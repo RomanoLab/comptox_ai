@@ -49,3 +49,15 @@ variable "git_repo" {
   type        = string
   default     = "https://github.com/JDRomano2/comptox_ai.git"
 }
+
+variable "ec2_instance_profile_name" {
+  description = <<EOT
+Name of a pre-existing EC2 instance profile to attach to both hosts.
+This is created out-of-band by an account admin (see
+infra/terraform/README.md). The wrapped IAM role must have the
+AmazonSSMManagedInstanceCore managed policy and an inline policy
+permitting writes to s3://comptoxai-backups-<account_id>.
+EOT
+  type        = string
+  default     = "comptoxai-ec2"
+}

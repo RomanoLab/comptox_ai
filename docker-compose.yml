@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
 
   bolt-proxy:
-    image: ghcr.io/jdromano2/comptox-bolt-proxy:${IMAGE_TAG:-latest}
+    image: ghcr.io/romanolab/comptox-bolt-proxy:${IMAGE_TAG:-latest}
     environment:
       LISTEN_ADDR: ":7688"
       BACKEND_ADDR: "memgraph:7687"
@@ -25,7 +25,7 @@ services:
     restart: unless-stopped
 
   api:
-    image: ghcr.io/jdromano2/comptox-api:${IMAGE_TAG:-latest}
+    image: ghcr.io/romanolab/comptox-api:${IMAGE_TAG:-latest}
     environment:
       COMPTOX_AI_DATABASE_URL: "bolt://memgraph:7687"
       PORT: "3001"

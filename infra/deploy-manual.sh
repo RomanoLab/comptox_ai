@@ -15,8 +15,8 @@
 # Defaults to IMAGE_TAG=sha-<current local HEAD short SHA>.
 set -euo pipefail
 
-: "${APP_HOST:?Set APP_HOST to the app instance's public IP or DNS name}"
-SSH_KEY="${SSH_KEY:-$HOME/.ssh/comptoxai-admin.pem}"
+: "${APP_HOST:?Set APP_HOST to the app instance public IP or DNS name}"
+SSH_KEY="${SSH_KEY:-$HOME/.ssh/comptoxai.pem}"
 IMAGE_TAG="${IMAGE_TAG:-sha-$(git rev-parse --short=7 HEAD)}"
 
 echo "==> Deploying ${IMAGE_TAG} to ${APP_HOST}"

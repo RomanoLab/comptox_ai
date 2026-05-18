@@ -47,7 +47,7 @@ setuptools.setup(
     python_requires='>=3.7',
     include_package_data=True,
     install_requires=[
-        'numpy==1.24.4',
+        'numpy==2.0.2',
         'scipy==1.10.1',
         'pandas',
         'neo4j==4.3.4',

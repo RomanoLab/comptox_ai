@@ -29,7 +29,7 @@
     "postcss": "^8.4.31",
     "postcss-sorting": "^8.0.2",
     "prettier": "^3.0.3",
-    "prettier-plugin-jinja-template": "^1.1.0",
+    "prettier-plugin-jinja-template": "^2.2.0",
     "prettier-plugin-organize-attributes": "^1.0.0",
     "stylelint": "^15.10.2",
     "stylelint-config-recess-order": "^4.3.0",

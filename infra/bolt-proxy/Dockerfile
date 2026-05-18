@@ -8,7 +8,7 @@ RUN go mod download 2>/dev/null || true
 COPY *.go ./
 RUN CGO_ENABLED=0 GOOS=linux go build -o /bolt-proxy .
 
-FROM alpine:3.19
+FROM alpine:3.23
 RUN apk add --no-cache ca-certificates wget
 COPY --from=builder /bolt-proxy /usr/local/bin/bolt-proxy
 

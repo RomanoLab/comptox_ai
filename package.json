@@ -26,7 +26,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
-    "postcss": "^8.4.31",
+    "postcss": "^8.5.14",
     "postcss-sorting": "^8.0.2",
     "prettier": "^3.0.3",
     "prettier-plugin-jinja-template": "^1.1.0",

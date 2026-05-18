@@ -33,7 +33,7 @@
     "lodash": "^4.17.21",
     "method-override": "^3.0.0",
     "morgan": "^1.10.0",
-    "nconf": "^0.12.1",
+    "nconf": "^0.13.0",
     "neo4j-driver": "^5.27.0",
     "python-shell": "^5.0.0",
     "swagger-jsdoc": "^6.2.8",

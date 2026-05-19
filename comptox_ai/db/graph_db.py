@@ -1,4 +1,4 @@
-"""ComptoxAI's main interface with Neo4j.
+"""ComptoxAI's main interface with the Memgraph graph database.
 
 This class and its methods maintain a connection to either a local or remote
 instance of the ComptoxAI graph database, and provide convenient access to the
@@ -96,7 +96,7 @@ class Node(dict):
 
     Example
     -------
-    >>> db = GraphDB(hostname="neo4j.comptox.ai")
+    >>> db = GraphDB()  # connects to neo4j+s://bolt.comptox.ai by default
     >>> n = Node(db, "Chemical", {"xrefCasRN": "69313-80-0"})
     {'commonName': '1-[(2xi)-2,3-O-(1-Methylethylidene)-alpha-D-threo-pentofuranosyl]-1H-1,2,4-triazole-3-carboxamide',
      'maccs': '0000000000000000000000000000000000000100000000000001000010000100100000010110101101110000100101111000100010001101000010011111000000111000101101000101101111111111110110',
@@ -151,20 +151,21 @@ class Graph(object):
 
 class GraphDB(object):
     """
-    A Neo4j graph database containing ComptoxAI graph data.
+    A Memgraph graph database containing ComptoxAI graph data.
 
     Parameters
     ----------
-    hostname : string, default `"neo4j.comptox.ai"`
-        Hostname specifying the location of a Neo4j instance to which to connect. The
-        most likely values are `"neo4j.comptox.ai"` or `"localhost"`. If a non-standard
-        port is used for broadcasting the Neo4j server, it can be appended to the end of
-        the hostname (e.g., `"localhost:7688"`).
+    hostname : string, default `"neo4j+s://bolt.comptox.ai"`
+        Bolt URI or hostname specifying the location of a Memgraph instance.
+        The default points at ComptoxAI's public read-only endpoint. For a
+        local instance, pass `"localhost"` (port 7687 is assumed). A full
+        URI scheme (e.g. `"bolt://localhost:7688"` or
+        `"neo4j+s://bolt.comptox.ai"`) is accepted as-is.
     username : string, default None
-        Username for authentication to Neo4j. If no username or password are provided,
+        Username for authentication. If no username or password are provided,
         a connection will be attempted without authentication.
     password : string, defualt None
-        Password for authentication to Neo4j. If no username or password are provided,
+        Password for authentication. If no username or password are provided,
         a connection will be attempted without authentication.
     verbose : bool, default True
         Sets verbosity to on or off. If True, status information will be returned
@@ -173,14 +174,14 @@ class GraphDB(object):
 
     def __init__(
         self,
-        hostname="neo4j.comptox.ai",
+        hostname="neo4j+s://bolt.comptox.ai",
         username=None,
         password=None,
         verbose=False,
         silent=False,
     ):
         if not silent:
-            print(f"Attempting to connect to public Neo4j database at `{hostname}`...")
+            print(f"Attempting to connect to ComptoxAI Memgraph database at `{hostname}`...")
             if (not username) and (not password):
                 print(
                     f"No username/password provided - attempting to connect without authentication."
@@ -243,16 +244,16 @@ class GraphDB(object):
                 conn_result = self._driver.verify_connectivity()
         except ServiceUnavailable:
             raise RuntimeError(
-                "Neo4j driver created but we couldn't connect to any routing servers. You might be using an invalid hostname."
+                "Bolt driver created but we couldn't connect to the database server. You might be using an invalid hostname."
             )
         except ValueError:
             raise RuntimeError(
-                "Neo4j driver created but the host address couldn't be resolved. Check your hostname, port, and/or protocol."
+                "Bolt driver created but the host address couldn't be resolved. Check your hostname, port, and/or protocol."
             )
 
         if conn_result is None:
             raise RuntimeError(
-                "Neo4j driver created but a valid connection hasn't been established. You might be using an invalid hostname."
+                "Bolt driver created but a valid connection hasn't been established. You might be using an invalid hostname."
             )
 
     def _disconnect(self):
@@ -265,7 +266,7 @@ class GraphDB(object):
 
     def run_cypher(self, qry_str, verbose=True):
         """
-        Execute a Cypher query on the Neo4j graph database.
+        Execute a Cypher query on the graph database.
 
         Parameters
         ----------
@@ -294,9 +295,9 @@ class GraphDB(object):
                 res = session.write_transaction(self._run_transaction, qry_str)
             except CypherSyntaxError as e:
                 warnings.warn(
-                    "Neo4j returned a Cypher syntax error. Please check your query and try again."
+                    "The database returned a Cypher syntax error. Please check your query and try again."
                 )
-                print(f"\nThe original error returned by Neo4j is:\n\n {e}")
+                print(f"\nThe original error returned by the database is:\n\n {e}")
                 return None
             return res
 

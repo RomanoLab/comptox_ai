@@ -8,13 +8,8 @@
   </div>
 
   <div class="alert alert-info" role="alert">
-	  Note: We are in the process of transitioning from Neo4j to Memgraph. Please excuse any features that don't work as expected while we complete the move!
+    Note: ComptoxAI has migrated from Neo4j to Memgraph. The graph database and REST API are now backed by Memgraph; the legacy Neo4j endpoint is being retired. If you have local scripts pointing at it, switch them over to <a href="https://lab.comptox.ai">lab.comptox.ai</a> (browser) or <code>neo4j+s://bolt.comptox.ai</code> (Bolt driver).
   </div>
-  <!--
-  <div class="alert alert-info" role="alert">
-    Note: We have recently migrated ComptoxAI from Neo4j to Memgraph! If you prefer to use Neo4j, you can still do so by downloading the Neo4j database dump and installing it locally in Neo4j Desktop: <a href="https://upenn.box.com/s/puq6hze09giyl5cbm3nggan1bs0b07c3" target="_blank">Penn+Box Download Link</a>
-  </div>
-  -->
 
   <!--
   <div class="alert alert-success" role="alert">
@@ -30,7 +25,7 @@
         <img class="d-block w-100" src="_static/img/ontology.png" alt="Ontology Hierarchy">
       </div>
       <div class="carousel-item">
-        <img class="d-block w-100" src="_static/img/neo_aop.png" alt="Neo4j browser view">
+        <img class="d-block w-100" src="_static/img/neo_aop.png" alt="ComptoxAI graph database visualization">
       </div>
     </div>
     <a class="carousel-control-prev" href="#caiCarousel" role="button" data-slide="prev">
@@ -54,7 +49,7 @@
   <div class="row">
     <h4 class="col-3">ComptoxAI provides:</h4>
     <ul class="col-9">
-      <li>A <b><a href="https://neo4j.com/blog/why-graph-databases-are-the-future/" target="_blank">graph database</a></b> for storing and retrieving data used in computational toxicology research (implemented in <a href="https://neo4j.com" target="_blank">Neo4j</a>)</li>
+      <li>A <b>graph database</b> for storing and retrieving data used in computational toxicology research (implemented in <a href="https://memgraph.com" target="_blank">Memgraph</a>)</li>
       <li><b>Algorithms</b> for analyzing the structure of data stored in the graph database</li>
       <li>A full-featured <b>OWL ontology</b> for computational toxicology (which is used to structure and query the graph database)</li>
       <li><b>This website</b>, which includes a blog and showcase of research resulting from ComptoxAI</li>

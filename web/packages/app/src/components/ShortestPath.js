@@ -98,8 +98,8 @@ const ShortestPath = (props) => {
                 to your clipboard.
               </li>
               <li>
-                Click the &quot;Open Database Browser&quot; button below to open the Neo4j
-                interface.
+                Click the &quot;Open Database Browser&quot; button below to open the
+                Memgraph Lab interface.
               </li>
               <li>Paste the contents in the query bar and run the search.</li>
             </ol>
@@ -128,7 +128,7 @@ const ShortestPath = (props) => {
           {'\u00A0'}Copy database query
         </Button>
         <Button
-          onClick={() => openInNewTab('http://neo4j.comptox.ai/browser/')}
+          onClick={() => openInNewTab('https://lab.comptox.ai')}
           variant="outlined"
           style={{ margin: '4px' }}
         >

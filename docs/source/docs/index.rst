@@ -20,7 +20,7 @@ Guide <user_guide>`.
 ================================================
 .. currentmodule:: comptox_ai
 
-Tools to access, query, and export data from ComptoxAI's Neo4j graph database.
+Tools to access, query, and export data from ComptoxAI's Memgraph graph database.
 
 **User Guide:** See :ref:`graph_db` and :ref:`` for further details.
 

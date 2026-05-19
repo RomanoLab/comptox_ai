@@ -11,13 +11,13 @@ TEST_DIR = os.path.dirname(os.path.realpath(__file__))
 # Module-level scope so we don't keep reconnecting with every test
 @pytest.fixture(scope="module")
 def G():
-    G = GraphDB(verbose=True, hostname="neo4j.comptox.ai")
+    G = GraphDB(verbose=True)
     return G
 
 
 class TestGraphDB(object):
 
-    def test_neo4j_connection_does_exist(self, G):
+    def test_db_connection_does_exist(self, G):
         with warnings.catch_warnings():
             # Supress the ExperimentalWarning for now
             warnings.simplefilter("ignore")

@@ -10,14 +10,20 @@ frame of roughly 5-10 minutes.
 
 .. note:: Check back for new video tutorials as we add content to the site.
 
-Using the Neo4j database browser
+Using the graph database browser
 ********************************
 
 Direct access to the public instance of the knowledge base is provided via
-Neo4j's graph database browser. This allows users to execute queries in the
-Cypher query language and visualize results directly within their web browser.
-This video shows how to connect to the browser and how to run a few example
-queries.
+the `Memgraph Lab browser <https://lab.comptox.ai>`_. This allows users to
+execute queries in the Cypher query language and visualize results directly
+within their web browser.
+
+.. note::
+
+   The video below was recorded when ComptoxAI was hosted on Neo4j. The
+   query syntax (Cypher) and the general workflow are unchanged under
+   Memgraph Lab, but the UI screenshots in the video are now out of date.
+   We'll replace the video with a Memgraph Lab walkthrough soon.
 
 .. raw:: html
 

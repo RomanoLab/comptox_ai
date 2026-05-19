@@ -6,7 +6,7 @@ ComptoxAI Databases
 
 ComptoxAI relies mainly on two databases:
 
-1. A *graph database*, implemented in Neo4j
+1. A *graph database*, implemented in Memgraph
 2. A *feature database*, implemented in MongoDB
 
 Briefly, the *graph database* is designed to show the relationships between

@@ -28,7 +28,7 @@
       </p>
       <div class="alert alert-info" role="alert">
         <p>
-          We're putting the finishing touches on a <b>bulk dataset download tool</b>! This will allow users to easily generate and download portions of the ComptoxAI database to use in machine learning models. The tool uses Neo4j's Graph Data Science library to efficiently handle subgraph projections, and formats its output as tab-delimited flat files that are packaged alongside a flexible JSON-based metadata description of the dataset.
+          We're putting the finishing touches on a <b>bulk dataset download tool</b>! This will allow users to easily generate and download portions of the ComptoxAI database to use in machine learning models. The tool formats its output as tab-delimited flat files that are packaged alongside a flexible JSON-based metadata description of the dataset.
         </p>
         Stay tuned for more info!
       </div>
@@ -109,7 +109,7 @@ The contents of ComptoxAI's graph database are extracted from a large, fully-fea
 <img src="_static/img/protege.png" alt="ComptoxAI in Protege" id="protege-screenshot" style="margin-right:24px;margin-bottom:8px;" />
 </div>
 <p>
-The ontology plays a central role in the development of ComptoxAI. Briefly, the database maintainers first specify the types of entities and the relationships between them by constructing a <i>class hierarchy</i> in the ontology, and then define the types of relationships—known as <i>object properties</i>—that can link those types of relationships. The ontology is then populated with individuals (nodes in the database) by parsing source databases and storing the individual elements as <i>instances</i> of those node types, and the same is done for relationships between the elements. Finally, the contents of the ontology are imported into Neo4j using the <a href="https://neo4j.com/labs/neosemantics/">neosemantics (n10s)</a> extension tool, which converts OWL2 data into a Neo4j database.
+The ontology plays a central role in the development of ComptoxAI. Briefly, the database maintainers first specify the types of entities and the relationships between them by constructing a <i>class hierarchy</i> in the ontology, and then define the types of relationships—known as <i>object properties</i>—that can link those types of relationships. The ontology is then populated with individuals (nodes in the database) by parsing source databases and storing the individual elements as <i>instances</i> of those node types, and the same is done for relationships between the elements. Finally, the populated ontology is converted from RDF/OWL into Memgraph nodes and edges via the ComptoxAI build pipeline (see <code>comptox_ai/build/</code>), using an ISTA-style mapping configuration to translate ontology classes and properties into the graph schema.
 </p>
 <p>
 We like to use <a href="https://protege.stanford.edu/" target="_blank">Protege</a> to view and edit ontologies.

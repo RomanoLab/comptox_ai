@@ -5,13 +5,14 @@
 {%- endif %}
 {%- set lang_attr = 'en' if language == None else (language | replace('_', '-')) %}
 <!DOCTYPE html>
-<meta name="viewport"
-      content="width=device-width,height=device-height,initial-scale=1.0" />
+<html lang="{{ lang_attr }}">
 <head>
+  <meta name="viewport"
+        content="width=device-width,height=device-height,initial-scale=1.0" />
   {% include "head.html" %}
   <script id="MathJax-script"
           async
-          src="{{ pathto('_static/mathjax/es5/tex-chtml.js', 1) }}">
+          src="{{ pathto('_static/mathjax/es5/tex-chtml.js', 1) }}"></script>
   {%- block extrahead %}
   {% endblock extrahead %}
 </head>
@@ -65,3 +66,4 @@
     </div>
   {% endblock %}
 </body>
+</html>

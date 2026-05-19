@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 
-const qsarBuilderConfig = require('../data/qsar_params_data.json');
+import qsarBuilderConfig from '../data/qsar_params_data.json';
 
 const DatasetBuilderQueryForm = (props) => {
   const [chemListValue, setChemListValue] = useState({ acronym: '', name: '' });

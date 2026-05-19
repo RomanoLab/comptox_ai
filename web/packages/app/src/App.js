@@ -41,6 +41,7 @@ class App extends React.Component {
               </p>
               <p>
                 For detailed usage instructions, please see <a href="https://comptox.ai/browse.html">this page</a>.
+                For direct access to the graph database, open <a href="https://lab.comptox.ai" target="_blank" rel="noopener noreferrer">Memgraph Lab</a>.
               </p>
               {/* <HowToUse /> */}
               {/* <ChemicalSearch /> */}

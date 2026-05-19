@@ -26,7 +26,7 @@ const DatasetBuilderQueryForm = (props) => {
     event.preventDefault();
     // Open new tab with API URL (should we refactor to use Redux or is this good enough?)
     window.open(
-      `https://comptox.ai/api/datasets/makeQsarDataset?assay=${assayValue.assayId}&chemList=${chemListValue.acronym}`
+      `https://api.comptox.ai/datasets/makeQsarDataset?assay=${assayValue.assayId}&chemList=${chemListValue.acronym}`
     );
   };
 

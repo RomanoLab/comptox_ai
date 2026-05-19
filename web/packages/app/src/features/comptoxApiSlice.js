@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const HOST = import.meta.env.PROD ? 'https://comptox.ai/api' : 'http://localhost:3001';
+const HOST = import.meta.env.PROD ? 'https://api.comptox.ai' : 'http://localhost:3001';
 
 export const comptoxApiSlice = createApi({
   reducerPath: 'api',

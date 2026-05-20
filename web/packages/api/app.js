@@ -107,6 +107,14 @@ app.get('/config', (req, res) => {
 });
 
 app.post('/chemicals/structureSearch', bodyParser.text({ type: '*/*' }), routes.chemicals.structureSearch);
+// More specific /chemicals/... routes must precede the :dtsxid catch-all
+// patterns below so that e.g. /chemicals/fetchByCas/... isn't matched by
+// /chemicals/:dtsxid/genes.
+app.get('/chemicals/fetchByCas/:cas', routes.chemicals.fetchByCas);
+app.get('/chemicals/:dtsxid/genes', routes.chemicals.findGenes);
+app.get('/chemicals/:dtsxid/aops', routes.chemicals.findAops);
+
+app.get('/genes/fetchBySymbol/:symbol', routes.genes.fetchBySymbol);
 
 app.get('/nodes/listNodeTypes', routes.nodes.listNodeTypes);
 app.get('/nodes/listNodeTypeProperties/:type', routes.nodes.listNodeTypeProperties);
@@ -123,6 +131,8 @@ app.get('/paths/findByIds', routes.paths.findByIds);
 app.get('/datasets/makeQsarDataset', routes.datasets.makeQsarDataset);
 
 app.get('/graphs/test', routes.graphs.testGraphs);
+
+app.get('/stats', routes.stats.getStats);
 
 app.use((err, req, res, next) => {
   if (err && err.status) {

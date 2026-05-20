@@ -33,7 +33,7 @@ const writeResponse = require('../helpers/response').writeResponse;
  *             How long this response will be served from the in-process cache
  *             before being recomputed. Clients can use this to decide how
  *             often to poll.
- *           example: 300
+ *           example: 604800
  */
 
 /**
@@ -48,9 +48,11 @@ const writeResponse = require('../helpers/response').writeResponse;
  *       across the entire ComptoxAI graph database. Useful for landing-page
  *       summaries, monitoring (sudden drops typically indicate ingest
  *       problems), and pagination planning. The response is cached
- *       in-process for 5 minutes so this endpoint is safe to poll
- *       frequently — `cacheTtlSeconds` in the response tells you how long
- *       until the next compute will happen.
+ *       in-process for 7 days — the underlying queries scan the whole graph,
+ *       and the data changes infrequently enough that weekly recomputation
+ *       is plenty. `cacheTtlSeconds` in the response reports the cache
+ *       window length; `generatedAt` tells you when the current snapshot
+ *       was computed.
  *     produces:
  *       - application/json
  *     responses:

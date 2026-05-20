@@ -1,4 +1,4 @@
-const CACHE_TTL_MS = 5 * 60 * 1000;
+const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 let cache = null;
 let cacheExpiresAt = 0;
 
@@ -16,26 +16,34 @@ const getStats = function getStats(session) {
   const edgeQuery =
     'MATCH ()-[r]->() RETURN type(r) AS type, count(*) AS count ORDER BY count DESC;';
 
-  return Promise.all([
-    session.executeRead((txc) => txc.run(nodeQuery)),
-    session.executeRead((txc) => txc.run(edgeQuery)),
-  ]).then(([nodeResult, edgeResult]) => {
-    const stats = {
-      nodes: nodeResult.records.reduce((acc, r) => {
-        acc[r.get('label')] = toInt(r.get('count'));
-        return acc;
-      }, {}),
-      edges: edgeResult.records.reduce((acc, r) => {
-        acc[r.get('type')] = toInt(r.get('count'));
-        return acc;
-      }, {}),
-      generatedAt: new Date(now).toISOString(),
-      cacheTtlSeconds: CACHE_TTL_MS / 1000,
-    };
-    cache = stats;
-    cacheExpiresAt = now + CACHE_TTL_MS;
-    return stats;
-  });
+  // Both reads share one transaction on one session — a Bolt session cannot
+  // host two concurrent transactions, so Promise.all over two executeRead
+  // calls on the same session throws "You cannot begin a transaction on a
+  // session with an open transaction." Sequencing them inside a single
+  // executeRead is the canonical fix.
+  return session
+    .executeRead(async (txc) => {
+      const nodeResult = await txc.run(nodeQuery);
+      const edgeResult = await txc.run(edgeQuery);
+      return { nodeResult, edgeResult };
+    })
+    .then(({ nodeResult, edgeResult }) => {
+      const stats = {
+        nodes: nodeResult.records.reduce((acc, r) => {
+          acc[r.get('label')] = toInt(r.get('count'));
+          return acc;
+        }, {}),
+        edges: edgeResult.records.reduce((acc, r) => {
+          acc[r.get('type')] = toInt(r.get('count'));
+          return acc;
+        }, {}),
+        generatedAt: new Date(now).toISOString(),
+        cacheTtlSeconds: CACHE_TTL_MS / 1000,
+      };
+      cache = stats;
+      cacheExpiresAt = now + CACHE_TTL_MS;
+      return stats;
+    });
 };
 
 module.exports = {

@@ -1,7 +1,7 @@
 # Build context for this Dockerfile is the `web/` directory (the npm workspace
 # root), not the api package itself, so the workspace-managed lock file is
 # accessible. See docker-compose.yml and .github/workflows/publish-images.yml.
-FROM node:20-alpine
+FROM node:26-alpine
 
 RUN apk add --no-cache wget tini
 

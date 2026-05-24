@@ -56,7 +56,7 @@ setuptools.setup(
         'openpyxl==3.0.7',
         'owlready2==0.34',
         'PyYAML==5.3.1',
-        'ipdb==0.13.9',
+        'ipdb==0.13.13',
         'pytest==7.4',
     ],
     extras_require={

@@ -6,3 +6,6 @@ exports.paths = require('./paths');
 exports.datasets = require('./datasets');
 exports.graphs = require('./graphs');
 exports.stats = require('./stats');
+exports.schema = require('./schema');
+exports.query = require('./query');
+exports.neighbors = require('./neighbors');

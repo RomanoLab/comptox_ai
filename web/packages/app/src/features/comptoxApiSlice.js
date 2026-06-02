@@ -36,6 +36,29 @@ export const comptoxApiSlice = createApi({
         method: 'POST',
         body: searchData
       })
+    }),
+    fetchEdgeSchema: builder.query({
+      query: () => '/schema/edges'
+    }),
+    executePattern: builder.mutation({
+      query: (pattern) => ({
+        url: '/query/pattern',
+        method: 'POST',
+        body: { pattern }
+      })
+    }),
+    fetchNeighborCounts: builder.query({
+      query: (nodeId) => `/nodes/${nodeId}/neighborCounts`
+    }),
+    fetchNeighbors: builder.query({
+      query: ({ nodeId, relType, limit }) => {
+        let url = `/nodes/${nodeId}/neighbors`;
+        const params = [];
+        if (relType) params.push(`relType=${relType}`);
+        if (limit) params.push(`limit=${limit}`);
+        if (params.length) url += `?${params.join('&')}`;
+        return url;
+      }
     })
   })
 });
@@ -49,5 +72,9 @@ export const {
   useFetchRelationshipsByNodeIdQuery,
   useFindPathByNodeIdsQuery,
   useMakeQsarDatasetQuery,
-  useRunStructureSearchQuery
+  useRunStructureSearchQuery,
+  useFetchEdgeSchemaQuery,
+  useExecutePatternMutation,
+  useLazyFetchNeighborCountsQuery,
+  useLazyFetchNeighborsQuery
 } = comptoxApiSlice;

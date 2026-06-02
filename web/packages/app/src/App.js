@@ -3,13 +3,7 @@ import { adaptV4Theme,createTheme, StyledEngineProvider, ThemeProvider } from '@
 import Container from '@mui/material/Container';
 
 import DatasetBuilder from './components/DatasetBuilder';
-import ExpandNetwork from './components/ExpandNetwork';
-import NodeResults from './components/NodeResults';
-import NodeSearch from './components/NodeSearch';
-import PathSearch from './components/PathSearch';
-// import ChemicalSearch from './components/ChemicalSearch';
-import RelationshipSearch from './components/RelationshipSearch';
-import ShortestPath from './components/ShortestPath';
+import QueryBuilder from './components/QueryBuilder';
 import * as chemLists from './data/chemical_list_data.json';
 import * as config from './data/data.json';
 
@@ -20,15 +14,6 @@ const theme = createTheme(adaptV4Theme({
 }));
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      relationshipResults: [],
-      pathResults: []
-    };
-  }
-
   render() {
     return (
       <div className="App" style={{marginTop:'24px'}}>
@@ -37,34 +22,17 @@ class App extends React.Component {
             <Container>
               <h1>ComptoxAI interactive data portal</h1>
               <p>
-                From this page, you can search for individual entities (nodes) in ComptoxAI&apos;s graph database. When you select a query result, adjacent nodes (related data elements) are loaded and displayed below.
+                Search for entities and explore relationships in ComptoxAI&apos;s knowledge graph.
+                Build multi-hop patterns to discover connections between chemicals, genes, pathways, AOPs, and more.
               </p>
               <p>
                 For detailed usage instructions, please see <a href="https://comptox.ai/browse.html">this page</a>.
                 For direct access to the graph database, open <a href="https://lab.comptox.ai" target="_blank" rel="noopener noreferrer">Memgraph Lab</a>.
               </p>
-              {/* <HowToUse /> */}
-              {/* <ChemicalSearch /> */}
-              <NodeSearch 
-                config={config.default}
-              />
-              <NodeResults
-                config={config.default}
-              />
-              <RelationshipSearch
-                relationshipResults={this.state.relationshipResults}
-              />
-              <PathSearch
-                pathResults={this.state.pathResults}
-              />
-              {/* <BatchQuery /> */}
+              <QueryBuilder config={config.default} />
               <DatasetBuilder
                 config={config.default}
                 chemLists={chemLists.default}
-              />
-              <ShortestPath
-              />
-              <ExpandNetwork
               />
               <div style={{marginTop:'300px'}}>
               </div>

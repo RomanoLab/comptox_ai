@@ -134,6 +134,12 @@ app.get('/graphs/test', routes.graphs.testGraphs);
 
 app.get('/stats', routes.stats.getStats);
 
+app.get('/schema/edges', routes.schema.getEdgeSchema);
+app.post('/query/pattern', routes.query.executePattern);
+
+app.get('/nodes/:id/neighborCounts', routes.neighbors.getNeighborCounts);
+app.get('/nodes/:id/neighbors', routes.neighbors.getNeighbors);
+
 app.use((err, req, res, next) => {
   if (err && err.status) {
     writeError(res, err);

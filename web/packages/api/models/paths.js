@@ -16,10 +16,13 @@ const findPathByIds = function findPathByIds(session, fromId, toId) {
     });
   }
 
-  // Memgraph supports algo.shortestPath via openCypher's MATCH with shortest;
-  // here we use a length-bounded variable-length pattern and ORDER BY length(p).
+  // Memgraph's BFS returns the single shortest path between the anchored
+  // endpoints. The lower bound must be 1: a floor of 2 makes BFS return
+  // nothing whenever the two nodes are directly connected (it finds the
+  // 1-hop shortest path, sees it is below the floor, and gives up rather
+  // than searching for a longer alternative).
   const query = [
-    'MATCH p = (n)-[*BFS 2..10]-(m)',
+    'MATCH p = (n)-[*BFS 1..10]-(m)',
     'WHERE id(n) = $from AND id(m) = $to',
     'RETURN p',
     'ORDER BY size(relationships(p)) ASC',

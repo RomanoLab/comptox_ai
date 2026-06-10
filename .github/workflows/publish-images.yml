@@ -30,7 +30,7 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' }}
             type=sha,prefix=sha-,format=short
             type=ref,event=branch
-      - uses: docker/build-push-action@v5
+      - uses: docker/build-push-action@v7
         with:
           context: web
           file: web/packages/api/Dockerfile
@@ -59,7 +59,7 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' }}
             type=sha,prefix=sha-,format=short
             type=ref,event=branch
-      - uses: docker/build-push-action@v5
+      - uses: docker/build-push-action@v7
         with:
           context: infra/bolt-proxy
           platforms: linux/amd64,linux/arm64

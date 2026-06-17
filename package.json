@@ -33,6 +33,6 @@
     "prettier-plugin-organize-attributes": "^1.0.0",
     "stylelint": "^15.10.2",
     "stylelint-config-recess-order": "^4.3.0",
-    "stylelint-config-standard": "^34.0.0"
+    "stylelint-config-standard": "^40.0.0"
   }
 }

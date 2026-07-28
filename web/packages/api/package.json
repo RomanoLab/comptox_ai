@@ -36,7 +36,7 @@
     "nconf": "^0.12.1",
     "neo4j-driver": "^5.27.0",
     "python-shell": "^5.0.0",
-    "swagger-jsdoc": "^6.2.8",
+    "swagger-jsdoc": "^6.3.0",
     "swagger-ui-express": "^5.0.1",
     "tmp": "^0.2.3",
     "xml2js": "^0.6.2"
